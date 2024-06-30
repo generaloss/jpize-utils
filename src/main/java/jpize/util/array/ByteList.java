@@ -255,15 +255,20 @@ public class ByteList implements Iterable<Byte> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, (byte) 0);
         size = 0;
     }
 
+    public void fill(byte value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -281,6 +286,8 @@ public class ByteList implements Iterable<Byte> {
     public void set(int i, byte newValue) {
         array[i] = newValue;
     }
+
+
     public void valAdd(int i, byte value) {
         array[i] += value;
     }

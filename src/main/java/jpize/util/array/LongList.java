@@ -255,15 +255,20 @@ public class LongList implements Iterable<Long> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, 0L);
         size = 0;
     }
 
+    public void fill(long value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -281,6 +286,8 @@ public class LongList implements Iterable<Long> {
     public void set(int i, long newValue) {
         array[i] = newValue;
     }
+
+
     public void valAdd(int i, long value) {
         array[i] += value;
     }

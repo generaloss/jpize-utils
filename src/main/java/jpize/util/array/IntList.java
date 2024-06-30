@@ -255,15 +255,20 @@ public class IntList implements Iterable<Integer> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, 0);
         size = 0;
     }
 
+    public void fill(int value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -281,6 +286,8 @@ public class IntList implements Iterable<Integer> {
     public void set(int i, int newValue) {
         array[i] = newValue;
     }
+
+
     public void valAdd(int i, int value) {
         array[i] += value;
     }

@@ -245,15 +245,20 @@ public class ObjectList implements Iterable<Object> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, null);
         size = 0;
     }
 
+    public void fill(Object value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -271,6 +276,8 @@ public class ObjectList implements Iterable<Object> {
     public void set(int i, Object newValue) {
         array[i] = newValue;
     }
+
+
 
 
     public Object[] copyOf(int offset, int newLength) {

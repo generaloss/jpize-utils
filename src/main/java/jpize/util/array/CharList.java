@@ -255,15 +255,20 @@ public class CharList implements Iterable<Character> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, (char) 0);
         size = 0;
     }
 
+    public void fill(char value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -281,6 +286,8 @@ public class CharList implements Iterable<Character> {
     public void set(int i, char newValue) {
         array[i] = newValue;
     }
+
+
     public void valAdd(int i, char value) {
         array[i] += value;
     }

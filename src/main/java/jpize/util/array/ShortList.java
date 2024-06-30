@@ -255,15 +255,20 @@ public class ShortList implements Iterable<Short> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, (short) 0);
         size = 0;
     }
 
+    public void fill(short value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -281,6 +286,8 @@ public class ShortList implements Iterable<Short> {
     public void set(int i, short newValue) {
         array[i] = newValue;
     }
+
+
     public void valAdd(int i, short value) {
         array[i] += value;
     }

@@ -255,15 +255,20 @@ public class BoolList implements Iterable<Boolean> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, false);
         size = 0;
     }
 
+    public void fill(boolean value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -281,6 +286,8 @@ public class BoolList implements Iterable<Boolean> {
     public void set(int i, boolean newValue) {
         array[i] = newValue;
     }
+
+
 
 
     public boolean[] copyOf(int offset, int newLength) {

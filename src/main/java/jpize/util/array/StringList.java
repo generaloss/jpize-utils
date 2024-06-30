@@ -245,15 +245,20 @@ public class StringList implements Iterable<String> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, null);
         size = 0;
     }
 
+    public void fill(String value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -271,6 +276,7 @@ public class StringList implements Iterable<String> {
     public void set(int i, String newValue) {
         array[i] = newValue;
     }
+
 
     public void valAdd(int i, String value) {
         array[i] += value;
@@ -303,6 +309,7 @@ public class StringList implements Iterable<String> {
     public void valToUpperCase(int i) {
         array[i] = array[i].toUpperCase();
     }
+
 
     public String[] copyOf(int offset, int newLength) {
         final String[] slice = new String[newLength];

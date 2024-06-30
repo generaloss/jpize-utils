@@ -3,6 +3,8 @@ package jpize.util.res;
 import jpize.util.io.ExtDataOutputStream;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExternalResource extends Resource {
 
@@ -75,7 +77,7 @@ public class ExternalResource extends Resource {
     }
 
 
-    public void appendString(CharSequence string) {
+    public void appendString(String string) {
         writeString(readString() + string);
     }
 
@@ -98,8 +100,40 @@ public class ExternalResource extends Resource {
     }
 
 
-    public PrintStream writer() {
-        return new PrintStream(outStream());
+    public String[] list() {
+        return file.list();
+    }
+
+    public String[] list(FilenameFilter filter) {
+        return file.list(filter);
+    }
+
+    public Resource[] listRes() {
+        final String[] paths = file.list();
+        if(paths == null)
+            return new Resource[0];
+
+        final Resource[] resources = new Resource[paths.length];
+        for(int i = 0; i < paths.length; i++)
+            resources[i] = child(paths[i]);
+
+        return resources;
+    }
+
+    public Resource[] listRes(FilenameFilter filter) {
+        final Resource[] resources = listRes();
+        final List<Resource> filteredResources = new ArrayList<>();
+
+        for(Resource resource: resources)
+            if(filter.accept(file, resource.name()))
+                filteredResources.add(resource);
+
+        return filteredResources.toArray(new Resource[0]);
+    }
+
+
+    public PrintWriter writer() {
+        return new PrintWriter(outStream(), true);
     }
 
 

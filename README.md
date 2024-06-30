@@ -25,7 +25,7 @@ dependencies {
 }
 ```
 
-# [Resources](src/main/java/jpize/util/res)
+# [Resource](src/main/java/jpize/util/res) Concept
 
 The [*Resource*](src/main/java/jpize/util/res/Resource.java) class provides access to files and folders and is extended by:
 * *ExternalResource* - (rein filesystem)
@@ -57,13 +57,76 @@ ExternalResource res = Resource.external(file);
 ExternalResource res = Resource.external(parentFile, childStr);
 ```
 
+---
 
+Some code examples:
 ```java
-// Read string
-String text = Resource.internal("text/example.txt").readString();
+// info
+Resource res = Resource.internal("images/cat.jpg");
 
+res.name();         // "cat.jpg"
+res.simpleName();   // "cat"
+res.extension();    // "jpg"
+res.path();         // "images/cat.jpg"
+res.absolutePath(); // "../images/cat.jpg"
 
+// read
+Resource res = Resource.internal("text/example.txt");
+
+String text        = res.readString();
+byte[] bytes       = res.readBytes();
+ByteBuffer buffer  = res.readByteBuffer();
+List<String> lines = res.readLines();
+
+// input
+FastReader reader        = res.reader();
+InputStream inStream     = res.inStream();
+ExtDataInputStream input = res.extDataInput();
+
+// write
+ExternalResource res = Resource.external("../external_file.txt");
+
+res.writeString(string);
+res.appendString(string);
+res.writeBytes(bytes);
+
+PrintWriter writer         = res.writer();
+FileOutputStream outStream = res.outStream();
+ExtDataOutputStream output = res.extDataOutput();
+
+// list
+ExternalResource res = Resource.external(System.getProperty("home.user")); // folder
+
+String[] list   = res.list();
+String[] list   = res.list(filenameFilter);
+Resource[] list = res.listRes();
+Resource[] list = res.listRes(filenameFilter);
 ```
+
+# [Input/Output](src/main/java/jpize/util/io)
+
+The [*ExtDataInputStream*](src/main/java/jpize/util/io/ExtDataInputStream.java) and [*ExtDataOutputStream*](src/main/java/jpize/util/io/ExtDataOutputStream.java) classes extends *DataInputStream* and *DataOutputStream* and has read/write methods for:
+* { byte / int / short / long / float / double / *boolean* / char } ***Array, Buffer, List***
+* { bytes / chars / UTF } ***String***
+* ***Vector, EulerAngles, Color, UUID***
+
+---
+
+The [*FastReader*](src/main/java/jpize/util/io/FastReader.java) class just fast alternative to *java.util.Scanner*
+
+# [Arrays](src/main/java/jpize/util/array)
+
+The *List-Classes* are designed to quickly work with primitive arrays and include:
+* *ByteList, ShortList, IntList, LongList, FloatList, DoubleList, CharList, BoolList*
+* *StringList, ObjectList*
+
+They also contain some useful methods with varargs and methods such as: 
+
+* **addAll()** for *Buffer* classes, *Iterables, Collections, Arrays* with datatype-cast-Functions
+* **copyOf(), copyOfRange(from, to), copyTo(dst)**
+* **clear(), fill(val)**
+* **array(), arrayTrimmed()**
+* **remove(i), removeFirst(e), removeLast(e)**
 
 # Math
 

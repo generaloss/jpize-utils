@@ -39,20 +39,16 @@ public abstract class Resource {
     }
 
 
-    public String readString() {
-        try(final InputStream in = inStream()){
-            return new String(in.readAllBytes());
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
-    }
-
     public byte[] readBytes() {
         try(InputStream inStream = inStream()){
             return inStream.readAllBytes();
         }catch(IOException e){
             throw new RuntimeException(e);
         }
+    }
+
+    public String readString() {
+        return new String(readBytes());
     }
 
     public ByteBuffer readByteBuffer() {
@@ -106,38 +102,6 @@ public abstract class Resource {
 
     public String absolutePath() {
         return file.getAbsolutePath();
-    }
-
-
-    public String[] list() {
-        return file.list();
-    }
-
-    public String[] list(FilenameFilter filter) {
-        return file.list(filter);
-    }
-
-    public Resource[] listRes() {
-        final String[] paths = file.list();
-        if(paths == null)
-            return new Resource[0];
-
-        final Resource[] resources = new Resource[paths.length];
-        for(int i = 0; i < paths.length; i++)
-            resources[i] = child(paths[i]);
-
-        return resources;
-    }
-
-    public Resource[] listRes(FilenameFilter filter) {
-        final Resource[] resources = listRes();
-        final List<Resource> filteredResources = new ArrayList<>();
-
-        for(Resource resource: resources)
-            if(filter.accept(file, resource.name()))
-                filteredResources.add(resource);
-
-        return filteredResources.toArray(new Resource[0]);
     }
 
 

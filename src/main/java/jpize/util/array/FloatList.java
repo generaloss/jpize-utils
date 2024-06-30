@@ -255,15 +255,20 @@ public class FloatList implements Iterable<Float> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, 0F);
         size = 0;
     }
 
+    public void fill(float value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -281,6 +286,8 @@ public class FloatList implements Iterable<Float> {
     public void set(int i, float newValue) {
         array[i] = newValue;
     }
+
+
     public void valAdd(int i, float value) {
         array[i] += value;
     }

@@ -255,15 +255,20 @@ public class DoubleList implements Iterable<Double> {
         return size != 0;
     }
 
+
     public void clear() {
         Arrays.fill(array, 0, size, 0D);
         size = 0;
     }
 
+    public void fill(double value) {
+        Arrays.fill(array, 0, size, value);
+    }
+
+
     public void trim() {
         array = Arrays.copyOf(array, size);
     }
-
 
     public void capacity(int newCapacity) {
         if(newCapacity == 0)
@@ -281,6 +286,8 @@ public class DoubleList implements Iterable<Double> {
     public void set(int i, double newValue) {
         array[i] = newValue;
     }
+
+
     public void valAdd(int i, double value) {
         array[i] += value;
     }
