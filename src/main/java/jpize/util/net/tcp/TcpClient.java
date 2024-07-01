@@ -20,8 +20,8 @@ public class TcpClient {
 
 
     public TcpClient connect(String host, int port) {
-        if(connection != null && !connection.isClosed())
-            return this;
+        if(isConnected())
+            throw new RuntimeException("TCP-Client already connected.");
 
         try{
             final Socket socket = new Socket();
@@ -38,41 +38,42 @@ public class TcpClient {
     }
 
 
-    public void send(byte[] packet) {
-        if(connection != null)
-            connection.send(packet);
-    }
-
-    public void send(ByteArrayOutputStream stream) {
-        if(connection != null)
-            connection.send(stream);
-    }
-
-    public void send(IPacket<?> packet) {
-        if(connection != null)
-            connection.send(packet);
-    }
-
-
-    public void encode(KeyAes encodeKey) {
-        connection.encode(encodeKey);
-    }
-
-
-    synchronized public void disconnect() {
-        if(connection == null || connection.isClosed())
-            return;
-
-        connection.close();
-    }
-
-
     public TcpConnection getConnection() {
         return connection;
     }
 
     public boolean isConnected() {
-        return connection != null && connection.isConnected();
+        return (connection != null && connection.isConnected());
+    }
+
+    public boolean isClosed(){
+        return (connection == null || connection.isClosed());
+    }
+
+    public void disconnect() {
+        if(isConnected())
+            connection.close();
+    }
+
+
+    public void encode(KeyAes encodeKey) {
+        if(isConnected())
+            connection.encode(encodeKey);
+    }
+
+    public void send(byte[] packet) {
+        if(isConnected())
+            connection.send(packet);
+    }
+
+    public void send(ByteArrayOutputStream stream) {
+        if(isConnected())
+            connection.send(stream);
+    }
+
+    public void send(IPacket<?> packet) {
+        if(isConnected())
+            connection.send(packet);
     }
 
 }

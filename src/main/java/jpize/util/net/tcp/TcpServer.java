@@ -25,8 +25,8 @@ public class TcpServer implements Closeable {
 
 
     public void run(int port) {
-        if(!isClosed())
-            throw new RuntimeException("TCP Server already running");
+        if(isAlive())
+            throw new RuntimeException("TCP-Server already running.");
 
         try{
             serverSocket = new ServerSocket(port);
@@ -38,8 +38,8 @@ public class TcpServer implements Closeable {
     }
 
     public TcpServer run(String host, int port) {
-        if(!isClosed())
-            throw new RuntimeException("TCP Server already running");
+        if(isAlive())
+            throw new RuntimeException("TCP-Server already running.");
 
         try{
             serverSocket = new ServerSocket();
@@ -73,6 +73,31 @@ public class TcpServer implements Closeable {
     }
 
 
+    public Collection<TcpConnection> getConnections() {
+        return connectionList;
+    }
+
+    public boolean isAlive() {
+        return (serverSocket != null && !serverSocket.isClosed());
+    }
+
+    public boolean isClosed() {
+        return (serverSocket == null || serverSocket.isClosed());
+    }
+
+    @Override
+    public void close() {
+        if(isClosed())
+            return;
+
+        for(TcpConnection connection: connectionList)
+            connection.close();
+        connectionList.clear();
+
+        Utils.close(serverSocket);
+    }
+
+
     public void broadcast(byte[] bytes) {
         for(TcpConnection connection: connectionList)
             connection.send(bytes);
@@ -91,7 +116,6 @@ public class TcpServer implements Closeable {
     public void broadcast(TcpConnection except, ByteArrayOutputStream stream) {
         this.broadcast(except, stream.toByteArray());
     }
-
 
     public void broadcast(IPacket<?> packet) {
         try{
@@ -119,28 +143,6 @@ public class TcpServer implements Closeable {
         }catch(IOException e){
             throw new RuntimeException(e);
         }
-    }
-
-
-    public Collection<TcpConnection> getConnections() {
-        return connectionList;
-    }
-
-
-    public boolean isClosed() {
-        return (serverSocket == null || serverSocket.isClosed());
-    }
-
-    @Override
-    public void close() {
-        if(isClosed())
-            return;
-
-        for(TcpConnection connection: connectionList)
-            connection.close();
-        connectionList.clear();
-
-        Utils.close(serverSocket);
     }
 
 }

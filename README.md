@@ -11,7 +11,7 @@
 <dependency>
     <groupId>io.github.generaloss</groupId>
     <artifactId>jpize-utils</artifactId>
-    <version>24.2.2</version>
+    <version>24.7.1</version>
 </dependency>
 ```
 #### Gradle (Kotlin)
@@ -213,7 +213,7 @@ Available operations:
 
 # [*Net*](src/main/java/jpize/util/net)
 
-Encrypted Server-Client Example:
+Encrypted TCP connection example:
 ``` java
 KeyAes key = new KeyAes(128); // generate key for connection encoding
 
@@ -236,7 +236,7 @@ client.encode(key);
 client.send("Hello, World!".getBytes()); // send 'Hello, World!'
 ```
 
-Packets Example:
+Packets example:
 ``` java
 // Message Packet
 public static class MsgPacket extends IPacket<MyPacketHandler> { // MyPacketHandler 
@@ -281,6 +281,18 @@ void received(TcpConnection sender, byte[] bytes){
 // packet sending
 TcpConnection connection = ...;
 connection.send(new MsgPacket("My message!"));
+```
+
+UDP connection example:
+``` java
+// open UDP server and listen for datagramm packets
+UdpServer listener = new UdpServer(5454, packet -> {
+    System.out.println(new String(packet.getData())); // receive "Hello, world!"
+});
+
+// connect and send "Hello, world!" bytes
+UdpClient connection = new UdpClient("localhost", 5454);
+connection.send("Hello, world!".getBytes(), "localhost", 5454);
 ```
 
 ---

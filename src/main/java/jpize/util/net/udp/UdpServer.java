@@ -1,58 +1,83 @@
 package jpize.util.net.udp;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.nio.ByteBuffer;
+import java.util.function.Consumer;
 
 public class UdpServer {
 
-    private final UdpListener listener;
-    private UdpConnection connection;
+    private final DatagramSocket socket;
+    private final Consumer<DatagramPacket> packetConsumer;
+    private final Thread thread;
 
-    public UdpServer(UdpListener listener) {
-        this.listener = listener;
-    }
-
-
-    public void run(int port) {
-        if(connection != null && !connection.isClosed())
-            throw new RuntimeException("UDP-Server already running.");
-
+    public UdpServer(int port, Consumer<DatagramPacket> packetConsumer){
         try{
-            final DatagramSocket socket = new DatagramSocket(port);
-            connection = new UdpConnection(socket, listener);
+            this.socket = new DatagramSocket(port);
+            this.packetConsumer = packetConsumer;
+            this.thread = startReceiveLoop();
         }catch(IOException e){
             throw new RuntimeException(e);
         }
     }
 
-    public void run(String address, int port) {
-        if(connection != null && !connection.isClosed())
-            throw new RuntimeException("UDP-Server already running.");
-
+    public UdpServer(String host, int port, Consumer<DatagramPacket> packetConsumer){
         try{
-            final DatagramSocket socket = new DatagramSocket(port, InetAddress.getByName(address));
-            connection = new UdpConnection(socket, listener);
+            this.socket = new DatagramSocket(port, InetAddress.getByName(host));
+            this.packetConsumer = packetConsumer;
+            this.thread = startReceiveLoop();
         }catch(IOException e){
             throw new RuntimeException(e);
         }
     }
 
 
-    public void send(byte[] data, SocketAddress address) {
-        connection.send(new DatagramPacket(data, data.length, address));
+    private Thread startReceiveLoop(){
+        final Thread thread = new Thread(this::receiveLoop);
+        thread.setDaemon(true);
+        thread.start();
+        return thread;
     }
 
-    public void send(byte[] data, String address, int port) {
-        send(data, new InetSocketAddress(address, port));
+    private void receiveLoop(){
+        try{
+            while(!isClosed()){ //! !Thread.interrupted()
+                // receive size
+                final DatagramPacket sizePacket = new DatagramPacket(new byte[4], 4);
+                socket.receive(sizePacket);
+                final int size = ByteBuffer
+                    .wrap(sizePacket.getData()).getInt();
+
+                // receive data
+                final DatagramPacket packet = new DatagramPacket(new byte[size], size);
+                socket.receive(packet);
+
+                // accept packet
+                packetConsumer.accept(packet);
+            }
+        }catch(IOException ignored){ }
+    }
+
+
+    public DatagramSocket getSocket() {
+        return socket;
+    }
+
+    public boolean isConnected() {
+        return socket.isConnected();
+    }
+
+    public boolean isClosed() {
+        return socket.isClosed();
     }
 
     public void close() {
-        if(!connection.isClosed())
-            connection.close();
-    }
-
-    public UdpConnection getConnection() {
-        return connection;
+        if(isClosed())
+            return;
+        thread.interrupt();
+        socket.close();
     }
 
 }

@@ -41,7 +41,7 @@ public class TcpConnection {
         try{
             final DataInputStream inStream = new DataInputStream(socket.getInputStream());
 
-            while(!Thread.interrupted()){
+            while(!isClosed()){ //! !Thread.interrupted()
                 final int length = inStream.readInt();
                 if(length < 0)
                     continue;
@@ -120,6 +120,10 @@ public class TcpConnection {
         return socket.isConnected();
     }
 
+    public boolean isClosed() {
+        return socket.isClosed();
+    }
+
     public void close() {
         if(isClosed())
             return;
@@ -127,10 +131,6 @@ public class TcpConnection {
         onDisconnect.accept(this);
         receiveThread.interrupt();
         Utils.close(socket);
-    }
-
-    public boolean isClosed() {
-        return socket.isClosed();
     }
 
 
