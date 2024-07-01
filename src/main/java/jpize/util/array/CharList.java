@@ -55,7 +55,7 @@ public class CharList implements Iterable<Character> {
     public<T> CharList(Iterable<T> iterable, Function<T, Character> func) {
         this.array = new char[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> CharList(Collection<T> collection, Function<T, Character> func) {
@@ -84,6 +84,7 @@ public class CharList implements Iterable<Character> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -122,7 +123,6 @@ public class CharList implements Iterable<Character> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, char element) {
         final int minCapacity = Math.max(size, i) + 1;

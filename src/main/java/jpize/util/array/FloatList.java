@@ -55,7 +55,7 @@ public class FloatList implements Iterable<Float> {
     public<T> FloatList(Iterable<T> iterable, Function<T, Float> func) {
         this.array = new float[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> FloatList(Collection<T> collection, Function<T, Float> func) {
@@ -84,6 +84,7 @@ public class FloatList implements Iterable<Float> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -122,7 +123,6 @@ public class FloatList implements Iterable<Float> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, float element) {
         final int minCapacity = Math.max(size, i) + 1;

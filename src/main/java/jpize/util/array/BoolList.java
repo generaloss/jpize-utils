@@ -2,12 +2,9 @@ package jpize.util.array;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Objects;
 import java.util.function.Function;
+import java.nio.*;
+import java.util.*;
 
 public class BoolList implements Iterable<Boolean> {
 
@@ -55,7 +52,7 @@ public class BoolList implements Iterable<Boolean> {
     public<T> BoolList(Iterable<T> iterable, Function<T, Boolean> func) {
         this.array = new boolean[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> BoolList(Collection<T> collection, Function<T, Boolean> func) {
@@ -84,6 +81,7 @@ public class BoolList implements Iterable<Boolean> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -122,7 +120,6 @@ public class BoolList implements Iterable<Boolean> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, boolean element) {
         final int minCapacity = Math.max(size, i) + 1;
@@ -287,8 +284,7 @@ public class BoolList implements Iterable<Boolean> {
         array[i] = newValue;
     }
 
-
-
+    
 
     public boolean[] copyOf(int offset, int newLength) {
         final boolean[] slice = new boolean[newLength];

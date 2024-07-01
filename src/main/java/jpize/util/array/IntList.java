@@ -55,7 +55,7 @@ public class IntList implements Iterable<Integer> {
     public<T> IntList(Iterable<T> iterable, Function<T, Integer> func) {
         this.array = new int[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> IntList(Collection<T> collection, Function<T, Integer> func) {
@@ -84,6 +84,7 @@ public class IntList implements Iterable<Integer> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -122,7 +123,6 @@ public class IntList implements Iterable<Integer> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, int element) {
         final int minCapacity = Math.max(size, i) + 1;

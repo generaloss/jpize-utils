@@ -55,7 +55,7 @@ public class DoubleList implements Iterable<Double> {
     public<T> DoubleList(Iterable<T> iterable, Function<T, Double> func) {
         this.array = new double[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> DoubleList(Collection<T> collection, Function<T, Double> func) {
@@ -84,6 +84,7 @@ public class DoubleList implements Iterable<Double> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -122,7 +123,6 @@ public class DoubleList implements Iterable<Double> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, double element) {
         final int minCapacity = Math.max(size, i) + 1;
@@ -286,7 +286,6 @@ public class DoubleList implements Iterable<Double> {
     public void set(int i, double newValue) {
         array[i] = newValue;
     }
-
 
     public void valAdd(int i, double value) {
         array[i] += value;

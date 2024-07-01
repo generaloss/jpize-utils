@@ -122,28 +122,31 @@ The *List-Classes* are designed to quickly work with primitive arrays and includ
 
 They also contain some useful methods with varargs and methods such as: 
 
-* **addAll()** for *Buffer* classes, *Iterables, Collections, Arrays* with datatype-cast-Functions
+* **addAll(..)** for *Buffer* classes, *Iterables, Collections, Arrays* with datatype-cast-Functions
 * **copyOf(), copyOfRange(from, to), copyTo(dst)**
 * **clear(), fill(val)**
-* **array(), arrayTrimmed()**
+* **array(), arrayTrimmed(), trim()**
 * **remove(i), removeFirst(e), removeLast(e)**
+* **valAdd(i, v), valSub(i, v), valMul(i, v), valDiv(i, v)** in number-Lists
+* **valAdd(i, v), valTrim(i), valReplace(i, t, r), valReplaceAll(i, r, r), valReplaceFirst(i, r, r), valToLowerCase(i), valToUpperCase(i)** in StringList
+* **size(), capacity(), capacity(c)**
+* **contains(e), indexOf(e), lastIndexOf(e), indexOfRange(e, f, t), lastIndexOfRange(e, f, t)**
+* **isEmpty(), isNotEmpty()**
+* **add(..), get(..), set(..)**
 
 # Math
 
-### Honorable mention
-*  Matrices indexed with _**mᵢⱼ**_, where _**i**_ - column index, _**j**_ - row index
-*  Left-Hand Coordinate System
-
 ---
 
-### 1. Vectors:
+#### Vectors:
 | **Type**     | **2D**  | **3D**  | **4D**  |
 |--------------|---------|---------|---------|
 | _**Double**_ | _Vec2d_ | _Vec3d_ | _Vec4d_ |
 | _**Float**_  | _Vec2f_ | _Vec3f_ | _Vec4f_ |
 | _**Int**_    | _Vec2i_ | _Vec3i_ | _Vec4i_ |
 
-#### Available operations:
+Available operations:
+
 | _**Operations**_                                                        | **Description**                                                        | **Has 2D** | **Has 3D** | **Has 4D** | **Has Int** |
 |-------------------------------------------------------------------------|------------------------------------------------------------------------|------------|------------|------------|-------------|
 | **add, sub, mul, div**                                                  | Addition, Subtraction, Multiplication, Division                        | ✔️         | ✔️         |            | ✔️          |
@@ -172,12 +175,17 @@ They also contain some useful methods with varargs and methods such as:
 | **rotd, rotr**                                                          | Rotate vector degrees\|radians around origin                           | ✔️         |            |            |             |
 | **copy**                                                                | Creates a copy                                                         | ✔️         | ✔️         | ✔️         | ✔️          |
 
-### 2. Matrices:
+#### Matrices:
+Honorable mention:
+*  Matrices indexed with _**mᵢⱼ**_, where _**i**_ - column index, _**j**_ - row index
+*  Left-Hand Coordinate System
+
 | **Matrices** | **3D**     | **4D**     |
 |--------------|------------|------------|
 | _**Float**_  | _Matrix3f_ | _Matrix4f_ |
 
-#### Available operations:
+Available operations:
+
 | _**Operations**_                             | **Description**                             | **has 3D** | **has 4D** |
 |----------------------------------------------|---------------------------------------------|------------|------------|
 | **set**                                      | Sets new values                             | ✔️         | ✔️         |
@@ -203,210 +211,23 @@ They also contain some useful methods with varargs and methods such as:
 
 ---
 
-## Module *Core*:
-* *[Graphics](https://github.com/generaloss/jpize-engine/tree/master/core/src/main/java/jpize/graphics)* - Camera, Fonts, Postprocessing, Meshes, Textures, Utils ...
-* *[Audio](https://github.com/generaloss/jpize-engine/tree/master/core/src/main/java/jpize/audio)* - OGG, MP3, WAV
+# [*Net*](src/main/java/jpize/util/net)
 
-#### 1. Main class
+Encrypted Server-Client Example:
 ``` java
-public class App extends JpizeApplication{
-
-    public static void main(String[] args){
-        // Create window context
-        ContextBuilder.newContext(1280, 720, "Window Title")
-                .icon("icon.png")
-                .register()
-                .setAdapter(new App());
-                
-        // Run created contexts
-        Jpize.runContexts();
-    }
-    
-    public App(){ } // Constructor calls before init()
-    
-    public void init(){ } // Init
-    
-    public void render(){ } // Render loop
-    
-    public void update(){ } // Update loop
-    
-    public void resize(int width, int height){ } // Calls when window resizes
-    
-    public void dispose(){ } // Exit app
-    
-}
-```
-
-#### 2. 2D Graphics:
-``` java
-TextureBatch batch = new TextureBatch(); // canvas for textures
-Texture texture = new Texture("texture.png");
-
-Gl.clearColorBuffer();
-batch.begin();
-
-// rotate, shear and scale for subsequent textures
-batch.rotate(angle);
-batch.shear(angle_x, angle_y);
-batch.scale(scale);
-// draw texture
-batch.draw(texture, x, y, width, height);
-// draw rectangle
-batch.drawRect(r, g, b, a,  x, y,  width, height);
-batch.drawRect(a,  x, y,  width, height);
-
-batch.end();
-```
-
-#### 3. Fonts:
-``` java
-// load
-Font font = FontLoader.getDefault();
-
-Font font = FontLoader.loadFnt(path_or_resource);
-
-Font font = FontLoader.loadTrueType(path_or_resource, size);
-Font font = FontLoader.loadTrueType(path_or_resource, size, charset);
-
-// options
-font.options.scale = 1.5F;
-font.options.rotation = 45;
-font.options.italic = true;
-font.options.invLineWrap = true;
-
-// bounds
-float width = font.getTextWidth(line);
-float height = font.getTextHeight(text);
-Vec2f bounds = font.getBounds(text);
-
-// render
-font.drawText(batch, text, x, y)
-```
-
-#### 4. Input:
-``` java
-// mouse
-Jpize.getX()  // position
-Jpize.getY()
-
-Jpize.isTouched()    // touch
-Jpize.isTouchDown()
-Jpize.isTouchReleased()
-
-Jpize.input().getScroll()  // scroll
-
-Btn.LEFT.isDown()     // buttons
-Btn.LEFT.isPressed()
-Btn.LEFT.isReleased()
-
-// keyboard
-Key.ENTER.isPressed()
-Key.ESCAPE.isDown()
-Key.SPACE.isReleased()
-
-// window
-Jpize.getWidth()
-Jpize.getHeight()
-Jpize.getAspect()
-
-// FPS & Delta Time
-Jpize.getFPS()
-Jpize.getDt()
-```
-
-#### 5. Audio:
-``` java
-// sound
-Sound sound = new Sound("sound.mp3");
-
-sound.setGain(0.5F);
-sound.setLooping(true);
-sound.setPitch(1.5F);
-
-sound.play();
-
-// buffers and sources
-AudioBuffer buffer = new AudioBuffer();
-AudioLoader.load(buffer, resource);
-
-AudioSource source = new AudioSource();
-source.setBuffer(buffer);
-source.play();
-```
-
-#### 6. Resources:
-``` java
-// internal / external
-Resource res = Resource.external(path); // external
-Resource res = Resource.internal(path); // internal
-
-ResourceInt resInt = res.asInternal();
-ResourceExt resExt = res.asExternal();
-
-res.isExternal()
-res.isInternal()
-
-// in file "file.ext"
-res.extension()  // returns 'ext' of 'file.ext'
-res.simpleName() // returns 'file' of 'file.ext'
-
-res.file()
-res.exists()
-
-resExt.mkDirsAndFile()
-resExt.mkParentDirs()
-
-// io
-res.inStream()
-resExt.outStream()
-
-res.jpizeIn()     // ExtInputStream
-resExt.jpizeOut() // ExtOutputStream
-
-res.reader()    // FastReader
-resExt.writer() // PrintStream
-
-// write / read
-resExt.writeString(text)
-resExt.appendString(text)
-
-res.readString()
-res.readBytes()
-res.readByteBuffer()  // java.nio.ByteBuffer
-
-// resources (images, sounds, fonts, ...etc)
-Resource res = Resource.internal( ... );
-
-new Texture(res);
-new Sound(res);
-new Shader(res_vert, res_frag);
-AudioLoader.load(audio_buffer, res);
-FontLoader.loadFnt(res);
-PixmapIO.load(res);
-```
-
----
-
-## Module *Net*:
-* *[Security](https://github.com/generaloss/jpize-engine/tree/master/net/src/main/java/jpize/net/security)* - AES, RSA
-* *[TCP](https://github.com/generaloss/jpize-engine/tree/master/net/src/main/java/jpize/net/tcp)* - Packets, Server / Client
-* *[UDP](https://github.com/generaloss/jpize-engine/tree/master/net/src/main/java/jpize/net/udp)* - Server / Client
-
-#### 1. Encrypted Server-Client Example:
-``` java
-KeyAES key = new KeyAES(128); // generate key for connection encoding
+KeyAes key = new KeyAes(128); // generate key for connection encoding
 
 // server
-TcpServer server = new TcpServer(new TcpListener(){
-    public void received(byte[] bytes, TcpConnection sender){
+TcpServer server = new TcpServer(new TcpListener() {
+    public void received(TcpConnection sender, byte[] bytes) {
         System.out.printf("received: %f\n", new String(bytes)); // 'received: Hello, World!'
     }
-    public void connected(TcpConnection connection){
+    public void connected(TcpConnection connection) {
         channel.encode(key);
     }
-    public void disconnected(TcpConnection connection){ ... }
+    public void disconnected(TcpConnection connection) { }
 });
-server.run("localhost", 8080);
+server.run(8080);
 
 // client
 TcpClient client = new TcpClient(new TcpListener(){ ... });
@@ -415,44 +236,44 @@ client.encode(key);
 client.send("Hello, World!".getBytes()); // send 'Hello, World!'
 ```
 
-#### 2. Packet Example:
+Packets Example:
 ``` java
 // Message Packet
-public static class MsgPacket extends IPacket<MyPacketHandler>{ // MyPacketHandler 
-
+public static class MsgPacket extends IPacket<MyPacketHandler> { // MyPacketHandler 
+    
     String message;
     
-    public MsgPacket(String message){
+    public MsgPacket() { } // Constructor for packet class instancing before reading
+    
+    public MsgPacket(String message) {
         this.message = message;
     }
     
-    public MsgPacket(){ } // Constructor for instancing packet class after reading
 
-    public void write(ExtOutputStream stream) throws IOException{ // write data before send
-        stream.writeUTF(message);
+    public void write(ExtDataOutputStream stream) throws IOException { // write data before send
+        stream.writeStringUTF(message);
     }
-    public void read(ExtInputStream stream) throws IOException{ // read data after receive
-        message = stream.readUTF();
+    public void read(ExtDataInputStream stream) throws IOException { // read data after receive
+        message = stream.readStringUTF();
     }
-    public void handle(MyPacketHandler handler){ // handle this packet
+    public void handle(MyPacketHandler handler) { // handle this packet
         handler.handleMessage(this);
     }
 }
 
-// Packets handler interface
-public static class MyPacketHandler implements PacketHandler{
-    public void handleMessage(MsgPacket packet){ ... }
-    public void handleAnotherPacket(AnotherPacket packet){ ... }
+// Handler for packets
+public static class MyPacketHandler implements PacketHandler {
+    public void handleMessage(MsgPacket packet) { ... }
+    public void handleAnotherPacket(AnotherPacket packet) { ... }
 }
 
 // packet receiving
 MyPacketHandler handler = ...;
 // register packets
-PacketDispatcher packetDispatcher = new PacketDispatcher();
-packetDispatcher.register(MsgPacket.class);
-packetDispatcher.register(AnotherPacket.class);
+PacketDispatcher packetDispatcher = new PacketDispatcher()
+        .register(MsgPacket.class, AnotherPacket.class, ...);
 // listener
-void received(byte[] bytes, TcpConnection sender){
+void received(TcpConnection sender, byte[] bytes){
     packetDispatcher.readPacket(bytes, handler);
     packetDispatcher.handlePackets(); // invoke handleMessage()
 }

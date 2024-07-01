@@ -55,7 +55,7 @@ public class ByteList implements Iterable<Byte> {
     public<T> ByteList(Iterable<T> iterable, Function<T, Byte> func) {
         this.array = new byte[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> ByteList(Collection<T> collection, Function<T, Byte> func) {
@@ -84,6 +84,7 @@ public class ByteList implements Iterable<Byte> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -122,7 +123,6 @@ public class ByteList implements Iterable<Byte> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, byte element) {
         final int minCapacity = Math.max(size, i) + 1;

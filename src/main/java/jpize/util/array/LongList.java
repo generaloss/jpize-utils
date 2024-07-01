@@ -55,7 +55,7 @@ public class LongList implements Iterable<Long> {
     public<T> LongList(Iterable<T> iterable, Function<T, Long> func) {
         this.array = new long[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> LongList(Collection<T> collection, Function<T, Long> func) {
@@ -84,6 +84,7 @@ public class LongList implements Iterable<Long> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -122,7 +123,6 @@ public class LongList implements Iterable<Long> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, long element) {
         final int minCapacity = Math.max(size, i) + 1;

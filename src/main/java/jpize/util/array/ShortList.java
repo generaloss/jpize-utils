@@ -55,7 +55,7 @@ public class ShortList implements Iterable<Short> {
     public<T> ShortList(Iterable<T> iterable, Function<T, Short> func) {
         this.array = new short[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> ShortList(Collection<T> collection, Function<T, Short> func) {
@@ -84,6 +84,7 @@ public class ShortList implements Iterable<Short> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -122,7 +123,6 @@ public class ShortList implements Iterable<Short> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, short element) {
         final int minCapacity = Math.max(size, i) + 1;

@@ -35,7 +35,6 @@ public class StringList implements Iterable<String> {
         this.array = list.copyOf();
     }
 
-
     public StringList(Iterable<?> iterable) {
         this.array = new String[1];
         addAll(iterable);
@@ -50,7 +49,7 @@ public class StringList implements Iterable<String> {
     public<T> StringList(Iterable<T> iterable, Function<T, String> func) {
         this.array = new String[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> StringList(Collection<T> collection, Function<T, String> func) {
@@ -79,6 +78,7 @@ public class StringList implements Iterable<String> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -117,7 +117,6 @@ public class StringList implements Iterable<String> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, String element) {
         final int minCapacity = Math.max(size, i) + 1;

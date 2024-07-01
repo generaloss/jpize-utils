@@ -35,7 +35,6 @@ public class ObjectList implements Iterable<Object> {
         this.array = list.copyOf();
     }
 
-
     public ObjectList(Iterable<Object> iterable) {
         this.array = new Object[1];
         addAll(iterable);
@@ -50,7 +49,7 @@ public class ObjectList implements Iterable<Object> {
     public<T> ObjectList(Iterable<T> iterable, Function<T, Object> func) {
         this.array = new Object[1];
         addAll(iterable, func);
-        this.trim();
+        trim();
     }
 
     public<T> ObjectList(Collection<T> collection, Function<T, Object> func) {
@@ -79,6 +78,7 @@ public class ObjectList implements Iterable<Object> {
     public int capacity() {
         return array.length;
     }
+
 
     private void grow(int minCapacity) {
         final int oldCapacity = array.length;
@@ -117,7 +117,6 @@ public class ObjectList implements Iterable<Object> {
         else
             add(list.arrayTrimmed());
     }
-
 
     public void add(int i, Object element) {
         final int minCapacity = Math.max(size, i) + 1;
@@ -277,8 +276,7 @@ public class ObjectList implements Iterable<Object> {
         array[i] = newValue;
     }
 
-
-
+    
 
     public Object[] copyOf(int offset, int newLength) {
         final Object[] slice = new Object[newLength];
