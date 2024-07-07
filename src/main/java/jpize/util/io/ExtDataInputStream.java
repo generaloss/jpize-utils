@@ -24,57 +24,90 @@ public class ExtDataInputStream extends DataInputStream {
     }
 
 
-    public byte[] readByteArray() throws IOException {
-        return readNBytes(readInt());
+    public byte[] readBytes(int length) throws IOException {
+        return readNBytes(length);
     }
 
-    public short[] readShortArray() throws IOException {
-        final short[] array = new short[readInt()];
+    public short[] readShorts(int length) throws IOException {
+        final short[] array = new short[length];
         for(int i = 0; i < array.length; i++)
             array[i] = readShort();
         return array;
     }
 
-    public int[] readIntArray() throws IOException {
-        final int[] array = new int[readInt()];
+    public int[] readInts(int length) throws IOException {
+        final int[] array = new int[length];
         for(int i = 0; i < array.length; i++)
             array[i] = readInt();
         return array;
     }
 
-    public long[] readLongArray() throws IOException {
-        final long[] array = new long[readInt()];
+    public long[] readLongs(int length) throws IOException {
+        final long[] array = new long[length];
         for(int i = 0; i < array.length; i++)
             array[i] = readLong();
         return array;
     }
 
-    public float[] readFloatArray() throws IOException {
-        final float[] array = new float[readInt()];
+    public float[] readFloats(int length) throws IOException {
+        final float[] array = new float[length];
         for(int i = 0; i < array.length; i++)
             array[i] = readFloat();
         return array;
     }
 
-    public double[] readDoubleArray() throws IOException {
-        final double[] array = new double[readInt()];
+    public double[] readDoubles(int length) throws IOException {
+        final double[] array = new double[length];
         for(int i = 0; i < array.length; i++)
             array[i] = readDouble();
         return array;
     }
 
-    public boolean[] readBoolArray() throws IOException {
-        final boolean[] array = new boolean[readInt()];
+    public boolean[] readBools(int length) throws IOException {
+        final boolean[] array = new boolean[length];
         for(int i = 0; i < array.length; i++)
             array[i] = readBoolean();
         return array;
     }
 
-    public char[] readCharArray() throws IOException {
-        final char[] array = new char[readInt()];
+    public char[] readChars(int length) throws IOException {
+        final char[] array = new char[length];
         for(int i = 0; i < array.length; i++)
             array[i] = readChar();
         return array;
+    }
+
+
+    public byte[] readByteArray() throws IOException {
+        return readBytes(readInt());
+    }
+
+    public short[] readShortArray() throws IOException {
+        return readShorts(readInt());
+    }
+
+    public int[] readIntArray() throws IOException {
+        return readInts(readInt());
+    }
+
+    public long[] readLongArray() throws IOException {
+        return readLongs(readInt());
+    }
+
+    public float[] readFloatArray() throws IOException {
+        return readFloats(readInt());
+    }
+
+    public double[] readDoubleArray() throws IOException {
+        return readDoubles(readInt());
+    }
+
+    public boolean[] readBoolArray() throws IOException {
+        return readBools(readInt());
+    }
+
+    public char[] readCharArray() throws IOException {
+        return readChars(readInt());
     }
 
 

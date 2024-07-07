@@ -1,5 +1,6 @@
 package jpize.util.net.tcp;
 
+import jpize.util.function.IOConsumer;
 import jpize.util.security.KeyAes;
 import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.Utils;
@@ -12,20 +13,19 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class TcpConnection {
 
     private final Socket socket;
-    private final BiConsumer<TcpConnection, byte[]> onReceive;
+    private final TcpListener onReceive;
     private final Consumer<TcpConnection> onDisconnect;
     private final DataOutputStream outStream;
     private final Thread receiveThread;
     private KeyAes encodeKey;
 
 
-    protected TcpConnection(Socket socket, BiConsumer<TcpConnection, byte[]> onReceive, Consumer<TcpConnection> onDisconnect) throws IOException {
+    protected TcpConnection(Socket socket, TcpListener onReceive, Consumer<TcpConnection> onDisconnect) throws IOException {
         this.socket = socket;
         this.onReceive = onReceive;
         this.onDisconnect = onDisconnect;
@@ -42,6 +42,8 @@ public class TcpConnection {
             final DataInputStream inStream = new DataInputStream(socket.getInputStream());
 
             while(!isClosed()){ //! !Thread.interrupted()
+                Utils.waitFor(() -> onReceive != null);
+
                 final int length = inStream.readInt();
                 if(length < 0)
                     continue;
@@ -50,7 +52,7 @@ public class TcpConnection {
                 if(bytes == null)
                     continue;
 
-                onReceive.accept(this, bytes);
+                onReceive.receive(this, bytes);
             }
         }catch(IOException ignored){
             close();
@@ -63,7 +65,7 @@ public class TcpConnection {
             throw new IllegalStateException("TCP-connection is closed.");
     }
 
-    public synchronized void send(byte[] bytes) {
+    public void send(byte[] bytes) {
         try{
             this.checkState();
             bytes = tryToEncryptBytes(bytes);
@@ -78,18 +80,22 @@ public class TcpConnection {
         this.send(byteStream.toByteArray());
     }
 
-    public void send(IPacket<?> packet) {
+    public void send(IOConsumer<ExtDataOutputStream> streamConsumer) {
         try{
             final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             final ExtDataOutputStream dataStream = new ExtDataOutputStream(byteStream);
-
-            dataStream.writeShort(packet.getPacketID());
-            packet.write(dataStream);
-
+            streamConsumer.accept(dataStream);
             this.send(byteStream);
         }catch(IOException e){
             throw new RuntimeException(e);
         }
+    }
+
+    public void send(IPacket<?> packet) {
+        this.send(dataStream -> {
+            dataStream.writeShort(packet.getPacketID());
+            packet.write(dataStream);
+        });
     }
 
 
@@ -127,8 +133,8 @@ public class TcpConnection {
     public void close() {
         if(isClosed())
             return;
-
-        onDisconnect.accept(this);
+        if(onDisconnect != null)
+            onDisconnect.accept(this);
         receiveThread.interrupt();
         Utils.close(socket);
     }

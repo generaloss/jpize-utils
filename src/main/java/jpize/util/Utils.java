@@ -107,5 +107,13 @@ public class Utils {
         }
     }
 
+    public static StackTraceElement[] getStackTrace(){
+        return Thread.currentThread().getStackTrace();
+    }
+
+    public static StackTraceElement getStackTrace(int element){
+        return getStackTrace()[element];
+    }
+
 
 }

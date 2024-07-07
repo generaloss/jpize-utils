@@ -28,7 +28,7 @@ dependencies {
 # [Resource](src/main/java/jpize/util/res) Concept
 
 The [*Resource*](src/main/java/jpize/util/res/Resource.java) class provides access to files and folders and is extended by:
-* *ExternalResource* - (rein filesystem)
+* *ExternalResource* - (in filesystem)
 * *InternalResource* - (in resources folder / jar archive root)
 
 ---
@@ -218,22 +218,20 @@ Encrypted TCP connection example:
 KeyAes key = new KeyAes(128); // generate key for connection encoding
 
 // server
-TcpServer server = new TcpServer(new TcpListener() {
-    public void received(TcpConnection sender, byte[] bytes) {
-        System.out.printf("received: %f\n", new String(bytes)); // 'received: Hello, World!'
-    }
-    public void connected(TcpConnection connection) {
-        channel.encode(key);
-    }
-    public void disconnected(TcpConnection connection) { }
+TcpServer server = new TcpServer();
+server.setOnReceive((sender, bytes) -> {
+    System.out.println("Received: " + new String(bytes)); 
+});
+server.setOnConnect((connection) -> {
+    connection.encode(key);
 });
 server.run(8080);
 
 // client
-TcpClient client = new TcpClient(new TcpListener(){ ... });
+TcpClient client = new TcpClient();
 client.connect("localhost", 8080);
 client.encode(key);
-client.send("Hello, World!".getBytes()); // send 'Hello, World!'
+client.send("Hello, World!".getBytes());
 ```
 
 Packets example:
@@ -243,19 +241,20 @@ public static class MsgPacket extends IPacket<MyPacketHandler> { // MyPacketHand
     
     String message;
     
-    public MsgPacket() { } // Constructor for packet class instancing before reading
+    public MsgPacket() { } // Constructor for class instancing before reading
     
     public MsgPacket(String message) {
         this.message = message;
     }
-    
 
     public void write(ExtDataOutputStream stream) throws IOException { // write data before send
         stream.writeStringUTF(message);
     }
+    
     public void read(ExtDataInputStream stream) throws IOException { // read data after receive
         message = stream.readStringUTF();
     }
+    
     public void handle(MyPacketHandler handler) { // handle this packet
         handler.handleMessage(this);
     }
@@ -273,10 +272,10 @@ MyPacketHandler handler = ...;
 PacketDispatcher packetDispatcher = new PacketDispatcher()
         .register(MsgPacket.class, AnotherPacket.class, ...);
 // listener
-void received(TcpConnection sender, byte[] bytes){
+connection.setOnReceive((sender, bytes) -> {
     packetDispatcher.readPacket(bytes, handler);
     packetDispatcher.handlePackets(); // invoke handleMessage()
-}
+});
 
 // packet sending
 TcpConnection connection = ...;

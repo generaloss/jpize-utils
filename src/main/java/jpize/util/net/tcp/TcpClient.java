@@ -1,5 +1,7 @@
 package jpize.util.net.tcp;
 
+import jpize.util.function.IOConsumer;
+import jpize.util.io.ExtDataOutputStream;
 import jpize.util.security.KeyAes;
 import jpize.util.net.tcp.packet.IPacket;
 
@@ -8,14 +10,24 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.function.Consumer;
 
 public class TcpClient {
 
+    private Consumer<TcpConnection> onConnect, onDisconnect;
+    private TcpListener onReceive;
     private TcpConnection connection;
-    private final TcpListener listener;
 
-    public TcpClient(TcpListener listener) {
-        this.listener = listener;
+    public void setOnConnect(Consumer<TcpConnection> onConnect) {
+        this.onConnect = onConnect;
+    }
+
+    public void setOnDisconnect(Consumer<TcpConnection> onDisconnect) {
+        this.onDisconnect = onDisconnect;
+    }
+
+    public void setOnReceive(TcpListener onReceive) {
+        this.onReceive = onReceive;
     }
 
 
@@ -28,8 +40,9 @@ public class TcpClient {
             final InetSocketAddress socketAddress = new InetSocketAddress(InetAddress.getByName(host), port);
             socket.connect(socketAddress);
 
-            connection = new TcpConnection(socket, listener::received, listener::disconnected);
-            listener.connected(connection);
+            connection = new TcpConnection(socket, onReceive, onDisconnect);
+            if(onConnect != null)
+                onConnect.accept(connection);
         }catch(IOException e){
             throw new RuntimeException(e);
         }
@@ -69,6 +82,11 @@ public class TcpClient {
     public void send(ByteArrayOutputStream stream) {
         if(isConnected())
             connection.send(stream);
+    }
+
+    public void send(IOConsumer<ExtDataOutputStream> streamConsumer) {
+        if(isConnected())
+            connection.send(streamConsumer);
     }
 
     public void send(IPacket<?> packet) {

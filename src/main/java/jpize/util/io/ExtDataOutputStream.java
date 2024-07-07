@@ -19,51 +19,232 @@ public class ExtDataOutputStream extends DataOutputStream {
     }
 
 
+    public void write(byte[] byteArray, int length) throws IOException {
+        write(byteArray, 0, length);
+    }
+
+
+    public void writeBytes(byte[] byteArray) throws IOException {
+        write(byteArray);
+    }
+
+    public void writeBytes(byte[] byteArray, int offset, int length) throws IOException {
+        write(byteArray, offset, length);
+    }
+
+    public void writeBytes(byte[] byteArray, int length) throws IOException {
+        write(byteArray, length);
+    }
+
+    public void writeShorts(short[] shortArray) throws IOException {
+        for(short v: shortArray)
+            writeShort(v);
+    }
+
+    public void writeShorts(short[] shortArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            writeShort(shortArray[offset + i]);
+    }
+
+    public void writeShorts(short[] shortArray, int length) throws IOException {
+        writeShorts(shortArray, 0, length);
+    }
+
+    public void writeInts(int[] intArray) throws IOException {
+        for(int v: intArray)
+            writeInt(v);
+    }
+
+    public void writeInts(int[] intArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            writeInt(intArray[offset + i]);
+    }
+
+    public void writeInts(int[] intArray, int length) throws IOException {
+        writeInts(intArray, 0, length);
+    }
+
+    public void writeLongs(long[] longArray) throws IOException {
+        for(long v: longArray)
+            writeLong(v);
+    }
+
+    public void writeLongs(long[] longArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            writeLong(longArray[offset + i]);
+    }
+
+    public void writeLongs(long[] longArray, int length) throws IOException {
+        writeLongs(longArray, 0, length);
+    }
+
+    public void writeFloats(float[] floatArray) throws IOException {
+        for(float v: floatArray)
+            writeFloat(v);
+    }
+
+    public void writeFloats(float[] floatArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            writeFloat(floatArray[offset + i]);
+    }
+
+    public void writeFloats(float[] floatArray, int length) throws IOException {
+        writeFloats(floatArray, 0, length);
+    }
+
+    public void writeDoubles(double[] doubleArray) throws IOException {
+        for(double v: doubleArray)
+            writeDouble(v);
+    }
+
+    public void writeDoubles(double[] doubleArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            writeDouble(doubleArray[offset + i]);
+    }
+
+    public void writeDoubles(double[] doubleArray, int length) throws IOException {
+        writeDoubles(doubleArray, 0, length);
+    }
+
+    public void writeBools(boolean[] boolArray) throws IOException {
+        for(boolean v: boolArray)
+            writeBoolean(v);
+    }
+
+    public void writeBools(boolean[] boolArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            writeBoolean(boolArray[offset + i]);
+    }
+
+    public void writeBools(boolean[] boolArray, int length) throws IOException {
+        writeBools(boolArray, 0, length);
+    }
+
+    public void writeChars(char[] charArray) throws IOException {
+        for(char v: charArray)
+            writeChar(v);
+    }
+
+    public void writeChars(char[] charArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            writeChar(charArray[offset + i]);
+    }
+
+    public void writeChars(char[] charArray, int length) throws IOException {
+        writeChars(charArray, 0, length);
+    }
+
+
     public void writeByteArray(byte[] byteArray) throws IOException {
         writeInt(byteArray.length);
         write(byteArray);
     }
 
+    public void writeByteArray(byte[] byteArray, int offset, int length) throws IOException {
+        writeInt(length);
+        write(byteArray, offset, length);
+    }
+
+    public void writeByteArray(byte[] byteArray, int length) throws IOException {
+        writeByteArray(byteArray, 0, length);
+    }
+
     public void writeShortArray(short[] shortArray) throws IOException {
         writeInt(shortArray.length);
-        for(short v: shortArray)
-            writeShort(v);
+        writeShorts(shortArray);
+    }
+
+    public void writeShortArray(short[] shortArray, int offset, int length) throws IOException {
+        writeInt(length);
+        writeShorts(shortArray, offset, length);
+    }
+
+    public void writeShortArray(short[] shortArray, int length) throws IOException {
+        writeShortArray(shortArray, 0, length);
     }
 
     public void writeIntArray(int[] intArray) throws IOException {
         writeInt(intArray.length);
-        for(int v: intArray)
-            writeInt(v);
+        writeInts(intArray);
+    }
+
+    public void writeIntArray(int[] intArray, int offset, int length) throws IOException {
+        writeInt(length);
+        writeInts(intArray, offset, length);
+    }
+
+    public void writeIntArray(int[] intArray, int length) throws IOException {
+        writeIntArray(intArray, 0, length);
     }
 
     public void writeLongArray(long[] longArray) throws IOException {
         writeInt(longArray.length);
-        for(long v: longArray)
-            writeLong(v);
+        writeLongs(longArray);
+    }
+
+    public void writeLongArray(long[] longArray, int offset, int length) throws IOException {
+        writeInt(length);
+        writeLongs(longArray, offset, length);
+    }
+
+    public void writeLongArray(long[] longArray, int length) throws IOException {
+        writeLongArray(longArray, 0, length);
     }
 
     public void writeFloatArray(float[] floatArray) throws IOException {
         writeInt(floatArray.length);
-        for(float v: floatArray)
-            writeFloat(v);
+        writeFloats(floatArray);
+    }
+
+    public void writeFloatArray(float[] floatArray, int offset, int length) throws IOException {
+        writeInt(length);
+        writeFloats(floatArray, offset, length);
+    }
+
+    public void writeFloatArray(float[] floatArray, int length) throws IOException {
+        writeFloatArray(floatArray, 0, length);
     }
 
     public void writeDoubleArray(double[] doubleArray) throws IOException {
         writeInt(doubleArray.length);
-        for(double v: doubleArray)
-            writeDouble(v);
+        writeDoubles(doubleArray);
+    }
+
+    public void writeDoubleArray(double[] doubleArray, int offset, int length) throws IOException {
+        writeInt(length);
+        writeDoubles(doubleArray, offset, length);
+    }
+
+    public void writeDoubleArray(double[] doubleArray, int length) throws IOException {
+        writeDoubleArray(doubleArray, 0, length);
     }
 
     public void writeBoolArray(boolean[] boolArray) throws IOException {
         writeInt(boolArray.length);
-        for(boolean v: boolArray)
-            writeBoolean(v);
+        writeBools(boolArray);
+    }
+
+    public void writeBoolArray(boolean[] boolArray, int offset, int length) throws IOException {
+        writeInt(length);
+        writeBools(boolArray, offset, length);
+    }
+
+    public void writeBoolArray(boolean[] boolArray, int length) throws IOException {
+        writeBoolArray(boolArray, 0, length);
     }
 
     public void writeCharArray(char[] charArray) throws IOException {
         writeInt(charArray.length);
-        for(char v: charArray)
-            writeChar(v);
+        writeChars(charArray);
+    }
+
+    public void writeCharArray(char[] charArray, int offset, int length) throws IOException {
+        writeInt(length);
+        writeChars(charArray, offset, length);
+    }
+
+    public void writeCharArray(char[] charArray, int length) throws IOException {
+        writeCharArray(charArray, 0, length);
     }
 
 

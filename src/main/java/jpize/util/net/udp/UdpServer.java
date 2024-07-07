@@ -47,8 +47,9 @@ public class UdpServer {
                 // receive size
                 final DatagramPacket sizePacket = new DatagramPacket(new byte[4], 4);
                 socket.receive(sizePacket);
-                final int size = ByteBuffer
-                    .wrap(sizePacket.getData()).getInt();
+                final int size = ByteBuffer.wrap(sizePacket.getData()).getInt();
+                if(size < 1)
+                    continue;
 
                 // receive data
                 final DatagramPacket packet = new DatagramPacket(new byte[size], size);

@@ -250,6 +250,11 @@ public class Color {
     }
 
 
+    public float[] toArray(){
+        return Colors.rgbaToArray(this);
+    }
+
+
     public Color copy() {
         return new Color(this);
     }

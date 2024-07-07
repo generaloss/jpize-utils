@@ -68,6 +68,11 @@ public class ImmutableColor {
     }
 
 
+    public float[] toArray(){
+        return Colors.rgbaToArray(this);
+    }
+
+
     public ImmutableColor copy() {
         return new ImmutableColor(this);
     }

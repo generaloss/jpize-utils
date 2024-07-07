@@ -4,13 +4,11 @@ import jpize.util.io.ExtDataInputStream;
 import jpize.util.io.FastReader;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Resource {
@@ -122,7 +120,7 @@ public abstract class Resource {
     }
 
 
-    static String osGeneralizePath(String path) {
+    public static String osGeneralizePath(String path) {
         return path.replace("\\", "/");
     }
 
