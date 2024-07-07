@@ -1,6 +1,7 @@
 package jpize.util.net.tcp;
 
 import jpize.util.function.IOConsumer;
+import jpize.util.io.ExtDataInputStream;
 import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.Utils;
 import jpize.util.io.ExtDataOutputStream;
@@ -31,6 +32,18 @@ public class TcpServer {
 
     public void setOnReceive(TcpListener onReceive) {
         this.onReceive = onReceive;
+    }
+
+    public void setOnReceiveStream(TcpStreamListener onReceive) {
+        this.onReceive = (sender, bytes) -> {
+            try{
+                final ExtDataInputStream stream = new ExtDataInputStream(bytes);
+                onReceive.receive(sender, stream);
+                stream.close();
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        };
     }
 
 

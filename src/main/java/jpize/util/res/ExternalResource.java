@@ -57,7 +57,8 @@ public class ExternalResource extends Resource {
     }
 
     public boolean mkDirsAndFile() {
-        return mkParentDirs() && create();
+        mkParentDirs();
+        return create();
     }
 
     public boolean mkParentDirs() {
