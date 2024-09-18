@@ -716,8 +716,12 @@ public class Vec2d {
     }
 
 
-    public double aspect() {
+    public static double aspect(double x, double y) {
         return x / y;
+    }
+
+    public double aspect() {
+        return aspect(x, y);
     }
 
 

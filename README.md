@@ -1,4 +1,4 @@
-# [Jpize Utilities](https://github.com/generaloss/jpize-utils)
+# [Utility Module](https://github.com/generaloss/jpize-utils)
 ![logo](logo.svg)
 
 ---

@@ -59,14 +59,14 @@ public class ResTests {
     public void internalFileTest1() {
         final InternalResource res = Resource.internal("/testfile1.txt");
         Assert.assertTrue(res.exists());
-        Assert.assertEquals(res.readLines(), new StringList("line1", "line2", "line3"));
+        Assert.assertEquals(res.readLines(), new StringList("128", "256"));
     }
 
     @Test
     public void internalFileTest2() {
         final InternalResource res = Resource.internal("/testdir/testfile2.txt");
         Assert.assertTrue(res.exists());
-        Assert.assertEquals(res.readLines(), new StringList("line1", "line2", "line3", "line4"));
+        Assert.assertEquals(res.readLines(), new StringList("64", "16", "2"));
     }
 
     @Test

@@ -717,8 +717,12 @@ public class Vec2f {
     }
 
 
-    public float aspect() {
+    public static float aspect(float x, float y) {
         return x / y;
+    }
+
+    public float aspect() {
+        return aspect(x, y);
     }
 
 

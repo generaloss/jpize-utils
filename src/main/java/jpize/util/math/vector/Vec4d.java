@@ -1,7 +1,6 @@
 package jpize.util.math.vector;
 
 import jpize.util.math.Maths;
-
 import java.util.Objects;
 
 public class Vec4d {

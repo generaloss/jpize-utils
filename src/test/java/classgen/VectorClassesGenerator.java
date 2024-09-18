@@ -92,7 +92,7 @@ public class VectorClassesGenerator {
         VectorClassesGenerator.datatype = type.datatype;
         VectorClassesGenerator.classname = type.classname;
         VectorClassesGenerator.varname = type.varname;
-        VectorClassesGenerator.w = new ClassWriter("jpize.util.math.vectornew", classname, "");
+        VectorClassesGenerator.w = new ClassWriter("jpize.util.math.vector", classname, "");
 
         VectorClassesGenerator.xyzw_str = makeDims(dimensions, "", "%l");
         VectorClassesGenerator.isDatatypeDouble = datatype.equals("double");
@@ -100,7 +100,8 @@ public class VectorClassesGenerator {
 
         // imports
         w.addImport("jpize.util.math.Maths");
-        w.addImport("jpize.util.math.Mathc");
+        if(!isDatatypeDouble)
+            w.addImport("jpize.util.math.Mathc");
 
         // fields
         addFields();
@@ -258,8 +259,14 @@ public class VectorClassesGenerator {
         if(dimensions != 2)
             return;
 
-        w.addMethod("public " + (isDatatypeInt ? "float" : datatype) + " aspect()",
+        final String datatype_l = (isDatatypeInt ? "float" : datatype);
+
+        w.addMethod("public static " + datatype_l + " aspect(" + datatype + " x, " + datatype + " y)",
             "return " + (isDatatypeInt ? "(float) " : "") + "x / y;"
+        );
+
+        w.addMethod("public " + datatype_l + " aspect()",
+            "return aspect(x, y);"
         );
 
         w.addMethodSplitter();
