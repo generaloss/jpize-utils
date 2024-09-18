@@ -160,39 +160,39 @@ public class Vec4f {
     }
 
     public Vec4f set(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return set(vector.x, vector.y);
     }
 
     public Vec4f set(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return set(vector.x, vector.y);
     }
 
     public Vec4f set(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return set(vector.x, vector.y);
     }
 
     public Vec4f set(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return set(vector.x, vector.y, vector.z);
     }
 
     public Vec4f set(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return set(vector.x, vector.y, vector.z);
     }
 
     public Vec4f set(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return set(vector.x, vector.y, vector.z);
     }
 
     public Vec4f set(Vec4f vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return set(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4f set(Vec4d vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return set(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4f set(Vec4i vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return set(vector.x, vector.y, vector.z, vector.w);
     }
 
 
@@ -356,39 +356,39 @@ public class Vec4f {
     }
 
     public Vec4f sub(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return sub(vector.x, vector.y);
     }
 
     public Vec4f sub(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return sub(vector.x, vector.y);
     }
 
     public Vec4f sub(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return sub(vector.x, vector.y);
     }
 
     public Vec4f sub(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return sub(vector.x, vector.y, vector.z);
     }
 
     public Vec4f sub(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return sub(vector.x, vector.y, vector.z);
     }
 
     public Vec4f sub(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return sub(vector.x, vector.y, vector.z);
     }
 
     public Vec4f sub(Vec4f vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return sub(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4f sub(Vec4d vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return sub(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4f sub(Vec4i vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return sub(vector.x, vector.y, vector.z, vector.w);
     }
 
 
@@ -454,39 +454,39 @@ public class Vec4f {
     }
 
     public Vec4f mul(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return mul(vector.x, vector.y);
     }
 
     public Vec4f mul(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return mul(vector.x, vector.y);
     }
 
     public Vec4f mul(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return mul(vector.x, vector.y);
     }
 
     public Vec4f mul(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return mul(vector.x, vector.y, vector.z);
     }
 
     public Vec4f mul(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return mul(vector.x, vector.y, vector.z);
     }
 
     public Vec4f mul(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return mul(vector.x, vector.y, vector.z);
     }
 
     public Vec4f mul(Vec4f vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return mul(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4f mul(Vec4d vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return mul(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4f mul(Vec4i vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return mul(vector.x, vector.y, vector.z, vector.w);
     }
 
 
@@ -552,39 +552,39 @@ public class Vec4f {
     }
 
     public Vec4f div(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return div(vector.x, vector.y);
     }
 
     public Vec4f div(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return div(vector.x, vector.y);
     }
 
     public Vec4f div(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return div(vector.x, vector.y);
     }
 
     public Vec4f div(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return div(vector.x, vector.y, vector.z);
     }
 
     public Vec4f div(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return div(vector.x, vector.y, vector.z);
     }
 
     public Vec4f div(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return div(vector.x, vector.y, vector.z);
     }
 
     public Vec4f div(Vec4f vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return div(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4f div(Vec4d vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return div(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4f div(Vec4i vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return div(vector.x, vector.y, vector.z, vector.w);
     }
 
 

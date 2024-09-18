@@ -847,7 +847,7 @@ public class VectorClassesGenerator {
                 continue;
 
             w.addMethod("public " + classname + " " + methodname + "(" + vectorType.classname + " " + vectorType.varname + ")",
-                "return add(" + makeDims(vectorType.dimensions, ", ", vectorType.varname + ".%l") + ");"
+                "return " + methodname + "(" + makeDims(vectorType.dimensions, ", ", vectorType.varname + ".%l") + ");"
             );
         }
 

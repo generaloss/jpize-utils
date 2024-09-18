@@ -78,15 +78,15 @@ public class Vec2d {
     }
 
     public Vec2d set(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return set(vector.x, vector.y);
     }
 
     public Vec2d set(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return set(vector.x, vector.y);
     }
 
     public Vec2d set(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return set(vector.x, vector.y);
     }
 
 
@@ -160,15 +160,15 @@ public class Vec2d {
     }
 
     public Vec2d sub(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return sub(vector.x, vector.y);
     }
 
     public Vec2d sub(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return sub(vector.x, vector.y);
     }
 
     public Vec2d sub(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return sub(vector.x, vector.y);
     }
 
 
@@ -201,15 +201,15 @@ public class Vec2d {
     }
 
     public Vec2d mul(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return mul(vector.x, vector.y);
     }
 
     public Vec2d mul(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return mul(vector.x, vector.y);
     }
 
     public Vec2d mul(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return mul(vector.x, vector.y);
     }
 
 
@@ -242,15 +242,15 @@ public class Vec2d {
     }
 
     public Vec2d div(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return div(vector.x, vector.y);
     }
 
     public Vec2d div(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return div(vector.x, vector.y);
     }
 
     public Vec2d div(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return div(vector.x, vector.y);
     }
 
 

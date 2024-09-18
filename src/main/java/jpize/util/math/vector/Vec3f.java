@@ -119,27 +119,27 @@ public class Vec3f {
     }
 
     public Vec3f set(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return set(vector.x, vector.y);
     }
 
     public Vec3f set(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return set(vector.x, vector.y);
     }
 
     public Vec3f set(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return set(vector.x, vector.y);
     }
 
     public Vec3f set(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return set(vector.x, vector.y, vector.z);
     }
 
     public Vec3f set(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return set(vector.x, vector.y, vector.z);
     }
 
     public Vec3f set(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return set(vector.x, vector.y, vector.z);
     }
 
     public Vec3f setXY(float x, float y) {
@@ -341,27 +341,27 @@ public class Vec3f {
     }
 
     public Vec3f sub(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return sub(vector.x, vector.y);
     }
 
     public Vec3f sub(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return sub(vector.x, vector.y);
     }
 
     public Vec3f sub(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return sub(vector.x, vector.y);
     }
 
     public Vec3f sub(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return sub(vector.x, vector.y, vector.z);
     }
 
     public Vec3f sub(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return sub(vector.x, vector.y, vector.z);
     }
 
     public Vec3f sub(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return sub(vector.x, vector.y, vector.z);
     }
 
     public Vec3f subXY(float x, float y) {
@@ -452,27 +452,27 @@ public class Vec3f {
     }
 
     public Vec3f mul(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return mul(vector.x, vector.y);
     }
 
     public Vec3f mul(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return mul(vector.x, vector.y);
     }
 
     public Vec3f mul(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return mul(vector.x, vector.y);
     }
 
     public Vec3f mul(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return mul(vector.x, vector.y, vector.z);
     }
 
     public Vec3f mul(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return mul(vector.x, vector.y, vector.z);
     }
 
     public Vec3f mul(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return mul(vector.x, vector.y, vector.z);
     }
 
     public Vec3f mulXY(float x, float y) {
@@ -563,27 +563,27 @@ public class Vec3f {
     }
 
     public Vec3f div(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return div(vector.x, vector.y);
     }
 
     public Vec3f div(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return div(vector.x, vector.y);
     }
 
     public Vec3f div(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return div(vector.x, vector.y);
     }
 
     public Vec3f div(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return div(vector.x, vector.y, vector.z);
     }
 
     public Vec3f div(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return div(vector.x, vector.y, vector.z);
     }
 
     public Vec3f div(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return div(vector.x, vector.y, vector.z);
     }
 
     public Vec3f divXY(float x, float y) {
