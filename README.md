@@ -5,16 +5,16 @@
 
 ## Getting Started
 
-#### Maven
+### Maven
 ```xml
-<!-- Jpize Utils -->
+<!-- jpize-utils -->
 <dependency>
     <groupId>io.github.generaloss</groupId>
     <artifactId>jpize-utils</artifactId>
     <version>24.7.1</version>
 </dependency>
 ```
-#### Gradle (Kotlin)
+### Gradle (Kotlin)
 ```kotlin
 repositories {
     mavenCentral()
@@ -25,7 +25,9 @@ dependencies {
 }
 ```
 
-# [Resource](src/main/java/jpize/util/res) Concept
+---
+
+## [Resource](src/main/java/jpize/util/res) Concept
 
 The [*Resource*](src/main/java/jpize/util/res/Resource.java) class provides access to files and folders and is extended by:
 * *ExternalResource* - (in filesystem)
@@ -123,7 +125,7 @@ String protocol = res.protocol(); // 'https'
 String host = res.host();         // 'icanhazip.com'
 ```
 
-# [Input/Output](src/main/java/jpize/util/io)
+## [Input/Output](src/main/java/jpize/util/io)
 
 The [*ExtDataInputStream*](src/main/java/jpize/util/io/ExtDataInputStream.java) and [*ExtDataOutputStream*](src/main/java/jpize/util/io/ExtDataOutputStream.java) classes extends *DataInputStream* and *DataOutputStream* and has read/write methods for:
 * { byte / int / short / long / float / double / *boolean* / char } ***Array, Buffer, List***
@@ -134,7 +136,7 @@ The [*ExtDataInputStream*](src/main/java/jpize/util/io/ExtDataInputStream.java) 
 
 The [*FastReader*](src/main/java/jpize/util/io/FastReader.java) class just fast alternative to *java.util.Scanner*
 
-# [Lists](src/main/java/jpize/util/array)
+## [Lists](src/main/java/jpize/util/array)
 
 The *List-Classes* are designed to quickly work with primitive arrays:
 * *ByteList, ShortList, IntList, LongList, FloatList, DoubleList, CharList, BoolList*
@@ -222,7 +224,7 @@ boolean[] dst = new boolean[2];
 list.copyTo(dst, 0, 2);
 ```
 
-# Math
+## Math
 
 ---
 
@@ -250,7 +252,7 @@ Honorable mention:
 
 ---
 
-# [*Net*](src/main/java/jpize/util/net)
+## [*Net*](src/main/java/jpize/util/net)
 
 Encrypted TCP connection example:
 ``` java
