@@ -125,9 +125,9 @@ public class TcpClient {
         return this;
     }
 
-    public TcpClient send(byte[] packet) {
+    public TcpClient send(byte[] bytes) {
         if(isConnected())
-            connection.send(packet);
+            connection.send(bytes);
         return this;
     }
 

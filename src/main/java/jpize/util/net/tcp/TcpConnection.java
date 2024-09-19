@@ -46,7 +46,7 @@ public class TcpConnection {
             // read bytes and when the buffer is full accept them
             dataRemaining -= channel.read(dataBuf);
             if(isDataBufferFull()){
-                final byte[] bytes = tryToDecryptBytes(dataBuf.array());
+                final byte[] bytes = this.tryToDecryptBytes(dataBuf.array());
                 dataBuf.clear();
                 bytesConsumer.accept(bytes);
             }
@@ -108,7 +108,7 @@ public class TcpConnection {
     public void send(byte[] bytes) {
         try{
             this.checkState();
-            bytes = tryToEncryptBytes(bytes);
+            bytes = this.tryToEncryptBytes(bytes);
 
             final ByteBuffer buffer = ByteBuffer.allocate(4 + bytes.length);
             buffer.putInt(bytes.length);
