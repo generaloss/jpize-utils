@@ -50,6 +50,7 @@ public class ListClassesGenerator {
 
         final boolean isString = datatype.equals("String");
         final boolean isBool = datatype.equals("boolean");
+        final boolean isChar = datatype.equals("char");
 
         final boolean hasBufferOps = (bufferClass != null);
 
@@ -84,6 +85,11 @@ public class ListClassesGenerator {
             "this.size = items.length;",
             "this.array = items;"
         );
+        if(isChar){
+            w.addConstructor("(String string)",
+                "this(string.toCharArray());"
+            );
+        }
         w.addConstructor("(" + classname + " list)",
             "this.size = list.size;",
             "this.array = list.copyOf();"
@@ -493,6 +499,15 @@ public class ListClassesGenerator {
         //
         w.addMethodSplitter();
 
+        if(isChar){
+            w.addMethod("public String charsString()",
+                "return new String(array);"
+            );
+
+            w.addMethodSplitter();
+        }
+
+        //
         w.addAnnotatedMethod("@Override", "public String toString()",
             "return Arrays.toString(arrayTrimmed());"
         );

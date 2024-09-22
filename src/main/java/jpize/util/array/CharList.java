@@ -27,6 +27,10 @@ public class CharList implements Iterable<Character> {
         this.array = items;
     }
 
+    public CharList(String string) {
+        this(string.toCharArray());
+    }
+
     public CharList(CharList list) {
         this.size = list.size;
         this.array = list.copyOf();
@@ -377,6 +381,11 @@ public class CharList implements Iterable<Character> {
 
     public CharList copy() {
         return new CharList(this);
+    }
+
+
+    public String charsString() {
+        return new String(array);
     }
 
 
