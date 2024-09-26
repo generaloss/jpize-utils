@@ -3,11 +3,12 @@ package jpize.util.net.tcp;
 import jpize.util.function.IOConsumer;
 import jpize.util.io.ExtDataInputStream;
 import jpize.util.io.ExtDataOutputStream;
-import jpize.util.security.KeyAes;
 import jpize.util.net.tcp.packet.IPacket;
+import jpize.util.security.KeyAes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
@@ -19,8 +20,20 @@ public class TcpClient {
 
     private Consumer<TcpConnection> onConnect, onDisconnect;
     private TcpListener onReceive;
+    private TcpConnection.Factory connectionFactory;
     private TcpConnection connection;
     private Selector selector;
+
+
+    public TcpClient() {
+        this.setConnectionType(BufferedTcpConnection.class);
+    }
+
+
+    public TcpClient setConnectionType(Type tcpConnectionClass) {
+        this.connectionFactory = TcpConnection.getFactory(tcpConnectionClass);
+        return this;
+    }
 
     public TcpClient setOnConnect(Consumer<TcpConnection> onConnect) {
         this.onConnect = onConnect;
@@ -63,7 +76,7 @@ public class TcpClient {
             selector = Selector.open();
             final SelectionKey key = socket.register(selector, SelectionKey.OP_READ);
 
-            connection = new TcpConnection(socket, key, onDisconnect);
+            connection = connectionFactory.create(socket, key, onDisconnect);
             if(onConnect != null)
                 onConnect.accept(connection);
 
@@ -93,10 +106,9 @@ public class TcpClient {
     }
 
     private void receiveBytes() {
-        connection.readBytes(bytes -> {
-            if(onReceive != null)
-                onReceive.receive(connection, bytes);
-        });
+        final byte[] bytes = connection.read();
+        if(bytes != null && onReceive != null)
+            onReceive.receive(connection, bytes);
     }
 
 
@@ -124,6 +136,7 @@ public class TcpClient {
             connection.encode(encodeKey);
         return this;
     }
+
 
     public TcpClient send(byte[] bytes) {
         if(isConnected())

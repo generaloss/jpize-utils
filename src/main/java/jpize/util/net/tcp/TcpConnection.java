@@ -1,36 +1,39 @@
 package jpize.util.net.tcp;
 
-import jpize.util.function.IOConsumer;
-import jpize.util.security.KeyAes;
-import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.Utils;
+import jpize.util.function.IOConsumer;
 import jpize.util.io.ExtDataOutputStream;
+import jpize.util.net.tcp.packet.IPacket;
+import jpize.util.security.KeyAes;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
-public class TcpConnection {
+public abstract class TcpConnection implements Closeable {
 
-    private final SocketChannel channel;
-    private final SelectionKey selectionKey;
-    private final Consumer<TcpConnection> onDisconnect;
+    protected final SocketChannel channel;
+    protected final SelectionKey selectionKey;
+    protected final Consumer<TcpConnection> onDisconnect;
     private KeyAes encodeKey;
-    private final ByteBuffer lengthBuf;
-    private ByteBuffer dataBuf;
-    private int dataRemaining;
 
-    protected TcpConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect) {
+    public TcpConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect) {
         this.channel = channel;
         this.selectionKey = selectionKey;
         this.onDisconnect = onDisconnect;
-        this.lengthBuf = ByteBuffer.allocate(4); // 4 bytes for integer
+    }
+
+    public SocketChannel getChannel() {
+        return channel;
     }
 
     public SelectionKey getSelectionKey() {
@@ -38,88 +41,24 @@ public class TcpConnection {
     }
 
 
-    protected void readBytes(Consumer<byte[]> bytesConsumer) {
-        try{
-            // if previous buffer is full allocate new buffer
-            if(isDataBufferFull() && !allocateDataBuffer())
-                return;
-            // read bytes and when the buffer is full accept them
-            dataRemaining -= channel.read(dataBuf);
-            if(isDataBufferFull()){
-                final byte[] bytes = this.tryToDecryptBytes(dataBuf.array());
-                dataBuf.clear();
-                bytesConsumer.accept(bytes);
-            }
-        }catch(IOException ignore){
-            close();
-        }
-    }
-
-    private boolean isDataBufferFull() {
-        return dataRemaining == 0;
-    }
-
-    private boolean allocateDataBuffer() throws IOException {
-        // try to read length
-        final int read = channel.read(lengthBuf);
-
-        if(read == -1) { // connection was closed on the other side
-            close();
-            return false;
-        }else if(read < 4) // not int size (length)
-            return false;
-
-        // read length
-        lengthBuf.flip();
-        dataRemaining = lengthBuf.getInt();
-        lengthBuf.clear();
-
-        // allocate buffer
-        dataBuf = ByteBuffer.allocate(dataRemaining);
-        return true;
-    }
-
-
-    private byte[] tryToDecryptBytes(byte[] bytes) {
-        if(encodeKey == null){
-            return bytes;
-        }else
-            return encodeKey.decrypt(bytes);
-    }
-
-    private byte[] tryToEncryptBytes(byte[] bytes) {
-        if(encodeKey == null){
-            return bytes;
-        }else
-            return encodeKey.encrypt(bytes);
-    }
-
     public void encode(KeyAes encodeKey) {
         this.encodeKey = encodeKey;
     }
 
+    protected byte[] tryToEncryptBytes(byte[] bytes) {
+        if(encodeKey == null){ return bytes;
+        }else return encodeKey.encrypt(bytes);
+    }
 
-    private void checkState() {
-        if(isClosed())
-            throw new IllegalStateException("TCP-connection is closed.");
+    protected byte[] tryToDecryptBytes(byte[] bytes) {
+        if(encodeKey == null){ return bytes;
+        }else return encodeKey.decrypt(bytes);
     }
 
 
-    public void send(byte[] bytes) {
-        try{
-            this.checkState();
-            bytes = this.tryToEncryptBytes(bytes);
+    protected abstract byte[] read();
 
-            final ByteBuffer buffer = ByteBuffer.allocate(4 + bytes.length);
-            buffer.putInt(bytes.length);
-            buffer.put(bytes);
-            buffer.flip();
-            channel.write(buffer);
-            buffer.clear();
-        }catch(IOException e){
-            close();
-        }
-    }
+    public abstract void send(byte[] bytes);
 
     public void send(ByteArrayOutputStream byteStream) {
         this.send(byteStream.toByteArray());
@@ -144,119 +83,139 @@ public class TcpConnection {
     }
 
 
-    public SocketChannel getChannel() {
-        return channel;
+    @Override
+    public void close() {
+        if(this.isClosed()) return;
+        if(onDisconnect != null) onDisconnect.accept(this);
+        Utils.close(channel);
     }
+
 
     public Socket getSocket() {
         return channel.socket();
     }
 
     public boolean isConnected() {
-        return getSocket().isConnected();
+        return this.getSocket().isConnected();
     }
 
     public boolean isClosed() {
-        return getSocket().isClosed();
+        return this.getSocket().isClosed();
     }
-
-    public void close() {
-        if(isClosed())
-            return;
-        if(onDisconnect != null)
-            onDisconnect.accept(this);
-        Utils.close(channel);
-    }
-
 
     public int getPort() {
-        return getSocket().getPort();
+        return this.getSocket().getPort();
     }
 
     public int getLocalPort() {
-        return getSocket().getLocalPort();
+        return this.getSocket().getLocalPort();
     }
 
     public InetAddress getAddress() {
-        return getSocket().getInetAddress();
+        return this.getSocket().getInetAddress();
     }
 
     public InetAddress getLocalAddress() {
-        return getSocket().getLocalAddress();
+        return this.getSocket().getLocalAddress();
     }
 
 
     public boolean getTcpNoDelay() {
-        try{ return getSocket().getTcpNoDelay(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.getSocket().getTcpNoDelay(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getSoTimeout() {
-        try{ return getSocket().getSoTimeout(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.getSocket().getSoTimeout(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public boolean getKeepAlive() {
-        try{ return getSocket().getKeepAlive(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.getSocket().getKeepAlive(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getSendBufferSize() {
-        try{ return getSocket().getSendBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.getSocket().getSendBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getReceiveBufferSize() {
-        try{ return getSocket().getReceiveBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.getSocket().getReceiveBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getTrafficClass() {
-        try{ return getSocket().getTrafficClass(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.getSocket().getTrafficClass(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public boolean getReuseAddress() {
-        try{ return getSocket().getReuseAddress(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.getSocket().getReuseAddress(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public boolean getOOBInline() {
-        try{ return getSocket().getOOBInline(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.getSocket().getOOBInline(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getSoLinger() {
-        try{ return getSocket().getSoLinger(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.getSocket().getSoLinger(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
 
     public void setTcpNoDelay(boolean on) {
-        try{ getSocket().setTcpNoDelay(on); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.getSocket().setTcpNoDelay(on); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setSoTimeout(int timeout) {
-        try{ getSocket().setSoTimeout(timeout); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.getSocket().setSoTimeout(timeout); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setKeepAlive(boolean on) {
-        try{ getSocket().setKeepAlive(on); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.getSocket().setKeepAlive(on); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setSendBufferSize(int size) {
-        try{ getSocket().setSendBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.getSocket().setSendBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setReceiveBufferSize(int size) {
-        try{ getSocket().setReceiveBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.getSocket().setReceiveBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setTrafficClass(int trafficClass) {
-        try{ getSocket().setTrafficClass(trafficClass); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.getSocket().setTrafficClass(trafficClass); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setReuseAddress(boolean on) {
-        try{ getSocket().setReuseAddress(on); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.getSocket().setReuseAddress(on); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setOOBInline(boolean on) {
-        try{ getSocket().setOOBInline(on); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.getSocket().setOOBInline(on); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setSoLinger(boolean on, int linger) {
-        try{ getSocket().setSoLinger(on, linger); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.getSocket().setSoLinger(on, linger); }catch(SocketException e){ throw new RuntimeException(e); }
+    }
+
+
+    public interface Factory {
+        TcpConnection create(SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect);
+    }
+
+    private static final Map<Type, Factory> FACTORY_BY_CLASS = new HashMap<>(){{{
+        put(BufferedTcpConnection.class, BufferedTcpConnection::new);
+        put(NativeTcpConnection.class, NativeTcpConnection::new);
+    }}};
+
+    public static void registerFactory(Type connectionClass, Factory factory) {
+        FACTORY_BY_CLASS.put(connectionClass, factory);
+    }
+
+    public static Factory getFactory(Type connectionClass) {
+        if(!FACTORY_BY_CLASS.containsKey(connectionClass))
+            throw new Error("Class '" + connectionClass + "' is not registered as a TCP connection factory.");
+        return FACTORY_BY_CLASS.get(connectionClass);
+    }
+
+    public static TcpConnection create(Type connectionClass, SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect) {
+        final Factory factory = getFactory(connectionClass);
+        return factory.create(channel, selectionKey, onDisconnect);
     }
 
 }

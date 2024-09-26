@@ -8,6 +8,7 @@ import jpize.util.io.ExtDataOutputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
@@ -22,14 +23,25 @@ public class TcpServer {
 
     private Consumer<TcpConnection> onConnect, onDisconnect;
     private TcpListener onReceive;
+    private TcpConnection.Factory connectionFactory;
     private CopyOnWriteArrayList<TcpConnection> connections;
     private ServerSocketChannel serverSocketChannel;
     private Selector selector;
-    private final Consumer<TcpConnection> disconnector = (connection) -> {
-        if(onDisconnect != null)
-            onDisconnect.accept(connection);
-        connections.remove(connection);
-    };
+    private final Consumer<TcpConnection> disconnector;
+
+    public TcpServer() {
+        this.setConnectionType(BufferedTcpConnection.class);
+        this.disconnector = (connection) -> {
+            if(onDisconnect != null) onDisconnect.accept(connection);
+            connections.remove(connection);
+        };
+    }
+
+
+    public TcpServer setConnectionType(Type tcpConnectionClass) {
+        this.connectionFactory = TcpConnection.getFactory(tcpConnectionClass);
+        return this;
+    }
 
 
     public TcpServer setOnConnect(Consumer<TcpConnection> onConnect) {
@@ -62,7 +74,7 @@ public class TcpServer {
 
 
     public TcpServer run(SocketAddress address) {
-        if(isAlive())
+        if(this.isAlive())
             throw new IllegalStateException("TCP-Server already running.");
 
         try{
@@ -74,7 +86,7 @@ public class TcpServer {
 
             selector = Selector.open();
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            startSelectorThread();
+            this.startSelectorThread();
 
         }catch(Exception e){
             throw new RuntimeException(e);
@@ -95,7 +107,7 @@ public class TcpServer {
         final Thread selectorThread = new Thread(() -> {
             try{
                 while(!Thread.interrupted())
-                    selectKeys();
+                    this.selectKeys();
             }catch(IOException ignored){ }
         }, "TCP-server Thread #" + this.hashCode());
 
@@ -116,10 +128,9 @@ public class TcpServer {
     }
 
     private void receiveBytes(TcpConnection connection) {
-        connection.readBytes(bytes -> {
-            if(onReceive != null)
-                onReceive.receive(connection, bytes);
-        });
+        final byte[] bytes = connection.read();
+        if(bytes != null && onReceive != null)
+            onReceive.receive(connection, bytes);
     }
 
     private void acceptNewConnection() throws IOException {
@@ -130,7 +141,7 @@ public class TcpServer {
         channel.configureBlocking(false);
         final SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
 
-        final TcpConnection connection = new TcpConnection(channel, key, disconnector);
+        final TcpConnection connection = connectionFactory.create(channel, key, disconnector);
         connections.add(connection);
         key.attach(connection);
 

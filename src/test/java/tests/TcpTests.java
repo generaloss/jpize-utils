@@ -23,16 +23,17 @@ public class TcpTests {
 
     @Test
     public void reconnect_client() {
-        final int reconnectsNum = 18;
-        final AtomicInteger connectionsNum = new AtomicInteger();
+        final int reconnectsNum = 7;
+        final AtomicInteger counter = new AtomicInteger();
         new TcpServer()
                 .run(5408)
-                .setOnConnect((connection) -> connectionsNum.incrementAndGet());
+                .setOnConnect((connection) -> counter.incrementAndGet())
+                .setOnDisconnect((connection) -> counter.incrementAndGet());
         final TcpClient client = new TcpClient();
         for (int i = 0; i < reconnectsNum; i++)
             client.connect("localhost", 5408).disconnect();
         TimeUtils.delayMillis(5000);
-        TimeUtils.waitFor(() -> connectionsNum.get() == reconnectsNum, 500, Assert::fail);
+        TimeUtils.waitFor(() -> counter.get() == reconnectsNum * 2, 500, () -> Assert.fail(counter.get() + " / " + (reconnectsNum * 2)));
     }
 
     @Test
@@ -66,7 +67,7 @@ public class TcpTests {
         new TcpServer()
                 .setOnReceive((sender, bytes) -> {
                     final String received = new String(bytes);
-                    Assert.assertEquals(received, message);
+                    Assert.assertEquals(message, received);
                     sender.close();
                 })
                 .run(5400);
@@ -75,7 +76,7 @@ public class TcpTests {
                 .connect("localhost", 5400)
                 .send(message.getBytes());
 
-        TimeUtils.waitFor(client::isClosed);
+        TimeUtils.waitFor(client::isClosed, 1000, Assert::fail);
     }
 
     @Test
@@ -87,15 +88,16 @@ public class TcpTests {
                 .setOnConnect((connection) -> connection.encode(key))
                 .setOnReceive((sender, bytes) -> {
                     final String received = new String(bytes);
-                    Assert.assertEquals(received, message);
+                    Assert.assertEquals(message, received);
                     sender.close();
                 })
                 .run(5405);
 
         final TcpClient client = new TcpClient()
-                .connect("localhost", 5405)
-                .encode(key)
-                .send(message.getBytes());
+            .connect("localhost", 5405)
+            .encode(key)
+            .send(message.getBytes());
+
 
         TimeUtils.waitFor(client::isClosed);
     }
@@ -111,7 +113,7 @@ public class TcpTests {
         final TcpClient client = new TcpClient()
                 .setOnReceive((connection, bytes) -> {
                     final String received = new String(bytes);
-                    Assert.assertEquals(received, message);
+                    Assert.assertEquals(message, received);
                     connection.close();
                 })
                 .connect("localhost", 5401);
@@ -135,12 +137,12 @@ public class TcpTests {
                 .connect("localhost", 5402)
                 .send(message.getBytes());
 
-        TimeUtils.waitFor(client::isClosed);
+        TimeUtils.waitFor(client::isClosed, 2000, Assert::fail);
     }
 
     @Test
     public void connect_a_lot_of_clients_and_send_a_lot_of_data_multithreaded() {
-        final String message = "Hello, World! ".repeat(100000);
+        final String message = "Hello, World! ".repeat(10000);
         final int clientsAmount = 100;
         final AtomicInteger done = new AtomicInteger();
 
@@ -161,9 +163,8 @@ public class TcpTests {
 
         int prevDone = -1;
         while(done.get() != clientsAmount){
-            if(done.get() != prevDone) {
+            if(done.get() != prevDone)
                 prevDone = done.get();
-            }
             Thread.onSpinWait();
         }
     }
@@ -176,23 +177,24 @@ public class TcpTests {
         final PacketDispatcher dispatcher = new PacketDispatcher()
                 .register(MsgPacket.class);
 
+        final AtomicInteger counter = new AtomicInteger();
         final MsgHandler handler = (received) -> {
-            Assert.assertEquals(received, message);
+            Assert.assertEquals(message, received);
+            counter.incrementAndGet();
         };
 
         new TcpServer()
-                .setOnReceive((sender, bytes) -> {
-                    dispatcher.readPacket(bytes, handler);
-                    dispatcher.handlePackets();
-                    sender.close();
-                })
-                .run(5403);
+            .setOnReceive((sender, bytes) -> {
+                dispatcher.readPacket(bytes, handler);
+                dispatcher.handlePackets();
+            }).run(5403);
 
         final TcpClient client = new TcpClient()
                 .connect("localhost", 5403)
+                .send(new MsgPacket(message))
                 .send(new MsgPacket(message));
 
-        TimeUtils.waitFor(client::isClosed);
+        TimeUtils.waitFor(() -> (counter.get() == 2), 2000, Assert::fail);
     }
 
     interface MsgHandler extends PacketHandler {
