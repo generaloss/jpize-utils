@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.generaloss:jpize-utils:24.7.1")
+    implementation("io.github.generaloss:jpize-utils:24.9.1")
 }
 ```
 
