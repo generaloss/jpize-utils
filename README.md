@@ -11,7 +11,7 @@
 <dependency>
     <groupId>io.github.generaloss</groupId>
     <artifactId>jpize-utils</artifactId>
-    <version>24.7.1</version>
+    <version>24.9.1</version>
 </dependency>
 ```
 ### Gradle (Kotlin)
