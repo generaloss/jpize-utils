@@ -698,6 +698,14 @@ public class Vec4i {
         return set(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z), Math.max(vector1.w, vector2.w));
     }
 
+    public int minComp() {
+        return Math.min(x, Math.min(y, Math.min(z, w)));
+    }
+
+    public int maxComp() {
+        return Math.max(x, Math.max(y, Math.max(z, w)));
+    }
+
 
     public Vec4i zero() {
         return set(0);

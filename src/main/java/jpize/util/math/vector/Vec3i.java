@@ -738,6 +738,14 @@ public class Vec3i {
         return set(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z));
     }
 
+    public int minComp() {
+        return Math.min(x, Math.min(y, z));
+    }
+
+    public int maxComp() {
+        return Math.max(x, Math.max(y, z));
+    }
+
 
     public Vec3i zero() {
         return set(0);

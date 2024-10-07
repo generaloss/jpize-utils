@@ -363,6 +363,14 @@ public class Vec2f {
         return set(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y));
     }
 
+    public float minComp() {
+        return Math.min(x, y);
+    }
+
+    public float maxComp() {
+        return Math.max(x, y);
+    }
+
 
     public Vec2f zero() {
         return set(0);

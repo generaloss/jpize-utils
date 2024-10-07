@@ -10,14 +10,28 @@ public class Insets implements Serializable {
     public float bottom;
     public float right;
 
-    public Insets(int top, int left, int bottom, int right) {
-        this.set(top, left, bottom, right);
-    }
-
     public Insets(Insets insets) {
         this.set(insets);
     }
 
+    public Insets(int top, int left, int bottom, int right) {
+        this.set(top, left, bottom, right);
+    }
+
+    public Insets(float horizontal, float vertical) {
+        this.set(horizontal, vertical);
+    }
+
+    public Insets(float all) {
+        this.set(all);
+    }
+
+    public Insets() { }
+
+
+    public void set(Insets insets) {
+        this.set(insets.top, insets.left, insets.bottom, insets.right);
+    }
 
     public void set(float top, float left, float bottom, float right) {
         this.top = top;
@@ -26,8 +40,12 @@ public class Insets implements Serializable {
         this.right = right;
     }
 
-    public void set(Insets insets) {
-        this.set(insets.top, insets.left, insets.bottom, insets.right);
+    public void set(float horizontal, float vertical) {
+        this.set(vertical, horizontal, vertical, horizontal);
+    }
+
+    public void set(float all) {
+        this.set(all, all, all, all);
     }
 
 

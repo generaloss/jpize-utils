@@ -716,7 +716,26 @@ public class VectorClassesGenerator {
             "return set(" + makeDims(dimensions, ", ", "Math.max(" + varname + "1.%l, " + varname + "2.%l)") + ");"
         );
 
+
+        w.addMethod("public " + datatype + " minComp()",
+            "return " + funcMultilayer("Math.min", 0, LETTERS[dimensions - 1], LETTERS) + ";"
+        );
+
+        w.addMethod("public " + datatype + " maxComp()",
+            "return " + funcMultilayer("Math.max", 0, LETTERS[dimensions - 1], LETTERS) + ";"
+        );
+
         w.addMethodSplitter();
+    }
+
+    private static String funcMultilayer(String funcname, int remaining, String result, String... params) {
+        remaining++;
+
+        if(remaining != dimensions - 1)
+            result = funcMultilayer(funcname, remaining, result, params);
+        result = funcname + "(" + params[remaining - 1] + ", " + result + ")";
+
+        return result;
     }
 
     private static void addDistance() {

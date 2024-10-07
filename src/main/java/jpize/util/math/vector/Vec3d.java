@@ -737,6 +737,14 @@ public class Vec3d {
         return set(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z));
     }
 
+    public double minComp() {
+        return Math.min(x, Math.min(y, z));
+    }
+
+    public double maxComp() {
+        return Math.max(x, Math.max(y, z));
+    }
+
 
     public Vec3d zero() {
         return set(0);

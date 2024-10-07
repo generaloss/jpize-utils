@@ -363,6 +363,14 @@ public class Vec2i {
         return set(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y));
     }
 
+    public int minComp() {
+        return Math.min(x, y);
+    }
+
+    public int maxComp() {
+        return Math.max(x, y);
+    }
+
 
     public Vec2i zero() {
         return set(0);

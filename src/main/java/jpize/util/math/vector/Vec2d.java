@@ -362,6 +362,14 @@ public class Vec2d {
         return set(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y));
     }
 
+    public double minComp() {
+        return Math.min(x, y);
+    }
+
+    public double maxComp() {
+        return Math.max(x, y);
+    }
+
 
     public Vec2d zero() {
         return set(0);
