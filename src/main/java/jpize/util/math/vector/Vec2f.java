@@ -50,6 +50,15 @@ public class Vec2f {
     }
 
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+
     public Vec2f set(float xy) {
         this.x = xy;
         this.y = xy;

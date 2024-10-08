@@ -74,6 +74,19 @@ public class Vec3f {
     }
 
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+
     public Vec3f set(float xyz) {
         this.x = xyz;
         this.y = xyz;

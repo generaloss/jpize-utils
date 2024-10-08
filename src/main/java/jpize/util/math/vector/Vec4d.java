@@ -97,6 +97,23 @@ public class Vec4d {
     }
 
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+    public double getW() {
+        return w;
+    }
+
+
     public Vec4d set(double xyzw) {
         this.x = xyzw;
         this.y = xyzw;

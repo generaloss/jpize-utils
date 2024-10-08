@@ -50,6 +50,15 @@ public class Vec2i {
     }
 
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+
     public Vec2i set(int xy) {
         this.x = xy;
         this.y = xy;

@@ -98,6 +98,23 @@ public class Vec4i {
     }
 
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+    public int getW() {
+        return w;
+    }
+
+
     public Vec4i set(int xyzw) {
         this.x = xyzw;
         this.y = xyzw;

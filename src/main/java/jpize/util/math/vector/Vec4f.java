@@ -98,6 +98,23 @@ public class Vec4f {
     }
 
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public float getW() {
+        return w;
+    }
+
+
     public Vec4f set(float xyzw) {
         this.x = xyzw;
         this.y = xyzw;

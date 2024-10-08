@@ -74,6 +74,19 @@ public class Vec3i {
     }
 
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+
     public Vec3i set(int xyz) {
         this.x = xyz;
         this.y = xyz;

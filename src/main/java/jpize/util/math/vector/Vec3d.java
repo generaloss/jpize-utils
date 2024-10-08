@@ -73,6 +73,19 @@ public class Vec3d {
     }
 
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+
     public Vec3d set(double xyz) {
         this.x = xyz;
         this.y = xyz;

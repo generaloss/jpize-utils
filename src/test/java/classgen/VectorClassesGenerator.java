@@ -108,6 +108,7 @@ public class VectorClassesGenerator {
         // constructors
         addConstructors();
         // setters, operations
+        addGetters(); // for lambda functions
         addSettersOperations();
         // operations
         addDistance();
@@ -900,6 +901,16 @@ public class VectorClassesGenerator {
 
     }
 
+    private static void addGetters() {
+        for(int d = 1; d <= dimensions; d++){
+            w.addMethod("public " + datatype + " get" + letter(d).toUpperCase() + "()",
+                "return " + letter(d) + ";"
+            );
+        }
+
+        w.addMethodSplitter();
+    }
+
     private static void addConstructors() {
         // ()
         w.addConstructor("()");
@@ -935,6 +946,7 @@ public class VectorClassesGenerator {
                 "this.set(" + makeDims(vectorType.dimensions, ", ", vectorType.varname + ".%l") + ");"
             );
         }
+
         w.addMethodSplitter();
     }
 

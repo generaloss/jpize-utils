@@ -49,6 +49,15 @@ public class Vec2d {
     }
 
 
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+
     public Vec2d set(double xy) {
         this.x = xy;
         this.y = xy;
