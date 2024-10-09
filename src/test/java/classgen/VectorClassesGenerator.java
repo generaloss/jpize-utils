@@ -704,7 +704,6 @@ public class VectorClassesGenerator {
 
         w.addMethodSplitter();
 
-
         w.addMethod("public " + classname + " setShorter(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
             "return set(shorter(" + varname + "1, " + varname + "2));"
         );
@@ -714,7 +713,6 @@ public class VectorClassesGenerator {
         );
 
         w.addMethodSplitter();
-
 
         w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "return set(" + makeDims(dimensions, ", ", "Math.min(" + varname + "1.%l, %l2)") + ");"
@@ -741,7 +739,6 @@ public class VectorClassesGenerator {
         );
 
         w.addMethodSplitter();
-
 
         w.addMethod("public " + datatype + " minComp()",
             "return " + funcMultilayer("Math.min", 0, LETTERS[dimensions - 1], LETTERS) + ";"
