@@ -727,6 +727,7 @@ public class Vec3f {
         return (vector1.len2() > vector2.len2()) ? vector1 : vector2;
     }
 
+
     public static Vec3f minCompsVec(Vec3f vector1, Vec3f vector2) {
         return new Vec3f(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z));
     }
@@ -734,6 +735,7 @@ public class Vec3f {
     public static Vec3f maxCompsVec(Vec3f vector1, Vec3f vector2) {
         return new Vec3f(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z));
     }
+
 
     public Vec3f setShorter(Vec3f vector1, Vec3f vector2) {
         return set(shorter(vector1, vector2));
@@ -743,13 +745,31 @@ public class Vec3f {
         return set(longer(vector1, vector2));
     }
 
+
+    public Vec3f setMinComps(Vec3f vector1, float x2, float y2, float z2) {
+        return set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2));
+    }
+
+    public Vec3f setMinComps(Vec3f vector1, float xyz2) {
+        return setMinComps(vector1, xyz2, xyz2, xyz2);
+    }
+
     public Vec3f setMinComps(Vec3f vector1, Vec3f vector2) {
-        return set(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z));
+        return setMinComps(vector1, vector2.x, vector2.y, vector2.z);
+    }
+
+    public Vec3f setMaxComps(Vec3f vector1, float x2, float y2, float z2) {
+        return set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2));
+    }
+
+    public Vec3f setMaxComps(Vec3f vector1, float xyz2) {
+        return setMaxComps(vector1, xyz2, xyz2, xyz2);
     }
 
     public Vec3f setMaxComps(Vec3f vector1, Vec3f vector2) {
-        return set(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z));
+        return setMaxComps(vector1, vector2.x, vector2.y, vector2.z);
     }
+
 
     public float minComp() {
         return Math.min(x, Math.min(y, z));

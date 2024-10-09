@@ -726,6 +726,7 @@ public class Vec3d {
         return (vector1.len2() > vector2.len2()) ? vector1 : vector2;
     }
 
+
     public static Vec3d minCompsVec(Vec3d vector1, Vec3d vector2) {
         return new Vec3d(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z));
     }
@@ -733,6 +734,7 @@ public class Vec3d {
     public static Vec3d maxCompsVec(Vec3d vector1, Vec3d vector2) {
         return new Vec3d(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z));
     }
+
 
     public Vec3d setShorter(Vec3d vector1, Vec3d vector2) {
         return set(shorter(vector1, vector2));
@@ -742,13 +744,31 @@ public class Vec3d {
         return set(longer(vector1, vector2));
     }
 
+
+    public Vec3d setMinComps(Vec3d vector1, double x2, double y2, double z2) {
+        return set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2));
+    }
+
+    public Vec3d setMinComps(Vec3d vector1, double xyz2) {
+        return setMinComps(vector1, xyz2, xyz2, xyz2);
+    }
+
     public Vec3d setMinComps(Vec3d vector1, Vec3d vector2) {
-        return set(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z));
+        return setMinComps(vector1, vector2.x, vector2.y, vector2.z);
+    }
+
+    public Vec3d setMaxComps(Vec3d vector1, double x2, double y2, double z2) {
+        return set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2));
+    }
+
+    public Vec3d setMaxComps(Vec3d vector1, double xyz2) {
+        return setMaxComps(vector1, xyz2, xyz2, xyz2);
     }
 
     public Vec3d setMaxComps(Vec3d vector1, Vec3d vector2) {
-        return set(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z));
+        return setMaxComps(vector1, vector2.x, vector2.y, vector2.z);
     }
+
 
     public double minComp() {
         return Math.min(x, Math.min(y, z));

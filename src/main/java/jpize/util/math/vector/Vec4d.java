@@ -690,6 +690,7 @@ public class Vec4d {
         return (vector1.len2() > vector2.len2()) ? vector1 : vector2;
     }
 
+
     public static Vec4d minCompsVec(Vec4d vector1, Vec4d vector2) {
         return new Vec4d(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z), Math.min(vector1.w, vector2.w));
     }
@@ -697,6 +698,7 @@ public class Vec4d {
     public static Vec4d maxCompsVec(Vec4d vector1, Vec4d vector2) {
         return new Vec4d(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z), Math.max(vector1.w, vector2.w));
     }
+
 
     public Vec4d setShorter(Vec4d vector1, Vec4d vector2) {
         return set(shorter(vector1, vector2));
@@ -706,13 +708,31 @@ public class Vec4d {
         return set(longer(vector1, vector2));
     }
 
+
+    public Vec4d setMinComps(Vec4d vector1, double x2, double y2, double z2, double w2) {
+        return set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2), Math.min(vector1.w, w2));
+    }
+
+    public Vec4d setMinComps(Vec4d vector1, double xyzw2) {
+        return setMinComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
+    }
+
     public Vec4d setMinComps(Vec4d vector1, Vec4d vector2) {
-        return set(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z), Math.min(vector1.w, vector2.w));
+        return setMinComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public Vec4d setMaxComps(Vec4d vector1, double x2, double y2, double z2, double w2) {
+        return set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2), Math.max(vector1.w, w2));
+    }
+
+    public Vec4d setMaxComps(Vec4d vector1, double xyzw2) {
+        return setMaxComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
     }
 
     public Vec4d setMaxComps(Vec4d vector1, Vec4d vector2) {
-        return set(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z), Math.max(vector1.w, vector2.w));
+        return setMaxComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
     }
+
 
     public double minComp() {
         return Math.min(x, Math.min(y, Math.min(z, w)));
