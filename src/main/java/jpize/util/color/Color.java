@@ -183,7 +183,7 @@ public class Color {
     }
 
 
-    public Color addRgb(double red, double green, double blue) {
+    public Color addRGB(double red, double green, double blue) {
         return set(
             this.r + red,
             this.g + green,
@@ -191,8 +191,8 @@ public class Color {
         );
     }
 
-    public Color addRgb(Color color) {
-        return addRgb(color.r, color.g, color.b);
+    public Color addRGB(Color color) {
+        return addRGB(color.r, color.g, color.b);
     }
 
 
@@ -205,7 +205,7 @@ public class Color {
         );
     }
 
-    public Color mulRgb(double value) {
+    public Color mulRGB(double value) {
         return set(
             this.r * value,
             this.g * value,
@@ -213,7 +213,7 @@ public class Color {
         );
     }
 
-    public Color divRgb(double value) {
+    public Color divRGB(double value) {
         return set(
             this.r / value,
             this.g / value,
@@ -236,7 +236,7 @@ public class Color {
     }
 
 
-    public Color inverseRgb() {
+    public Color inverseRGB() {
         return set(
             1F - this.r,
             1F - this.g,
@@ -244,8 +244,8 @@ public class Color {
         );
     }
 
-    public Color inverseRgba() {
-        inverseRgb();
+    public Color inverseRGBA() {
+        inverseRGB();
         return setA(1F - this.a);
     }
 

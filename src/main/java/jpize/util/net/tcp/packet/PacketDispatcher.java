@@ -29,11 +29,14 @@ public class PacketDispatcher {
         return this;
     }
 
-    public void handlePackets() {
+    public int handlePackets() {
+        int count = 0;
         while(!toHandleQueue.isEmpty()){
             final Runnable handleRunnable = toHandleQueue.poll();
+            count++;
             handleRunnable.run();
         }
+        return count;
     }
 
     public boolean readPacket(byte[] bytes, PacketHandler handler) {

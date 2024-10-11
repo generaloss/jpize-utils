@@ -4,7 +4,7 @@ import jpize.util.function.IOConsumer;
 import jpize.util.io.ExtDataInputStream;
 import jpize.util.io.ExtDataOutputStream;
 import jpize.util.net.tcp.packet.IPacket;
-import jpize.util.security.KeyAes;
+import jpize.util.security.KeyAES;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,7 +23,6 @@ public class TcpClient {
     private TcpConnection.Factory connectionFactory;
     private TcpConnection connection;
     private Selector selector;
-
 
     public TcpClient() {
         this.setConnectionType(BufferedTcpConnection.class);
@@ -65,7 +64,7 @@ public class TcpClient {
 
 
     public TcpClient connect(SocketAddress socketAddress) {
-        if(isConnected())
+        if(this.isConnected())
             throw new IllegalStateException("TCP-Client already connected.");
 
         try{
@@ -80,7 +79,7 @@ public class TcpClient {
             if(onConnect != null)
                 onConnect.accept(connection);
 
-            startReceiveThread();
+            this.startReceiveThread();
         }catch(IOException ignored){ }
         return this;
     }
@@ -93,9 +92,9 @@ public class TcpClient {
     private void startReceiveThread() {
         final Thread selectorThread = new Thread(() -> {
             try{
-                while(!Thread.interrupted() && !isClosed()){
+                while(!Thread.interrupted() && !this.isClosed()){
                     selector.select();
-                    receiveBytes();
+                    this.receiveBytes();
                 }
             }catch(IOException ignored){ }
         }, "TCP-client Thread #" + this.hashCode());
@@ -125,39 +124,39 @@ public class TcpClient {
     }
 
     public TcpClient disconnect() {
-        if(isConnected())
+        if(this.isConnected())
             connection.close();
         return this;
     }
 
 
-    public TcpClient encode(KeyAes encodeKey) {
-        if(isConnected())
+    public TcpClient encode(KeyAES encodeKey) {
+        if(this.isConnected())
             connection.encode(encodeKey);
         return this;
     }
 
 
     public TcpClient send(byte[] bytes) {
-        if(isConnected())
+        if(this.isConnected())
             connection.send(bytes);
         return this;
     }
 
     public TcpClient send(ByteArrayOutputStream stream) {
-        if(isConnected())
+        if(this.isConnected())
             connection.send(stream);
         return this;
     }
 
     public TcpClient send(IOConsumer<ExtDataOutputStream> streamConsumer) {
-        if(isConnected())
+        if(this.isConnected())
             connection.send(streamConsumer);
         return this;
     }
 
     public TcpClient send(IPacket<?> packet) {
-        if(isConnected())
+        if(this.isConnected())
             connection.send(packet);
         return this;
     }

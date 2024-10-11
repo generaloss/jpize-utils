@@ -81,15 +81,15 @@ public class Colors {
     }
 
 
-    public static Color randomRgbColor(){
+    public static Color randomRGBColor(){
         return new Color(Mathc.random(), Mathc.random(), Mathc.random());
     }
 
-    public static ImmutableColor randomRgbImmutableColor(){
+    public static ImmutableColor randomRGBImmutableColor(){
         return new ImmutableColor(Mathc.random(), Mathc.random(), Mathc.random());
     }
 
-    public static float[] randomRgbaArray(){
+    public static float[] randomRGBAArray(){
         return new float[]{ Mathc.random(), Mathc.random(), Mathc.random(), 1F };
     }
 

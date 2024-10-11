@@ -5,8 +5,8 @@ public class TickGenerator {
     private final Sync sync;
     private boolean interrupt;
 
-    public TickGenerator(float ticksPerSecond) {
-        sync = new Sync(ticksPerSecond);
+    public TickGenerator(float tickRate) {
+        this.sync = new Sync(tickRate);
     }
 
 
@@ -14,8 +14,8 @@ public class TickGenerator {
         return sync;
     }
 
-    public void setTPS(float ticksPerSecond) {
-        sync.setTps(ticksPerSecond);
+    public void setTickRate(float tickRate) {
+        sync.setRate(tickRate);
     }
 
 

@@ -4,25 +4,25 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
-public class KeyRsa {
+public class KeyRSA {
 
-    private final PublicRsa publicKey;
-    private final PrivateRsa privateKey;
+    private final PublicRSA publicKey;
+    private final PrivateRSA privateKey;
 
-    public KeyRsa(int size) {
+    public KeyRSA(int size) {
         final KeyPair pair = generateKeyPair(size);
         if(pair == null)
             throw new RuntimeException("Unable to generate RSA key pair.");
 
-        this.publicKey = new PublicRsa(pair.getPublic());
-        this.privateKey = new PrivateRsa(pair.getPrivate());
+        this.publicKey = new PublicRSA(pair.getPublic());
+        this.privateKey = new PrivateRSA(pair.getPrivate());
     }
 
-    public PublicRsa getPublic() {
+    public PublicRSA getPublic() {
         return publicKey;
     }
 
-    public PrivateRsa getPrivate() {
+    public PrivateRSA getPrivate() {
         return privateKey;
     }
 

@@ -5,12 +5,12 @@ import jpize.util.math.Maths;
 public class Sync {
 
     private long prevTime;
-    private int frameTime;
+    private int targetDeltaTime;
     private boolean enabled;
 
-    public Sync(double tps) {
-        setTps(tps);
-        enable(true);
+    public Sync(double rate) {
+        this.setRate(rate);
+        this.enable(true);
     }
 
 
@@ -23,27 +23,26 @@ public class Sync {
     }
 
 
-    public double getTps() {
-        return (frameTime != 0) ? (Maths.nanosInSecf / frameTime) : 0;
+    public double getRate() {
+        return (targetDeltaTime == 0 ? 0D : Maths.nanosInSecf / targetDeltaTime);
     }
 
-    public void setTps(double tps) {
-        if(tps == 0)
+    public void setRate(double rate) {
+        if(rate == 0)
             return;
 
-        frameTime = (int) (Maths.msInSecf / tps); // Time between frames with a given number of ticks per second
-        prevTime = System.currentTimeMillis();   // To calculate the time between frames
+        targetDeltaTime = (int) (Maths.msInSecf / rate); // time between frames with a given number of ticks per second
+        prevTime = System.currentTimeMillis();           // to calculate the time between frames
     }
 
 
     public void sync() {
-        if(!enabled || frameTime == 0)
+        if(!enabled || targetDeltaTime == 0)
             return;
 
-        final long deltaTime = System.currentTimeMillis() - prevTime; // Current time between frames
+        final long deltaTime = System.currentTimeMillis() - prevTime; // current time between frames
         if(deltaTime >= 0){
-
-            final long sleepTime = frameTime - deltaTime; // Time to adjust tick per second
+            final long sleepTime = (targetDeltaTime - deltaTime); // time to adjust tick per second
             if(sleepTime > 0)
                 TimeUtils.delayMillis(sleepTime);
         }

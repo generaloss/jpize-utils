@@ -1,7 +1,5 @@
-package jpize.util.math.rot;
+package jpize.util.math;
 
-import jpize.util.math.Mathc;
-import jpize.util.math.Maths;
 import jpize.util.math.matrix.Matrix4f;
 import jpize.util.math.vector.Vec3f;
 

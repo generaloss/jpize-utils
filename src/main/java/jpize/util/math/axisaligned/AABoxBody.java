@@ -1,7 +1,7 @@
 package jpize.util.math.axisaligned;
 
 import jpize.util.math.Intersector;
-import jpize.util.math.rot.Ray3f;
+import jpize.util.math.Ray3f;
 import jpize.util.math.vector.Vec3f;
 
 public class AABoxBody {

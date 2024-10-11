@@ -11,21 +11,21 @@ import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 
-public class PrivateRsa {
+public class PrivateRSA {
 
     private final PrivateKey key;
     private final Cipher cipher;
 
-    public PrivateRsa(PrivateKey key) {
+    public PrivateRSA(PrivateKey key) {
         this.key = key;
         this.cipher = getDecryptCipher(key);
     }
 
-    public PrivateRsa(byte[] bytes) {
+    public PrivateRSA(byte[] bytes) {
         this(generatePrivateKey(bytes));
     }
 
-    public PrivateRsa(Resource res) {
+    public PrivateRSA(Resource res) {
         this(res.readBytes());
     }
 

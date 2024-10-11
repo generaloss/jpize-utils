@@ -1,6 +1,5 @@
-package jpize.util.math.rot;
+package jpize.util.math;
 
-import jpize.util.math.Intersector;
 import jpize.util.math.axisaligned.AABoxBody;
 import jpize.util.math.vector.Vec3f;
 

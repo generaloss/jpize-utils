@@ -14,21 +14,21 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
-public class PublicRsa {
+public class PublicRSA {
 
     private final PublicKey key;
     private final Cipher cipher;
 
-    public PublicRsa(PublicKey key) {
+    public PublicRSA(PublicKey key) {
         this.key = key;
         this.cipher = getEncryptCipher(key);
     }
 
-    public PublicRsa(byte[] bytes) {
+    public PublicRSA(byte[] bytes) {
         this(generatePublicKey(bytes));
     }
 
-    public PublicRsa(Resource res) {
+    public PublicRSA(Resource res) {
         this(res.readBytes());
     }
 

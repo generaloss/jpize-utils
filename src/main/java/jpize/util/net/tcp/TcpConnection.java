@@ -4,7 +4,7 @@ import jpize.util.Utils;
 import jpize.util.function.IOConsumer;
 import jpize.util.io.ExtDataOutputStream;
 import jpize.util.net.tcp.packet.IPacket;
-import jpize.util.security.KeyAes;
+import jpize.util.security.KeyAES;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -24,7 +24,7 @@ public abstract class TcpConnection implements Closeable {
     protected final SocketChannel channel;
     protected final SelectionKey selectionKey;
     protected final Consumer<TcpConnection> onDisconnect;
-    private KeyAes encodeKey;
+    private KeyAES encodeKey;
 
     public TcpConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect) {
         this.channel = channel;
@@ -41,7 +41,7 @@ public abstract class TcpConnection implements Closeable {
     }
 
 
-    public void encode(KeyAes encodeKey) {
+    public void encode(KeyAES encodeKey) {
         this.encodeKey = encodeKey;
     }
 

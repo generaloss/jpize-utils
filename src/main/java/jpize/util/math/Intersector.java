@@ -3,7 +3,6 @@ package jpize.util.math;
 import jpize.util.math.axisaligned.AABoxBody;
 import jpize.util.math.axisaligned.AARectBody;
 import jpize.util.math.matrix.Matrix4f;
-import jpize.util.math.rot.Ray3f;
 import jpize.util.math.vector.Vec2f;
 import jpize.util.math.vector.Vec3f;
 

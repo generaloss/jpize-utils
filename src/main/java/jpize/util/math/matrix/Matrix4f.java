@@ -2,8 +2,8 @@ package jpize.util.math.matrix;
 
 import jpize.util.math.Mathc;
 import jpize.util.math.Maths;
-import jpize.util.math.rot.EulerAngles;
-import jpize.util.math.rot.Quaternion;
+import jpize.util.math.EulerAngles;
+import jpize.util.math.Quaternion;
 import jpize.util.math.vector.*;
 
 import java.util.Arrays;

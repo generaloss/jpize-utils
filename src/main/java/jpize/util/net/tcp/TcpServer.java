@@ -106,8 +106,9 @@ public class TcpServer {
     private void startSelectorThread() {
         final Thread selectorThread = new Thread(() -> {
             try{
-                while(!Thread.interrupted())
+                while(!Thread.interrupted()){
                     this.selectKeys();
+                }
             }catch(IOException ignored){ }
         }, "TCP-server Thread #" + this.hashCode());
 
@@ -120,10 +121,14 @@ public class TcpServer {
         selector.select();
 
         for(SelectionKey key: selector.selectedKeys()){
-            if(key.isReadable())
-                receiveBytes((TcpConnection) key.attachment());
-            else if(key.isAcceptable())
-                acceptNewConnection();
+            if(!key.isValid())
+                continue;
+
+            if(key.isReadable()){
+                this.receiveBytes((TcpConnection) key.attachment());
+            }else if(key.isAcceptable()){
+                this.acceptNewConnection();
+            }
         }
     }
 
@@ -163,7 +168,7 @@ public class TcpServer {
     }
 
     public TcpServer close() {
-        if(isClosed())
+        if(this.isClosed())
             return this;
 
         for(TcpConnection connection: connections)

@@ -3,7 +3,7 @@ package jpize.util.io;
 import jpize.util.array.*;
 import jpize.util.color.Color;
 import jpize.util.color.ImmutableColor;
-import jpize.util.math.rot.EulerAngles;
+import jpize.util.math.EulerAngles;
 import jpize.util.math.vector.*;
 
 import java.io.ByteArrayInputStream;

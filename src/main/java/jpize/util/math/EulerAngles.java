@@ -1,7 +1,5 @@
-package jpize.util.math.rot;
+package jpize.util.math;
 
-import jpize.util.math.Mathc;
-import jpize.util.math.Maths;
 import jpize.util.math.vector.Vec2d;
 import jpize.util.math.vector.Vec3d;
 import jpize.util.math.vector.Vec3f;
@@ -42,8 +40,8 @@ public class EulerAngles {
         return directionOf(dst, yaw, pitch);
     }
 
-    public Vec3f getDirHorizontal() {
-        return new Vec3f(Maths.cosDeg(yaw), 0, Maths.sinDeg(yaw));
+    public Vec3f getDirectionHorizontal(Vec3f dst) {
+        return dst.set(Maths.cosDeg(yaw), 0, Maths.sinDeg(yaw));
     }
 
     public EulerAngles setDirection(double x, double y, double z) {

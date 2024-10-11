@@ -8,7 +8,7 @@ import jpize.util.net.tcp.TcpServer;
 import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.net.tcp.packet.PacketDispatcher;
 import jpize.util.net.tcp.packet.PacketHandler;
-import jpize.util.security.KeyAes;
+import jpize.util.security.KeyAES;
 import jpize.util.time.TimeUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -81,7 +81,7 @@ public class TcpTests {
 
     @Test
     public void send_hello_world_encrypted() {
-        final KeyAes key = new KeyAes(128);
+        final KeyAES key = new KeyAES(128);
         final String message = "Hello, World!";
 
         new TcpServer()
