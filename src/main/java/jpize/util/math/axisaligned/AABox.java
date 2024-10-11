@@ -6,7 +6,6 @@ public class AABox {
 
     private final Vec3f min, max;
 
-
     public AABox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         this.min = new Vec3f(minX, minY, minZ);
         this.max = new Vec3f(maxX, maxY, maxZ);
@@ -34,39 +33,39 @@ public class AABox {
     }
 
     public void resize(AABox box) {
-        resize(box.min, box.max);
+        this.resize(box.min, box.max);
     }
 
 
     public void expand(double negativeX, double negativeY, double negativeZ, double positiveX, double positiveY, double positiveZ) {
-        resize(
+        this.resize(
             min.x - negativeX, min.y - negativeY, min.z - negativeZ,
             max.x + positiveX, max.y + positiveY, max.z + positiveZ
         );
     }
 
     public void expand(Vec3f negative, Vec3f positive) {
-        expand(negative.x, negative.y, negative.z, positive.x, positive.y, positive.z);
+        this.expand(negative.x, negative.y, negative.z, positive.x, positive.y, positive.z);
     }
 
     public void expand(double expandX, double expandY, double expandZ) {
-        expand(expandX, expandY, expandZ, expandX, expandY, expandZ);
+        this.expand(expandX, expandY, expandZ, expandX, expandY, expandZ);
     }
 
     public void expand(double expand) {
-        expand(expand, expand, expand);
+        this.expand(expand, expand, expand);
     }
 
 
     public void shift(double shiftX, double shiftY, double shiftZ) {
-        resize(
+        this.resize(
             min.x + shiftX, min.y + shiftY, min.z + shiftZ,
             max.x + shiftX, max.y + shiftY, max.z + shiftZ
         );
     }
 
     public void shift(Vec3f shift) {
-        shift(shift.x, shift.y, shift.z);
+        this.shift(shift.x, shift.y, shift.z);
     }
 
 
@@ -108,8 +107,8 @@ public class AABox {
         return (min.z + getSizeZ() * 0.5F);
     }
 
-    public Vec3f getCenter() {
-        return new Vec3f(getCenterX(), getCenterY(), getCenterZ());
+    public Vec3f getCenter(Vec3f dst) {
+        return dst.set(this.getCenterX(), this.getCenterY(), this.getCenterZ());
     }
 
 

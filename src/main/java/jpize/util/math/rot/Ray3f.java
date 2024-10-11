@@ -20,22 +20,26 @@ public class Ray3f {
     }
 
 
-    public void set(Vec3f origin, Vec3f direction) {
+    public Ray3f set(Vec3f origin, Vec3f direction) {
         this.origin.set(origin);
         this.direction.set(direction);
+        return this;
     }
 
-    public void set(Vec3f origin, Vec3f direction, float length) {
-        this.origin.set(origin);
-        this.direction.set(direction).mul(length);
+    public Ray3f set(Vec3f origin, Vec3f direction, float length) {
+        this.set(origin, direction);
+        direction.mul(length);
+        return this;
     }
 
-    public void set(Ray3f ray) {
-        set(ray.origin, ray.direction);
+    public Ray3f set(Ray3f ray) {
+        this.set(ray.origin, ray.direction);
+        return this;
     }
 
-    public void set(Vec3f direction) {
+    public Ray3f set(Vec3f direction) {
         direction.set(direction);
+        return this;
     }
 
 
@@ -52,27 +56,27 @@ public class Ray3f {
     }
 
 
-    public float getIntersectionAabb(AABoxBody box) {
-        return Intersector.getRayIntersectionAABox(this, box);
+    public float getIntersectAABB(AABoxBody box) {
+        return Intersector.getRayIntersectAABox(this, box);
     }
 
-    public boolean isIntersectAabb(AABoxBody box) {
+    public boolean isIntersectAABB(AABoxBody box) {
         return Intersector.isRayIntersectAABox(this, box);
     }
 
-    public float getIntersectionTriangle(Vec3f vertex1, Vec3f vertex2, Vec3f vertex3) {
-        return Intersector.getRayIntersectionTriangle(this, vertex1, vertex2, vertex3);
+    public float getIntersectTriangle(Vec3f vertex1, Vec3f vertex2, Vec3f vertex3) {
+        return Intersector.getRayIntersectTriangle(this, vertex1, vertex2, vertex3);
     }
 
-    public boolean isIntersectionTriangle(Vec3f vertex1, Vec3f vertex2, Vec3f vertex3) {
+    public boolean isIntersectTriangle(Vec3f vertex1, Vec3f vertex2, Vec3f vertex3) {
         return Intersector.isRayIntersectTriangle(this, vertex1, vertex2, vertex3);
     }
 
-    public float getIntersectionTriangle(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
-        return Intersector.getRayIntersectionTriangle(this, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+    public float getIntersectTriangle(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
+        return Intersector.getRayIntersectTriangle(this, x1, y1, z1, x2, y2, z2, x3, y3, z3);
     }
 
-    public boolean isIntersectionTriangle(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
+    public boolean isIntersectTriangle(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
         return Intersector.isRayIntersectTriangle(this, x1, y1, z1, x2, y2, z2, x3, y3, z3);
     }
 

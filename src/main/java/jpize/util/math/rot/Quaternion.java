@@ -14,24 +14,24 @@ public class Quaternion {
     }
 
     public Quaternion(Quaternion quat) {
-        set(quat);
+        this.set(quat);
     }
 
     public Quaternion(float x, float y, float z, float w) {
-        set(x, y, z, w);
+        this.set(x, y, z, w);
     }
 
     public Quaternion(Vec3f axis, float angle, boolean degrees) {
-        set(axis, angle, degrees);
+        this.set(axis, angle, degrees);
     }
 
     public Quaternion(EulerAngles eulerAngles) {
-        set(eulerAngles);
+        this.set(eulerAngles);
     }
 
 
     public Quaternion set(Quaternion quat) {
-        return set(quat.x, quat.y, quat.z, quat.w);
+        return this.set(quat.x, quat.y, quat.z, quat.w);
     }
 
     public Quaternion set(float x, float y, float z, float w) {
@@ -44,7 +44,7 @@ public class Quaternion {
     }
 
     public Quaternion set(double x, double y, double z, double w) {
-        return set((float) x, (float) y, (float) z, (float) w);
+        return this.set((float) x, (float) y, (float) z, (float) w);
     }
 
     public Quaternion set(Vec3f axis, double angleRad) {
@@ -58,7 +58,7 @@ public class Quaternion {
     }
 
     public Quaternion set(Vec3f axis, double angle, boolean degrees) {
-        return set(axis, (degrees ? (angle * Maths.toRad) : angle));
+        return this.set(axis, (degrees ? (angle * Maths.toRad) : angle));
     }
 
     public Quaternion set(double yaw, double pitch, double roll) {
@@ -86,7 +86,7 @@ public class Quaternion {
     }
 
     public Quaternion set(EulerAngles eulerAngles) {
-        return set(Maths.toRad * eulerAngles.yaw, Maths.toRad * eulerAngles.pitch, Maths.toRad * eulerAngles.roll);
+        return this.set(Maths.toRad * eulerAngles.yaw, Maths.toRad * eulerAngles.pitch, Maths.toRad * eulerAngles.roll);
     }
 
 
@@ -99,8 +99,7 @@ public class Quaternion {
     }
 
     public Quaternion nor() {
-        float len = len2();
-
+        float len = this.len2();
         if(len == 0 || len == 1)
             return this;
 
@@ -109,7 +108,6 @@ public class Quaternion {
         x *= len;
         y *= len;
         z *= len;
-
         return this;
     }
 
@@ -127,29 +125,29 @@ public class Quaternion {
     }
 
     public float getRollRad() {
-        final int pole = getGimbalPole();
+        final int pole = this.getGimbalPole();
         return pole == 0 ? Mathc.atan2(2 * (w * z + y * x), 1 - 2 * (x * x + z * z)) : pole * 2 * Mathc.atan2(y, w);
     }
 
     public float getRoll() {
-        return getRollRad() * Maths.toDeg;
+        return this.getRollRad() * Maths.toDeg;
     }
 
     public float getPitchRad() {
-        final int pole = getGimbalPole();
+        final int pole = this.getGimbalPole();
         return pole == 0 ? Mathc.asin(Maths.clamp(2 * (w * x - z * y), -1, 1)) : pole * Maths.pi * 0.5F;
     }
 
     public float getPitch() {
-        return getPitchRad() * Maths.toDeg;
+        return this.getPitchRad() * Maths.toDeg;
     }
 
     public float getYawRad() {
-        return getGimbalPole() == 0 ? Mathc.atan2(2 * (y * w + x * z), 1 - 2 * (y * y + x * x)) : 0;
+        return this.getGimbalPole() == 0 ? Mathc.atan2(2 * (y * w + x * z), 1 - 2 * (y * y + x * x)) : 0;
     }
 
     public float getYaw() {
-        return getYawRad() * Maths.toDeg;
+        return this.getYawRad() * Maths.toDeg;
     }
 
 

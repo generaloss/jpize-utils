@@ -14,15 +14,15 @@ public class Matrix3f implements Matrix3 {
     /* Constructor */
 
     public Matrix3f() {
-        val = new float[16];
-        val[m00] = 1;
-        val[m11] = 1;
-        val[m22] = 1;
+        this.val = new float[16];
+        this.val[m00] = 1;
+        this.val[m11] = 1;
+        this.val[m22] = 1;
     }
 
     public Matrix3f(float[] values) {
-        val = new float[16];
-        set(values);
+        this.val = new float[16];
+        this.set(values);
     }
 
     public Matrix3f(Matrix3f matrix) {
@@ -38,7 +38,7 @@ public class Matrix3f implements Matrix3 {
     }
 
     public Matrix3f set(Matrix3f matrix) {
-        set(matrix.val);
+        this.set(matrix.val);
         return this;
     }
 
@@ -86,7 +86,7 @@ public class Matrix3f implements Matrix3 {
     /* Set Translate */
 
     public Matrix3f setTranslate(float x, float y) {
-        identity();
+        this.identity();
         val[m20] = x;
         val[m21] = y;
         return this;
@@ -108,38 +108,37 @@ public class Matrix3f implements Matrix3 {
     /* Set Scale */
 
     public Matrix3f setScale(float x, float y) {
-        identity();
+        this.identity();
         val[m00] = x;
         val[m11] = y;
         return this;
     }
 
     public Matrix3f setScale(float scale) {
-        return setScale(scale, scale);
+        return this.setScale(scale, scale);
     }
 
     public Matrix3f setScale(double scale) {
-        return setScale((float) scale);
+        return this.setScale((float) scale);
     }
 
     public Matrix3f setScale(Vec2f vec2) {
-        return setScale(vec2.x, vec2.y);
+        return this.setScale(vec2.x, vec2.y);
     }
 
     public Matrix3f setScale(Vec2d vec2) {
-        return setScale((float) vec2.x, (float) vec2.y);
+        return this.setScale((float) vec2.x, (float) vec2.y);
     }
 
     public Matrix3f setScale(Vec2i vec2) {
-        return setScale(vec2.x, vec2.y);
+        return this.setScale(vec2.x, vec2.y);
     }
 
 
     /* Set Rotation */
 
     public Matrix3f setRotation(double degrees) {
-        identity();
-
+        this.identity();
         final float cos = Maths.cosDeg(degrees);
         final float sin = Maths.sinDeg(degrees);
 
@@ -147,7 +146,6 @@ public class Matrix3f implements Matrix3 {
         val[m10] = sin;
         val[m01] = -sin;
         val[m11] = cos;
-
         return this;
     }
 
@@ -179,7 +177,7 @@ public class Matrix3f implements Matrix3 {
     /* Set Shear */
 
     public Matrix3f setShear(double degreesX, double degreesY) {
-        identity();
+        this.identity();
         val[m10] = Maths.tanDeg(degreesX);
         val[m01] = Maths.tanDeg(degreesY);
         return this;
@@ -210,9 +208,9 @@ public class Matrix3f implements Matrix3 {
     /* Linear Interpolation */
 
     public Matrix3f lerp(Matrix3f matrix, float t) {
-        final float ti = 1 - t;
+        final float inv_t = (1F - t);
         for(int i = 0; i < 9; i++)
-            val[i] = val[i] * ti + matrix.val[i] * t;
+            val[i] = (val[i] * inv_t + matrix.val[i] * t);
         return this;
     }
 
@@ -235,11 +233,11 @@ public class Matrix3f implements Matrix3 {
     }
 
     public Matrix3f mul(Matrix3f matrix) {
-        return set(mul(this, matrix));
+        return this.set(mul(this, matrix));
     }
 
     public Matrix3f mul(float[] values) {
-        return set(mul(this.val, values));
+        return this.set(mul(this.val, values));
     }
 
 
@@ -273,8 +271,8 @@ public class Matrix3f implements Matrix3 {
         if(object == null || getClass() != object.getClass())
             return false;
 
-        final Matrix3f mat = (Matrix3f) object;
-        return Arrays.compare(val, mat.val) == 0;
+        final Matrix3f matrix = (Matrix3f) object;
+        return Arrays.compare(val, matrix.val) == 0;
     }
 
     @Override

@@ -6,7 +6,6 @@ public class AARect {
 
     private final Vec2f min, max;
 
-
     public AARect(double minX, double minY, double maxX, double maxY) {
         this.min = new Vec2f(minX, minY);
         this.max = new Vec2f(maxX, maxY);
@@ -34,39 +33,39 @@ public class AARect {
     }
 
     public void resize(AARect box) {
-        resize(box.min, box.max);
+        this.resize(box.min, box.max);
     }
 
 
     public void expand(double negativeX, double negativeY, double positiveX, double positiveY) {
-        resize(
+        this.resize(
             min.x - negativeX, min.y - negativeY,
             max.x + positiveX, max.y + positiveY
         );
     }
 
     public void expand(Vec2f negative, Vec2f positive) {
-        expand(negative.x, negative.y, positive.x, positive.y);
+        this.expand(negative.x, negative.y, positive.x, positive.y);
     }
 
     public void expand(double expandX, double expandY) {
-        expand(expandX, expandY, expandX, expandY);
+        this.expand(expandX, expandY, expandX, expandY);
     }
 
     public void expand(double expand) {
-        expand(expand, expand);
+        this.expand(expand, expand);
     }
 
 
     public void shift(double shiftX, double shiftY) {
-        resize(
+        this.resize(
             min.x + shiftX, min.y + shiftY,
             max.x + shiftX, max.y + shiftY
         );
     }
 
     public void shift(Vec2f shift) {
-        shift(shift.x, shift.y);
+        this.shift(shift.x, shift.y);
     }
 
 
@@ -89,19 +88,19 @@ public class AARect {
 
 
     public float getArea() {
-        return getHeight() * getWidth();
+        return this.getHeight() * this.getWidth();
     }
 
     public float getCenterX() {
-        return (min.x + getWidth() * 0.5F);
+        return (min.x + this.getWidth() * 0.5F);
     }
 
     public float getCenterY() {
-        return (min.y + getHeight() * 0.5F);
+        return (min.y + this.getHeight() * 0.5F);
     }
 
-    public Vec2f getCenter() {
-        return new Vec2f(getCenterX(), getCenterY());
+    public Vec2f getCenter(Vec2f dst) {
+        return dst.set(this.getCenterX(), this.getCenterY());
     }
 
 

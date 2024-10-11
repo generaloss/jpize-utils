@@ -59,7 +59,7 @@ public class AABoxBody {
     }
 
     public float getIntersectionRay(Ray3f ray) {
-        return Intersector.getRayIntersectionAABox(ray, this);
+        return Intersector.getRayIntersectAABox(ray, this);
     }
 
     public boolean isIntersectRay(Ray3f ray) {

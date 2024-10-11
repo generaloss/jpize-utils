@@ -4,7 +4,7 @@
 
     <groupId>io.github.generaloss</groupId>
     <artifactId>jpize-utils</artifactId>
-    <version>24.9.3</version>
+    <version>24.9.3-dev01</version>
     <name>jpize-utils</name>
 
     <description>utilities library</description>
@@ -32,7 +32,7 @@
 
     <build>
         <plugins>
-            <!-- Attach Sources -->
+            <!-- attach sources -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -46,7 +46,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Attach Javadocs -->
+            <!-- attach javadocs -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -64,7 +64,7 @@
                     <javadocExecutable>/usr/lib/jvm/java-17-openjdk/bin/javadoc</javadocExecutable>
                 </configuration>
             </plugin>
-            <!-- Sign Jar with GPG -->
+            <!-- sign jar with gpg key -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -79,7 +79,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Deploy to Maven Central -->
+            <!-- deploy to maven central repository -->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -107,7 +107,7 @@
             <version>23.0.0</version>
             <scope>compile</scope>
         </dependency>
-        <!-- JUnit -->
+        <!-- junit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

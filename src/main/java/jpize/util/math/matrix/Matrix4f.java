@@ -20,15 +20,15 @@ public class Matrix4f implements Matrix4 {
     /* Constructor */
 
     public Matrix4f() {
-        val = new float[16];
-        val[m00] = 1;
-        val[m11] = 1;
-        val[m22] = 1;
-        val[m33] = 1;
+        this.val = new float[16];
+        this.val[m00] = 1;
+        this.val[m11] = 1;
+        this.val[m22] = 1;
+        this.val[m33] = 1;
     }
 
     public Matrix4f(float[] values) {
-        val = new float[16];
+        this.val = new float[16];
         set(values);
     }
 
@@ -45,7 +45,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f set(Matrix4f matrix) {
-        set(matrix.val);
+        this.set(matrix.val);
         return this;
     }
 
@@ -191,15 +191,15 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setLookAlong(Vec3f right, Vec3f up, Vec3f forward) {
-        return setLookAlong(right.x, right.y, right.z, up.x, up.y, up.z, forward.x, forward.y, forward.z);
+        return this.setLookAlong(right.x, right.y, right.z, up.x, up.y, up.z, forward.x, forward.y, forward.z);
     }
 
     public Matrix4f setLookAlong(float posX, float posY, float posZ, Vec3f right, Vec3f up, Vec3f forward) {
-        return setLookAlong(right, up, forward).translate(-posX, -posY, -posZ);
+        return this.setLookAlong(right, up, forward).translate(-posX, -posY, -posZ);
     }
 
     public Matrix4f setLookAlong(Vec3f pos, Vec3f right, Vec3f up, Vec3f forward) {
-        return setLookAlong(pos.x, pos.y, pos.z, right, up, forward);
+        return this.setLookAlong(pos.x, pos.y, pos.z, right, up, forward);
     }
 
 
@@ -210,11 +210,11 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setLookAlong(float posX, float posY, float posZ, Vec3f direction) {
-        return setLookAlong(direction).translate(-posX, -posY, -posZ);
+        return this.setLookAlong(direction).translate(-posX, -posY, -posZ);
     }
 
     public Matrix4f setLookAlong(Vec3f position, Vec3f direction) {
-        return setLookAlong(position.x, position.y, position.z, direction);
+        return this.setLookAlong(position.x, position.y, position.z, direction);
     }
 
 
@@ -258,7 +258,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setLookAt(Vec3f eye, Vec3f center, Vec3f up) {
-        return setLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+        return this.setLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
     }
 
 
@@ -331,7 +331,7 @@ public class Matrix4f implements Matrix4 {
     /* Set Translated */
 
     public Matrix4f setTranslate(float x, float y, float z) {
-        identity();
+        this.identity();
         val[m30] = x;
         val[m31] = y;
         val[m32] = z;
@@ -339,7 +339,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setTranslate(float x, float y) {
-        identity();
+        this.identity();
         val[m30] = x;
         val[m31] = y;
         return this;
@@ -439,7 +439,7 @@ public class Matrix4f implements Matrix4 {
     /* Set Scale */
 
     public Matrix4f setScale(float x, float y, float z) {
-        identity();
+        this.identity();
         val[m00] = x;
         val[m11] = y;
         val[m22] = z;
@@ -447,57 +447,58 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setScale(float x, float y) {
-        identity();
+        this.identity();
         val[m00] = x;
         val[m11] = y;
         return this;
     }
 
     public Matrix4f setScale(float scale) {
-        return setScale(scale, scale, scale);
+        return this.setScale(scale, scale, scale);
     }
 
     public Matrix4f setScale(double scale) {
-        return setScale((float) scale);
+        return this.setScale((float) scale);
     }
 
     public Matrix4f setScale(Vec3f vec3) {
-        return setScale(vec3.x, vec3.y, vec3.z);
+        return this.setScale(vec3.x, vec3.y, vec3.z);
     }
 
     public Matrix4f setScale(Vec3d vec3) {
-        return setScale((float) vec3.x, (float) vec3.y, (float) vec3.z);
+        return this.setScale((float) vec3.x, (float) vec3.y, (float) vec3.z);
     }
 
     public Matrix4f setScale(Vec3i vec3) {
-        return setScale(vec3.x, vec3.y, vec3.z);
+        return this.setScale(vec3.x, vec3.y, vec3.z);
     }
 
     public Matrix4f setScale(Vec2f vec2) {
-        return setScale(vec2.x, vec2.y);
+        return this.setScale(vec2.x, vec2.y);
     }
 
     public Matrix4f setScale(Vec2d vec2) {
-        return setScale((float) vec2.x, (float) vec2.y);
+        return this.setScale((float) vec2.x, (float) vec2.y);
     }
 
     public Matrix4f setScale(Vec2i vec2) {
-        return setScale(vec2.x, vec2.y);
+        return this.setScale(vec2.x, vec2.y);
     }
 
 
-    public Vec3f getScale(Vec3f vec3) {
-        vec3.x = Mathc.sqrt(val[m00] * val[m00] + val[m10] * val[m10] + val[m20] * val[m20]);
-        vec3.y = Mathc.sqrt(val[m01] * val[m01] + val[m11] * val[m11] + val[m21] * val[m21]);
-        vec3.z = Mathc.sqrt(val[m02] * val[m02] + val[m12] * val[m12] + val[m22] * val[m22]);
-        return vec3;
+    public Vec3f getScale(Vec3f dst) {
+        return dst.set(
+            Mathc.sqrt(val[m00] * val[m00] + val[m10] * val[m10] + val[m20] * val[m20]),
+            Mathc.sqrt(val[m01] * val[m01] + val[m11] * val[m11] + val[m21] * val[m21]),
+            Mathc.sqrt(val[m02] * val[m02] + val[m12] * val[m12] + val[m22] * val[m22])
+        );
     }
 
 
     /* Rotate */
 
     public Matrix4f rotate(EulerAngles angles) {
-        return rotateXYZ(angles.yaw, angles.pitch, angles.roll);
+        return this.rotateXYZ(angles.yaw, angles.pitch, angles.roll);
     }
 
     public Matrix4 rotate(Quaternion rotation) {
@@ -777,7 +778,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotationX(double degrees) {
-        identity();
+        this.identity();
         final float cos = Maths.cosDeg(degrees);
         final float sin = Maths.sinDeg(degrees);
         val[m11] = cos;
@@ -788,7 +789,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotationY(double degrees) {
-        identity();
+        this.identity();
         final float cos = Maths.cosDeg(degrees);
         final float sin = Maths.sinDeg(degrees);
         val[m00] = cos;
@@ -799,7 +800,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotationZ(double degrees) {
-        identity();
+        this.identity();
         final float cos = Maths.cosDeg(degrees);
         final float sin = Maths.sinDeg(degrees);
         val[m00] = cos;
@@ -989,15 +990,15 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4 setQuaternion(Vec3f position, float qx, float qy, float qz, float qw) {
-        return setQuaternion(position.x, position.y, position.z, qx, qy, qz, qw);
+        return this.setQuaternion(position.x, position.y, position.z, qx, qy, qz, qw);
     }
 
     public Matrix4 setQuaternion(float x, float y, float z, Quaternion quaternion) {
-        return setQuaternion(x, y, z, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+        return this.setQuaternion(x, y, z, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     }
 
     public Matrix4 setQuaternion(Vec3f position, Quaternion quaternion) {
-        return setQuaternion(position.x, position.y, position.z, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+        return this.setQuaternion(position.x, position.y, position.z, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     }
 
 
@@ -1038,31 +1039,31 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4 setQuaternion(Vec3f position, float scaleX, float scaleY, float scaleZ, float quaternionX, float quaternionY, float quaternionZ, float quaternionW) {
-        return setQuaternion(position.x, position.y, position.z, scaleX, scaleY, scaleZ, quaternionX, quaternionY, quaternionZ, quaternionW);
+        return this.setQuaternion(position.x, position.y, position.z, scaleX, scaleY, scaleZ, quaternionX, quaternionY, quaternionZ, quaternionW);
     }
 
     public Matrix4 setQuaternion(float x, float y, float z, Vec3f scale, float quaternionX, float quaternionY, float quaternionZ, float quaternionW) {
-        return setQuaternion(x, y, z, scale.x, scale.y, scale.z, quaternionX, quaternionY, quaternionZ, quaternionW);
+        return this.setQuaternion(x, y, z, scale.x, scale.y, scale.z, quaternionX, quaternionY, quaternionZ, quaternionW);
     }
 
     public Matrix4 setQuaternion(Vec3f position, Vec3f scale, float quaternionX, float quaternionY, float quaternionZ, float quaternionW) {
-        return setQuaternion(position.x, position.y, position.z, scale.x, scale.y, scale.z, quaternionX, quaternionY, quaternionZ, quaternionW);
+        return this.setQuaternion(position.x, position.y, position.z, scale.x, scale.y, scale.z, quaternionX, quaternionY, quaternionZ, quaternionW);
     }
 
     public Matrix4 setQuaternion(float x, float y, float z, float scaleX, float scaleY, float scaleZ, Quaternion quaternion) {
-        return setQuaternion(x, y, z, scaleX, scaleY, scaleZ, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+        return this.setQuaternion(x, y, z, scaleX, scaleY, scaleZ, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     }
 
     public Matrix4 setQuaternion(Vec3f position, float scaleX, float scaleY, float scaleZ, Quaternion quaternion) {
-        return setQuaternion(position.x, position.y, position.z, scaleX, scaleY, scaleZ, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+        return this.setQuaternion(position.x, position.y, position.z, scaleX, scaleY, scaleZ, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     }
 
     public Matrix4 setQuaternion(float x, float y, float z, Vec3f scale, Quaternion quaternion) {
-        return setQuaternion(x, y, z, scale.x, scale.y, scale.z, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+        return this.setQuaternion(x, y, z, scale.x, scale.y, scale.z, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     }
 
     public Matrix4 setQuaternion(Vec3f position, Vec3f scale, Quaternion quaternion) {
-        return setQuaternion(position.x, position.y, position.z, scale.x, scale.y, scale.z, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+        return this.setQuaternion(position.x, position.y, position.z, scale.x, scale.y, scale.z, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     }
 
 
@@ -1168,8 +1169,8 @@ public class Matrix4f implements Matrix4 {
         if(object == null || getClass() != object.getClass())
             return false;
 
-        final Matrix4f mat = (Matrix4f) object;
-        return Arrays.compare(val, mat.val) == 0;
+        final Matrix4f matrix = (Matrix4f) object;
+        return Arrays.compare(val, matrix.val) == 0;
     }
 
     @Override
