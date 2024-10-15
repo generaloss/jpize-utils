@@ -95,11 +95,11 @@ public class Vec3i {
     }
 
     public Vec3i set(float xyz) {
-        return set((int) xyz);
+        return this.set((int) xyz);
     }
 
     public Vec3i set(double xyz) {
-        return set((int) xyz);
+        return this.set((int) xyz);
     }
 
     public Vec3i set(int x, int y) {
@@ -109,11 +109,11 @@ public class Vec3i {
     }
 
     public Vec3i set(float x, float y) {
-        return set((int) x, (int) y);
+        return this.set((int) x, (int) y);
     }
 
     public Vec3i set(double x, double y) {
-        return set((int) x, (int) y);
+        return this.set((int) x, (int) y);
     }
 
     public Vec3i set(int x, int y, int z) {
@@ -124,35 +124,35 @@ public class Vec3i {
     }
 
     public Vec3i set(float x, float y, float z) {
-        return set((int) x, (int) y, (int) z);
+        return this.set((int) x, (int) y, (int) z);
     }
 
     public Vec3i set(double x, double y, double z) {
-        return set((int) x, (int) y, (int) z);
+        return this.set((int) x, (int) y, (int) z);
     }
 
     public Vec3i set(Vec2f vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec3i set(Vec2d vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec3i set(Vec2i vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec3i set(Vec3f vector) {
-        return set(vector.x, vector.y, vector.z);
+        return this.set(vector.x, vector.y, vector.z);
     }
 
     public Vec3i set(Vec3d vector) {
-        return set(vector.x, vector.y, vector.z);
+        return this.set(vector.x, vector.y, vector.z);
     }
 
     public Vec3i set(Vec3i vector) {
-        return set(vector.x, vector.y, vector.z);
+        return this.set(vector.x, vector.y, vector.z);
     }
 
     public Vec3i setXY(int x, int y) {
@@ -206,11 +206,11 @@ public class Vec3i {
     }
 
     public Vec3i add(float xyz) {
-        return add((int) xyz);
+        return this.add((int) xyz);
     }
 
     public Vec3i add(double xyz) {
-        return add((int) xyz);
+        return this.add((int) xyz);
     }
 
     public Vec3i add(int x, int y) {
@@ -220,11 +220,11 @@ public class Vec3i {
     }
 
     public Vec3i add(float x, float y) {
-        return add((int) x, (int) y);
+        return this.add((int) x, (int) y);
     }
 
     public Vec3i add(double x, double y) {
-        return add((int) x, (int) y);
+        return this.add((int) x, (int) y);
     }
 
     public Vec3i add(int x, int y, int z) {
@@ -235,35 +235,35 @@ public class Vec3i {
     }
 
     public Vec3i add(float x, float y, float z) {
-        return add((int) x, (int) y, (int) z);
+        return this.add((int) x, (int) y, (int) z);
     }
 
     public Vec3i add(double x, double y, double z) {
-        return add((int) x, (int) y, (int) z);
+        return this.add((int) x, (int) y, (int) z);
     }
 
     public Vec3i add(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec3i add(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec3i add(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec3i add(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return this.add(vector.x, vector.y, vector.z);
     }
 
     public Vec3i add(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return this.add(vector.x, vector.y, vector.z);
     }
 
     public Vec3i add(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return this.add(vector.x, vector.y, vector.z);
     }
 
     public Vec3i addXY(int x, int y) {
@@ -317,11 +317,11 @@ public class Vec3i {
     }
 
     public Vec3i sub(float xyz) {
-        return sub((int) xyz);
+        return this.sub((int) xyz);
     }
 
     public Vec3i sub(double xyz) {
-        return sub((int) xyz);
+        return this.sub((int) xyz);
     }
 
     public Vec3i sub(int x, int y) {
@@ -331,11 +331,11 @@ public class Vec3i {
     }
 
     public Vec3i sub(float x, float y) {
-        return sub((int) x, (int) y);
+        return this.sub((int) x, (int) y);
     }
 
     public Vec3i sub(double x, double y) {
-        return sub((int) x, (int) y);
+        return this.sub((int) x, (int) y);
     }
 
     public Vec3i sub(int x, int y, int z) {
@@ -346,35 +346,35 @@ public class Vec3i {
     }
 
     public Vec3i sub(float x, float y, float z) {
-        return sub((int) x, (int) y, (int) z);
+        return this.sub((int) x, (int) y, (int) z);
     }
 
     public Vec3i sub(double x, double y, double z) {
-        return sub((int) x, (int) y, (int) z);
+        return this.sub((int) x, (int) y, (int) z);
     }
 
     public Vec3i sub(Vec2f vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec3i sub(Vec2d vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec3i sub(Vec2i vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec3i sub(Vec3f vector) {
-        return sub(vector.x, vector.y, vector.z);
+        return this.sub(vector.x, vector.y, vector.z);
     }
 
     public Vec3i sub(Vec3d vector) {
-        return sub(vector.x, vector.y, vector.z);
+        return this.sub(vector.x, vector.y, vector.z);
     }
 
     public Vec3i sub(Vec3i vector) {
-        return sub(vector.x, vector.y, vector.z);
+        return this.sub(vector.x, vector.y, vector.z);
     }
 
     public Vec3i subXY(int x, int y) {
@@ -428,11 +428,11 @@ public class Vec3i {
     }
 
     public Vec3i mul(float xyz) {
-        return mul((int) xyz);
+        return this.mul((int) xyz);
     }
 
     public Vec3i mul(double xyz) {
-        return mul((int) xyz);
+        return this.mul((int) xyz);
     }
 
     public Vec3i mul(int x, int y) {
@@ -442,11 +442,11 @@ public class Vec3i {
     }
 
     public Vec3i mul(float x, float y) {
-        return mul((int) x, (int) y);
+        return this.mul((int) x, (int) y);
     }
 
     public Vec3i mul(double x, double y) {
-        return mul((int) x, (int) y);
+        return this.mul((int) x, (int) y);
     }
 
     public Vec3i mul(int x, int y, int z) {
@@ -457,35 +457,35 @@ public class Vec3i {
     }
 
     public Vec3i mul(float x, float y, float z) {
-        return mul((int) x, (int) y, (int) z);
+        return this.mul((int) x, (int) y, (int) z);
     }
 
     public Vec3i mul(double x, double y, double z) {
-        return mul((int) x, (int) y, (int) z);
+        return this.mul((int) x, (int) y, (int) z);
     }
 
     public Vec3i mul(Vec2f vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec3i mul(Vec2d vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec3i mul(Vec2i vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec3i mul(Vec3f vector) {
-        return mul(vector.x, vector.y, vector.z);
+        return this.mul(vector.x, vector.y, vector.z);
     }
 
     public Vec3i mul(Vec3d vector) {
-        return mul(vector.x, vector.y, vector.z);
+        return this.mul(vector.x, vector.y, vector.z);
     }
 
     public Vec3i mul(Vec3i vector) {
-        return mul(vector.x, vector.y, vector.z);
+        return this.mul(vector.x, vector.y, vector.z);
     }
 
     public Vec3i mulXY(int x, int y) {
@@ -539,11 +539,11 @@ public class Vec3i {
     }
 
     public Vec3i div(float xyz) {
-        return div((int) xyz);
+        return this.div((int) xyz);
     }
 
     public Vec3i div(double xyz) {
-        return div((int) xyz);
+        return this.div((int) xyz);
     }
 
     public Vec3i div(int x, int y) {
@@ -553,11 +553,11 @@ public class Vec3i {
     }
 
     public Vec3i div(float x, float y) {
-        return div((int) x, (int) y);
+        return this.div((int) x, (int) y);
     }
 
     public Vec3i div(double x, double y) {
-        return div((int) x, (int) y);
+        return this.div((int) x, (int) y);
     }
 
     public Vec3i div(int x, int y, int z) {
@@ -568,35 +568,35 @@ public class Vec3i {
     }
 
     public Vec3i div(float x, float y, float z) {
-        return div((int) x, (int) y, (int) z);
+        return this.div((int) x, (int) y, (int) z);
     }
 
     public Vec3i div(double x, double y, double z) {
-        return div((int) x, (int) y, (int) z);
+        return this.div((int) x, (int) y, (int) z);
     }
 
     public Vec3i div(Vec2f vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec3i div(Vec2d vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec3i div(Vec2i vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec3i div(Vec3f vector) {
-        return div(vector.x, vector.y, vector.z);
+        return this.div(vector.x, vector.y, vector.z);
     }
 
     public Vec3i div(Vec3d vector) {
-        return div(vector.x, vector.y, vector.z);
+        return this.div(vector.x, vector.y, vector.z);
     }
 
     public Vec3i div(Vec3i vector) {
-        return div(vector.x, vector.y, vector.z);
+        return this.div(vector.x, vector.y, vector.z);
     }
 
     public Vec3i divXY(int x, int y) {
@@ -738,36 +738,36 @@ public class Vec3i {
 
 
     public Vec3i setShorter(Vec3i vector1, Vec3i vector2) {
-        return set(shorter(vector1, vector2));
+        return this.set(shorter(vector1, vector2));
     }
 
     public Vec3i setLonger(Vec3i vector1, Vec3i vector2) {
-        return set(longer(vector1, vector2));
+        return this.set(longer(vector1, vector2));
     }
 
 
     public Vec3i setMinComps(Vec3i vector1, int x2, int y2, int z2) {
-        return set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2));
+        return this.set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2));
     }
 
     public Vec3i setMinComps(Vec3i vector1, int xyz2) {
-        return setMinComps(vector1, xyz2, xyz2, xyz2);
+        return this.setMinComps(vector1, xyz2, xyz2, xyz2);
     }
 
     public Vec3i setMinComps(Vec3i vector1, Vec3i vector2) {
-        return setMinComps(vector1, vector2.x, vector2.y, vector2.z);
+        return this.setMinComps(vector1, vector2.x, vector2.y, vector2.z);
     }
 
     public Vec3i setMaxComps(Vec3i vector1, int x2, int y2, int z2) {
-        return set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2));
+        return this.set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2));
     }
 
     public Vec3i setMaxComps(Vec3i vector1, int xyz2) {
-        return setMaxComps(vector1, xyz2, xyz2, xyz2);
+        return this.setMaxComps(vector1, xyz2, xyz2, xyz2);
     }
 
     public Vec3i setMaxComps(Vec3i vector1, Vec3i vector2) {
-        return setMaxComps(vector1, vector2.x, vector2.y, vector2.z);
+        return this.setMaxComps(vector1, vector2.x, vector2.y, vector2.z);
     }
 
 
@@ -781,7 +781,7 @@ public class Vec3i {
 
 
     public Vec3i zero() {
-        return set(0);
+        return this.set(0);
     }
 
     public boolean isZero() {
@@ -799,35 +799,35 @@ public class Vec3i {
     }
 
     public Vec3i zeroThatLess(float x, float y, float z) {
-        return zeroThatLess((int) x, (int) y, (int) z);
+        return this.zeroThatLess((int) x, (int) y, (int) z);
     }
 
     public Vec3i zeroThatLess(double x, double y, double z) {
-        return zeroThatLess((int) x, (int) y, (int) z);
+        return this.zeroThatLess((int) x, (int) y, (int) z);
     }
 
     public Vec3i zeroThatLess(float xyz) {
-        return zeroThatLess(xyz, xyz, xyz);
+        return this.zeroThatLess(xyz, xyz, xyz);
     }
 
     public Vec3i zeroThatLess(double xyz) {
-        return zeroThatLess(xyz, xyz, xyz);
+        return this.zeroThatLess(xyz, xyz, xyz);
     }
 
     public Vec3i zeroThatLess(int xyz) {
-        return zeroThatLess(xyz, xyz, xyz);
+        return this.zeroThatLess(xyz, xyz, xyz);
     }
 
     public Vec3i zeroThatLess(Vec3f vector) {
-        return zeroThatLess(vector.x, vector.y, vector.z);
+        return this.zeroThatLess(vector.x, vector.y, vector.z);
     }
 
     public Vec3i zeroThatLess(Vec3d vector) {
-        return zeroThatLess(vector.x, vector.y, vector.z);
+        return this.zeroThatLess(vector.x, vector.y, vector.z);
     }
 
     public Vec3i zeroThatLess(Vec3i vector) {
-        return zeroThatLess(vector.x, vector.y, vector.z);
+        return this.zeroThatLess(vector.x, vector.y, vector.z);
     }
 
     public Vec3i zeroThatZero(int x, int y, int z) {
@@ -841,35 +841,35 @@ public class Vec3i {
     }
 
     public Vec3i zeroThatZero(float x, float y, float z) {
-        return zeroThatZero((int) x, (int) y, (int) z);
+        return this.zeroThatZero((int) x, (int) y, (int) z);
     }
 
     public Vec3i zeroThatZero(double x, double y, double z) {
-        return zeroThatZero((int) x, (int) y, (int) z);
+        return this.zeroThatZero((int) x, (int) y, (int) z);
     }
 
     public Vec3i zeroThatZero(float xyz) {
-        return zeroThatZero(xyz, xyz, xyz);
+        return this.zeroThatZero(xyz, xyz, xyz);
     }
 
     public Vec3i zeroThatZero(double xyz) {
-        return zeroThatZero(xyz, xyz, xyz);
+        return this.zeroThatZero(xyz, xyz, xyz);
     }
 
     public Vec3i zeroThatZero(int xyz) {
-        return zeroThatZero(xyz, xyz, xyz);
+        return this.zeroThatZero(xyz, xyz, xyz);
     }
 
     public Vec3i zeroThatZero(Vec3f vector) {
-        return zeroThatZero(vector.x, vector.y, vector.z);
+        return this.zeroThatZero(vector.x, vector.y, vector.z);
     }
 
     public Vec3i zeroThatZero(Vec3d vector) {
-        return zeroThatZero(vector.x, vector.y, vector.z);
+        return this.zeroThatZero(vector.x, vector.y, vector.z);
     }
 
     public Vec3i zeroThatZero(Vec3i vector) {
-        return zeroThatZero(vector.x, vector.y, vector.z);
+        return this.zeroThatZero(vector.x, vector.y, vector.z);
     }
 
     public Vec3i zeroThatBigger(int x, int y, int z) {
@@ -883,35 +883,35 @@ public class Vec3i {
     }
 
     public Vec3i zeroThatBigger(float x, float y, float z) {
-        return zeroThatBigger((int) x, (int) y, (int) z);
+        return this.zeroThatBigger((int) x, (int) y, (int) z);
     }
 
     public Vec3i zeroThatBigger(double x, double y, double z) {
-        return zeroThatBigger((int) x, (int) y, (int) z);
+        return this.zeroThatBigger((int) x, (int) y, (int) z);
     }
 
     public Vec3i zeroThatBigger(float xyz) {
-        return zeroThatBigger(xyz, xyz, xyz);
+        return this.zeroThatBigger(xyz, xyz, xyz);
     }
 
     public Vec3i zeroThatBigger(double xyz) {
-        return zeroThatBigger(xyz, xyz, xyz);
+        return this.zeroThatBigger(xyz, xyz, xyz);
     }
 
     public Vec3i zeroThatBigger(int xyz) {
-        return zeroThatBigger(xyz, xyz, xyz);
+        return this.zeroThatBigger(xyz, xyz, xyz);
     }
 
     public Vec3i zeroThatBigger(Vec3f vector) {
-        return zeroThatBigger(vector.x, vector.y, vector.z);
+        return this.zeroThatBigger(vector.x, vector.y, vector.z);
     }
 
     public Vec3i zeroThatBigger(Vec3d vector) {
-        return zeroThatBigger(vector.x, vector.y, vector.z);
+        return this.zeroThatBigger(vector.x, vector.y, vector.z);
     }
 
     public Vec3i zeroThatBigger(Vec3i vector) {
-        return zeroThatBigger(vector.x, vector.y, vector.z);
+        return this.zeroThatBigger(vector.x, vector.y, vector.z);
     }
 
 
@@ -970,7 +970,11 @@ public class Vec3i {
 
 
     public static Vec3i lerp(Vec3i vector, int startX, int startY, int startZ, int endX, int endY, int endZ, float t) {
-        return vector.set(Maths.lerp(startX, endX, t), Maths.lerp(startY, endY, t), Maths.lerp(startZ, endZ, t));
+        return vector.set(
+            Maths.lerp(startX, endX, t),
+            Maths.lerp(startY, endY, t),
+            Maths.lerp(startZ, endZ, t)
+        );
     }
 
     public static Vec3i lerp(Vec3i vector, Vec3i start, Vec3i end, float t) {
@@ -1036,19 +1040,19 @@ public class Vec3i {
     }
 
     public Vec3i setCrs(int x1, int y1, int z1, int x2, int y2, int z2) {
-        return set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));
+        return this.set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));
     }
 
     public Vec3i setCrs(Vec3i vector1, int x2, int y2, int z2) {
-        return setCrs(vector1.x, vector1.y, vector1.z, x2, y2, z2);
+        return this.setCrs(vector1.x, vector1.y, vector1.z, x2, y2, z2);
     }
 
     public Vec3i setCrs(int x1, int y1, int z1, Vec3i vector2) {
-        return setCrs(x1, y1, z1, vector2.x, vector2.y, vector2.z);
+        return this.setCrs(x1, y1, z1, vector2.x, vector2.y, vector2.z);
     }
 
     public Vec3i setCrs(Vec3i vector1, Vec3i vector2) {
-        return setCrs(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+        return this.setCrs(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
 
@@ -1110,36 +1114,36 @@ public class Vec3i {
     public Vec3i rotateRadX(double radians) {
         final double cos = Math.cos(radians);
         final double sin = Math.sin(radians);
-        return setYZ((y * cos + z * sin), (y * -sin + z * cos));
+        return this.setYZ((y * cos + z * sin), (y * -sin + z * cos));
     }
 
     public Vec3i rotateRadY(double radians) {
         final double cos = Math.cos(radians);
         final double sin = Math.sin(radians);
-        return setXZ((x * cos + z * -sin), (x * sin + z * cos));
+        return this.setXZ((x * cos + z * -sin), (x * sin + z * cos));
     }
 
     public Vec3i rotateRadZ(double radians) {
         final double cos = Math.cos(radians);
         final double sin = Math.sin(radians);
-        return setXY((x * cos + y * sin), (x * -sin + y * cos));
+        return this.setXY((x * cos + y * sin), (x * -sin + y * cos));
     }
 
     public Vec3i rotateX(double degrees) {
-        return rotateRadX(degrees * Maths.toDeg);
+        return this.rotateRadX(degrees * Maths.toDeg);
     }
 
     public Vec3i rotateY(double degrees) {
-        return rotateRadY(degrees * Maths.toDeg);
+        return this.rotateRadY(degrees * Maths.toDeg);
     }
 
     public Vec3i rotateZ(double degrees) {
-        return rotateRadZ(degrees * Maths.toDeg);
+        return this.rotateRadZ(degrees * Maths.toDeg);
     }
 
 
     public Vec3i mulMat4(float[] matrix) {
-        return set(
+        return this.set(
             x * matrix[Matrix4.m00] + y * matrix[Matrix4.m10] + z * matrix[Matrix4.m20] + matrix[Matrix4.m30],
             x * matrix[Matrix4.m01] + y * matrix[Matrix4.m11] + z * matrix[Matrix4.m21] + matrix[Matrix4.m31],
             x * matrix[Matrix4.m02] + y * matrix[Matrix4.m12] + z * matrix[Matrix4.m22] + matrix[Matrix4.m32]
@@ -1147,7 +1151,7 @@ public class Vec3i {
     }
 
     public Vec3i mulMat3(float[] matrix) {
-        return set(
+        return this.set(
             x * matrix[Matrix3.m00] + y * matrix[Matrix3.m10] + z * matrix[Matrix3.m20],
             x * matrix[Matrix3.m01] + y * matrix[Matrix3.m11] + z * matrix[Matrix3.m21],
             x * matrix[Matrix3.m02] + y * matrix[Matrix3.m12] + z * matrix[Matrix3.m22]
@@ -1155,11 +1159,11 @@ public class Vec3i {
     }
 
     public Vec3i mulMat4(Matrix4f matrix) {
-        return mulMat4(matrix.val);
+        return this.mulMat4(matrix.val);
     }
 
     public Vec3i mulMat3(Matrix3f matrix) {
-        return mulMat3(matrix.val);
+        return this.mulMat3(matrix.val);
     }
 
 

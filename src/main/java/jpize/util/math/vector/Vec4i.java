@@ -124,11 +124,11 @@ public class Vec4i {
     }
 
     public Vec4i set(float xyzw) {
-        return set((int) xyzw);
+        return this.set((int) xyzw);
     }
 
     public Vec4i set(double xyzw) {
-        return set((int) xyzw);
+        return this.set((int) xyzw);
     }
 
     public Vec4i set(int x, int y) {
@@ -138,11 +138,11 @@ public class Vec4i {
     }
 
     public Vec4i set(float x, float y) {
-        return set((int) x, (int) y);
+        return this.set((int) x, (int) y);
     }
 
     public Vec4i set(double x, double y) {
-        return set((int) x, (int) y);
+        return this.set((int) x, (int) y);
     }
 
     public Vec4i set(int x, int y, int z) {
@@ -153,11 +153,11 @@ public class Vec4i {
     }
 
     public Vec4i set(float x, float y, float z) {
-        return set((int) x, (int) y, (int) z);
+        return this.set((int) x, (int) y, (int) z);
     }
 
     public Vec4i set(double x, double y, double z) {
-        return set((int) x, (int) y, (int) z);
+        return this.set((int) x, (int) y, (int) z);
     }
 
     public Vec4i set(int x, int y, int z, int w) {
@@ -169,47 +169,47 @@ public class Vec4i {
     }
 
     public Vec4i set(float x, float y, float z, float w) {
-        return set((int) x, (int) y, (int) z, (int) w);
+        return this.set((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i set(double x, double y, double z, double w) {
-        return set((int) x, (int) y, (int) z, (int) w);
+        return this.set((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i set(Vec2f vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec4i set(Vec2d vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec4i set(Vec2i vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec4i set(Vec3f vector) {
-        return set(vector.x, vector.y, vector.z);
+        return this.set(vector.x, vector.y, vector.z);
     }
 
     public Vec4i set(Vec3d vector) {
-        return set(vector.x, vector.y, vector.z);
+        return this.set(vector.x, vector.y, vector.z);
     }
 
     public Vec4i set(Vec3i vector) {
-        return set(vector.x, vector.y, vector.z);
+        return this.set(vector.x, vector.y, vector.z);
     }
 
     public Vec4i set(Vec4f vector) {
-        return set(vector.x, vector.y, vector.z, vector.w);
+        return this.set(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i set(Vec4d vector) {
-        return set(vector.x, vector.y, vector.z, vector.w);
+        return this.set(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i set(Vec4i vector) {
-        return set(vector.x, vector.y, vector.z, vector.w);
+        return this.set(vector.x, vector.y, vector.z, vector.w);
     }
 
 
@@ -222,11 +222,11 @@ public class Vec4i {
     }
 
     public Vec4i add(float xyzw) {
-        return add((int) xyzw);
+        return this.add((int) xyzw);
     }
 
     public Vec4i add(double xyzw) {
-        return add((int) xyzw);
+        return this.add((int) xyzw);
     }
 
     public Vec4i add(int x, int y) {
@@ -236,11 +236,11 @@ public class Vec4i {
     }
 
     public Vec4i add(float x, float y) {
-        return add((int) x, (int) y);
+        return this.add((int) x, (int) y);
     }
 
     public Vec4i add(double x, double y) {
-        return add((int) x, (int) y);
+        return this.add((int) x, (int) y);
     }
 
     public Vec4i add(int x, int y, int z) {
@@ -251,11 +251,11 @@ public class Vec4i {
     }
 
     public Vec4i add(float x, float y, float z) {
-        return add((int) x, (int) y, (int) z);
+        return this.add((int) x, (int) y, (int) z);
     }
 
     public Vec4i add(double x, double y, double z) {
-        return add((int) x, (int) y, (int) z);
+        return this.add((int) x, (int) y, (int) z);
     }
 
     public Vec4i add(int x, int y, int z, int w) {
@@ -267,47 +267,47 @@ public class Vec4i {
     }
 
     public Vec4i add(float x, float y, float z, float w) {
-        return add((int) x, (int) y, (int) z, (int) w);
+        return this.add((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i add(double x, double y, double z, double w) {
-        return add((int) x, (int) y, (int) z, (int) w);
+        return this.add((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i add(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec4i add(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec4i add(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec4i add(Vec3f vector) {
-        return add(vector.x, vector.y, vector.z);
+        return this.add(vector.x, vector.y, vector.z);
     }
 
     public Vec4i add(Vec3d vector) {
-        return add(vector.x, vector.y, vector.z);
+        return this.add(vector.x, vector.y, vector.z);
     }
 
     public Vec4i add(Vec3i vector) {
-        return add(vector.x, vector.y, vector.z);
+        return this.add(vector.x, vector.y, vector.z);
     }
 
     public Vec4i add(Vec4f vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return this.add(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i add(Vec4d vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return this.add(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i add(Vec4i vector) {
-        return add(vector.x, vector.y, vector.z, vector.w);
+        return this.add(vector.x, vector.y, vector.z, vector.w);
     }
 
 
@@ -320,11 +320,11 @@ public class Vec4i {
     }
 
     public Vec4i sub(float xyzw) {
-        return sub((int) xyzw);
+        return this.sub((int) xyzw);
     }
 
     public Vec4i sub(double xyzw) {
-        return sub((int) xyzw);
+        return this.sub((int) xyzw);
     }
 
     public Vec4i sub(int x, int y) {
@@ -334,11 +334,11 @@ public class Vec4i {
     }
 
     public Vec4i sub(float x, float y) {
-        return sub((int) x, (int) y);
+        return this.sub((int) x, (int) y);
     }
 
     public Vec4i sub(double x, double y) {
-        return sub((int) x, (int) y);
+        return this.sub((int) x, (int) y);
     }
 
     public Vec4i sub(int x, int y, int z) {
@@ -349,11 +349,11 @@ public class Vec4i {
     }
 
     public Vec4i sub(float x, float y, float z) {
-        return sub((int) x, (int) y, (int) z);
+        return this.sub((int) x, (int) y, (int) z);
     }
 
     public Vec4i sub(double x, double y, double z) {
-        return sub((int) x, (int) y, (int) z);
+        return this.sub((int) x, (int) y, (int) z);
     }
 
     public Vec4i sub(int x, int y, int z, int w) {
@@ -365,47 +365,47 @@ public class Vec4i {
     }
 
     public Vec4i sub(float x, float y, float z, float w) {
-        return sub((int) x, (int) y, (int) z, (int) w);
+        return this.sub((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i sub(double x, double y, double z, double w) {
-        return sub((int) x, (int) y, (int) z, (int) w);
+        return this.sub((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i sub(Vec2f vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec4i sub(Vec2d vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec4i sub(Vec2i vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec4i sub(Vec3f vector) {
-        return sub(vector.x, vector.y, vector.z);
+        return this.sub(vector.x, vector.y, vector.z);
     }
 
     public Vec4i sub(Vec3d vector) {
-        return sub(vector.x, vector.y, vector.z);
+        return this.sub(vector.x, vector.y, vector.z);
     }
 
     public Vec4i sub(Vec3i vector) {
-        return sub(vector.x, vector.y, vector.z);
+        return this.sub(vector.x, vector.y, vector.z);
     }
 
     public Vec4i sub(Vec4f vector) {
-        return sub(vector.x, vector.y, vector.z, vector.w);
+        return this.sub(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i sub(Vec4d vector) {
-        return sub(vector.x, vector.y, vector.z, vector.w);
+        return this.sub(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i sub(Vec4i vector) {
-        return sub(vector.x, vector.y, vector.z, vector.w);
+        return this.sub(vector.x, vector.y, vector.z, vector.w);
     }
 
 
@@ -418,11 +418,11 @@ public class Vec4i {
     }
 
     public Vec4i mul(float xyzw) {
-        return mul((int) xyzw);
+        return this.mul((int) xyzw);
     }
 
     public Vec4i mul(double xyzw) {
-        return mul((int) xyzw);
+        return this.mul((int) xyzw);
     }
 
     public Vec4i mul(int x, int y) {
@@ -432,11 +432,11 @@ public class Vec4i {
     }
 
     public Vec4i mul(float x, float y) {
-        return mul((int) x, (int) y);
+        return this.mul((int) x, (int) y);
     }
 
     public Vec4i mul(double x, double y) {
-        return mul((int) x, (int) y);
+        return this.mul((int) x, (int) y);
     }
 
     public Vec4i mul(int x, int y, int z) {
@@ -447,11 +447,11 @@ public class Vec4i {
     }
 
     public Vec4i mul(float x, float y, float z) {
-        return mul((int) x, (int) y, (int) z);
+        return this.mul((int) x, (int) y, (int) z);
     }
 
     public Vec4i mul(double x, double y, double z) {
-        return mul((int) x, (int) y, (int) z);
+        return this.mul((int) x, (int) y, (int) z);
     }
 
     public Vec4i mul(int x, int y, int z, int w) {
@@ -463,47 +463,47 @@ public class Vec4i {
     }
 
     public Vec4i mul(float x, float y, float z, float w) {
-        return mul((int) x, (int) y, (int) z, (int) w);
+        return this.mul((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i mul(double x, double y, double z, double w) {
-        return mul((int) x, (int) y, (int) z, (int) w);
+        return this.mul((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i mul(Vec2f vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec4i mul(Vec2d vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec4i mul(Vec2i vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec4i mul(Vec3f vector) {
-        return mul(vector.x, vector.y, vector.z);
+        return this.mul(vector.x, vector.y, vector.z);
     }
 
     public Vec4i mul(Vec3d vector) {
-        return mul(vector.x, vector.y, vector.z);
+        return this.mul(vector.x, vector.y, vector.z);
     }
 
     public Vec4i mul(Vec3i vector) {
-        return mul(vector.x, vector.y, vector.z);
+        return this.mul(vector.x, vector.y, vector.z);
     }
 
     public Vec4i mul(Vec4f vector) {
-        return mul(vector.x, vector.y, vector.z, vector.w);
+        return this.mul(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i mul(Vec4d vector) {
-        return mul(vector.x, vector.y, vector.z, vector.w);
+        return this.mul(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i mul(Vec4i vector) {
-        return mul(vector.x, vector.y, vector.z, vector.w);
+        return this.mul(vector.x, vector.y, vector.z, vector.w);
     }
 
 
@@ -516,11 +516,11 @@ public class Vec4i {
     }
 
     public Vec4i div(float xyzw) {
-        return div((int) xyzw);
+        return this.div((int) xyzw);
     }
 
     public Vec4i div(double xyzw) {
-        return div((int) xyzw);
+        return this.div((int) xyzw);
     }
 
     public Vec4i div(int x, int y) {
@@ -530,11 +530,11 @@ public class Vec4i {
     }
 
     public Vec4i div(float x, float y) {
-        return div((int) x, (int) y);
+        return this.div((int) x, (int) y);
     }
 
     public Vec4i div(double x, double y) {
-        return div((int) x, (int) y);
+        return this.div((int) x, (int) y);
     }
 
     public Vec4i div(int x, int y, int z) {
@@ -545,11 +545,11 @@ public class Vec4i {
     }
 
     public Vec4i div(float x, float y, float z) {
-        return div((int) x, (int) y, (int) z);
+        return this.div((int) x, (int) y, (int) z);
     }
 
     public Vec4i div(double x, double y, double z) {
-        return div((int) x, (int) y, (int) z);
+        return this.div((int) x, (int) y, (int) z);
     }
 
     public Vec4i div(int x, int y, int z, int w) {
@@ -561,47 +561,47 @@ public class Vec4i {
     }
 
     public Vec4i div(float x, float y, float z, float w) {
-        return div((int) x, (int) y, (int) z, (int) w);
+        return this.div((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i div(double x, double y, double z, double w) {
-        return div((int) x, (int) y, (int) z, (int) w);
+        return this.div((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i div(Vec2f vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec4i div(Vec2d vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec4i div(Vec2i vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec4i div(Vec3f vector) {
-        return div(vector.x, vector.y, vector.z);
+        return this.div(vector.x, vector.y, vector.z);
     }
 
     public Vec4i div(Vec3d vector) {
-        return div(vector.x, vector.y, vector.z);
+        return this.div(vector.x, vector.y, vector.z);
     }
 
     public Vec4i div(Vec3i vector) {
-        return div(vector.x, vector.y, vector.z);
+        return this.div(vector.x, vector.y, vector.z);
     }
 
     public Vec4i div(Vec4f vector) {
-        return div(vector.x, vector.y, vector.z, vector.w);
+        return this.div(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i div(Vec4d vector) {
-        return div(vector.x, vector.y, vector.z, vector.w);
+        return this.div(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i div(Vec4i vector) {
-        return div(vector.x, vector.y, vector.z, vector.w);
+        return this.div(vector.x, vector.y, vector.z, vector.w);
     }
 
 
@@ -702,36 +702,36 @@ public class Vec4i {
 
 
     public Vec4i setShorter(Vec4i vector1, Vec4i vector2) {
-        return set(shorter(vector1, vector2));
+        return this.set(shorter(vector1, vector2));
     }
 
     public Vec4i setLonger(Vec4i vector1, Vec4i vector2) {
-        return set(longer(vector1, vector2));
+        return this.set(longer(vector1, vector2));
     }
 
 
     public Vec4i setMinComps(Vec4i vector1, int x2, int y2, int z2, int w2) {
-        return set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2), Math.min(vector1.w, w2));
+        return this.set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2), Math.min(vector1.w, w2));
     }
 
     public Vec4i setMinComps(Vec4i vector1, int xyzw2) {
-        return setMinComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
+        return this.setMinComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
     }
 
     public Vec4i setMinComps(Vec4i vector1, Vec4i vector2) {
-        return setMinComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
+        return this.setMinComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
     public Vec4i setMaxComps(Vec4i vector1, int x2, int y2, int z2, int w2) {
-        return set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2), Math.max(vector1.w, w2));
+        return this.set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2), Math.max(vector1.w, w2));
     }
 
     public Vec4i setMaxComps(Vec4i vector1, int xyzw2) {
-        return setMaxComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
+        return this.setMaxComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
     }
 
     public Vec4i setMaxComps(Vec4i vector1, Vec4i vector2) {
-        return setMaxComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
+        return this.setMaxComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
 
@@ -745,7 +745,7 @@ public class Vec4i {
 
 
     public Vec4i zero() {
-        return set(0);
+        return this.set(0);
     }
 
     public boolean isZero() {
@@ -765,35 +765,35 @@ public class Vec4i {
     }
 
     public Vec4i zeroThatLess(float x, float y, float z, float w) {
-        return zeroThatLess((int) x, (int) y, (int) z, (int) w);
+        return this.zeroThatLess((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i zeroThatLess(double x, double y, double z, double w) {
-        return zeroThatLess((int) x, (int) y, (int) z, (int) w);
+        return this.zeroThatLess((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i zeroThatLess(float xyzw) {
-        return zeroThatLess(xyzw, xyzw, xyzw, xyzw);
+        return this.zeroThatLess(xyzw, xyzw, xyzw, xyzw);
     }
 
     public Vec4i zeroThatLess(double xyzw) {
-        return zeroThatLess(xyzw, xyzw, xyzw, xyzw);
+        return this.zeroThatLess(xyzw, xyzw, xyzw, xyzw);
     }
 
     public Vec4i zeroThatLess(int xyzw) {
-        return zeroThatLess(xyzw, xyzw, xyzw, xyzw);
+        return this.zeroThatLess(xyzw, xyzw, xyzw, xyzw);
     }
 
     public Vec4i zeroThatLess(Vec4f vector) {
-        return zeroThatLess(vector.x, vector.y, vector.z, vector.w);
+        return this.zeroThatLess(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i zeroThatLess(Vec4d vector) {
-        return zeroThatLess(vector.x, vector.y, vector.z, vector.w);
+        return this.zeroThatLess(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i zeroThatLess(Vec4i vector) {
-        return zeroThatLess(vector.x, vector.y, vector.z, vector.w);
+        return this.zeroThatLess(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i zeroThatZero(int x, int y, int z, int w) {
@@ -809,35 +809,35 @@ public class Vec4i {
     }
 
     public Vec4i zeroThatZero(float x, float y, float z, float w) {
-        return zeroThatZero((int) x, (int) y, (int) z, (int) w);
+        return this.zeroThatZero((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i zeroThatZero(double x, double y, double z, double w) {
-        return zeroThatZero((int) x, (int) y, (int) z, (int) w);
+        return this.zeroThatZero((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i zeroThatZero(float xyzw) {
-        return zeroThatZero(xyzw, xyzw, xyzw, xyzw);
+        return this.zeroThatZero(xyzw, xyzw, xyzw, xyzw);
     }
 
     public Vec4i zeroThatZero(double xyzw) {
-        return zeroThatZero(xyzw, xyzw, xyzw, xyzw);
+        return this.zeroThatZero(xyzw, xyzw, xyzw, xyzw);
     }
 
     public Vec4i zeroThatZero(int xyzw) {
-        return zeroThatZero(xyzw, xyzw, xyzw, xyzw);
+        return this.zeroThatZero(xyzw, xyzw, xyzw, xyzw);
     }
 
     public Vec4i zeroThatZero(Vec4f vector) {
-        return zeroThatZero(vector.x, vector.y, vector.z, vector.w);
+        return this.zeroThatZero(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i zeroThatZero(Vec4d vector) {
-        return zeroThatZero(vector.x, vector.y, vector.z, vector.w);
+        return this.zeroThatZero(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i zeroThatZero(Vec4i vector) {
-        return zeroThatZero(vector.x, vector.y, vector.z, vector.w);
+        return this.zeroThatZero(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i zeroThatBigger(int x, int y, int z, int w) {
@@ -853,35 +853,35 @@ public class Vec4i {
     }
 
     public Vec4i zeroThatBigger(float x, float y, float z, float w) {
-        return zeroThatBigger((int) x, (int) y, (int) z, (int) w);
+        return this.zeroThatBigger((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i zeroThatBigger(double x, double y, double z, double w) {
-        return zeroThatBigger((int) x, (int) y, (int) z, (int) w);
+        return this.zeroThatBigger((int) x, (int) y, (int) z, (int) w);
     }
 
     public Vec4i zeroThatBigger(float xyzw) {
-        return zeroThatBigger(xyzw, xyzw, xyzw, xyzw);
+        return this.zeroThatBigger(xyzw, xyzw, xyzw, xyzw);
     }
 
     public Vec4i zeroThatBigger(double xyzw) {
-        return zeroThatBigger(xyzw, xyzw, xyzw, xyzw);
+        return this.zeroThatBigger(xyzw, xyzw, xyzw, xyzw);
     }
 
     public Vec4i zeroThatBigger(int xyzw) {
-        return zeroThatBigger(xyzw, xyzw, xyzw, xyzw);
+        return this.zeroThatBigger(xyzw, xyzw, xyzw, xyzw);
     }
 
     public Vec4i zeroThatBigger(Vec4f vector) {
-        return zeroThatBigger(vector.x, vector.y, vector.z, vector.w);
+        return this.zeroThatBigger(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i zeroThatBigger(Vec4d vector) {
-        return zeroThatBigger(vector.x, vector.y, vector.z, vector.w);
+        return this.zeroThatBigger(vector.x, vector.y, vector.z, vector.w);
     }
 
     public Vec4i zeroThatBigger(Vec4i vector) {
-        return zeroThatBigger(vector.x, vector.y, vector.z, vector.w);
+        return this.zeroThatBigger(vector.x, vector.y, vector.z, vector.w);
     }
 
 
@@ -925,7 +925,12 @@ public class Vec4i {
 
 
     public static Vec4i lerp(Vec4i vector, int startX, int startY, int startZ, int startW, int endX, int endY, int endZ, int endW, float t) {
-        return vector.set(Maths.lerp(startX, endX, t), Maths.lerp(startY, endY, t), Maths.lerp(startZ, endZ, t), Maths.lerp(startW, endW, t));
+        return vector.set(
+            Maths.lerp(startX, endX, t),
+            Maths.lerp(startY, endY, t),
+            Maths.lerp(startZ, endZ, t),
+            Maths.lerp(startW, endW, t)
+        );
     }
 
     public static Vec4i lerp(Vec4i vector, Vec4i start, Vec4i end, float t) {

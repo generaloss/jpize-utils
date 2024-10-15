@@ -177,8 +177,8 @@ public class VectorClassesGenerator {
             return;
 
         w.addMethod("public " + classname + " reduce(" + makeDims(dimensions, ", ", "double reduce%L") + ")",
-            "final " + length_method_datatype + " len = len();",
-            "return nor().mul(" + makeDims(dimensions, ", ", "len - reduce%L") + ");"
+            "final " + length_method_datatype + " len = this.len();",
+            "return this.nor().mul(" + makeDims(dimensions, ", ", "len - reduce%L") + ");"
         );
 
         w.addMethodSplitter();
@@ -189,10 +189,10 @@ public class VectorClassesGenerator {
             return;
 
         w.addMethod("public " + classname + " clampLength(double max)",
-            "final " + length_method_datatype + " len = len();",
+            "final " + length_method_datatype + " len = this.len();",
             "if(len <= max)",
             "    return this;",
-            "return nor().mul(max);"
+            "return this.nor().mul(max);"
         );
 
         w.addMethodSplitter();
@@ -300,28 +300,28 @@ public class VectorClassesGenerator {
             w.addImport("jpize.util.math.matrix.Matrix3f");
 
             w.addMethod("public " + classname + " mulMat3(float[] matrix)",
-                "return set(",
+                "return this.set(",
                 "    x * matrix[Matrix3.m00] + y * matrix[Matrix3.m10] + matrix[Matrix3.m20],",
                 "    x * matrix[Matrix3.m01] + y * matrix[Matrix3.m11] + matrix[Matrix3.m21]",
                 ");"
             );
 
             w.addMethod("public " + classname + " mulMat3(Matrix3f matrix)",
-                "return mulMat3(matrix.val);"
+                "return this.mulMat3(matrix.val);"
             );
 
         }else if(dimensions == 3){
             w.addImport("jpize.util.math.matrix.*");
 
             w.addMethod("public " + classname + " mulMat4(float[] matrix)",
-                "return set(",
+                "return this.set(",
                 "    x * matrix[Matrix4.m00] + y * matrix[Matrix4.m10] + z * matrix[Matrix4.m20] + matrix[Matrix4.m30],",
                 "    x * matrix[Matrix4.m01] + y * matrix[Matrix4.m11] + z * matrix[Matrix4.m21] + matrix[Matrix4.m31],",
                 "    x * matrix[Matrix4.m02] + y * matrix[Matrix4.m12] + z * matrix[Matrix4.m22] + matrix[Matrix4.m32]",
                 ");"
             );
             w.addMethod("public " + classname + " mulMat3(float[] matrix)",
-                "return set(",
+                "return this.set(",
                 "    x * matrix[Matrix3.m00] + y * matrix[Matrix3.m10] + z * matrix[Matrix3.m20],",
                 "    x * matrix[Matrix3.m01] + y * matrix[Matrix3.m11] + z * matrix[Matrix3.m21],",
                 "    x * matrix[Matrix3.m02] + y * matrix[Matrix3.m12] + z * matrix[Matrix3.m22]",
@@ -329,10 +329,10 @@ public class VectorClassesGenerator {
             );
 
             w.addMethod("public " + classname + " mulMat4(Matrix4f matrix)",
-                "return mulMat4(matrix.val);"
+                "return this.mulMat4(matrix.val);"
             );
             w.addMethod("public " + classname + " mulMat3(Matrix3f matrix)",
-                "return mulMat3(matrix.val);"
+                "return this.mulMat3(matrix.val);"
             );
         }else
             return;
@@ -345,38 +345,38 @@ public class VectorClassesGenerator {
             w.addMethod("public " + classname + " rotateRad(double radians)",
                 "final double cos = Math.cos(radians);",
                 "final double sin = Math.sin(radians);",
-                "return set((x * cos + y * sin), (x * -sin + y * cos));"
+                "return this.set((x * cos + y * sin), (x * -sin + y * cos));"
             );
 
             w.addMethod("public " + classname + " rotate(double degrees)",
-                "return rotateRad(degrees * Maths.toDeg);"
+                "return this.rotateRad(degrees * Maths.toDeg);"
             );
 
         }else if(dimensions == 3){
             w.addMethod("public " + classname + " rotateRadX(double radians)",
                 "final double cos = Math.cos(radians);",
                 "final double sin = Math.sin(radians);",
-                "return setYZ((y * cos + z * sin), (y * -sin + z * cos));"
+                "return this.setYZ((y * cos + z * sin), (y * -sin + z * cos));"
             );
             w.addMethod("public " + classname + " rotateRadY(double radians)",
                 "final double cos = Math.cos(radians);",
                 "final double sin = Math.sin(radians);",
-                "return setXZ((x * cos + z * -sin), (x * sin + z * cos));"
+                "return this.setXZ((x * cos + z * -sin), (x * sin + z * cos));"
             );
             w.addMethod("public " + classname + " rotateRadZ(double radians)",
                 "final double cos = Math.cos(radians);",
                 "final double sin = Math.sin(radians);",
-                "return setXY((x * cos + y * sin), (x * -sin + y * cos));"
+                "return this.setXY((x * cos + y * sin), (x * -sin + y * cos));"
             );
 
             w.addMethod("public " + classname + " rotateX(double degrees)",
-                "return rotateRadX(degrees * Maths.toDeg);"
+                "return this.rotateRadX(degrees * Maths.toDeg);"
             );
             w.addMethod("public " + classname + " rotateY(double degrees)",
-                "return rotateRadY(degrees * Maths.toDeg);"
+                "return this.rotateRadY(degrees * Maths.toDeg);"
             );
             w.addMethod("public " + classname + " rotateZ(double degrees)",
-                "return rotateRadZ(degrees * Maths.toDeg);"
+                "return this.rotateRadZ(degrees * Maths.toDeg);"
             );
         }else
             return;
@@ -495,16 +495,16 @@ public class VectorClassesGenerator {
             );
 
             w.addMethod("public " + classname + " setCrs(" + makeDims(3, ", ", datatype + " %l1") + ", " + makeDims(3, ", ", datatype + " %l2") + ")",
-                "return set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));"
+                "return this.set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));"
             );
             w.addMethod("public " + classname + " setCrs(" + classname + " " + varname + "1, " + makeDims(3, ", ", datatype + " %l2") + ")",
-                "return setCrs(" + makeDims(3, ", ", varname + "1.%l") + ", " + makeDims(3, ", ", "%l2") + ");"
+                "return this.setCrs(" + makeDims(3, ", ", varname + "1.%l") + ", " + makeDims(3, ", ", "%l2") + ");"
             );
             w.addMethod("public " + classname + " setCrs(" + makeDims(3, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
-                "return setCrs(" + makeDims(3, ", ", "%l1") + ", " + makeDims(3, ", ", varname + "2.%l") + ");"
+                "return this.setCrs(" + makeDims(3, ", ", "%l1") + ", " + makeDims(3, ", ", varname + "2.%l") + ");"
             );
             w.addMethod("public " + classname + " setCrs(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-                "return setCrs(" + makeDims(3, ", ", varname + "1.%l") + ", " + makeDims(3, ", ", varname + "2.%l") + ");"
+                "return this.setCrs(" + makeDims(3, ", ", varname + "1.%l") + ", " + makeDims(3, ", ", varname + "2.%l") + ");"
             );
         }else
             return;
@@ -540,7 +540,7 @@ public class VectorClassesGenerator {
         final String datatype_t = (isDatatypeInt ? "float" : datatype);
 
         w.addMethod("public static " + classname + " lerp(" + classname + " " + varname + ", " + makeDims(dimensions, ", ", datatype + " start%L") + ", " + makeDims(dimensions, ", ", datatype + " end%L") + ", " + datatype_t + " t" + ")",
-            "return " + varname + ".set(" + makeDims(dimensions, ", ", "Maths.lerp(start%L, end%L, t)") + ");"
+            "return " + varname + ".set(\n            " + makeDims(dimensions, ",\n            ", "Maths.lerp(start%L, end%L, t)") + "\n        );"
         );
 
         w.addMethod("public static " + classname + " lerp(" + classname + " " + varname + ", " + classname + " start, " + classname + " end, " + datatype_t + " t" + ")",
@@ -572,12 +572,12 @@ public class VectorClassesGenerator {
             return;
 
         w.addMethod("public " + classname + " nor()",
-            datatype + " len = len2();",
+            datatype + " len = this.len2();",
             "if(len == 0 || len == 1)",
             "    return this;",
             "",
             "len = 1" + (isDatatypeDouble ? "D" : "F") + " / Math" + (isDatatypeDouble ? "" : "c") + ".sqrt(len);",
-            "return mul(len);"
+            "return this.mul(len);"
         );
 
         w.addMethodSplitter();
@@ -642,7 +642,7 @@ public class VectorClassesGenerator {
 
     private static void addZero() {
         w.addMethod("public " + classname + " zero()",
-            "return set(0);"
+            "return this.set(0);"
         );
         w.addMethod("public boolean isZero()",
             "return " + makeDims(dimensions, " && ", "%l == 0") + ";"
@@ -665,12 +665,12 @@ public class VectorClassesGenerator {
                 continue;
 
             w.addMethod("public " + classname + " " + methodName + "(" + makeDims(dimensions, ", ", datatype_l + " %l") + ")",
-                "return " + methodName + "(" + makeDims(dimensions, ", ", "(" + datatype + ") %l") + ");"
+                "return this." + methodName + "(" + makeDims(dimensions, ", ", "(" + datatype + ") %l") + ");"
             );
         }
         for(String datatype_l: DATATYPES){
             w.addMethod("public " + classname + " " + methodName + "(" + datatype_l + " " + xyzw_str + ")",
-                "return " + methodName + "(" + makeDims(dimensions, ", ", xyzw_str) + ");"
+                "return this." + methodName + "(" + makeDims(dimensions, ", ", xyzw_str) + ");"
             );
         }
         for(VectorType vectorType: VECTOR_TYPES){
@@ -678,7 +678,7 @@ public class VectorClassesGenerator {
                 continue;
 
             w.addMethod("public " + classname + " " + methodName + "(" + vectorType.classname + " " + varname + ")",
-                "return " + methodName + "(" + makeDims(dimensions, ", ", varname + ".%l") + ");"
+                "return this." + methodName + "(" + makeDims(dimensions, ", ", varname + ".%l") + ");"
             );
         }
     }
@@ -705,37 +705,37 @@ public class VectorClassesGenerator {
         w.addMethodSplitter();
 
         w.addMethod("public " + classname + " setShorter(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return set(shorter(" + varname + "1, " + varname + "2));"
+            "return this.set(shorter(" + varname + "1, " + varname + "2));"
         );
 
         w.addMethod("public " + classname + " setLonger(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return set(longer(" + varname + "1, " + varname + "2));"
+            "return this.set(longer(" + varname + "1, " + varname + "2));"
         );
 
         w.addMethodSplitter();
 
         w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return set(" + makeDims(dimensions, ", ", "Math.min(" + varname + "1.%l, %l2)") + ");"
+            "return this.set(" + makeDims(dimensions, ", ", "Math.min(" + varname + "1.%l, %l2)") + ");"
         );
 
         w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + datatype + " " + xyzw_str + "2)",
-            "return setMinComps(" + varname + "1, " + makeDims(dimensions, ", ", xyzw_str + "2") + ");"
+            "return this.setMinComps(" + varname + "1, " + makeDims(dimensions, ", ", xyzw_str + "2") + ");"
         );
 
         w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return setMinComps(" + varname + "1, " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+            "return this.setMinComps(" + varname + "1, " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
         );
 
         w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return set(" + makeDims(dimensions, ", ", "Math.max(" + varname + "1.%l, %l2)") + ");"
+            "return this.set(" + makeDims(dimensions, ", ", "Math.max(" + varname + "1.%l, %l2)") + ");"
         );
 
         w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + datatype + " " + xyzw_str + "2)",
-            "return setMaxComps(" + varname + "1, " + makeDims(dimensions, ", ", xyzw_str + "2") + ");"
+            "return this.setMaxComps(" + varname + "1, " + makeDims(dimensions, ", ", xyzw_str + "2") + ");"
         );
 
         w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return setMaxComps(" + varname + "1, " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+            "return this.setMaxComps(" + varname + "1, " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
         );
 
         w.addMethodSplitter();
@@ -855,7 +855,7 @@ public class VectorClassesGenerator {
                 continue;
 
             w.addMethod("public " + classname + " " + methodname + "(" + datatype_l + " " + xyzw_str + ")",
-                "return " + methodname + "(" + "(" + datatype + ") " + xyzw_str + ");"
+                "return this." + methodname + "(" + "(" + datatype + ") " + xyzw_str + ");"
             );
         }
 
@@ -877,7 +877,7 @@ public class VectorClassesGenerator {
                 // add(int x, int y, int z)
                 //     add((float) x, (float) y, (float) z);
                 w.addMethod("public " + classname + " " + methodname + "(" + makeDims(dimType, ", ", datatype_l + " %l") + ")",
-                    "return " + methodname + "(" + makeDims(dimType, ", ", "(" + datatype + ") %l") + ");"
+                    "return this." + methodname + "(" + makeDims(dimType, ", ", "(" + datatype + ") %l") + ");"
                 );
             }
         }
@@ -889,7 +889,7 @@ public class VectorClassesGenerator {
                 continue;
 
             w.addMethod("public " + classname + " " + methodname + "(" + vectorType.classname + " " + vectorType.varname + ")",
-                "return " + methodname + "(" + makeDims(vectorType.dimensions, ", ", vectorType.varname + ".%l") + ");"
+                "return this." + methodname + "(" + makeDims(vectorType.dimensions, ", ", vectorType.varname + ".%l") + ");"
             );
         }
 

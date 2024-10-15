@@ -10,7 +10,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class PacketDispatcher {
+public class PacketDispatcher<T> {
 
     private final Map<Short, Class<? extends IPacket<?>>> packetClasses;
     private final Queue<Runnable> toHandleQueue;
@@ -21,22 +21,12 @@ public class PacketDispatcher {
     }
 
     @SafeVarargs
-    public final PacketDispatcher register(Class<? extends IPacket<?>>... packetClasses) {
+    public final PacketDispatcher<T> register(Class<? extends IPacket<?>>... packetClasses) {
         for(Class<? extends IPacket<?>> packetClass: packetClasses){
             final short ID = IPacket.makeID(packetClass);
             this.packetClasses.put(ID, packetClass);
         }
         return this;
-    }
-
-    public int handlePackets() {
-        int count = 0;
-        while(!toHandleQueue.isEmpty()){
-            final Runnable handleRunnable = toHandleQueue.poll();
-            count++;
-            handleRunnable.run();
-        }
-        return count;
     }
 
     public boolean readPacket(byte[] bytes, PacketHandler handler) {
@@ -67,11 +57,21 @@ public class PacketDispatcher {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    public int handlePackets() {
+        int count = 0;
+        while(!toHandleQueue.isEmpty()){
+            final Runnable handleRunnable = toHandleQueue.poll();
+            count++;
+            handleRunnable.run();
+        }
+        return count;
+    }
+
     private IPacket<PacketHandler> instancePacket(Class<?> packetClass) {
         try{
             final Constructor<?> constructor = packetClass.getDeclaredConstructor();
             constructor.setAccessible(true);
+            //noinspection unchecked
             return (IPacket<PacketHandler>) constructor.newInstance();
 
         }catch(Exception e){

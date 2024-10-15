@@ -66,11 +66,11 @@ public class Vec2i {
     }
 
     public Vec2i set(float xy) {
-        return set((int) xy);
+        return this.set((int) xy);
     }
 
     public Vec2i set(double xy) {
-        return set((int) xy);
+        return this.set((int) xy);
     }
 
     public Vec2i set(int x, int y) {
@@ -80,23 +80,23 @@ public class Vec2i {
     }
 
     public Vec2i set(float x, float y) {
-        return set((int) x, (int) y);
+        return this.set((int) x, (int) y);
     }
 
     public Vec2i set(double x, double y) {
-        return set((int) x, (int) y);
+        return this.set((int) x, (int) y);
     }
 
     public Vec2i set(Vec2f vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec2i set(Vec2d vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec2i set(Vec2i vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
 
@@ -107,11 +107,11 @@ public class Vec2i {
     }
 
     public Vec2i add(float xy) {
-        return add((int) xy);
+        return this.add((int) xy);
     }
 
     public Vec2i add(double xy) {
-        return add((int) xy);
+        return this.add((int) xy);
     }
 
     public Vec2i add(int x, int y) {
@@ -121,23 +121,23 @@ public class Vec2i {
     }
 
     public Vec2i add(float x, float y) {
-        return add((int) x, (int) y);
+        return this.add((int) x, (int) y);
     }
 
     public Vec2i add(double x, double y) {
-        return add((int) x, (int) y);
+        return this.add((int) x, (int) y);
     }
 
     public Vec2i add(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec2i add(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec2i add(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
 
@@ -148,11 +148,11 @@ public class Vec2i {
     }
 
     public Vec2i sub(float xy) {
-        return sub((int) xy);
+        return this.sub((int) xy);
     }
 
     public Vec2i sub(double xy) {
-        return sub((int) xy);
+        return this.sub((int) xy);
     }
 
     public Vec2i sub(int x, int y) {
@@ -162,23 +162,23 @@ public class Vec2i {
     }
 
     public Vec2i sub(float x, float y) {
-        return sub((int) x, (int) y);
+        return this.sub((int) x, (int) y);
     }
 
     public Vec2i sub(double x, double y) {
-        return sub((int) x, (int) y);
+        return this.sub((int) x, (int) y);
     }
 
     public Vec2i sub(Vec2f vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec2i sub(Vec2d vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec2i sub(Vec2i vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
 
@@ -189,11 +189,11 @@ public class Vec2i {
     }
 
     public Vec2i mul(float xy) {
-        return mul((int) xy);
+        return this.mul((int) xy);
     }
 
     public Vec2i mul(double xy) {
-        return mul((int) xy);
+        return this.mul((int) xy);
     }
 
     public Vec2i mul(int x, int y) {
@@ -203,23 +203,23 @@ public class Vec2i {
     }
 
     public Vec2i mul(float x, float y) {
-        return mul((int) x, (int) y);
+        return this.mul((int) x, (int) y);
     }
 
     public Vec2i mul(double x, double y) {
-        return mul((int) x, (int) y);
+        return this.mul((int) x, (int) y);
     }
 
     public Vec2i mul(Vec2f vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec2i mul(Vec2d vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec2i mul(Vec2i vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
 
@@ -230,11 +230,11 @@ public class Vec2i {
     }
 
     public Vec2i div(float xy) {
-        return div((int) xy);
+        return this.div((int) xy);
     }
 
     public Vec2i div(double xy) {
-        return div((int) xy);
+        return this.div((int) xy);
     }
 
     public Vec2i div(int x, int y) {
@@ -244,23 +244,23 @@ public class Vec2i {
     }
 
     public Vec2i div(float x, float y) {
-        return div((int) x, (int) y);
+        return this.div((int) x, (int) y);
     }
 
     public Vec2i div(double x, double y) {
-        return div((int) x, (int) y);
+        return this.div((int) x, (int) y);
     }
 
     public Vec2i div(Vec2f vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec2i div(Vec2d vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec2i div(Vec2i vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
 
@@ -359,36 +359,36 @@ public class Vec2i {
 
 
     public Vec2i setShorter(Vec2i vector1, Vec2i vector2) {
-        return set(shorter(vector1, vector2));
+        return this.set(shorter(vector1, vector2));
     }
 
     public Vec2i setLonger(Vec2i vector1, Vec2i vector2) {
-        return set(longer(vector1, vector2));
+        return this.set(longer(vector1, vector2));
     }
 
 
     public Vec2i setMinComps(Vec2i vector1, int x2, int y2) {
-        return set(Math.min(vector1.x, x2), Math.min(vector1.y, y2));
+        return this.set(Math.min(vector1.x, x2), Math.min(vector1.y, y2));
     }
 
     public Vec2i setMinComps(Vec2i vector1, int xy2) {
-        return setMinComps(vector1, xy2, xy2);
+        return this.setMinComps(vector1, xy2, xy2);
     }
 
     public Vec2i setMinComps(Vec2i vector1, Vec2i vector2) {
-        return setMinComps(vector1, vector2.x, vector2.y);
+        return this.setMinComps(vector1, vector2.x, vector2.y);
     }
 
     public Vec2i setMaxComps(Vec2i vector1, int x2, int y2) {
-        return set(Math.max(vector1.x, x2), Math.max(vector1.y, y2));
+        return this.set(Math.max(vector1.x, x2), Math.max(vector1.y, y2));
     }
 
     public Vec2i setMaxComps(Vec2i vector1, int xy2) {
-        return setMaxComps(vector1, xy2, xy2);
+        return this.setMaxComps(vector1, xy2, xy2);
     }
 
     public Vec2i setMaxComps(Vec2i vector1, Vec2i vector2) {
-        return setMaxComps(vector1, vector2.x, vector2.y);
+        return this.setMaxComps(vector1, vector2.x, vector2.y);
     }
 
 
@@ -402,7 +402,7 @@ public class Vec2i {
 
 
     public Vec2i zero() {
-        return set(0);
+        return this.set(0);
     }
 
     public boolean isZero() {
@@ -418,35 +418,35 @@ public class Vec2i {
     }
 
     public Vec2i zeroThatLess(float x, float y) {
-        return zeroThatLess((int) x, (int) y);
+        return this.zeroThatLess((int) x, (int) y);
     }
 
     public Vec2i zeroThatLess(double x, double y) {
-        return zeroThatLess((int) x, (int) y);
+        return this.zeroThatLess((int) x, (int) y);
     }
 
     public Vec2i zeroThatLess(float xy) {
-        return zeroThatLess(xy, xy);
+        return this.zeroThatLess(xy, xy);
     }
 
     public Vec2i zeroThatLess(double xy) {
-        return zeroThatLess(xy, xy);
+        return this.zeroThatLess(xy, xy);
     }
 
     public Vec2i zeroThatLess(int xy) {
-        return zeroThatLess(xy, xy);
+        return this.zeroThatLess(xy, xy);
     }
 
     public Vec2i zeroThatLess(Vec2f vector) {
-        return zeroThatLess(vector.x, vector.y);
+        return this.zeroThatLess(vector.x, vector.y);
     }
 
     public Vec2i zeroThatLess(Vec2d vector) {
-        return zeroThatLess(vector.x, vector.y);
+        return this.zeroThatLess(vector.x, vector.y);
     }
 
     public Vec2i zeroThatLess(Vec2i vector) {
-        return zeroThatLess(vector.x, vector.y);
+        return this.zeroThatLess(vector.x, vector.y);
     }
 
     public Vec2i zeroThatZero(int x, int y) {
@@ -458,35 +458,35 @@ public class Vec2i {
     }
 
     public Vec2i zeroThatZero(float x, float y) {
-        return zeroThatZero((int) x, (int) y);
+        return this.zeroThatZero((int) x, (int) y);
     }
 
     public Vec2i zeroThatZero(double x, double y) {
-        return zeroThatZero((int) x, (int) y);
+        return this.zeroThatZero((int) x, (int) y);
     }
 
     public Vec2i zeroThatZero(float xy) {
-        return zeroThatZero(xy, xy);
+        return this.zeroThatZero(xy, xy);
     }
 
     public Vec2i zeroThatZero(double xy) {
-        return zeroThatZero(xy, xy);
+        return this.zeroThatZero(xy, xy);
     }
 
     public Vec2i zeroThatZero(int xy) {
-        return zeroThatZero(xy, xy);
+        return this.zeroThatZero(xy, xy);
     }
 
     public Vec2i zeroThatZero(Vec2f vector) {
-        return zeroThatZero(vector.x, vector.y);
+        return this.zeroThatZero(vector.x, vector.y);
     }
 
     public Vec2i zeroThatZero(Vec2d vector) {
-        return zeroThatZero(vector.x, vector.y);
+        return this.zeroThatZero(vector.x, vector.y);
     }
 
     public Vec2i zeroThatZero(Vec2i vector) {
-        return zeroThatZero(vector.x, vector.y);
+        return this.zeroThatZero(vector.x, vector.y);
     }
 
     public Vec2i zeroThatBigger(int x, int y) {
@@ -498,35 +498,35 @@ public class Vec2i {
     }
 
     public Vec2i zeroThatBigger(float x, float y) {
-        return zeroThatBigger((int) x, (int) y);
+        return this.zeroThatBigger((int) x, (int) y);
     }
 
     public Vec2i zeroThatBigger(double x, double y) {
-        return zeroThatBigger((int) x, (int) y);
+        return this.zeroThatBigger((int) x, (int) y);
     }
 
     public Vec2i zeroThatBigger(float xy) {
-        return zeroThatBigger(xy, xy);
+        return this.zeroThatBigger(xy, xy);
     }
 
     public Vec2i zeroThatBigger(double xy) {
-        return zeroThatBigger(xy, xy);
+        return this.zeroThatBigger(xy, xy);
     }
 
     public Vec2i zeroThatBigger(int xy) {
-        return zeroThatBigger(xy, xy);
+        return this.zeroThatBigger(xy, xy);
     }
 
     public Vec2i zeroThatBigger(Vec2f vector) {
-        return zeroThatBigger(vector.x, vector.y);
+        return this.zeroThatBigger(vector.x, vector.y);
     }
 
     public Vec2i zeroThatBigger(Vec2d vector) {
-        return zeroThatBigger(vector.x, vector.y);
+        return this.zeroThatBigger(vector.x, vector.y);
     }
 
     public Vec2i zeroThatBigger(Vec2i vector) {
-        return zeroThatBigger(vector.x, vector.y);
+        return this.zeroThatBigger(vector.x, vector.y);
     }
 
 
@@ -568,7 +568,10 @@ public class Vec2i {
 
 
     public static Vec2i lerp(Vec2i vector, int startX, int startY, int endX, int endY, float t) {
-        return vector.set(Maths.lerp(startX, endX, t), Maths.lerp(startY, endY, t));
+        return vector.set(
+            Maths.lerp(startX, endX, t),
+            Maths.lerp(startY, endY, t)
+        );
     }
 
     public static Vec2i lerp(Vec2i vector, Vec2i start, Vec2i end, float t) {
@@ -692,23 +695,23 @@ public class Vec2i {
     public Vec2i rotateRad(double radians) {
         final double cos = Math.cos(radians);
         final double sin = Math.sin(radians);
-        return set((x * cos + y * sin), (x * -sin + y * cos));
+        return this.set((x * cos + y * sin), (x * -sin + y * cos));
     }
 
     public Vec2i rotate(double degrees) {
-        return rotateRad(degrees * Maths.toDeg);
+        return this.rotateRad(degrees * Maths.toDeg);
     }
 
 
     public Vec2i mulMat3(float[] matrix) {
-        return set(
+        return this.set(
             x * matrix[Matrix3.m00] + y * matrix[Matrix3.m10] + matrix[Matrix3.m20],
             x * matrix[Matrix3.m01] + y * matrix[Matrix3.m11] + matrix[Matrix3.m21]
         );
     }
 
     public Vec2i mulMat3(Matrix3f matrix) {
-        return mulMat3(matrix.val);
+        return this.mulMat3(matrix.val);
     }
 
 

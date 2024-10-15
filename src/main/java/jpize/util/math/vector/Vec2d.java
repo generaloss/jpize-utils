@@ -65,11 +65,11 @@ public class Vec2d {
     }
 
     public Vec2d set(float xy) {
-        return set((double) xy);
+        return this.set((double) xy);
     }
 
     public Vec2d set(int xy) {
-        return set((double) xy);
+        return this.set((double) xy);
     }
 
     public Vec2d set(double x, double y) {
@@ -79,23 +79,23 @@ public class Vec2d {
     }
 
     public Vec2d set(float x, float y) {
-        return set((double) x, (double) y);
+        return this.set((double) x, (double) y);
     }
 
     public Vec2d set(int x, int y) {
-        return set((double) x, (double) y);
+        return this.set((double) x, (double) y);
     }
 
     public Vec2d set(Vec2f vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec2d set(Vec2d vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
     public Vec2d set(Vec2i vector) {
-        return set(vector.x, vector.y);
+        return this.set(vector.x, vector.y);
     }
 
 
@@ -106,11 +106,11 @@ public class Vec2d {
     }
 
     public Vec2d add(float xy) {
-        return add((double) xy);
+        return this.add((double) xy);
     }
 
     public Vec2d add(int xy) {
-        return add((double) xy);
+        return this.add((double) xy);
     }
 
     public Vec2d add(double x, double y) {
@@ -120,23 +120,23 @@ public class Vec2d {
     }
 
     public Vec2d add(float x, float y) {
-        return add((double) x, (double) y);
+        return this.add((double) x, (double) y);
     }
 
     public Vec2d add(int x, int y) {
-        return add((double) x, (double) y);
+        return this.add((double) x, (double) y);
     }
 
     public Vec2d add(Vec2f vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec2d add(Vec2d vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
     public Vec2d add(Vec2i vector) {
-        return add(vector.x, vector.y);
+        return this.add(vector.x, vector.y);
     }
 
 
@@ -147,11 +147,11 @@ public class Vec2d {
     }
 
     public Vec2d sub(float xy) {
-        return sub((double) xy);
+        return this.sub((double) xy);
     }
 
     public Vec2d sub(int xy) {
-        return sub((double) xy);
+        return this.sub((double) xy);
     }
 
     public Vec2d sub(double x, double y) {
@@ -161,23 +161,23 @@ public class Vec2d {
     }
 
     public Vec2d sub(float x, float y) {
-        return sub((double) x, (double) y);
+        return this.sub((double) x, (double) y);
     }
 
     public Vec2d sub(int x, int y) {
-        return sub((double) x, (double) y);
+        return this.sub((double) x, (double) y);
     }
 
     public Vec2d sub(Vec2f vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec2d sub(Vec2d vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
     public Vec2d sub(Vec2i vector) {
-        return sub(vector.x, vector.y);
+        return this.sub(vector.x, vector.y);
     }
 
 
@@ -188,11 +188,11 @@ public class Vec2d {
     }
 
     public Vec2d mul(float xy) {
-        return mul((double) xy);
+        return this.mul((double) xy);
     }
 
     public Vec2d mul(int xy) {
-        return mul((double) xy);
+        return this.mul((double) xy);
     }
 
     public Vec2d mul(double x, double y) {
@@ -202,23 +202,23 @@ public class Vec2d {
     }
 
     public Vec2d mul(float x, float y) {
-        return mul((double) x, (double) y);
+        return this.mul((double) x, (double) y);
     }
 
     public Vec2d mul(int x, int y) {
-        return mul((double) x, (double) y);
+        return this.mul((double) x, (double) y);
     }
 
     public Vec2d mul(Vec2f vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec2d mul(Vec2d vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
     public Vec2d mul(Vec2i vector) {
-        return mul(vector.x, vector.y);
+        return this.mul(vector.x, vector.y);
     }
 
 
@@ -229,11 +229,11 @@ public class Vec2d {
     }
 
     public Vec2d div(float xy) {
-        return div((double) xy);
+        return this.div((double) xy);
     }
 
     public Vec2d div(int xy) {
-        return div((double) xy);
+        return this.div((double) xy);
     }
 
     public Vec2d div(double x, double y) {
@@ -243,23 +243,23 @@ public class Vec2d {
     }
 
     public Vec2d div(float x, float y) {
-        return div((double) x, (double) y);
+        return this.div((double) x, (double) y);
     }
 
     public Vec2d div(int x, int y) {
-        return div((double) x, (double) y);
+        return this.div((double) x, (double) y);
     }
 
     public Vec2d div(Vec2f vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec2d div(Vec2d vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
     public Vec2d div(Vec2i vector) {
-        return div(vector.x, vector.y);
+        return this.div(vector.x, vector.y);
     }
 
 
@@ -358,36 +358,36 @@ public class Vec2d {
 
 
     public Vec2d setShorter(Vec2d vector1, Vec2d vector2) {
-        return set(shorter(vector1, vector2));
+        return this.set(shorter(vector1, vector2));
     }
 
     public Vec2d setLonger(Vec2d vector1, Vec2d vector2) {
-        return set(longer(vector1, vector2));
+        return this.set(longer(vector1, vector2));
     }
 
 
     public Vec2d setMinComps(Vec2d vector1, double x2, double y2) {
-        return set(Math.min(vector1.x, x2), Math.min(vector1.y, y2));
+        return this.set(Math.min(vector1.x, x2), Math.min(vector1.y, y2));
     }
 
     public Vec2d setMinComps(Vec2d vector1, double xy2) {
-        return setMinComps(vector1, xy2, xy2);
+        return this.setMinComps(vector1, xy2, xy2);
     }
 
     public Vec2d setMinComps(Vec2d vector1, Vec2d vector2) {
-        return setMinComps(vector1, vector2.x, vector2.y);
+        return this.setMinComps(vector1, vector2.x, vector2.y);
     }
 
     public Vec2d setMaxComps(Vec2d vector1, double x2, double y2) {
-        return set(Math.max(vector1.x, x2), Math.max(vector1.y, y2));
+        return this.set(Math.max(vector1.x, x2), Math.max(vector1.y, y2));
     }
 
     public Vec2d setMaxComps(Vec2d vector1, double xy2) {
-        return setMaxComps(vector1, xy2, xy2);
+        return this.setMaxComps(vector1, xy2, xy2);
     }
 
     public Vec2d setMaxComps(Vec2d vector1, Vec2d vector2) {
-        return setMaxComps(vector1, vector2.x, vector2.y);
+        return this.setMaxComps(vector1, vector2.x, vector2.y);
     }
 
 
@@ -401,7 +401,7 @@ public class Vec2d {
 
 
     public Vec2d zero() {
-        return set(0);
+        return this.set(0);
     }
 
     public boolean isZero() {
@@ -417,35 +417,35 @@ public class Vec2d {
     }
 
     public Vec2d zeroThatLess(float x, float y) {
-        return zeroThatLess((double) x, (double) y);
+        return this.zeroThatLess((double) x, (double) y);
     }
 
     public Vec2d zeroThatLess(int x, int y) {
-        return zeroThatLess((double) x, (double) y);
+        return this.zeroThatLess((double) x, (double) y);
     }
 
     public Vec2d zeroThatLess(float xy) {
-        return zeroThatLess(xy, xy);
+        return this.zeroThatLess(xy, xy);
     }
 
     public Vec2d zeroThatLess(double xy) {
-        return zeroThatLess(xy, xy);
+        return this.zeroThatLess(xy, xy);
     }
 
     public Vec2d zeroThatLess(int xy) {
-        return zeroThatLess(xy, xy);
+        return this.zeroThatLess(xy, xy);
     }
 
     public Vec2d zeroThatLess(Vec2f vector) {
-        return zeroThatLess(vector.x, vector.y);
+        return this.zeroThatLess(vector.x, vector.y);
     }
 
     public Vec2d zeroThatLess(Vec2d vector) {
-        return zeroThatLess(vector.x, vector.y);
+        return this.zeroThatLess(vector.x, vector.y);
     }
 
     public Vec2d zeroThatLess(Vec2i vector) {
-        return zeroThatLess(vector.x, vector.y);
+        return this.zeroThatLess(vector.x, vector.y);
     }
 
     public Vec2d zeroThatZero(double x, double y) {
@@ -457,35 +457,35 @@ public class Vec2d {
     }
 
     public Vec2d zeroThatZero(float x, float y) {
-        return zeroThatZero((double) x, (double) y);
+        return this.zeroThatZero((double) x, (double) y);
     }
 
     public Vec2d zeroThatZero(int x, int y) {
-        return zeroThatZero((double) x, (double) y);
+        return this.zeroThatZero((double) x, (double) y);
     }
 
     public Vec2d zeroThatZero(float xy) {
-        return zeroThatZero(xy, xy);
+        return this.zeroThatZero(xy, xy);
     }
 
     public Vec2d zeroThatZero(double xy) {
-        return zeroThatZero(xy, xy);
+        return this.zeroThatZero(xy, xy);
     }
 
     public Vec2d zeroThatZero(int xy) {
-        return zeroThatZero(xy, xy);
+        return this.zeroThatZero(xy, xy);
     }
 
     public Vec2d zeroThatZero(Vec2f vector) {
-        return zeroThatZero(vector.x, vector.y);
+        return this.zeroThatZero(vector.x, vector.y);
     }
 
     public Vec2d zeroThatZero(Vec2d vector) {
-        return zeroThatZero(vector.x, vector.y);
+        return this.zeroThatZero(vector.x, vector.y);
     }
 
     public Vec2d zeroThatZero(Vec2i vector) {
-        return zeroThatZero(vector.x, vector.y);
+        return this.zeroThatZero(vector.x, vector.y);
     }
 
     public Vec2d zeroThatBigger(double x, double y) {
@@ -497,35 +497,35 @@ public class Vec2d {
     }
 
     public Vec2d zeroThatBigger(float x, float y) {
-        return zeroThatBigger((double) x, (double) y);
+        return this.zeroThatBigger((double) x, (double) y);
     }
 
     public Vec2d zeroThatBigger(int x, int y) {
-        return zeroThatBigger((double) x, (double) y);
+        return this.zeroThatBigger((double) x, (double) y);
     }
 
     public Vec2d zeroThatBigger(float xy) {
-        return zeroThatBigger(xy, xy);
+        return this.zeroThatBigger(xy, xy);
     }
 
     public Vec2d zeroThatBigger(double xy) {
-        return zeroThatBigger(xy, xy);
+        return this.zeroThatBigger(xy, xy);
     }
 
     public Vec2d zeroThatBigger(int xy) {
-        return zeroThatBigger(xy, xy);
+        return this.zeroThatBigger(xy, xy);
     }
 
     public Vec2d zeroThatBigger(Vec2f vector) {
-        return zeroThatBigger(vector.x, vector.y);
+        return this.zeroThatBigger(vector.x, vector.y);
     }
 
     public Vec2d zeroThatBigger(Vec2d vector) {
-        return zeroThatBigger(vector.x, vector.y);
+        return this.zeroThatBigger(vector.x, vector.y);
     }
 
     public Vec2d zeroThatBigger(Vec2i vector) {
-        return zeroThatBigger(vector.x, vector.y);
+        return this.zeroThatBigger(vector.x, vector.y);
     }
 
 
@@ -560,12 +560,12 @@ public class Vec2d {
 
 
     public Vec2d nor() {
-        double len = len2();
+        double len = this.len2();
         if(len == 0 || len == 1)
             return this;
         
         len = 1D / Math.sqrt(len);
-        return mul(len);
+        return this.mul(len);
     }
 
 
@@ -577,7 +577,10 @@ public class Vec2d {
 
 
     public static Vec2d lerp(Vec2d vector, double startX, double startY, double endX, double endY, double t) {
-        return vector.set(Maths.lerp(startX, endX, t), Maths.lerp(startY, endY, t));
+        return vector.set(
+            Maths.lerp(startX, endX, t),
+            Maths.lerp(startY, endY, t)
+        );
     }
 
     public static Vec2d lerp(Vec2d vector, Vec2d start, Vec2d end, double t) {
@@ -708,23 +711,23 @@ public class Vec2d {
     public Vec2d rotateRad(double radians) {
         final double cos = Math.cos(radians);
         final double sin = Math.sin(radians);
-        return set((x * cos + y * sin), (x * -sin + y * cos));
+        return this.set((x * cos + y * sin), (x * -sin + y * cos));
     }
 
     public Vec2d rotate(double degrees) {
-        return rotateRad(degrees * Maths.toDeg);
+        return this.rotateRad(degrees * Maths.toDeg);
     }
 
 
     public Vec2d mulMat3(float[] matrix) {
-        return set(
+        return this.set(
             x * matrix[Matrix3.m00] + y * matrix[Matrix3.m10] + matrix[Matrix3.m20],
             x * matrix[Matrix3.m01] + y * matrix[Matrix3.m11] + matrix[Matrix3.m21]
         );
     }
 
     public Vec2d mulMat3(Matrix3f matrix) {
-        return mulMat3(matrix.val);
+        return this.mulMat3(matrix.val);
     }
 
 
@@ -796,16 +799,16 @@ public class Vec2d {
 
 
     public Vec2d clampLength(double max) {
-        final double len = len();
+        final double len = this.len();
         if(len <= max)
             return this;
-        return nor().mul(max);
+        return this.nor().mul(max);
     }
 
 
     public Vec2d reduce(double reduceX, double reduceY) {
-        final double len = len();
-        return nor().mul(len - reduceX, len - reduceY);
+        final double len = this.len();
+        return this.nor().mul(len - reduceX, len - reduceY);
     }
 
 
