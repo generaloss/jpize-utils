@@ -7,7 +7,7 @@
     <version>24.9.3-dev10</version>
     <name>jpize-utils</name>
 
-    <description>utilities library</description>
+    <description>utils library</description>
     <url>https://github.com/generaloss/jpize-utils</url>
 
     <scm>
