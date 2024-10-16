@@ -691,16 +691,6 @@ public class Vec4f {
         return (vector1.len2() > vector2.len2()) ? vector1 : vector2;
     }
 
-
-    public static Vec4f minCompsVec(Vec4f vector1, Vec4f vector2) {
-        return new Vec4f(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z), Math.min(vector1.w, vector2.w));
-    }
-
-    public static Vec4f maxCompsVec(Vec4f vector1, Vec4f vector2) {
-        return new Vec4f(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z), Math.max(vector1.w, vector2.w));
-    }
-
-
     public Vec4f setShorter(Vec4f vector1, Vec4f vector2) {
         return this.set(shorter(vector1, vector2));
     }
@@ -710,37 +700,78 @@ public class Vec4f {
     }
 
 
-    public Vec4f setMinComps(Vec4f vector1, float x2, float y2, float z2, float w2) {
-        return this.set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2), Math.min(vector1.w, w2));
-    }
-
-    public Vec4f setMinComps(Vec4f vector1, float xyzw2) {
-        return this.setMinComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
-    }
-
-    public Vec4f setMinComps(Vec4f vector1, Vec4f vector2) {
-        return this.setMinComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
-    }
-
-    public Vec4f setMaxComps(Vec4f vector1, float x2, float y2, float z2, float w2) {
-        return this.set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2), Math.max(vector1.w, w2));
-    }
-
-    public Vec4f setMaxComps(Vec4f vector1, float xyzw2) {
-        return this.setMaxComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
-    }
-
-    public Vec4f setMaxComps(Vec4f vector1, Vec4f vector2) {
-        return this.setMaxComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
-    }
-
-
     public float minComp() {
         return Math.min(x, Math.min(y, Math.min(z, w)));
     }
 
     public float maxComp() {
         return Math.max(x, Math.max(y, Math.max(z, w)));
+    }
+
+
+    public static Vec4f minComps(Vec4f dst, float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        return dst.set(Math.min(x1, x2), Math.min(y1, y2), Math.min(z1, z2), Math.min(w1, w2));
+    }
+
+    public static Vec4f minComps(Vec4f dst, float x1, float y1, float z1, float w1, Vec4f vector2) {
+        return minComps(dst, x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public static Vec4f minComps(Vec4f dst, Vec4f vector1, float x2, float y2, float z2, float w2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
+    }
+
+    public static Vec4f minComps(Vec4f dst, Vec4f vector1, Vec4f vector2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public Vec4f setMinComps(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        return minComps(this, x1, y1, z1, w1, x2, y2, z2, w2);
+    }
+
+    public Vec4f setMinComps(float x1, float y1, float z1, float w1, Vec4f vector2) {
+        return minComps(this, x1, y1, z1, w1, vector2);
+    }
+
+    public Vec4f setMinComps(Vec4f vector1, float x2, float y2, float z2, float w2) {
+        return minComps(this, vector1, x2, y2, z2, w2);
+    }
+
+    public Vec4f setMinComps(Vec4f vector1, Vec4f vector2) {
+        return minComps(this, vector1, vector2);
+    }
+
+
+    public static Vec4f maxComps(Vec4f dst, float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        return dst.set(Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2), Math.max(w1, w2));
+    }
+
+    public static Vec4f maxComps(Vec4f dst, float x1, float y1, float z1, float w1, Vec4f vector2) {
+        return maxComps(dst, x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public static Vec4f maxComps(Vec4f dst, Vec4f vector1, float x2, float y2, float z2, float w2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
+    }
+
+    public static Vec4f maxComps(Vec4f dst, Vec4f vector1, Vec4f vector2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public Vec4f setMaxComps(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        return maxComps(this, x1, y1, z1, w1, x2, y2, z2, w2);
+    }
+
+    public Vec4f setMaxComps(float x1, float y1, float z1, float w1, Vec4f vector2) {
+        return maxComps(this, x1, y1, z1, w1, vector2);
+    }
+
+    public Vec4f setMaxComps(Vec4f vector1, float x2, float y2, float z2, float w2) {
+        return maxComps(this, vector1, x2, y2, z2, w2);
+    }
+
+    public Vec4f setMaxComps(Vec4f vector1, Vec4f vector2) {
+        return maxComps(this, vector1, vector2);
     }
 
 
@@ -934,8 +965,8 @@ public class Vec4f {
     }
 
 
-    public static Vec4f lerp(Vec4f vector, float startX, float startY, float startZ, float startW, float endX, float endY, float endZ, float endW, float t) {
-        return vector.set(
+    public static Vec4f lerp(Vec4f dst, float startX, float startY, float startZ, float startW, float endX, float endY, float endZ, float endW, float t) {
+        return dst.set(
             Maths.lerp(startX, endX, t),
             Maths.lerp(startY, endY, t),
             Maths.lerp(startZ, endZ, t),
@@ -943,8 +974,8 @@ public class Vec4f {
         );
     }
 
-    public static Vec4f lerp(Vec4f vector, Vec4f start, Vec4f end, float t) {
-        return lerp(vector, start.x, start.y, start.z, start.w, end.x, end.y, end.z, end.w, t);
+    public static Vec4f lerp(Vec4f dst, Vec4f start, Vec4f end, float t) {
+        return lerp(dst, start.x, start.y, start.z, start.w, end.x, end.y, end.z, end.w, t);
     }
 
     public Vec4f lerp(float startX, float startY, float startZ, float startW, float endX, float endY, float endZ, float endW, float t) {
@@ -990,8 +1021,8 @@ public class Vec4f {
     }
 
 
-    public Vec4i signum() {
-        return new Vec4i(Math.signum(x), Math.signum(y), Math.signum(z), Math.signum(w));
+    public Vec4i signum(Vec4i dst) {
+        return dst.set(Math.signum(x), Math.signum(y), Math.signum(z), Math.signum(w));
     }
 
 

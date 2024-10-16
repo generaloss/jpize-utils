@@ -690,16 +690,6 @@ public class Vec4d {
         return (vector1.len2() > vector2.len2()) ? vector1 : vector2;
     }
 
-
-    public static Vec4d minCompsVec(Vec4d vector1, Vec4d vector2) {
-        return new Vec4d(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z), Math.min(vector1.w, vector2.w));
-    }
-
-    public static Vec4d maxCompsVec(Vec4d vector1, Vec4d vector2) {
-        return new Vec4d(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z), Math.max(vector1.w, vector2.w));
-    }
-
-
     public Vec4d setShorter(Vec4d vector1, Vec4d vector2) {
         return this.set(shorter(vector1, vector2));
     }
@@ -709,37 +699,78 @@ public class Vec4d {
     }
 
 
-    public Vec4d setMinComps(Vec4d vector1, double x2, double y2, double z2, double w2) {
-        return this.set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2), Math.min(vector1.w, w2));
-    }
-
-    public Vec4d setMinComps(Vec4d vector1, double xyzw2) {
-        return this.setMinComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
-    }
-
-    public Vec4d setMinComps(Vec4d vector1, Vec4d vector2) {
-        return this.setMinComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
-    }
-
-    public Vec4d setMaxComps(Vec4d vector1, double x2, double y2, double z2, double w2) {
-        return this.set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2), Math.max(vector1.w, w2));
-    }
-
-    public Vec4d setMaxComps(Vec4d vector1, double xyzw2) {
-        return this.setMaxComps(vector1, xyzw2, xyzw2, xyzw2, xyzw2);
-    }
-
-    public Vec4d setMaxComps(Vec4d vector1, Vec4d vector2) {
-        return this.setMaxComps(vector1, vector2.x, vector2.y, vector2.z, vector2.w);
-    }
-
-
     public double minComp() {
         return Math.min(x, Math.min(y, Math.min(z, w)));
     }
 
     public double maxComp() {
         return Math.max(x, Math.max(y, Math.max(z, w)));
+    }
+
+
+    public static Vec4d minComps(Vec4d dst, double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
+        return dst.set(Math.min(x1, x2), Math.min(y1, y2), Math.min(z1, z2), Math.min(w1, w2));
+    }
+
+    public static Vec4d minComps(Vec4d dst, double x1, double y1, double z1, double w1, Vec4d vector2) {
+        return minComps(dst, x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public static Vec4d minComps(Vec4d dst, Vec4d vector1, double x2, double y2, double z2, double w2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
+    }
+
+    public static Vec4d minComps(Vec4d dst, Vec4d vector1, Vec4d vector2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public Vec4d setMinComps(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
+        return minComps(this, x1, y1, z1, w1, x2, y2, z2, w2);
+    }
+
+    public Vec4d setMinComps(double x1, double y1, double z1, double w1, Vec4d vector2) {
+        return minComps(this, x1, y1, z1, w1, vector2);
+    }
+
+    public Vec4d setMinComps(Vec4d vector1, double x2, double y2, double z2, double w2) {
+        return minComps(this, vector1, x2, y2, z2, w2);
+    }
+
+    public Vec4d setMinComps(Vec4d vector1, Vec4d vector2) {
+        return minComps(this, vector1, vector2);
+    }
+
+
+    public static Vec4d maxComps(Vec4d dst, double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
+        return dst.set(Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2), Math.max(w1, w2));
+    }
+
+    public static Vec4d maxComps(Vec4d dst, double x1, double y1, double z1, double w1, Vec4d vector2) {
+        return maxComps(dst, x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public static Vec4d maxComps(Vec4d dst, Vec4d vector1, double x2, double y2, double z2, double w2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
+    }
+
+    public static Vec4d maxComps(Vec4d dst, Vec4d vector1, Vec4d vector2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public Vec4d setMaxComps(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
+        return maxComps(this, x1, y1, z1, w1, x2, y2, z2, w2);
+    }
+
+    public Vec4d setMaxComps(double x1, double y1, double z1, double w1, Vec4d vector2) {
+        return maxComps(this, x1, y1, z1, w1, vector2);
+    }
+
+    public Vec4d setMaxComps(Vec4d vector1, double x2, double y2, double z2, double w2) {
+        return maxComps(this, vector1, x2, y2, z2, w2);
+    }
+
+    public Vec4d setMaxComps(Vec4d vector1, Vec4d vector2) {
+        return maxComps(this, vector1, vector2);
     }
 
 
@@ -933,8 +964,8 @@ public class Vec4d {
     }
 
 
-    public static Vec4d lerp(Vec4d vector, double startX, double startY, double startZ, double startW, double endX, double endY, double endZ, double endW, double t) {
-        return vector.set(
+    public static Vec4d lerp(Vec4d dst, double startX, double startY, double startZ, double startW, double endX, double endY, double endZ, double endW, double t) {
+        return dst.set(
             Maths.lerp(startX, endX, t),
             Maths.lerp(startY, endY, t),
             Maths.lerp(startZ, endZ, t),
@@ -942,8 +973,8 @@ public class Vec4d {
         );
     }
 
-    public static Vec4d lerp(Vec4d vector, Vec4d start, Vec4d end, double t) {
-        return lerp(vector, start.x, start.y, start.z, start.w, end.x, end.y, end.z, end.w, t);
+    public static Vec4d lerp(Vec4d dst, Vec4d start, Vec4d end, double t) {
+        return lerp(dst, start.x, start.y, start.z, start.w, end.x, end.y, end.z, end.w, t);
     }
 
     public Vec4d lerp(double startX, double startY, double startZ, double startW, double endX, double endY, double endZ, double endW, double t) {
@@ -989,8 +1020,8 @@ public class Vec4d {
     }
 
 
-    public Vec4i signum() {
-        return new Vec4i(Math.signum(x), Math.signum(y), Math.signum(z), Math.signum(w));
+    public Vec4i signum(Vec4i dst) {
+        return dst.set(Math.signum(x), Math.signum(y), Math.signum(z), Math.signum(w));
     }
 
 

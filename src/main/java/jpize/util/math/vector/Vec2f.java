@@ -348,16 +348,6 @@ public class Vec2f {
         return (vector1.len2() > vector2.len2()) ? vector1 : vector2;
     }
 
-
-    public static Vec2f minCompsVec(Vec2f vector1, Vec2f vector2) {
-        return new Vec2f(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y));
-    }
-
-    public static Vec2f maxCompsVec(Vec2f vector1, Vec2f vector2) {
-        return new Vec2f(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y));
-    }
-
-
     public Vec2f setShorter(Vec2f vector1, Vec2f vector2) {
         return this.set(shorter(vector1, vector2));
     }
@@ -367,37 +357,78 @@ public class Vec2f {
     }
 
 
-    public Vec2f setMinComps(Vec2f vector1, float x2, float y2) {
-        return this.set(Math.min(vector1.x, x2), Math.min(vector1.y, y2));
-    }
-
-    public Vec2f setMinComps(Vec2f vector1, float xy2) {
-        return this.setMinComps(vector1, xy2, xy2);
-    }
-
-    public Vec2f setMinComps(Vec2f vector1, Vec2f vector2) {
-        return this.setMinComps(vector1, vector2.x, vector2.y);
-    }
-
-    public Vec2f setMaxComps(Vec2f vector1, float x2, float y2) {
-        return this.set(Math.max(vector1.x, x2), Math.max(vector1.y, y2));
-    }
-
-    public Vec2f setMaxComps(Vec2f vector1, float xy2) {
-        return this.setMaxComps(vector1, xy2, xy2);
-    }
-
-    public Vec2f setMaxComps(Vec2f vector1, Vec2f vector2) {
-        return this.setMaxComps(vector1, vector2.x, vector2.y);
-    }
-
-
     public float minComp() {
         return Math.min(x, y);
     }
 
     public float maxComp() {
         return Math.max(x, y);
+    }
+
+
+    public static Vec2f minComps(Vec2f dst, float x1, float y1, float x2, float y2) {
+        return dst.set(Math.min(x1, x2), Math.min(y1, y2));
+    }
+
+    public static Vec2f minComps(Vec2f dst, float x1, float y1, Vec2f vector2) {
+        return minComps(dst, x1, y1, vector2.x, vector2.y);
+    }
+
+    public static Vec2f minComps(Vec2f dst, Vec2f vector1, float x2, float y2) {
+        return minComps(dst, vector1.x, vector1.y, x2, y2);
+    }
+
+    public static Vec2f minComps(Vec2f dst, Vec2f vector1, Vec2f vector2) {
+        return minComps(dst, vector1.x, vector1.y, vector2.x, vector2.y);
+    }
+
+    public Vec2f setMinComps(float x1, float y1, float x2, float y2) {
+        return minComps(this, x1, y1, x2, y2);
+    }
+
+    public Vec2f setMinComps(float x1, float y1, Vec2f vector2) {
+        return minComps(this, x1, y1, vector2);
+    }
+
+    public Vec2f setMinComps(Vec2f vector1, float x2, float y2) {
+        return minComps(this, vector1, x2, y2);
+    }
+
+    public Vec2f setMinComps(Vec2f vector1, Vec2f vector2) {
+        return minComps(this, vector1, vector2);
+    }
+
+
+    public static Vec2f maxComps(Vec2f dst, float x1, float y1, float x2, float y2) {
+        return dst.set(Math.max(x1, x2), Math.max(y1, y2));
+    }
+
+    public static Vec2f maxComps(Vec2f dst, float x1, float y1, Vec2f vector2) {
+        return maxComps(dst, x1, y1, vector2.x, vector2.y);
+    }
+
+    public static Vec2f maxComps(Vec2f dst, Vec2f vector1, float x2, float y2) {
+        return maxComps(dst, vector1.x, vector1.y, x2, y2);
+    }
+
+    public static Vec2f maxComps(Vec2f dst, Vec2f vector1, Vec2f vector2) {
+        return maxComps(dst, vector1.x, vector1.y, vector2.x, vector2.y);
+    }
+
+    public Vec2f setMaxComps(float x1, float y1, float x2, float y2) {
+        return maxComps(this, x1, y1, x2, y2);
+    }
+
+    public Vec2f setMaxComps(float x1, float y1, Vec2f vector2) {
+        return maxComps(this, x1, y1, vector2);
+    }
+
+    public Vec2f setMaxComps(Vec2f vector1, float x2, float y2) {
+        return maxComps(this, vector1, x2, y2);
+    }
+
+    public Vec2f setMaxComps(Vec2f vector1, Vec2f vector2) {
+        return maxComps(this, vector1, vector2);
     }
 
 
@@ -577,15 +608,15 @@ public class Vec2f {
     }
 
 
-    public static Vec2f lerp(Vec2f vector, float startX, float startY, float endX, float endY, float t) {
-        return vector.set(
+    public static Vec2f lerp(Vec2f dst, float startX, float startY, float endX, float endY, float t) {
+        return dst.set(
             Maths.lerp(startX, endX, t),
             Maths.lerp(startY, endY, t)
         );
     }
 
-    public static Vec2f lerp(Vec2f vector, Vec2f start, Vec2f end, float t) {
-        return lerp(vector, start.x, start.y, end.x, end.y, t);
+    public static Vec2f lerp(Vec2f dst, Vec2f start, Vec2f end, float t) {
+        return lerp(dst, start.x, start.y, end.x, end.y, t);
     }
 
     public Vec2f lerp(float startX, float startY, float endX, float endY, float t) {
@@ -654,8 +685,8 @@ public class Vec2f {
     }
 
 
-    public Vec2i signum() {
-        return new Vec2i(Math.signum(x), Math.signum(y));
+    public Vec2i signum(Vec2i dst) {
+        return dst.set(Math.signum(x), Math.signum(y));
     }
 
 

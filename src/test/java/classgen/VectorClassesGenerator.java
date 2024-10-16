@@ -433,8 +433,9 @@ public class VectorClassesGenerator {
 
     private static void addSignum() {
         final String classname_l = makeClassname(dimensions, "int");
-        w.addMethod("public " + classname_l + " signum()",
-            "return new " + classname_l + "(" + makeDims(dimensions, ", ", "Math.signum(%l)") + ");"
+
+        w.addMethod("public " + classname_l + " signum(" + classname_l + " dst)",
+            "return dst.set(" + makeDims(dimensions, ", ", "Math.signum(%l)") + ");"
         );
 
         w.addMethodSplitter();
@@ -474,28 +475,28 @@ public class VectorClassesGenerator {
                 "return crs(this, " + makeDims(dimensions, ", ", "%l") + ");"
             );
         }else if(dimensions == 3) {
-            w.addMethod("public static " + classname + " crs(" + makeDims(3, ", ", datatype + " %l1") + ", " + makeDims(3, ", ", datatype + " %l2") + ")",
-                "return new " + classname + "((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));"
+            w.addMethod("public static " + classname + " crs(" + classname + " dst, " + makeDims(3, ", ", datatype + " %l1") + ", " + makeDims(3, ", ", datatype + " %l2") + ")",
+                "return dst.set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));"
             );
-            w.addMethod("public static " + classname + " crs(" + classname + " " + varname + "1, " + makeDims(3, ", ", datatype + " %l2") + ")",
-                "return crs(" + makeDims(3, ", ", varname + "1.%l") + ", " + makeDims(3, ", ", "%l2") + ");"
+            w.addMethod("public static " + classname + " crs(" + classname + " dst, " + classname + " " + varname + "1, " + makeDims(3, ", ", datatype + " %l2") + ")",
+                "return crs(dst, " + makeDims(3, ", ", varname + "1.%l") + ", " + makeDims(3, ", ", "%l2") + ");"
             );
-            w.addMethod("public static " + classname + " crs(" + makeDims(3, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
-                "return crs(" + makeDims(3, ", ", "%l1") + ", " + makeDims(3, ", ", varname + "2.%l") + ");"
+            w.addMethod("public static " + classname + " crs(" + classname + " dst, " + makeDims(3, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
+                "return crs(dst, " + makeDims(3, ", ", "%l1") + ", " + makeDims(3, ", ", varname + "2.%l") + ");"
             );
-            w.addMethod("public static " + classname + " crs(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-                "return crs(" + makeDims(3, ", ", varname + "1.%l") + ", " + makeDims(3, ", ", varname + "2.%l") + ");"
+            w.addMethod("public static " + classname + " crs(" + classname + " dst, " + classname + " " + varname + "1, " + classname + " " + varname + "2)",
+                "return crs(dst, " + makeDims(3, ", ", varname + "1.%l") + ", " + makeDims(3, ", ", varname + "2.%l") + ");"
             );
 
-            w.addMethod("public " + classname + " crs(" + classname + " " + varname + ")",
-                "return crs(this, " + varname + ");"
+            w.addMethod("public " + classname + " crs(" + classname + " dst, " + classname + " " + varname + ")",
+                "return crs(dst, this, " + varname + ");"
             );
-            w.addMethod("public " + classname + " crs(" + makeDims(dimensions, ", ", datatype + " %l") + ")",
-                "return crs(this, " + makeDims(dimensions, ", ", "%l") + ");"
+            w.addMethod("public " + classname + " crs(" + classname + " dst, " + makeDims(dimensions, ", ", datatype + " %l") + ")",
+                "return crs(dst, this, " + makeDims(dimensions, ", ", "%l") + ");"
             );
 
             w.addMethod("public " + classname + " setCrs(" + makeDims(3, ", ", datatype + " %l1") + ", " + makeDims(3, ", ", datatype + " %l2") + ")",
-                "return this.set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));"
+                "return crs(this, " + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
             );
             w.addMethod("public " + classname + " setCrs(" + classname + " " + varname + "1, " + makeDims(3, ", ", datatype + " %l2") + ")",
                 "return this.setCrs(" + makeDims(3, ", ", varname + "1.%l") + ", " + makeDims(3, ", ", "%l2") + ");"
@@ -539,12 +540,12 @@ public class VectorClassesGenerator {
     private static void addLerp() {
         final String datatype_t = (isDatatypeInt ? "float" : datatype);
 
-        w.addMethod("public static " + classname + " lerp(" + classname + " " + varname + ", " + makeDims(dimensions, ", ", datatype + " start%L") + ", " + makeDims(dimensions, ", ", datatype + " end%L") + ", " + datatype_t + " t" + ")",
-            "return " + varname + ".set(\n            " + makeDims(dimensions, ",\n            ", "Maths.lerp(start%L, end%L, t)") + "\n        );"
+        w.addMethod("public static " + classname + " lerp(" + classname + " dst, " + makeDims(dimensions, ", ", datatype + " start%L") + ", " + makeDims(dimensions, ", ", datatype + " end%L") + ", " + datatype_t + " t" + ")",
+            "return dst.set(\n            " + makeDims(dimensions, ",\n            ", "Maths.lerp(start%L, end%L, t)") + "\n        );"
         );
 
-        w.addMethod("public static " + classname + " lerp(" + classname + " " + varname + ", " + classname + " start, " + classname + " end, " + datatype_t + " t" + ")",
-            "return lerp(" + varname + ", " + makeDims(dimensions, ", ", "start.%l") + ", " + makeDims(dimensions, ", ", "end.%l") + ", t);"
+        w.addMethod("public static " + classname + " lerp(" + classname + " dst, " + classname + " start, " + classname + " end, " + datatype_t + " t" + ")",
+            "return lerp(dst, " + makeDims(dimensions, ", ", "start.%l") + ", " + makeDims(dimensions, ", ", "end.%l") + ", t);"
         );
 
         w.addMethod("public " + classname + " lerp(" + makeDims(dimensions, ", ", datatype + " start%L") + ", " + makeDims(dimensions, ", ", datatype + " end%L") + ", " + datatype_t + " t" + ")",
@@ -692,17 +693,6 @@ public class VectorClassesGenerator {
             "return (" + varname + "1.len2() > " + varname + "2.len2()) ? " + varname + "1 : " + varname + "2;"
         );
 
-        w.addMethodSplitter();
-
-        w.addMethod("public static " + classname + " minCompsVec(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return new " + classname + "(" + makeDims(dimensions, ", ", "Math.min(" + varname + "1.%l, " + varname + "2.%l)") + ");"
-        );
-
-        w.addMethod("public static " + classname + " maxCompsVec(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return new " + classname + "(" + makeDims(dimensions, ", ", "Math.max(" + varname + "1.%l, " + varname + "2.%l)") + ");"
-        );
-
-        w.addMethodSplitter();
 
         w.addMethod("public " + classname + " setShorter(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
             "return this.set(shorter(" + varname + "1, " + varname + "2));"
@@ -714,38 +704,82 @@ public class VectorClassesGenerator {
 
         w.addMethodSplitter();
 
-        w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return this.set(" + makeDims(dimensions, ", ", "Math.min(" + varname + "1.%l, %l2)") + ");"
-        );
-
-        w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + datatype + " " + xyzw_str + "2)",
-            "return this.setMinComps(" + varname + "1, " + makeDims(dimensions, ", ", xyzw_str + "2") + ");"
-        );
-
-        w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return this.setMinComps(" + varname + "1, " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
-        );
-
-        w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return this.set(" + makeDims(dimensions, ", ", "Math.max(" + varname + "1.%l, %l2)") + ");"
-        );
-
-        w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + datatype + " " + xyzw_str + "2)",
-            "return this.setMaxComps(" + varname + "1, " + makeDims(dimensions, ", ", xyzw_str + "2") + ");"
-        );
-
-        w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return this.setMaxComps(" + varname + "1, " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
-        );
-
-        w.addMethodSplitter();
-
         w.addMethod("public " + datatype + " minComp()",
             "return " + funcMultilayer("Math.min", 0, LETTERS[dimensions - 1], LETTERS) + ";"
         );
 
         w.addMethod("public " + datatype + " maxComp()",
             "return " + funcMultilayer("Math.max", 0, LETTERS[dimensions - 1], LETTERS) + ";"
+        );
+
+        w.addMethodSplitter();
+
+        w.addMethod("public static " + classname + " minComps(" + classname + " dst, " + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return dst.set(" + makeDims(dimensions, ", ", "Math.min(%l1, %l2)") + ");"
+        );
+
+        w.addMethod("public static " + classname + " minComps(" + classname + " dst, " + makeDims(dimensions, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
+            "return minComps(dst, " + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+        );
+
+        w.addMethod("public static " + classname + " minComps(" + classname + " dst, " + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return minComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public static " + classname + " minComps(" + classname + " dst, " + classname + " " + varname + "1, " + classname + " " + varname + "2)",
+            "return minComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+        );
+
+
+        w.addMethod("public " + classname + " setMinComps(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return minComps(this, " + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public " + classname + " setMinComps(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
+            "return minComps(this, " + makeDims(dimensions, ", ", "%l1") + ", " + varname + "2);"
+        );
+
+        w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return minComps(this, " + varname + "1, " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
+            "return minComps(this, " + varname + "1, " + varname + "2);"
+        );
+
+        w.addMethodSplitter();
+
+        w.addMethod("public static " + classname + " maxComps(" + classname + " dst, "  + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return dst.set(" + makeDims(dimensions, ", ", "Math.max(%l1, %l2)") + ");"
+        );
+
+        w.addMethod("public static " + classname + " maxComps(" + classname + " dst, " + makeDims(dimensions, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
+            "return maxComps(dst, " + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+        );
+
+        w.addMethod("public static " + classname + " maxComps(" + classname + " dst, " + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return maxComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public static " + classname + " maxComps(" + classname + " dst, " + classname + " " + varname + "1, " + classname + " " + varname + "2)",
+            "return maxComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+        );
+
+
+        w.addMethod("public " + classname + " setMaxComps(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return maxComps(this, " + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public " + classname + " setMaxComps(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
+            "return maxComps(this, " + makeDims(dimensions, ", ", "%l1") + ", " + varname + "2);"
+        );
+
+        w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return maxComps(this, " + varname + "1, " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
+            "return maxComps(this, " + varname + "1, " + varname + "2);"
         );
 
         w.addMethodSplitter();

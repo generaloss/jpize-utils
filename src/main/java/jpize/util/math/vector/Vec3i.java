@@ -727,16 +727,6 @@ public class Vec3i {
         return (vector1.len2() > vector2.len2()) ? vector1 : vector2;
     }
 
-
-    public static Vec3i minCompsVec(Vec3i vector1, Vec3i vector2) {
-        return new Vec3i(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z));
-    }
-
-    public static Vec3i maxCompsVec(Vec3i vector1, Vec3i vector2) {
-        return new Vec3i(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z));
-    }
-
-
     public Vec3i setShorter(Vec3i vector1, Vec3i vector2) {
         return this.set(shorter(vector1, vector2));
     }
@@ -746,37 +736,78 @@ public class Vec3i {
     }
 
 
-    public Vec3i setMinComps(Vec3i vector1, int x2, int y2, int z2) {
-        return this.set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2));
-    }
-
-    public Vec3i setMinComps(Vec3i vector1, int xyz2) {
-        return this.setMinComps(vector1, xyz2, xyz2, xyz2);
-    }
-
-    public Vec3i setMinComps(Vec3i vector1, Vec3i vector2) {
-        return this.setMinComps(vector1, vector2.x, vector2.y, vector2.z);
-    }
-
-    public Vec3i setMaxComps(Vec3i vector1, int x2, int y2, int z2) {
-        return this.set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2));
-    }
-
-    public Vec3i setMaxComps(Vec3i vector1, int xyz2) {
-        return this.setMaxComps(vector1, xyz2, xyz2, xyz2);
-    }
-
-    public Vec3i setMaxComps(Vec3i vector1, Vec3i vector2) {
-        return this.setMaxComps(vector1, vector2.x, vector2.y, vector2.z);
-    }
-
-
     public int minComp() {
         return Math.min(x, Math.min(y, z));
     }
 
     public int maxComp() {
         return Math.max(x, Math.max(y, z));
+    }
+
+
+    public static Vec3i minComps(Vec3i dst, int x1, int y1, int z1, int x2, int y2, int z2) {
+        return dst.set(Math.min(x1, x2), Math.min(y1, y2), Math.min(z1, z2));
+    }
+
+    public static Vec3i minComps(Vec3i dst, int x1, int y1, int z1, Vec3i vector2) {
+        return minComps(dst, x1, y1, z1, vector2.x, vector2.y, vector2.z);
+    }
+
+    public static Vec3i minComps(Vec3i dst, Vec3i vector1, int x2, int y2, int z2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, x2, y2, z2);
+    }
+
+    public static Vec3i minComps(Vec3i dst, Vec3i vector1, Vec3i vector2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public Vec3i setMinComps(int x1, int y1, int z1, int x2, int y2, int z2) {
+        return minComps(this, x1, y1, z1, x2, y2, z2);
+    }
+
+    public Vec3i setMinComps(int x1, int y1, int z1, Vec3i vector2) {
+        return minComps(this, x1, y1, z1, vector2);
+    }
+
+    public Vec3i setMinComps(Vec3i vector1, int x2, int y2, int z2) {
+        return minComps(this, vector1, x2, y2, z2);
+    }
+
+    public Vec3i setMinComps(Vec3i vector1, Vec3i vector2) {
+        return minComps(this, vector1, vector2);
+    }
+
+
+    public static Vec3i maxComps(Vec3i dst, int x1, int y1, int z1, int x2, int y2, int z2) {
+        return dst.set(Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2));
+    }
+
+    public static Vec3i maxComps(Vec3i dst, int x1, int y1, int z1, Vec3i vector2) {
+        return maxComps(dst, x1, y1, z1, vector2.x, vector2.y, vector2.z);
+    }
+
+    public static Vec3i maxComps(Vec3i dst, Vec3i vector1, int x2, int y2, int z2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, x2, y2, z2);
+    }
+
+    public static Vec3i maxComps(Vec3i dst, Vec3i vector1, Vec3i vector2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public Vec3i setMaxComps(int x1, int y1, int z1, int x2, int y2, int z2) {
+        return maxComps(this, x1, y1, z1, x2, y2, z2);
+    }
+
+    public Vec3i setMaxComps(int x1, int y1, int z1, Vec3i vector2) {
+        return maxComps(this, x1, y1, z1, vector2);
+    }
+
+    public Vec3i setMaxComps(Vec3i vector1, int x2, int y2, int z2) {
+        return maxComps(this, vector1, x2, y2, z2);
+    }
+
+    public Vec3i setMaxComps(Vec3i vector1, Vec3i vector2) {
+        return maxComps(this, vector1, vector2);
     }
 
 
@@ -969,16 +1000,16 @@ public class Vec3i {
     }
 
 
-    public static Vec3i lerp(Vec3i vector, int startX, int startY, int startZ, int endX, int endY, int endZ, float t) {
-        return vector.set(
+    public static Vec3i lerp(Vec3i dst, int startX, int startY, int startZ, int endX, int endY, int endZ, float t) {
+        return dst.set(
             Maths.lerp(startX, endX, t),
             Maths.lerp(startY, endY, t),
             Maths.lerp(startZ, endZ, t)
         );
     }
 
-    public static Vec3i lerp(Vec3i vector, Vec3i start, Vec3i end, float t) {
-        return lerp(vector, start.x, start.y, start.z, end.x, end.y, end.z, t);
+    public static Vec3i lerp(Vec3i dst, Vec3i start, Vec3i end, float t) {
+        return lerp(dst, start.x, start.y, start.z, end.x, end.y, end.z, t);
     }
 
     public Vec3i lerp(int startX, int startY, int startZ, int endX, int endY, int endZ, float t) {
@@ -1015,32 +1046,32 @@ public class Vec3i {
     }
 
 
-    public static Vec3i crs(int x1, int y1, int z1, int x2, int y2, int z2) {
-        return new Vec3i((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));
+    public static Vec3i crs(Vec3i dst, int x1, int y1, int z1, int x2, int y2, int z2) {
+        return dst.set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));
     }
 
-    public static Vec3i crs(Vec3i vector1, int x2, int y2, int z2) {
-        return crs(vector1.x, vector1.y, vector1.z, x2, y2, z2);
+    public static Vec3i crs(Vec3i dst, Vec3i vector1, int x2, int y2, int z2) {
+        return crs(dst, vector1.x, vector1.y, vector1.z, x2, y2, z2);
     }
 
-    public static Vec3i crs(int x1, int y1, int z1, Vec3i vector2) {
-        return crs(x1, y1, z1, vector2.x, vector2.y, vector2.z);
+    public static Vec3i crs(Vec3i dst, int x1, int y1, int z1, Vec3i vector2) {
+        return crs(dst, x1, y1, z1, vector2.x, vector2.y, vector2.z);
     }
 
-    public static Vec3i crs(Vec3i vector1, Vec3i vector2) {
-        return crs(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    public static Vec3i crs(Vec3i dst, Vec3i vector1, Vec3i vector2) {
+        return crs(dst, vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
-    public Vec3i crs(Vec3i vector) {
-        return crs(this, vector);
+    public Vec3i crs(Vec3i dst, Vec3i vector) {
+        return crs(dst, this, vector);
     }
 
-    public Vec3i crs(int x, int y, int z) {
-        return crs(this, x, y, z);
+    public Vec3i crs(Vec3i dst, int x, int y, int z) {
+        return crs(dst, this, x, y, z);
     }
 
     public Vec3i setCrs(int x1, int y1, int z1, int x2, int y2, int z2) {
-        return this.set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));
+        return crs(this, x1, y1, z1, x2, y2, z2);
     }
 
     public Vec3i setCrs(Vec3i vector1, int x2, int y2, int z2) {
@@ -1056,8 +1087,8 @@ public class Vec3i {
     }
 
 
-    public Vec3i signum() {
-        return new Vec3i(Math.signum(x), Math.signum(y), Math.signum(z));
+    public Vec3i signum(Vec3i dst) {
+        return dst.set(Math.signum(x), Math.signum(y), Math.signum(z));
     }
 
 

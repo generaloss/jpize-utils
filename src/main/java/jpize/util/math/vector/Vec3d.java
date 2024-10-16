@@ -726,16 +726,6 @@ public class Vec3d {
         return (vector1.len2() > vector2.len2()) ? vector1 : vector2;
     }
 
-
-    public static Vec3d minCompsVec(Vec3d vector1, Vec3d vector2) {
-        return new Vec3d(Math.min(vector1.x, vector2.x), Math.min(vector1.y, vector2.y), Math.min(vector1.z, vector2.z));
-    }
-
-    public static Vec3d maxCompsVec(Vec3d vector1, Vec3d vector2) {
-        return new Vec3d(Math.max(vector1.x, vector2.x), Math.max(vector1.y, vector2.y), Math.max(vector1.z, vector2.z));
-    }
-
-
     public Vec3d setShorter(Vec3d vector1, Vec3d vector2) {
         return this.set(shorter(vector1, vector2));
     }
@@ -745,37 +735,78 @@ public class Vec3d {
     }
 
 
-    public Vec3d setMinComps(Vec3d vector1, double x2, double y2, double z2) {
-        return this.set(Math.min(vector1.x, x2), Math.min(vector1.y, y2), Math.min(vector1.z, z2));
-    }
-
-    public Vec3d setMinComps(Vec3d vector1, double xyz2) {
-        return this.setMinComps(vector1, xyz2, xyz2, xyz2);
-    }
-
-    public Vec3d setMinComps(Vec3d vector1, Vec3d vector2) {
-        return this.setMinComps(vector1, vector2.x, vector2.y, vector2.z);
-    }
-
-    public Vec3d setMaxComps(Vec3d vector1, double x2, double y2, double z2) {
-        return this.set(Math.max(vector1.x, x2), Math.max(vector1.y, y2), Math.max(vector1.z, z2));
-    }
-
-    public Vec3d setMaxComps(Vec3d vector1, double xyz2) {
-        return this.setMaxComps(vector1, xyz2, xyz2, xyz2);
-    }
-
-    public Vec3d setMaxComps(Vec3d vector1, Vec3d vector2) {
-        return this.setMaxComps(vector1, vector2.x, vector2.y, vector2.z);
-    }
-
-
     public double minComp() {
         return Math.min(x, Math.min(y, z));
     }
 
     public double maxComp() {
         return Math.max(x, Math.max(y, z));
+    }
+
+
+    public static Vec3d minComps(Vec3d dst, double x1, double y1, double z1, double x2, double y2, double z2) {
+        return dst.set(Math.min(x1, x2), Math.min(y1, y2), Math.min(z1, z2));
+    }
+
+    public static Vec3d minComps(Vec3d dst, double x1, double y1, double z1, Vec3d vector2) {
+        return minComps(dst, x1, y1, z1, vector2.x, vector2.y, vector2.z);
+    }
+
+    public static Vec3d minComps(Vec3d dst, Vec3d vector1, double x2, double y2, double z2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, x2, y2, z2);
+    }
+
+    public static Vec3d minComps(Vec3d dst, Vec3d vector1, Vec3d vector2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public Vec3d setMinComps(double x1, double y1, double z1, double x2, double y2, double z2) {
+        return minComps(this, x1, y1, z1, x2, y2, z2);
+    }
+
+    public Vec3d setMinComps(double x1, double y1, double z1, Vec3d vector2) {
+        return minComps(this, x1, y1, z1, vector2);
+    }
+
+    public Vec3d setMinComps(Vec3d vector1, double x2, double y2, double z2) {
+        return minComps(this, vector1, x2, y2, z2);
+    }
+
+    public Vec3d setMinComps(Vec3d vector1, Vec3d vector2) {
+        return minComps(this, vector1, vector2);
+    }
+
+
+    public static Vec3d maxComps(Vec3d dst, double x1, double y1, double z1, double x2, double y2, double z2) {
+        return dst.set(Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2));
+    }
+
+    public static Vec3d maxComps(Vec3d dst, double x1, double y1, double z1, Vec3d vector2) {
+        return maxComps(dst, x1, y1, z1, vector2.x, vector2.y, vector2.z);
+    }
+
+    public static Vec3d maxComps(Vec3d dst, Vec3d vector1, double x2, double y2, double z2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, x2, y2, z2);
+    }
+
+    public static Vec3d maxComps(Vec3d dst, Vec3d vector1, Vec3d vector2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public Vec3d setMaxComps(double x1, double y1, double z1, double x2, double y2, double z2) {
+        return maxComps(this, x1, y1, z1, x2, y2, z2);
+    }
+
+    public Vec3d setMaxComps(double x1, double y1, double z1, Vec3d vector2) {
+        return maxComps(this, x1, y1, z1, vector2);
+    }
+
+    public Vec3d setMaxComps(Vec3d vector1, double x2, double y2, double z2) {
+        return maxComps(this, vector1, x2, y2, z2);
+    }
+
+    public Vec3d setMaxComps(Vec3d vector1, Vec3d vector2) {
+        return maxComps(this, vector1, vector2);
     }
 
 
@@ -978,16 +1009,16 @@ public class Vec3d {
     }
 
 
-    public static Vec3d lerp(Vec3d vector, double startX, double startY, double startZ, double endX, double endY, double endZ, double t) {
-        return vector.set(
+    public static Vec3d lerp(Vec3d dst, double startX, double startY, double startZ, double endX, double endY, double endZ, double t) {
+        return dst.set(
             Maths.lerp(startX, endX, t),
             Maths.lerp(startY, endY, t),
             Maths.lerp(startZ, endZ, t)
         );
     }
 
-    public static Vec3d lerp(Vec3d vector, Vec3d start, Vec3d end, double t) {
-        return lerp(vector, start.x, start.y, start.z, end.x, end.y, end.z, t);
+    public static Vec3d lerp(Vec3d dst, Vec3d start, Vec3d end, double t) {
+        return lerp(dst, start.x, start.y, start.z, end.x, end.y, end.z, t);
     }
 
     public Vec3d lerp(double startX, double startY, double startZ, double endX, double endY, double endZ, double t) {
@@ -1024,32 +1055,32 @@ public class Vec3d {
     }
 
 
-    public static Vec3d crs(double x1, double y1, double z1, double x2, double y2, double z2) {
-        return new Vec3d((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));
+    public static Vec3d crs(Vec3d dst, double x1, double y1, double z1, double x2, double y2, double z2) {
+        return dst.set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));
     }
 
-    public static Vec3d crs(Vec3d vector1, double x2, double y2, double z2) {
-        return crs(vector1.x, vector1.y, vector1.z, x2, y2, z2);
+    public static Vec3d crs(Vec3d dst, Vec3d vector1, double x2, double y2, double z2) {
+        return crs(dst, vector1.x, vector1.y, vector1.z, x2, y2, z2);
     }
 
-    public static Vec3d crs(double x1, double y1, double z1, Vec3d vector2) {
-        return crs(x1, y1, z1, vector2.x, vector2.y, vector2.z);
+    public static Vec3d crs(Vec3d dst, double x1, double y1, double z1, Vec3d vector2) {
+        return crs(dst, x1, y1, z1, vector2.x, vector2.y, vector2.z);
     }
 
-    public static Vec3d crs(Vec3d vector1, Vec3d vector2) {
-        return crs(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    public static Vec3d crs(Vec3d dst, Vec3d vector1, Vec3d vector2) {
+        return crs(dst, vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
-    public Vec3d crs(Vec3d vector) {
-        return crs(this, vector);
+    public Vec3d crs(Vec3d dst, Vec3d vector) {
+        return crs(dst, this, vector);
     }
 
-    public Vec3d crs(double x, double y, double z) {
-        return crs(this, x, y, z);
+    public Vec3d crs(Vec3d dst, double x, double y, double z) {
+        return crs(dst, this, x, y, z);
     }
 
     public Vec3d setCrs(double x1, double y1, double z1, double x2, double y2, double z2) {
-        return this.set((y1 * z2 - z1 * y2), (z1 * x2 - x1 * z2), (x1 * y2 - y1 * x2));
+        return crs(this, x1, y1, z1, x2, y2, z2);
     }
 
     public Vec3d setCrs(Vec3d vector1, double x2, double y2, double z2) {
@@ -1073,8 +1104,8 @@ public class Vec3d {
     }
 
 
-    public Vec3i signum() {
-        return new Vec3i(Math.signum(x), Math.signum(y), Math.signum(z));
+    public Vec3i signum(Vec3i dst) {
+        return dst.set(Math.signum(x), Math.signum(y), Math.signum(z));
     }
 
 
