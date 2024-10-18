@@ -432,18 +432,18 @@ public class Vec2d {
 
 
     public Vec2d zero() {
-        return this.set(0);
+        return this.set(0D);
     }
 
     public boolean isZero() {
-        return x == 0 && y == 0;
+        return x == 0D && y == 0D;
     }
 
     public Vec2d zeroThatLess(double x, double y) {
         if(Math.abs(this.x) < Math.abs(x))
-            this.x = 0;
+            this.x = 0D;
         if(Math.abs(this.y) < Math.abs(y))
-            this.y = 0;
+            this.y = 0D;
         return this;
     }
 
@@ -480,10 +480,10 @@ public class Vec2d {
     }
 
     public Vec2d zeroThatZero(double x, double y) {
-        if(x == 0)
-            this.x = 0;
-        if(y == 0)
-            this.y = 0;
+        if(x == 0D)
+            this.x = 0D;
+        if(y == 0D)
+            this.y = 0D;
         return this;
     }
 
@@ -521,9 +521,9 @@ public class Vec2d {
 
     public Vec2d zeroThatBigger(double x, double y) {
         if(Math.abs(this.x) > Math.abs(x))
-            this.x = 0;
+            this.x = 0D;
         if(Math.abs(this.y) > Math.abs(y))
-            this.y = 0;
+            this.y = 0D;
         return this;
     }
 
@@ -592,7 +592,7 @@ public class Vec2d {
 
     public Vec2d nor() {
         double len = this.len2();
-        if(len == 0 || len == 1)
+        if(len == 0D || len == 1D)
             return this;
         
         len = 1D / Math.sqrt(len);
@@ -601,8 +601,8 @@ public class Vec2d {
 
 
     public Vec2d abs() {
-        if(x < 0) x *= -1;
-        if(y < 0) y *= -1;
+        if(x < 0D) x *= -1D;
+        if(y < 0D) y *= -1D;
         return this;
     }
 
@@ -691,7 +691,7 @@ public class Vec2d {
 
     public static double rad(double x1, double y1, double x2, double y2) {
         final double cos = dot(x1, y1, x2, y2) / (len(x1, y1) * len(x2, y2));
-        return Math.acos(Maths.clamp(cos, -1, 1));
+        return Math.acos(Maths.clamp(cos, -1D, 1D));
     }
 
     public static double rad(Vec2d vector1, double x2, double y2) {
@@ -746,7 +746,7 @@ public class Vec2d {
     }
 
     public Vec2d rotate(double degrees) {
-        return this.rotateRad(degrees * Maths.toDeg);
+        return this.rotateRad(degrees * Maths.toRad);
     }
 
 

@@ -1161,15 +1161,15 @@ public class Vec3i {
     }
 
     public Vec3i rotateX(double degrees) {
-        return this.rotateRadX(degrees * Maths.toDeg);
+        return this.rotateRadX(degrees * Maths.toRad);
     }
 
     public Vec3i rotateY(double degrees) {
-        return this.rotateRadY(degrees * Maths.toDeg);
+        return this.rotateRadY(degrees * Maths.toRad);
     }
 
     public Vec3i rotateZ(double degrees) {
-        return this.rotateRadZ(degrees * Maths.toDeg);
+        return this.rotateRadZ(degrees * Maths.toRad);
     }
 
 

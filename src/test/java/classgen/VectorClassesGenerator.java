@@ -8,6 +8,7 @@ import jpize.util.StringUtils;
 public class VectorClassesGenerator {
 
     private static final String[] DATATYPES = {"float", "double", "int"};
+
     private static final int[] DIM_TYPES = {2, 3, 4};
     private static final List<VectorType> VECTOR_TYPES = new ArrayList<>();
 
@@ -17,16 +18,6 @@ public class VectorClassesGenerator {
 
     private static String letter(int dimension) {
         return LETTERS[dimension - 1];
-    }
-
-    private static String getcast(String global, String local) {
-        final boolean equals = global.equals(local);
-        final boolean floatToDouble = (local.equals("float") && global.equals("double"));
-        final boolean isInt = local.equals("int") && !global.equals("int");
-        if(!equals && !floatToDouble && !isInt){
-            return "(" + global + ") ";
-        }
-        return "";
     }
 
     //  (3, ', ', 'v%d.%l')  =>  v1.x, v2.y, v3.z
@@ -84,6 +75,7 @@ public class VectorClassesGenerator {
     private static String xyzw_str;
     private static boolean isDatatypeDouble;
     private static boolean isDatatypeInt;
+    private static String numberPostfix;
 
 
     private static void newClass(VectorType type) {
@@ -97,6 +89,7 @@ public class VectorClassesGenerator {
         VectorClassesGenerator.xyzw_str = makeDims(dimensions, "", "%l");
         VectorClassesGenerator.isDatatypeDouble = datatype.equals("double");
         VectorClassesGenerator.isDatatypeInt = datatype.equals("int");
+        VectorClassesGenerator.numberPostfix = datatype.equals("float") ? "F" : datatype.equals("double") ? "D" : "";
 
         // imports
         w.addImport("jpize.util.math.Maths");
@@ -349,7 +342,7 @@ public class VectorClassesGenerator {
             );
 
             w.addMethod("public " + classname + " rotate(double degrees)",
-                "return this.rotateRad(degrees * Maths.toDeg);"
+                "return this.rotateRad(degrees * Maths.toRad);"
             );
 
         }else if(dimensions == 3){
@@ -370,13 +363,13 @@ public class VectorClassesGenerator {
             );
 
             w.addMethod("public " + classname + " rotateX(double degrees)",
-                "return this.rotateRadX(degrees * Maths.toDeg);"
+                "return this.rotateRadX(degrees * Maths.toRad);"
             );
             w.addMethod("public " + classname + " rotateY(double degrees)",
-                "return this.rotateRadY(degrees * Maths.toDeg);"
+                "return this.rotateRadY(degrees * Maths.toRad);"
             );
             w.addMethod("public " + classname + " rotateZ(double degrees)",
-                "return this.rotateRadZ(degrees * Maths.toDeg);"
+                "return this.rotateRadZ(degrees * Maths.toRad);"
             );
         }else
             return;
@@ -389,7 +382,7 @@ public class VectorClassesGenerator {
 
         w.addMethod("public static " + datatype_l + " rad(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "final " + datatype_l + " cos = dot(" + makeDims(dimensions, ", ", "%l1") + ", "  + makeDims(dimensions, ", ", "%l2") + ") / (len(" + makeDims(dimensions, ", ", "%l1") + ") * len(" + makeDims(dimensions, ", ", "%l2") + "));",
-            "return Math" + (isDatatypeDouble ? "" : "c") + ".acos(Maths.clamp(cos, -1, 1));"
+            "return Math" + (isDatatypeDouble ? "" : "c") + ".acos(Maths.clamp(cos, -1" + numberPostfix + ", 1" + numberPostfix + "));"
         );
         w.addMethod("public static " + datatype_l + " rad(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "return rad(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
@@ -561,7 +554,7 @@ public class VectorClassesGenerator {
 
     private static void addAbs() {
         w.addMethod("public " + classname + " abs()",
-            makeDimsLine(dimensions, "if(%l < 0) %l *= -1;"),
+            makeDimsLine(dimensions, "if(%l < 0" + numberPostfix + ") %l *= -1" + numberPostfix + ";"),
             "return this;"
         );
 
@@ -574,10 +567,10 @@ public class VectorClassesGenerator {
 
         w.addMethod("public " + classname + " nor()",
             datatype + " len = this.len2();",
-            "if(len == 0 || len == 1)",
+            "if(len == 0" + numberPostfix + " || len == 1" + numberPostfix + ")",
             "    return this;",
             "",
-            "len = 1" + (isDatatypeDouble ? "D" : "F") + " / Math" + (isDatatypeDouble ? "" : "c") + ".sqrt(len);",
+            "len = 1" + numberPostfix + " / Math" + (isDatatypeDouble ? "" : "c") + ".sqrt(len);",
             "return this.mul(len);"
         );
 
@@ -643,14 +636,14 @@ public class VectorClassesGenerator {
 
     private static void addZero() {
         w.addMethod("public " + classname + " zero()",
-            "return this.set(0);"
+            "return this.set(0" + numberPostfix + ");"
         );
         w.addMethod("public boolean isZero()",
-            "return " + makeDims(dimensions, " && ", "%l == 0") + ";"
+            "return " + makeDims(dimensions, " && ", "%l == 0" + numberPostfix) + ";"
         );
 
         addZeroOperation("zeroThatLess", "Math.abs(this.%l) < Math.abs(%l)");
-        addZeroOperation("zeroThatZero", "%l == 0");
+        addZeroOperation("zeroThatZero", "%l == 0" + numberPostfix);
         addZeroOperation("zeroThatBigger", "Math.abs(this.%l) > Math.abs(%l)");
 
         w.addMethodSplitter();
@@ -658,7 +651,7 @@ public class VectorClassesGenerator {
 
     private static void addZeroOperation(String methodName, String condition) {
         w.addMethod("public " + classname + " " + methodName + "(" + makeDims(dimensions, ", ", datatype + " %l") + ")",
-            makeDimsLine(dimensions, "if(" + condition + ")\n            this.%l = 0;"),
+            makeDimsLine(dimensions, "if(" + condition + ")\n            this.%l = 0" + numberPostfix + ";"),
             "return this;"
         );
         for(String datatype_l: DATATYPES){

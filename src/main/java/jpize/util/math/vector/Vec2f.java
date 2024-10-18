@@ -433,18 +433,18 @@ public class Vec2f {
 
 
     public Vec2f zero() {
-        return this.set(0);
+        return this.set(0F);
     }
 
     public boolean isZero() {
-        return x == 0 && y == 0;
+        return x == 0F && y == 0F;
     }
 
     public Vec2f zeroThatLess(float x, float y) {
         if(Math.abs(this.x) < Math.abs(x))
-            this.x = 0;
+            this.x = 0F;
         if(Math.abs(this.y) < Math.abs(y))
-            this.y = 0;
+            this.y = 0F;
         return this;
     }
 
@@ -481,10 +481,10 @@ public class Vec2f {
     }
 
     public Vec2f zeroThatZero(float x, float y) {
-        if(x == 0)
-            this.x = 0;
-        if(y == 0)
-            this.y = 0;
+        if(x == 0F)
+            this.x = 0F;
+        if(y == 0F)
+            this.y = 0F;
         return this;
     }
 
@@ -522,9 +522,9 @@ public class Vec2f {
 
     public Vec2f zeroThatBigger(float x, float y) {
         if(Math.abs(this.x) > Math.abs(x))
-            this.x = 0;
+            this.x = 0F;
         if(Math.abs(this.y) > Math.abs(y))
-            this.y = 0;
+            this.y = 0F;
         return this;
     }
 
@@ -593,7 +593,7 @@ public class Vec2f {
 
     public Vec2f nor() {
         float len = this.len2();
-        if(len == 0 || len == 1)
+        if(len == 0F || len == 1F)
             return this;
         
         len = 1F / Mathc.sqrt(len);
@@ -602,8 +602,8 @@ public class Vec2f {
 
 
     public Vec2f abs() {
-        if(x < 0) x *= -1;
-        if(y < 0) y *= -1;
+        if(x < 0F) x *= -1F;
+        if(y < 0F) y *= -1F;
         return this;
     }
 
@@ -692,7 +692,7 @@ public class Vec2f {
 
     public static float rad(float x1, float y1, float x2, float y2) {
         final float cos = dot(x1, y1, x2, y2) / (len(x1, y1) * len(x2, y2));
-        return Mathc.acos(Maths.clamp(cos, -1, 1));
+        return Mathc.acos(Maths.clamp(cos, -1F, 1F));
     }
 
     public static float rad(Vec2f vector1, float x2, float y2) {
@@ -747,7 +747,7 @@ public class Vec2f {
     }
 
     public Vec2f rotate(double degrees) {
-        return this.rotateRad(degrees * Maths.toDeg);
+        return this.rotateRad(degrees * Maths.toRad);
     }
 
 

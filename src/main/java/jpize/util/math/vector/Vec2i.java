@@ -730,7 +730,7 @@ public class Vec2i {
     }
 
     public Vec2i rotate(double degrees) {
-        return this.rotateRad(degrees * Maths.toDeg);
+        return this.rotateRad(degrees * Maths.toRad);
     }
 
 

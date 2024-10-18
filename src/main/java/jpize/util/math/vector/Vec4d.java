@@ -775,22 +775,22 @@ public class Vec4d {
 
 
     public Vec4d zero() {
-        return this.set(0);
+        return this.set(0D);
     }
 
     public boolean isZero() {
-        return x == 0 && y == 0 && z == 0 && w == 0;
+        return x == 0D && y == 0D && z == 0D && w == 0D;
     }
 
     public Vec4d zeroThatLess(double x, double y, double z, double w) {
         if(Math.abs(this.x) < Math.abs(x))
-            this.x = 0;
+            this.x = 0D;
         if(Math.abs(this.y) < Math.abs(y))
-            this.y = 0;
+            this.y = 0D;
         if(Math.abs(this.z) < Math.abs(z))
-            this.z = 0;
+            this.z = 0D;
         if(Math.abs(this.w) < Math.abs(w))
-            this.w = 0;
+            this.w = 0D;
         return this;
     }
 
@@ -827,14 +827,14 @@ public class Vec4d {
     }
 
     public Vec4d zeroThatZero(double x, double y, double z, double w) {
-        if(x == 0)
-            this.x = 0;
-        if(y == 0)
-            this.y = 0;
-        if(z == 0)
-            this.z = 0;
-        if(w == 0)
-            this.w = 0;
+        if(x == 0D)
+            this.x = 0D;
+        if(y == 0D)
+            this.y = 0D;
+        if(z == 0D)
+            this.z = 0D;
+        if(w == 0D)
+            this.w = 0D;
         return this;
     }
 
@@ -872,13 +872,13 @@ public class Vec4d {
 
     public Vec4d zeroThatBigger(double x, double y, double z, double w) {
         if(Math.abs(this.x) > Math.abs(x))
-            this.x = 0;
+            this.x = 0D;
         if(Math.abs(this.y) > Math.abs(y))
-            this.y = 0;
+            this.y = 0D;
         if(Math.abs(this.z) > Math.abs(z))
-            this.z = 0;
+            this.z = 0D;
         if(Math.abs(this.w) > Math.abs(w))
-            this.w = 0;
+            this.w = 0D;
         return this;
     }
 
@@ -947,7 +947,7 @@ public class Vec4d {
 
     public Vec4d nor() {
         double len = this.len2();
-        if(len == 0 || len == 1)
+        if(len == 0D || len == 1D)
             return this;
         
         len = 1D / Math.sqrt(len);
@@ -956,10 +956,10 @@ public class Vec4d {
 
 
     public Vec4d abs() {
-        if(x < 0) x *= -1;
-        if(y < 0) y *= -1;
-        if(z < 0) z *= -1;
-        if(w < 0) w *= -1;
+        if(x < 0D) x *= -1D;
+        if(y < 0D) y *= -1D;
+        if(z < 0D) z *= -1D;
+        if(w < 0D) w *= -1D;
         return this;
     }
 
@@ -1027,7 +1027,7 @@ public class Vec4d {
 
     public static double rad(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
         final double cos = dot(x1, y1, z1, w1, x2, y2, z2, w2) / (len(x1, y1, z1, w1) * len(x2, y2, z2, w2));
-        return Math.acos(Maths.clamp(cos, -1, 1));
+        return Math.acos(Maths.clamp(cos, -1D, 1D));
     }
 
     public static double rad(Vec4d vector1, double x2, double y2, double z2, double w2) {

@@ -812,20 +812,20 @@ public class Vec3f {
 
 
     public Vec3f zero() {
-        return this.set(0);
+        return this.set(0F);
     }
 
     public boolean isZero() {
-        return x == 0 && y == 0 && z == 0;
+        return x == 0F && y == 0F && z == 0F;
     }
 
     public Vec3f zeroThatLess(float x, float y, float z) {
         if(Math.abs(this.x) < Math.abs(x))
-            this.x = 0;
+            this.x = 0F;
         if(Math.abs(this.y) < Math.abs(y))
-            this.y = 0;
+            this.y = 0F;
         if(Math.abs(this.z) < Math.abs(z))
-            this.z = 0;
+            this.z = 0F;
         return this;
     }
 
@@ -862,12 +862,12 @@ public class Vec3f {
     }
 
     public Vec3f zeroThatZero(float x, float y, float z) {
-        if(x == 0)
-            this.x = 0;
-        if(y == 0)
-            this.y = 0;
-        if(z == 0)
-            this.z = 0;
+        if(x == 0F)
+            this.x = 0F;
+        if(y == 0F)
+            this.y = 0F;
+        if(z == 0F)
+            this.z = 0F;
         return this;
     }
 
@@ -905,11 +905,11 @@ public class Vec3f {
 
     public Vec3f zeroThatBigger(float x, float y, float z) {
         if(Math.abs(this.x) > Math.abs(x))
-            this.x = 0;
+            this.x = 0F;
         if(Math.abs(this.y) > Math.abs(y))
-            this.y = 0;
+            this.y = 0F;
         if(Math.abs(this.z) > Math.abs(z))
-            this.z = 0;
+            this.z = 0F;
         return this;
     }
 
@@ -994,7 +994,7 @@ public class Vec3f {
 
     public Vec3f nor() {
         float len = this.len2();
-        if(len == 0 || len == 1)
+        if(len == 0F || len == 1F)
             return this;
         
         len = 1F / Mathc.sqrt(len);
@@ -1003,9 +1003,9 @@ public class Vec3f {
 
 
     public Vec3f abs() {
-        if(x < 0) x *= -1;
-        if(y < 0) y *= -1;
-        if(z < 0) z *= -1;
+        if(x < 0F) x *= -1F;
+        if(y < 0F) y *= -1F;
+        if(z < 0F) z *= -1F;
         return this;
     }
 
@@ -1112,7 +1112,7 @@ public class Vec3f {
 
     public static float rad(float x1, float y1, float z1, float x2, float y2, float z2) {
         final float cos = dot(x1, y1, z1, x2, y2, z2) / (len(x1, y1, z1) * len(x2, y2, z2));
-        return Mathc.acos(Maths.clamp(cos, -1, 1));
+        return Mathc.acos(Maths.clamp(cos, -1F, 1F));
     }
 
     public static float rad(Vec3f vector1, float x2, float y2, float z2) {
@@ -1179,15 +1179,15 @@ public class Vec3f {
     }
 
     public Vec3f rotateX(double degrees) {
-        return this.rotateRadX(degrees * Maths.toDeg);
+        return this.rotateRadX(degrees * Maths.toRad);
     }
 
     public Vec3f rotateY(double degrees) {
-        return this.rotateRadY(degrees * Maths.toDeg);
+        return this.rotateRadY(degrees * Maths.toRad);
     }
 
     public Vec3f rotateZ(double degrees) {
-        return this.rotateRadZ(degrees * Maths.toDeg);
+        return this.rotateRadZ(degrees * Maths.toRad);
     }
 
 
