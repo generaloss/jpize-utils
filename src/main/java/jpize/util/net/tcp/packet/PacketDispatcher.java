@@ -10,7 +10,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class PacketDispatcher<T> {
+public class PacketDispatcher {
 
     private final Map<Short, Class<? extends IPacket<?>>> packetClasses;
     private final Queue<Runnable> toHandleQueue;
@@ -21,7 +21,7 @@ public class PacketDispatcher<T> {
     }
 
     @SafeVarargs
-    public final PacketDispatcher<T> register(Class<? extends IPacket<?>>... packetClasses) {
+    public final PacketDispatcher register(Class<? extends IPacket<?>>... packetClasses) {
         for(Class<? extends IPacket<?>> packetClass: packetClasses){
             final short ID = IPacket.makeID(packetClass);
             this.packetClasses.put(ID, packetClass);
