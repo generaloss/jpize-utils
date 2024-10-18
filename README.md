@@ -11,7 +11,7 @@
 <dependency>
     <groupId>io.github.generaloss</groupId>
     <artifactId>jpize-utils</artifactId>
-    <version>24.10.1</version>
+    <version>24.10.2</version>
 </dependency>
 ```
 ### Gradle (Kotlin)
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.generaloss:jpize-utils:24.10.1")
+    implementation("io.github.generaloss:jpize-utils:24.10.2")
 }
 ```
 
