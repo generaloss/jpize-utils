@@ -15,12 +15,12 @@ public class Matrix3f implements Matrix3 {
 
     public Matrix3f() {
         this.val = new float[16];
-        this.val[m00] = 1;
-        this.val[m11] = 1;
-        this.val[m22] = 1;
+        this.val[m00] = 1F;
+        this.val[m11] = 1F;
+        this.val[m22] = 1F;
     }
 
-    public Matrix3f(float[] values) {
+    public Matrix3f(float... values) {
         this.val = new float[16];
         this.set(values);
     }
@@ -32,7 +32,7 @@ public class Matrix3f implements Matrix3 {
 
     /* Set */
 
-    public Matrix3f set(float[] values) {
+    public Matrix3f set(float... values) {
         System.arraycopy(values, 0, val, 0, values.length);
         return this;
     }
@@ -43,20 +43,20 @@ public class Matrix3f implements Matrix3 {
     }
 
     public Matrix3f zero() {
-        Arrays.fill(val, 0);
+        Arrays.fill(val, 0F);
         return this;
     }
 
     public Matrix3f identity() {
-        val[m00] = 1;
-        val[m10] = 0;
-        val[m20] = 0;
-        val[m01] = 0;
-        val[m11] = 1;
-        val[m21] = 0;
-        val[m02] = 0;
-        val[m12] = 0;
-        val[m22] = 1;
+        val[m00] = 1F;
+        val[m10] = 0F;
+        val[m20] = 0F;
+        val[m01] = 0F;
+        val[m11] = 1F;
+        val[m21] = 0F;
+        val[m02] = 0F;
+        val[m12] = 0F;
+        val[m22] = 1F;
         return this;
     }
 
@@ -71,15 +71,15 @@ public class Matrix3f implements Matrix3 {
     }
 
     public Matrix3f translate(Vec2f vec2) {
-        return translate(vec2.x, vec2.y);
+        return this.translate(vec2.x, vec2.y);
     }
 
     public Matrix3f translate(Vec2d vec2) {
-        return translate((float) vec2.x, (float) vec2.y);
+        return this.translate((float) vec2.x, (float) vec2.y);
     }
 
     public Matrix3f translate(Vec2i vec2) {
-        return translate(vec2.x, vec2.y);
+        return this.translate(vec2.x, vec2.y);
     }
 
 
@@ -93,15 +93,15 @@ public class Matrix3f implements Matrix3 {
     }
 
     public Matrix3f setTranslate(Vec2f vec2) {
-        return setTranslate(vec2.x, vec2.y);
+        return this.setTranslate(vec2.x, vec2.y);
     }
 
     public Matrix3f setTranslate(Vec2d vec2) {
-        return setTranslate((float) vec2.x, (float) vec2.y);
+        return this.setTranslate((float) vec2.x, (float) vec2.y);
     }
 
     public Matrix3f setTranslate(Vec2i vec2) {
-        return setTranslate(vec2.x, vec2.y);
+        return this.setTranslate(vec2.x, vec2.y);
     }
 
 
@@ -170,7 +170,7 @@ public class Matrix3f implements Matrix3 {
     }
 
     public Matrix3f shear(Vec2f vec2) {
-        return shear(vec2.x, vec2.y);
+        return this.shear(vec2.x, vec2.y);
     }
 
 
@@ -184,23 +184,23 @@ public class Matrix3f implements Matrix3 {
     }
 
     public Matrix3f setShear(Vec2f vec2) {
-        return setShear(vec2.x, vec2.y);
+        return this.setShear(vec2.x, vec2.y);
     }
 
 
     /* Culling */
 
     public Matrix3f cullPosition() {
-        val[m20] = 0; // X
-        val[m21] = 0; // Y
+        val[m20] = 0F; // X
+        val[m21] = 0F; // Y
         return this;
     }
 
     public Matrix3f cullRotation() {
-        val[m00] = 1;
-        val[m10] = 0;
-        val[m01] = 0;
-        val[m11] = 1;
+        val[m00] = 1F;
+        val[m10] = 0F;
+        val[m01] = 0F;
+        val[m11] = 1F;
         return this;
     }
 
@@ -242,14 +242,15 @@ public class Matrix3f implements Matrix3 {
 
 
     public static float[] mul(float[] a, float[] b) {
-        return new float[]{
-            a[m00] * b[m00] + a[m10] * b[m01] + a[m20] * b[m02], a[m01] * b[m00] + a[m11] * b[m01] + a[m21] * b[m02],
+        return new float[] {
+            a[m00] * b[m00] + a[m10] * b[m01] + a[m20] * b[m02],
+            a[m01] * b[m00] + a[m11] * b[m01] + a[m21] * b[m02],
             a[m02] * b[m00] + a[m12] * b[m01] + a[m22] * b[m02],
-
-            a[m00] * b[m10] + a[m10] * b[m11] + a[m20] * b[m12], a[m01] * b[m10] + a[m11] * b[m11] + a[m21] * b[m12],
+            a[m00] * b[m10] + a[m10] * b[m11] + a[m20] * b[m12],
+            a[m01] * b[m10] + a[m11] * b[m11] + a[m21] * b[m12],
             a[m02] * b[m10] + a[m12] * b[m11] + a[m22] * b[m12],
-
-            a[m00] * b[m20] + a[m10] * b[m21] + a[m20] * b[m22], a[m01] * b[m20] + a[m11] * b[m21] + a[m21] * b[m22],
+            a[m00] * b[m20] + a[m10] * b[m21] + a[m20] * b[m22],
+            a[m01] * b[m20] + a[m11] * b[m21] + a[m21] * b[m22],
             a[m02] * b[m20] + a[m12] * b[m21] + a[m22] * b[m22],
         };
     }

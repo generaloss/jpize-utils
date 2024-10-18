@@ -85,22 +85,22 @@ public class Frustum {
         val[index].w /= sqrt;
     }
 
-    private double multiply(int index, float x, float y, float z) {
+    private float multiply(int index, float x, float y, float z) {
         return val[index].x * x  +  val[index].y * y  +  val[index].z * z  +  val[index].w;
     }
 
     public boolean isBoxInFrustum(float x1, float y1, float z1, float x2, float y2, float z2) {
         for(int i = 0; i < 6; i++)
-            if(this.multiply(i, x1, y1, z1) <= 0 && this.multiply(i, x2, y1, z1) <= 0 && this.multiply(i, x1, y2, z1) <= 0 &&
-               this.multiply(i, x2, y2, z1) <= 0 && this.multiply(i, x1, y1, z2) <= 0 && this.multiply(i, x2, y1, z2) <= 0 &&
-               this.multiply(i, x1, y2, z2) <= 0 && this.multiply(i, x2, y2, z2) <= 0)
+            if(this.multiply(i, x1, y1, z1) <= 0F && this.multiply(i, x2, y1, z1) <= 0F && this.multiply(i, x1, y2, z1) <= 0F &&
+               this.multiply(i, x2, y2, z1) <= 0F && this.multiply(i, x1, y1, z2) <= 0F && this.multiply(i, x2, y1, z2) <= 0F &&
+               this.multiply(i, x1, y2, z2) <= 0F && this.multiply(i, x2, y2, z2) <= 0F)
                 return false;
         return true;
     }
 
     public boolean isVertexInFrustum(float x, float y, float z) {
         for(int i = 0; i < 6; i++)
-            if(this.multiply(i, x, y, z) <= 0)
+            if(this.multiply(i, x, y, z) <= 0F)
                 return false;
         return true;
     }

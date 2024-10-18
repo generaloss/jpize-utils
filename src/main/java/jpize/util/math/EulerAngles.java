@@ -24,6 +24,18 @@ public class EulerAngles {
         this.set(eulerAngles);
     }
 
+    public float getYaw() {
+        return yaw;
+    }
+
+    public float getPitch() {
+        return pitch;
+    }
+
+    public float getRoll() {
+        return roll;
+    }
+
 
     public void constrain() {
         if(yaw >= 360){
