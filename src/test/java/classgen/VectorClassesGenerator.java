@@ -719,6 +719,10 @@ public class VectorClassesGenerator {
             "return minComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
         );
 
+        w.addMethod("public static " + classname + " minComps(" + classname + " dst, " + classname + " " + varname + "1, " + datatype + " " + xyzw_str + "2)",
+            "return minComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", xyzw_str + "2") + ");"
+        );
+
         w.addMethod("public static " + classname + " minComps(" + classname + " dst, " + classname + " " + varname + "1, " + classname + " " + varname + "2)",
             "return minComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
         );
@@ -734,6 +738,10 @@ public class VectorClassesGenerator {
 
         w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "return minComps(this, " + varname + "1, " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + datatype + " " + xyzw_str + "2)",
+            "return minComps(this, " + varname + "1, " + xyzw_str + "2);"
         );
 
         w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
@@ -754,6 +762,10 @@ public class VectorClassesGenerator {
             "return maxComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
         );
 
+        w.addMethod("public static " + classname + " maxComps(" + classname + " dst, " + classname + " " + varname + "1, " + datatype + " " + xyzw_str + "2)",
+            "return maxComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", xyzw_str + "2") + ");"
+        );
+
         w.addMethod("public static " + classname + " maxComps(" + classname + " dst, " + classname + " " + varname + "1, " + classname + " " + varname + "2)",
             "return maxComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
         );
@@ -769,6 +781,10 @@ public class VectorClassesGenerator {
 
         w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "return maxComps(this, " + varname + "1, " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + datatype + " " + xyzw_str + "2)",
+            "return maxComps(this, " + varname + "1, " + xyzw_str + "2);"
         );
 
         w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",

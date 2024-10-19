@@ -720,6 +720,10 @@ public class Vec4d {
         return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
     }
 
+    public static Vec4d minComps(Vec4d dst, Vec4d vector1, double xyzw2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, xyzw2, xyzw2, xyzw2, xyzw2);
+    }
+
     public static Vec4d minComps(Vec4d dst, Vec4d vector1, Vec4d vector2) {
         return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
@@ -734,6 +738,10 @@ public class Vec4d {
 
     public Vec4d setMinComps(Vec4d vector1, double x2, double y2, double z2, double w2) {
         return minComps(this, vector1, x2, y2, z2, w2);
+    }
+
+    public Vec4d setMinComps(Vec4d vector1, double xyzw2) {
+        return minComps(this, vector1, xyzw2);
     }
 
     public Vec4d setMinComps(Vec4d vector1, Vec4d vector2) {
@@ -753,6 +761,10 @@ public class Vec4d {
         return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
     }
 
+    public static Vec4d maxComps(Vec4d dst, Vec4d vector1, double xyzw2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, xyzw2, xyzw2, xyzw2, xyzw2);
+    }
+
     public static Vec4d maxComps(Vec4d dst, Vec4d vector1, Vec4d vector2) {
         return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
@@ -767,6 +779,10 @@ public class Vec4d {
 
     public Vec4d setMaxComps(Vec4d vector1, double x2, double y2, double z2, double w2) {
         return maxComps(this, vector1, x2, y2, z2, w2);
+    }
+
+    public Vec4d setMaxComps(Vec4d vector1, double xyzw2) {
+        return maxComps(this, vector1, xyzw2);
     }
 
     public Vec4d setMaxComps(Vec4d vector1, Vec4d vector2) {

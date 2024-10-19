@@ -721,6 +721,10 @@ public class Vec4i {
         return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
     }
 
+    public static Vec4i minComps(Vec4i dst, Vec4i vector1, int xyzw2) {
+        return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, xyzw2, xyzw2, xyzw2, xyzw2);
+    }
+
     public static Vec4i minComps(Vec4i dst, Vec4i vector1, Vec4i vector2) {
         return minComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
@@ -735,6 +739,10 @@ public class Vec4i {
 
     public Vec4i setMinComps(Vec4i vector1, int x2, int y2, int z2, int w2) {
         return minComps(this, vector1, x2, y2, z2, w2);
+    }
+
+    public Vec4i setMinComps(Vec4i vector1, int xyzw2) {
+        return minComps(this, vector1, xyzw2);
     }
 
     public Vec4i setMinComps(Vec4i vector1, Vec4i vector2) {
@@ -754,6 +762,10 @@ public class Vec4i {
         return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
     }
 
+    public static Vec4i maxComps(Vec4i dst, Vec4i vector1, int xyzw2) {
+        return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, xyzw2, xyzw2, xyzw2, xyzw2);
+    }
+
     public static Vec4i maxComps(Vec4i dst, Vec4i vector1, Vec4i vector2) {
         return maxComps(dst, vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
@@ -768,6 +780,10 @@ public class Vec4i {
 
     public Vec4i setMaxComps(Vec4i vector1, int x2, int y2, int z2, int w2) {
         return maxComps(this, vector1, x2, y2, z2, w2);
+    }
+
+    public Vec4i setMaxComps(Vec4i vector1, int xyzw2) {
+        return maxComps(this, vector1, xyzw2);
     }
 
     public Vec4i setMaxComps(Vec4i vector1, Vec4i vector2) {

@@ -378,6 +378,10 @@ public class Vec2f {
         return minComps(dst, vector1.x, vector1.y, x2, y2);
     }
 
+    public static Vec2f minComps(Vec2f dst, Vec2f vector1, float xy2) {
+        return minComps(dst, vector1.x, vector1.y, xy2, xy2);
+    }
+
     public static Vec2f minComps(Vec2f dst, Vec2f vector1, Vec2f vector2) {
         return minComps(dst, vector1.x, vector1.y, vector2.x, vector2.y);
     }
@@ -392,6 +396,10 @@ public class Vec2f {
 
     public Vec2f setMinComps(Vec2f vector1, float x2, float y2) {
         return minComps(this, vector1, x2, y2);
+    }
+
+    public Vec2f setMinComps(Vec2f vector1, float xy2) {
+        return minComps(this, vector1, xy2);
     }
 
     public Vec2f setMinComps(Vec2f vector1, Vec2f vector2) {
@@ -411,6 +419,10 @@ public class Vec2f {
         return maxComps(dst, vector1.x, vector1.y, x2, y2);
     }
 
+    public static Vec2f maxComps(Vec2f dst, Vec2f vector1, float xy2) {
+        return maxComps(dst, vector1.x, vector1.y, xy2, xy2);
+    }
+
     public static Vec2f maxComps(Vec2f dst, Vec2f vector1, Vec2f vector2) {
         return maxComps(dst, vector1.x, vector1.y, vector2.x, vector2.y);
     }
@@ -425,6 +437,10 @@ public class Vec2f {
 
     public Vec2f setMaxComps(Vec2f vector1, float x2, float y2) {
         return maxComps(this, vector1, x2, y2);
+    }
+
+    public Vec2f setMaxComps(Vec2f vector1, float xy2) {
+        return maxComps(this, vector1, xy2);
     }
 
     public Vec2f setMaxComps(Vec2f vector1, Vec2f vector2) {
