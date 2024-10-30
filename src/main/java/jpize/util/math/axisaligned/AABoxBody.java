@@ -18,8 +18,8 @@ public class AABoxBody {
 
     public AABoxBody(AABoxBody body) {
         this(
-            body.getBoundingBox().copy(),
-            body.getPosition().copy()
+            body.box().copy(),
+            body.position().copy()
         );
     }
 
@@ -37,19 +37,19 @@ public class AABoxBody {
 
 
     public Vec3f getMin() {
-        return min.set(boundingBox.getMin()).add(position);
+        return min.set(boundingBox.min()).add(position);
     }
 
     public Vec3f getMax() {
-        return max.set(boundingBox.getMax()).add(position);
+        return max.set(boundingBox.max()).add(position);
     }
 
 
-    public AABox getBoundingBox() {
+    public AABox box() {
         return boundingBox;
     }
 
-    public Vec3f getPosition() {
+    public Vec3f position() {
         return position;
     }
 

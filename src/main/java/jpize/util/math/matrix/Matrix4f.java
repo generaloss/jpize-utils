@@ -341,12 +341,20 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
+    public Matrix4f setTranslate(double x, double y, double z) {
+        return this.setTranslate((float) x, (float) y, (float) z);
+    }
+
+    public Matrix4f setTranslate(double x, double y) {
+        return this.setTranslate((float) x, (float) y);
+    }
+
     public Matrix4f setTranslate(Vec2f vec2) {
         return this.setTranslate(vec2.x, vec2.y);
     }
 
     public Matrix4f setTranslate(Vec2d vec2) {
-        return this.setTranslate((float) vec2.x, (float) vec2.y);
+        return this.setTranslate(vec2.x, vec2.y);
     }
 
     public Matrix4f setTranslate(Vec2i vec2) {
@@ -358,7 +366,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setTranslate(Vec3d vec3) {
-        return this.setTranslate((float) vec3.x, (float) vec3.y, (float) vec3.z);
+        return this.setTranslate(vec3.x, vec3.y, vec3.z);
     }
 
     public Matrix4f setTranslate(Vec3i vec3) {
@@ -399,6 +407,14 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
+    public Matrix4f scale(double x, double y, double z) {
+        return this.scale((float) x, (float) y, (float) z);
+    }
+
+    public Matrix4f scale(double x, double y) {
+        return this.scale((float) x, (float) y);
+    }
+
     public Matrix4f scale(float scale) {
         return this.scale(scale, scale, scale);
     }
@@ -412,7 +428,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f scale(Vec3d vec3) {
-        return this.scale((float) vec3.x, (float) vec3.y, (float) vec3.z);
+        return this.scale(vec3.x, vec3.y, vec3.z);
     }
 
     public Matrix4f scale(Vec3i vec3) {
@@ -424,7 +440,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f scale(Vec2d vec2) {
-        return this.scale((float) vec2.x, (float) vec2.y);
+        return this.scale(vec2.x, vec2.y);
     }
 
     public Matrix4f scale(Vec2i vec2) {
@@ -449,6 +465,14 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
+    public Matrix4f setScale(double x, double y, double z) {
+        return this.setScale((float) x, (float) y, (float) z);
+    }
+
+    public Matrix4f setScale(double x, double y) {
+        return this.setScale((float) x, (float) y);
+    }
+
     public Matrix4f setScale(float scale) {
         return this.setScale(scale, scale, scale);
     }
@@ -462,7 +486,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setScale(Vec3d vec3) {
-        return this.setScale((float) vec3.x, (float) vec3.y, (float) vec3.z);
+        return this.setScale(vec3.x, vec3.y, vec3.z);
     }
 
     public Matrix4f setScale(Vec3i vec3) {
@@ -474,7 +498,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setScale(Vec2d vec2) {
-        return this.setScale((float) vec2.x, (float) vec2.y);
+        return this.setScale(vec2.x, vec2.y);
     }
 
     public Matrix4f setScale(Vec2i vec2) {

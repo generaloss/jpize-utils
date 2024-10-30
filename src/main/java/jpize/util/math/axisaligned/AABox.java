@@ -69,11 +69,11 @@ public class AABox {
     }
 
 
-    public Vec3f getMin() {
+    public Vec3f min() {
         return min;
     }
 
-    public Vec3f getMax() {
+    public Vec3f max() {
         return max;
     }
 

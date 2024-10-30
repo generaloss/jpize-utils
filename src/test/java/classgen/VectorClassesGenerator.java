@@ -61,6 +61,7 @@ public class VectorClassesGenerator {
 
         for(VectorType vectorType: VECTOR_TYPES)
             newClass(vectorType);
+        //test newClass(new VectorType(3, "float"));
     }
 
 
@@ -106,6 +107,7 @@ public class VectorClassesGenerator {
         // operations
         addDistance();
         addMinMax();
+        addLenComparation();
         addZero();
         addAreaVolume();
         addLength();
@@ -635,16 +637,16 @@ public class VectorClassesGenerator {
     }
 
     private static void addZero() {
-        w.addMethod("public " + classname + " zero()",
-            "return this.set(0" + numberPostfix + ");"
-        );
         w.addMethod("public boolean isZero()",
             "return " + makeDims(dimensions, " && ", "%l == 0" + numberPostfix) + ";"
         );
+        w.addMethod("public " + classname + " zero()",
+            "return this.set(0" + numberPostfix + ");"
+        );
 
-        addZeroOperation("zeroThatLess", "Math.abs(this.%l) < Math.abs(%l)");
-        addZeroOperation("zeroThatZero", "%l == 0" + numberPostfix);
-        addZeroOperation("zeroThatBigger", "Math.abs(this.%l) > Math.abs(%l)");
+        addZeroOperation("zeroCompsThatLess", "Math.abs(this.%l) < Math.abs(%l)");
+        addZeroOperation("zeroCompsThatZero", "%l == 0" + numberPostfix);
+        addZeroOperation("zeroCompsThatBigger", "Math.abs(this.%l) > Math.abs(%l)");
 
         w.addMethodSplitter();
     }
@@ -675,6 +677,22 @@ public class VectorClassesGenerator {
                 "return this." + methodName + "(" + makeDims(dimensions, ", ", varname + ".%l") + ");"
             );
         }
+    }
+
+    private static void addComparationMethod(String methodName, String operator) {
+        w.addMethod("public boolean " + methodName + "(" + makeDims(dimensions, ", ", datatype + " comparable%L") + ")",
+            "return this.len2() " + operator + " len2(" + makeDims(dimensions, ", ", "comparable%L") + ");"
+        );
+
+        w.addMethod("public boolean " + methodName + "(" + classname + " comparable)",
+            "return this." + methodName + "(" + makeDims(dimensions, ", ", "comparable.%l") + ");"
+        );
+    }
+
+    private static void addLenComparation() {
+        addComparationMethod("isShorter", "<");
+        addComparationMethod("isLonger", ">");
+        w.addMethodSplitter();
     }
 
     private static void addMinMax() {

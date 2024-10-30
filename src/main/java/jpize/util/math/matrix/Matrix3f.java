@@ -1,9 +1,7 @@
 package jpize.util.math.matrix;
 
 import jpize.util.math.Maths;
-import jpize.util.math.vector.Vec2d;
-import jpize.util.math.vector.Vec2f;
-import jpize.util.math.vector.Vec2i;
+import jpize.util.math.vector.*;
 
 import java.util.Arrays;
 
@@ -70,12 +68,16 @@ public class Matrix3f implements Matrix3 {
         return this;
     }
 
+    public Matrix3f translate(double x, double y) {
+        return this.translate((float) x, (float) y);
+    }
+
     public Matrix3f translate(Vec2f vec2) {
         return this.translate(vec2.x, vec2.y);
     }
 
     public Matrix3f translate(Vec2d vec2) {
-        return this.translate((float) vec2.x, (float) vec2.y);
+        return this.translate(vec2.x, vec2.y);
     }
 
     public Matrix3f translate(Vec2i vec2) {
@@ -92,12 +94,16 @@ public class Matrix3f implements Matrix3 {
         return this;
     }
 
+    public Matrix3f setTranslate(double x, double y) {
+        return this.setTranslate((float) x, (float) y);
+    }
+
     public Matrix3f setTranslate(Vec2f vec2) {
         return this.setTranslate(vec2.x, vec2.y);
     }
 
     public Matrix3f setTranslate(Vec2d vec2) {
-        return this.setTranslate((float) vec2.x, (float) vec2.y);
+        return this.setTranslate(vec2.x, vec2.y);
     }
 
     public Matrix3f setTranslate(Vec2i vec2) {
@@ -114,6 +120,10 @@ public class Matrix3f implements Matrix3 {
         return this;
     }
 
+    public Matrix3f setScale(double x, double y) {
+        return this.setScale((float) x, (float) y);
+    }
+
     public Matrix3f setScale(float scale) {
         return this.setScale(scale, scale);
     }
@@ -127,13 +137,49 @@ public class Matrix3f implements Matrix3 {
     }
 
     public Matrix3f setScale(Vec2d vec2) {
-        return this.setScale((float) vec2.x, (float) vec2.y);
+        return this.setScale(vec2.x, vec2.y);
     }
 
     public Matrix3f setScale(Vec2i vec2) {
         return this.setScale(vec2.x, vec2.y);
     }
 
+    /* Scale */
+
+    public Matrix3f scale(float x, float y) {
+        val[m00] *= x;
+        val[m01] *= x;
+        val[m02] *= x;
+
+        val[m10] *= y;
+        val[m11] *= y;
+        val[m12] *= y;
+        return this;
+    }
+
+    public Matrix3f scale(double x, double y) {
+        return this.scale((float) x, (float) y);
+    }
+
+    public Matrix3f scale(float scale) {
+        return this.scale(scale, scale);
+    }
+
+    public Matrix3f scale(double scale) {
+        return this.scale((float) scale);
+    }
+
+    public Matrix3f scale(Vec2f vec2) {
+        return this.scale(vec2.x, vec2.y);
+    }
+
+    public Matrix3f scale(Vec2d vec2) {
+        return this.scale(vec2.x, vec2.y);
+    }
+
+    public Matrix3f scale(Vec2i vec2) {
+        return this.scale(vec2.x, vec2.y);
+    }
 
     /* Set Rotation */
 

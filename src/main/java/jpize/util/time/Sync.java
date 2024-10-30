@@ -4,7 +4,7 @@ import jpize.util.math.Maths;
 
 public class Sync {
 
-    private long prevTime;
+    private long lastTime;
     private int targetDeltaTime;
     private boolean enabled;
 
@@ -12,7 +12,6 @@ public class Sync {
         this.setRate(rate);
         this.enable(true);
     }
-
 
     public boolean isEnabled() {
         return enabled;
@@ -32,7 +31,7 @@ public class Sync {
             return;
 
         targetDeltaTime = (int) (Maths.msInSecf / rate); // time between frames with a given number of ticks per second
-        prevTime = System.currentTimeMillis();           // to calculate the time between frames
+        lastTime = System.currentTimeMillis();           // to calculate the time between frames
     }
 
 
@@ -40,14 +39,14 @@ public class Sync {
         if(!enabled || targetDeltaTime == 0)
             return;
 
-        final long deltaTime = System.currentTimeMillis() - prevTime; // current time between frames
+        final long deltaTime = System.currentTimeMillis() - lastTime; // current time between frames
         if(deltaTime >= 0){
             final long sleepTime = (targetDeltaTime - deltaTime); // time to adjust tick per second
             if(sleepTime > 0)
                 TimeUtils.delayMillis(sleepTime);
         }
 
-        prevTime = System.currentTimeMillis();
+        lastTime = System.currentTimeMillis();
     }
 
 }

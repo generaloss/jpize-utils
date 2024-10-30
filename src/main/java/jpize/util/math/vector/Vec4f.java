@@ -791,15 +791,32 @@ public class Vec4f {
     }
 
 
-    public Vec4f zero() {
-        return this.set(0F);
+    public boolean isShorter(float comparableX, float comparableY, float comparableZ, float comparableW) {
+        return this.len2() < len2(comparableX, comparableY, comparableZ, comparableW);
     }
+
+    public boolean isShorter(Vec4f comparable) {
+        return this.isShorter(comparable.x, comparable.y, comparable.z, comparable.w);
+    }
+
+    public boolean isLonger(float comparableX, float comparableY, float comparableZ, float comparableW) {
+        return this.len2() > len2(comparableX, comparableY, comparableZ, comparableW);
+    }
+
+    public boolean isLonger(Vec4f comparable) {
+        return this.isLonger(comparable.x, comparable.y, comparable.z, comparable.w);
+    }
+
 
     public boolean isZero() {
         return x == 0F && y == 0F && z == 0F && w == 0F;
     }
 
-    public Vec4f zeroThatLess(float x, float y, float z, float w) {
+    public Vec4f zero() {
+        return this.set(0F);
+    }
+
+    public Vec4f zeroCompsThatLess(float x, float y, float z, float w) {
         if(Math.abs(this.x) < Math.abs(x))
             this.x = 0F;
         if(Math.abs(this.y) < Math.abs(y))
@@ -811,39 +828,39 @@ public class Vec4f {
         return this;
     }
 
-    public Vec4f zeroThatLess(double x, double y, double z, double w) {
-        return this.zeroThatLess((float) x, (float) y, (float) z, (float) w);
+    public Vec4f zeroCompsThatLess(double x, double y, double z, double w) {
+        return this.zeroCompsThatLess((float) x, (float) y, (float) z, (float) w);
     }
 
-    public Vec4f zeroThatLess(int x, int y, int z, int w) {
-        return this.zeroThatLess((float) x, (float) y, (float) z, (float) w);
+    public Vec4f zeroCompsThatLess(int x, int y, int z, int w) {
+        return this.zeroCompsThatLess((float) x, (float) y, (float) z, (float) w);
     }
 
-    public Vec4f zeroThatLess(float xyzw) {
-        return this.zeroThatLess(xyzw, xyzw, xyzw, xyzw);
+    public Vec4f zeroCompsThatLess(float xyzw) {
+        return this.zeroCompsThatLess(xyzw, xyzw, xyzw, xyzw);
     }
 
-    public Vec4f zeroThatLess(double xyzw) {
-        return this.zeroThatLess(xyzw, xyzw, xyzw, xyzw);
+    public Vec4f zeroCompsThatLess(double xyzw) {
+        return this.zeroCompsThatLess(xyzw, xyzw, xyzw, xyzw);
     }
 
-    public Vec4f zeroThatLess(int xyzw) {
-        return this.zeroThatLess(xyzw, xyzw, xyzw, xyzw);
+    public Vec4f zeroCompsThatLess(int xyzw) {
+        return this.zeroCompsThatLess(xyzw, xyzw, xyzw, xyzw);
     }
 
-    public Vec4f zeroThatLess(Vec4f vector) {
-        return this.zeroThatLess(vector.x, vector.y, vector.z, vector.w);
+    public Vec4f zeroCompsThatLess(Vec4f vector) {
+        return this.zeroCompsThatLess(vector.x, vector.y, vector.z, vector.w);
     }
 
-    public Vec4f zeroThatLess(Vec4d vector) {
-        return this.zeroThatLess(vector.x, vector.y, vector.z, vector.w);
+    public Vec4f zeroCompsThatLess(Vec4d vector) {
+        return this.zeroCompsThatLess(vector.x, vector.y, vector.z, vector.w);
     }
 
-    public Vec4f zeroThatLess(Vec4i vector) {
-        return this.zeroThatLess(vector.x, vector.y, vector.z, vector.w);
+    public Vec4f zeroCompsThatLess(Vec4i vector) {
+        return this.zeroCompsThatLess(vector.x, vector.y, vector.z, vector.w);
     }
 
-    public Vec4f zeroThatZero(float x, float y, float z, float w) {
+    public Vec4f zeroCompsThatZero(float x, float y, float z, float w) {
         if(x == 0F)
             this.x = 0F;
         if(y == 0F)
@@ -855,39 +872,39 @@ public class Vec4f {
         return this;
     }
 
-    public Vec4f zeroThatZero(double x, double y, double z, double w) {
-        return this.zeroThatZero((float) x, (float) y, (float) z, (float) w);
+    public Vec4f zeroCompsThatZero(double x, double y, double z, double w) {
+        return this.zeroCompsThatZero((float) x, (float) y, (float) z, (float) w);
     }
 
-    public Vec4f zeroThatZero(int x, int y, int z, int w) {
-        return this.zeroThatZero((float) x, (float) y, (float) z, (float) w);
+    public Vec4f zeroCompsThatZero(int x, int y, int z, int w) {
+        return this.zeroCompsThatZero((float) x, (float) y, (float) z, (float) w);
     }
 
-    public Vec4f zeroThatZero(float xyzw) {
-        return this.zeroThatZero(xyzw, xyzw, xyzw, xyzw);
+    public Vec4f zeroCompsThatZero(float xyzw) {
+        return this.zeroCompsThatZero(xyzw, xyzw, xyzw, xyzw);
     }
 
-    public Vec4f zeroThatZero(double xyzw) {
-        return this.zeroThatZero(xyzw, xyzw, xyzw, xyzw);
+    public Vec4f zeroCompsThatZero(double xyzw) {
+        return this.zeroCompsThatZero(xyzw, xyzw, xyzw, xyzw);
     }
 
-    public Vec4f zeroThatZero(int xyzw) {
-        return this.zeroThatZero(xyzw, xyzw, xyzw, xyzw);
+    public Vec4f zeroCompsThatZero(int xyzw) {
+        return this.zeroCompsThatZero(xyzw, xyzw, xyzw, xyzw);
     }
 
-    public Vec4f zeroThatZero(Vec4f vector) {
-        return this.zeroThatZero(vector.x, vector.y, vector.z, vector.w);
+    public Vec4f zeroCompsThatZero(Vec4f vector) {
+        return this.zeroCompsThatZero(vector.x, vector.y, vector.z, vector.w);
     }
 
-    public Vec4f zeroThatZero(Vec4d vector) {
-        return this.zeroThatZero(vector.x, vector.y, vector.z, vector.w);
+    public Vec4f zeroCompsThatZero(Vec4d vector) {
+        return this.zeroCompsThatZero(vector.x, vector.y, vector.z, vector.w);
     }
 
-    public Vec4f zeroThatZero(Vec4i vector) {
-        return this.zeroThatZero(vector.x, vector.y, vector.z, vector.w);
+    public Vec4f zeroCompsThatZero(Vec4i vector) {
+        return this.zeroCompsThatZero(vector.x, vector.y, vector.z, vector.w);
     }
 
-    public Vec4f zeroThatBigger(float x, float y, float z, float w) {
+    public Vec4f zeroCompsThatBigger(float x, float y, float z, float w) {
         if(Math.abs(this.x) > Math.abs(x))
             this.x = 0F;
         if(Math.abs(this.y) > Math.abs(y))
@@ -899,36 +916,36 @@ public class Vec4f {
         return this;
     }
 
-    public Vec4f zeroThatBigger(double x, double y, double z, double w) {
-        return this.zeroThatBigger((float) x, (float) y, (float) z, (float) w);
+    public Vec4f zeroCompsThatBigger(double x, double y, double z, double w) {
+        return this.zeroCompsThatBigger((float) x, (float) y, (float) z, (float) w);
     }
 
-    public Vec4f zeroThatBigger(int x, int y, int z, int w) {
-        return this.zeroThatBigger((float) x, (float) y, (float) z, (float) w);
+    public Vec4f zeroCompsThatBigger(int x, int y, int z, int w) {
+        return this.zeroCompsThatBigger((float) x, (float) y, (float) z, (float) w);
     }
 
-    public Vec4f zeroThatBigger(float xyzw) {
-        return this.zeroThatBigger(xyzw, xyzw, xyzw, xyzw);
+    public Vec4f zeroCompsThatBigger(float xyzw) {
+        return this.zeroCompsThatBigger(xyzw, xyzw, xyzw, xyzw);
     }
 
-    public Vec4f zeroThatBigger(double xyzw) {
-        return this.zeroThatBigger(xyzw, xyzw, xyzw, xyzw);
+    public Vec4f zeroCompsThatBigger(double xyzw) {
+        return this.zeroCompsThatBigger(xyzw, xyzw, xyzw, xyzw);
     }
 
-    public Vec4f zeroThatBigger(int xyzw) {
-        return this.zeroThatBigger(xyzw, xyzw, xyzw, xyzw);
+    public Vec4f zeroCompsThatBigger(int xyzw) {
+        return this.zeroCompsThatBigger(xyzw, xyzw, xyzw, xyzw);
     }
 
-    public Vec4f zeroThatBigger(Vec4f vector) {
-        return this.zeroThatBigger(vector.x, vector.y, vector.z, vector.w);
+    public Vec4f zeroCompsThatBigger(Vec4f vector) {
+        return this.zeroCompsThatBigger(vector.x, vector.y, vector.z, vector.w);
     }
 
-    public Vec4f zeroThatBigger(Vec4d vector) {
-        return this.zeroThatBigger(vector.x, vector.y, vector.z, vector.w);
+    public Vec4f zeroCompsThatBigger(Vec4d vector) {
+        return this.zeroCompsThatBigger(vector.x, vector.y, vector.z, vector.w);
     }
 
-    public Vec4f zeroThatBigger(Vec4i vector) {
-        return this.zeroThatBigger(vector.x, vector.y, vector.z, vector.w);
+    public Vec4f zeroCompsThatBigger(Vec4i vector) {
+        return this.zeroCompsThatBigger(vector.x, vector.y, vector.z, vector.w);
     }
 
 

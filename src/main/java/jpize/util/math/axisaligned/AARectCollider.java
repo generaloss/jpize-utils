@@ -8,7 +8,7 @@ public class AARectCollider {
 
     public static boolean isIntersects(Vec2f movement, AARectBody body1, AARectBody... otherBodies) {
         body1 = body1.copy();
-        body1.getPosition().add(movement);
+        body1.position().add(movement);
 
         for(AARectBody body2: otherBodies)
             if(body1.isIntersectRect(body2))
@@ -19,7 +19,7 @@ public class AARectCollider {
 
     public static boolean isIntersects(Vec2f movement, AARectBody body1, Collection<AARectBody> otherBodies) {
         body1 = body1.copy();
-        body1.getPosition().add(movement);
+        body1.position().add(movement);
 
         for(AARectBody body2: otherBodies)
             if(body1.isIntersectRect(body2))
@@ -39,7 +39,7 @@ public class AARectCollider {
 
         // Calculate
         final float movementX = minClipX(movement.x, body1, otherBodies);
-        body1.getPosition().x += movementX;
+        body1.position().x += movementX;
         final float movementY = minClipY(movement.y, body1, otherBodies);
 
         // Return calculated movement
@@ -80,7 +80,7 @@ public class AARectCollider {
 
         // Calculate
         final float movementX = minClipX(movement.x, body1, otherBodies);
-        body1.getPosition().x += movementX;
+        body1.position().x += movementX;
         final float movementY = minClipY(movement.y, body1, otherBodies);
 
         // Return calculated movement

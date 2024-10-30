@@ -69,11 +69,11 @@ public class AARect {
     }
 
 
-    public Vec2f getMin() {
+    public Vec2f min() {
         return min;
     }
 
-    public Vec2f getMax() {
+    public Vec2f max() {
         return max;
     }
 

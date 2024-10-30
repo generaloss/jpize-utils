@@ -827,15 +827,32 @@ public class Vec3f {
     }
 
 
-    public Vec3f zero() {
-        return this.set(0F);
+    public boolean isShorter(float comparableX, float comparableY, float comparableZ) {
+        return this.len2() < len2(comparableX, comparableY, comparableZ);
     }
+
+    public boolean isShorter(Vec3f comparable) {
+        return this.isShorter(comparable.x, comparable.y, comparable.z);
+    }
+
+    public boolean isLonger(float comparableX, float comparableY, float comparableZ) {
+        return this.len2() > len2(comparableX, comparableY, comparableZ);
+    }
+
+    public boolean isLonger(Vec3f comparable) {
+        return this.isLonger(comparable.x, comparable.y, comparable.z);
+    }
+
 
     public boolean isZero() {
         return x == 0F && y == 0F && z == 0F;
     }
 
-    public Vec3f zeroThatLess(float x, float y, float z) {
+    public Vec3f zero() {
+        return this.set(0F);
+    }
+
+    public Vec3f zeroCompsThatLess(float x, float y, float z) {
         if(Math.abs(this.x) < Math.abs(x))
             this.x = 0F;
         if(Math.abs(this.y) < Math.abs(y))
@@ -845,39 +862,39 @@ public class Vec3f {
         return this;
     }
 
-    public Vec3f zeroThatLess(double x, double y, double z) {
-        return this.zeroThatLess((float) x, (float) y, (float) z);
+    public Vec3f zeroCompsThatLess(double x, double y, double z) {
+        return this.zeroCompsThatLess((float) x, (float) y, (float) z);
     }
 
-    public Vec3f zeroThatLess(int x, int y, int z) {
-        return this.zeroThatLess((float) x, (float) y, (float) z);
+    public Vec3f zeroCompsThatLess(int x, int y, int z) {
+        return this.zeroCompsThatLess((float) x, (float) y, (float) z);
     }
 
-    public Vec3f zeroThatLess(float xyz) {
-        return this.zeroThatLess(xyz, xyz, xyz);
+    public Vec3f zeroCompsThatLess(float xyz) {
+        return this.zeroCompsThatLess(xyz, xyz, xyz);
     }
 
-    public Vec3f zeroThatLess(double xyz) {
-        return this.zeroThatLess(xyz, xyz, xyz);
+    public Vec3f zeroCompsThatLess(double xyz) {
+        return this.zeroCompsThatLess(xyz, xyz, xyz);
     }
 
-    public Vec3f zeroThatLess(int xyz) {
-        return this.zeroThatLess(xyz, xyz, xyz);
+    public Vec3f zeroCompsThatLess(int xyz) {
+        return this.zeroCompsThatLess(xyz, xyz, xyz);
     }
 
-    public Vec3f zeroThatLess(Vec3f vector) {
-        return this.zeroThatLess(vector.x, vector.y, vector.z);
+    public Vec3f zeroCompsThatLess(Vec3f vector) {
+        return this.zeroCompsThatLess(vector.x, vector.y, vector.z);
     }
 
-    public Vec3f zeroThatLess(Vec3d vector) {
-        return this.zeroThatLess(vector.x, vector.y, vector.z);
+    public Vec3f zeroCompsThatLess(Vec3d vector) {
+        return this.zeroCompsThatLess(vector.x, vector.y, vector.z);
     }
 
-    public Vec3f zeroThatLess(Vec3i vector) {
-        return this.zeroThatLess(vector.x, vector.y, vector.z);
+    public Vec3f zeroCompsThatLess(Vec3i vector) {
+        return this.zeroCompsThatLess(vector.x, vector.y, vector.z);
     }
 
-    public Vec3f zeroThatZero(float x, float y, float z) {
+    public Vec3f zeroCompsThatZero(float x, float y, float z) {
         if(x == 0F)
             this.x = 0F;
         if(y == 0F)
@@ -887,39 +904,39 @@ public class Vec3f {
         return this;
     }
 
-    public Vec3f zeroThatZero(double x, double y, double z) {
-        return this.zeroThatZero((float) x, (float) y, (float) z);
+    public Vec3f zeroCompsThatZero(double x, double y, double z) {
+        return this.zeroCompsThatZero((float) x, (float) y, (float) z);
     }
 
-    public Vec3f zeroThatZero(int x, int y, int z) {
-        return this.zeroThatZero((float) x, (float) y, (float) z);
+    public Vec3f zeroCompsThatZero(int x, int y, int z) {
+        return this.zeroCompsThatZero((float) x, (float) y, (float) z);
     }
 
-    public Vec3f zeroThatZero(float xyz) {
-        return this.zeroThatZero(xyz, xyz, xyz);
+    public Vec3f zeroCompsThatZero(float xyz) {
+        return this.zeroCompsThatZero(xyz, xyz, xyz);
     }
 
-    public Vec3f zeroThatZero(double xyz) {
-        return this.zeroThatZero(xyz, xyz, xyz);
+    public Vec3f zeroCompsThatZero(double xyz) {
+        return this.zeroCompsThatZero(xyz, xyz, xyz);
     }
 
-    public Vec3f zeroThatZero(int xyz) {
-        return this.zeroThatZero(xyz, xyz, xyz);
+    public Vec3f zeroCompsThatZero(int xyz) {
+        return this.zeroCompsThatZero(xyz, xyz, xyz);
     }
 
-    public Vec3f zeroThatZero(Vec3f vector) {
-        return this.zeroThatZero(vector.x, vector.y, vector.z);
+    public Vec3f zeroCompsThatZero(Vec3f vector) {
+        return this.zeroCompsThatZero(vector.x, vector.y, vector.z);
     }
 
-    public Vec3f zeroThatZero(Vec3d vector) {
-        return this.zeroThatZero(vector.x, vector.y, vector.z);
+    public Vec3f zeroCompsThatZero(Vec3d vector) {
+        return this.zeroCompsThatZero(vector.x, vector.y, vector.z);
     }
 
-    public Vec3f zeroThatZero(Vec3i vector) {
-        return this.zeroThatZero(vector.x, vector.y, vector.z);
+    public Vec3f zeroCompsThatZero(Vec3i vector) {
+        return this.zeroCompsThatZero(vector.x, vector.y, vector.z);
     }
 
-    public Vec3f zeroThatBigger(float x, float y, float z) {
+    public Vec3f zeroCompsThatBigger(float x, float y, float z) {
         if(Math.abs(this.x) > Math.abs(x))
             this.x = 0F;
         if(Math.abs(this.y) > Math.abs(y))
@@ -929,36 +946,36 @@ public class Vec3f {
         return this;
     }
 
-    public Vec3f zeroThatBigger(double x, double y, double z) {
-        return this.zeroThatBigger((float) x, (float) y, (float) z);
+    public Vec3f zeroCompsThatBigger(double x, double y, double z) {
+        return this.zeroCompsThatBigger((float) x, (float) y, (float) z);
     }
 
-    public Vec3f zeroThatBigger(int x, int y, int z) {
-        return this.zeroThatBigger((float) x, (float) y, (float) z);
+    public Vec3f zeroCompsThatBigger(int x, int y, int z) {
+        return this.zeroCompsThatBigger((float) x, (float) y, (float) z);
     }
 
-    public Vec3f zeroThatBigger(float xyz) {
-        return this.zeroThatBigger(xyz, xyz, xyz);
+    public Vec3f zeroCompsThatBigger(float xyz) {
+        return this.zeroCompsThatBigger(xyz, xyz, xyz);
     }
 
-    public Vec3f zeroThatBigger(double xyz) {
-        return this.zeroThatBigger(xyz, xyz, xyz);
+    public Vec3f zeroCompsThatBigger(double xyz) {
+        return this.zeroCompsThatBigger(xyz, xyz, xyz);
     }
 
-    public Vec3f zeroThatBigger(int xyz) {
-        return this.zeroThatBigger(xyz, xyz, xyz);
+    public Vec3f zeroCompsThatBigger(int xyz) {
+        return this.zeroCompsThatBigger(xyz, xyz, xyz);
     }
 
-    public Vec3f zeroThatBigger(Vec3f vector) {
-        return this.zeroThatBigger(vector.x, vector.y, vector.z);
+    public Vec3f zeroCompsThatBigger(Vec3f vector) {
+        return this.zeroCompsThatBigger(vector.x, vector.y, vector.z);
     }
 
-    public Vec3f zeroThatBigger(Vec3d vector) {
-        return this.zeroThatBigger(vector.x, vector.y, vector.z);
+    public Vec3f zeroCompsThatBigger(Vec3d vector) {
+        return this.zeroCompsThatBigger(vector.x, vector.y, vector.z);
     }
 
-    public Vec3f zeroThatBigger(Vec3i vector) {
-        return this.zeroThatBigger(vector.x, vector.y, vector.z);
+    public Vec3f zeroCompsThatBigger(Vec3i vector) {
+        return this.zeroCompsThatBigger(vector.x, vector.y, vector.z);
     }
 
 

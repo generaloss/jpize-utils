@@ -11,7 +11,7 @@ public class Stopwatch {
         if(running)
             return this;
         running = true;
-        return reset();
+        return this.reset();
     }
 
     public Stopwatch reset() {
@@ -49,43 +49,43 @@ public class Stopwatch {
     }
 
     public Stopwatch setMillis(double millis) {
-        return setNanos(Maths.round(millis * Maths.nanosInMsf));
+        return this.setNanos(Maths.round(millis * Maths.nanosInMsf));
     }
 
     public Stopwatch setSeconds(double seconds) {
-        return setMillis(seconds * Maths.msInSecf);
+        return this.setMillis(seconds * Maths.msInSecf);
     }
 
     public Stopwatch setMinutes(double minutes) {
-        return setSeconds(minutes * 60);
+        return this.setSeconds(minutes * 60D);
     }
 
     public Stopwatch setHours(double hours) {
-        return setMinutes(hours * 60);
+        return this.setMinutes(hours * 60D);
     }
 
     public long getNanos() {
         if(!running)
-            return 0;
+            return 0L;
         if(!paused)
             timeNanos = System.nanoTime();
         return (timeNanos - lastTimeNanos);
     }
 
     public float getMillis() {
-        return getNanos() / Maths.nanosInMsf;
+        return this.getNanos() / Maths.nanosInMsf;
     }
 
     public float getSeconds() {
-        return getMillis() / Maths.msInSecf;
+        return this.getMillis() / Maths.msInSecf;
     }
 
     public float getMinutes() {
-        return getSeconds() / 60F;
+        return this.getSeconds() / 60F;
     }
 
     public float getHours() {
-        return getMinutes() / 60F;
+        return this.getMinutes() / 60F;
     }
 
 }

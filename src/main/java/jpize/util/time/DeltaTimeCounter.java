@@ -17,6 +17,11 @@ public class DeltaTimeCounter {
         lastTime = currentTime;
     }
 
+    public void reset() {
+        lastTime = System.nanoTime();
+        deltaTime = 0F;
+    }
+
     public float get() {
         return deltaTime;
     }

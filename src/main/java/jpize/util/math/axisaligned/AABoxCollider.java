@@ -8,7 +8,7 @@ public class AABoxCollider {
 
     public static boolean isIntersects(Vec3f movement, AABoxBody body1, AABoxBody... otherBodies) {
         body1 = body1.copy();
-        body1.getPosition().add(movement);
+        body1.position().add(movement);
 
         for(AABoxBody body2: otherBodies)
             if(body1.isIntersectBox(body2))
@@ -19,7 +19,7 @@ public class AABoxCollider {
 
     public static boolean isIntersects(Vec3f movement, AABoxBody body1, Collection<AABoxBody> otherBodies) {
         body1 = body1.copy();
-        body1.getPosition().add(movement);
+        body1.position().add(movement);
 
         for(AABoxBody body2: otherBodies)
             if(body1.isIntersectBox(body2))
@@ -39,9 +39,9 @@ public class AABoxCollider {
 
         // Calculate
         final float movementX = minClipX(movement.x, body1, otherBodies);
-        body1.getPosition().x += movementX;
+        body1.position().x += movementX;
         final float movementY = minClipY(movement.y, body1, otherBodies);
-        body1.getPosition().y += movementY;
+        body1.position().y += movementY;
         final float movementZ = minClipZ(movement.z, body1, otherBodies);
 
         // Return calculated movement
@@ -93,9 +93,9 @@ public class AABoxCollider {
 
         // Calculate
         final float movementX = minClipX(movement.x, body1, otherBodies);
-        body1.getPosition().x += movementX;
+        body1.position().x += movementX;
         final float movementY = minClipY(movement.y, body1, otherBodies);
-        body1.getPosition().y += movementY;
+        body1.position().y += movementY;
         final float movementZ = minClipZ(movement.z, body1, otherBodies);
 
         // Return calculated movement

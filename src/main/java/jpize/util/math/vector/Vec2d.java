@@ -447,15 +447,32 @@ public class Vec2d {
     }
 
 
-    public Vec2d zero() {
-        return this.set(0D);
+    public boolean isShorter(double comparableX, double comparableY) {
+        return this.len2() < len2(comparableX, comparableY);
     }
+
+    public boolean isShorter(Vec2d comparable) {
+        return this.isShorter(comparable.x, comparable.y);
+    }
+
+    public boolean isLonger(double comparableX, double comparableY) {
+        return this.len2() > len2(comparableX, comparableY);
+    }
+
+    public boolean isLonger(Vec2d comparable) {
+        return this.isLonger(comparable.x, comparable.y);
+    }
+
 
     public boolean isZero() {
         return x == 0D && y == 0D;
     }
 
-    public Vec2d zeroThatLess(double x, double y) {
+    public Vec2d zero() {
+        return this.set(0D);
+    }
+
+    public Vec2d zeroCompsThatLess(double x, double y) {
         if(Math.abs(this.x) < Math.abs(x))
             this.x = 0D;
         if(Math.abs(this.y) < Math.abs(y))
@@ -463,39 +480,39 @@ public class Vec2d {
         return this;
     }
 
-    public Vec2d zeroThatLess(float x, float y) {
-        return this.zeroThatLess((double) x, (double) y);
+    public Vec2d zeroCompsThatLess(float x, float y) {
+        return this.zeroCompsThatLess((double) x, (double) y);
     }
 
-    public Vec2d zeroThatLess(int x, int y) {
-        return this.zeroThatLess((double) x, (double) y);
+    public Vec2d zeroCompsThatLess(int x, int y) {
+        return this.zeroCompsThatLess((double) x, (double) y);
     }
 
-    public Vec2d zeroThatLess(float xy) {
-        return this.zeroThatLess(xy, xy);
+    public Vec2d zeroCompsThatLess(float xy) {
+        return this.zeroCompsThatLess(xy, xy);
     }
 
-    public Vec2d zeroThatLess(double xy) {
-        return this.zeroThatLess(xy, xy);
+    public Vec2d zeroCompsThatLess(double xy) {
+        return this.zeroCompsThatLess(xy, xy);
     }
 
-    public Vec2d zeroThatLess(int xy) {
-        return this.zeroThatLess(xy, xy);
+    public Vec2d zeroCompsThatLess(int xy) {
+        return this.zeroCompsThatLess(xy, xy);
     }
 
-    public Vec2d zeroThatLess(Vec2f vector) {
-        return this.zeroThatLess(vector.x, vector.y);
+    public Vec2d zeroCompsThatLess(Vec2f vector) {
+        return this.zeroCompsThatLess(vector.x, vector.y);
     }
 
-    public Vec2d zeroThatLess(Vec2d vector) {
-        return this.zeroThatLess(vector.x, vector.y);
+    public Vec2d zeroCompsThatLess(Vec2d vector) {
+        return this.zeroCompsThatLess(vector.x, vector.y);
     }
 
-    public Vec2d zeroThatLess(Vec2i vector) {
-        return this.zeroThatLess(vector.x, vector.y);
+    public Vec2d zeroCompsThatLess(Vec2i vector) {
+        return this.zeroCompsThatLess(vector.x, vector.y);
     }
 
-    public Vec2d zeroThatZero(double x, double y) {
+    public Vec2d zeroCompsThatZero(double x, double y) {
         if(x == 0D)
             this.x = 0D;
         if(y == 0D)
@@ -503,39 +520,39 @@ public class Vec2d {
         return this;
     }
 
-    public Vec2d zeroThatZero(float x, float y) {
-        return this.zeroThatZero((double) x, (double) y);
+    public Vec2d zeroCompsThatZero(float x, float y) {
+        return this.zeroCompsThatZero((double) x, (double) y);
     }
 
-    public Vec2d zeroThatZero(int x, int y) {
-        return this.zeroThatZero((double) x, (double) y);
+    public Vec2d zeroCompsThatZero(int x, int y) {
+        return this.zeroCompsThatZero((double) x, (double) y);
     }
 
-    public Vec2d zeroThatZero(float xy) {
-        return this.zeroThatZero(xy, xy);
+    public Vec2d zeroCompsThatZero(float xy) {
+        return this.zeroCompsThatZero(xy, xy);
     }
 
-    public Vec2d zeroThatZero(double xy) {
-        return this.zeroThatZero(xy, xy);
+    public Vec2d zeroCompsThatZero(double xy) {
+        return this.zeroCompsThatZero(xy, xy);
     }
 
-    public Vec2d zeroThatZero(int xy) {
-        return this.zeroThatZero(xy, xy);
+    public Vec2d zeroCompsThatZero(int xy) {
+        return this.zeroCompsThatZero(xy, xy);
     }
 
-    public Vec2d zeroThatZero(Vec2f vector) {
-        return this.zeroThatZero(vector.x, vector.y);
+    public Vec2d zeroCompsThatZero(Vec2f vector) {
+        return this.zeroCompsThatZero(vector.x, vector.y);
     }
 
-    public Vec2d zeroThatZero(Vec2d vector) {
-        return this.zeroThatZero(vector.x, vector.y);
+    public Vec2d zeroCompsThatZero(Vec2d vector) {
+        return this.zeroCompsThatZero(vector.x, vector.y);
     }
 
-    public Vec2d zeroThatZero(Vec2i vector) {
-        return this.zeroThatZero(vector.x, vector.y);
+    public Vec2d zeroCompsThatZero(Vec2i vector) {
+        return this.zeroCompsThatZero(vector.x, vector.y);
     }
 
-    public Vec2d zeroThatBigger(double x, double y) {
+    public Vec2d zeroCompsThatBigger(double x, double y) {
         if(Math.abs(this.x) > Math.abs(x))
             this.x = 0D;
         if(Math.abs(this.y) > Math.abs(y))
@@ -543,36 +560,36 @@ public class Vec2d {
         return this;
     }
 
-    public Vec2d zeroThatBigger(float x, float y) {
-        return this.zeroThatBigger((double) x, (double) y);
+    public Vec2d zeroCompsThatBigger(float x, float y) {
+        return this.zeroCompsThatBigger((double) x, (double) y);
     }
 
-    public Vec2d zeroThatBigger(int x, int y) {
-        return this.zeroThatBigger((double) x, (double) y);
+    public Vec2d zeroCompsThatBigger(int x, int y) {
+        return this.zeroCompsThatBigger((double) x, (double) y);
     }
 
-    public Vec2d zeroThatBigger(float xy) {
-        return this.zeroThatBigger(xy, xy);
+    public Vec2d zeroCompsThatBigger(float xy) {
+        return this.zeroCompsThatBigger(xy, xy);
     }
 
-    public Vec2d zeroThatBigger(double xy) {
-        return this.zeroThatBigger(xy, xy);
+    public Vec2d zeroCompsThatBigger(double xy) {
+        return this.zeroCompsThatBigger(xy, xy);
     }
 
-    public Vec2d zeroThatBigger(int xy) {
-        return this.zeroThatBigger(xy, xy);
+    public Vec2d zeroCompsThatBigger(int xy) {
+        return this.zeroCompsThatBigger(xy, xy);
     }
 
-    public Vec2d zeroThatBigger(Vec2f vector) {
-        return this.zeroThatBigger(vector.x, vector.y);
+    public Vec2d zeroCompsThatBigger(Vec2f vector) {
+        return this.zeroCompsThatBigger(vector.x, vector.y);
     }
 
-    public Vec2d zeroThatBigger(Vec2d vector) {
-        return this.zeroThatBigger(vector.x, vector.y);
+    public Vec2d zeroCompsThatBigger(Vec2d vector) {
+        return this.zeroCompsThatBigger(vector.x, vector.y);
     }
 
-    public Vec2d zeroThatBigger(Vec2i vector) {
-        return this.zeroThatBigger(vector.x, vector.y);
+    public Vec2d zeroCompsThatBigger(Vec2i vector) {
+        return this.zeroCompsThatBigger(vector.x, vector.y);
     }
 
 

@@ -33,11 +33,11 @@ public class AARectBody {
 
 
     public Vec2f getMin() {
-        return min.set(rect.getMin()).add(position);
+        return min.set(rect.min()).add(position);
     }
 
     public Vec2f getMax() {
-        return max.set(rect.getMax()).add(position);
+        return max.set(rect.max()).add(position);
     }
 
 
@@ -45,7 +45,7 @@ public class AARectBody {
         return rect;
     }
 
-    public Vec2f getPosition() {
+    public Vec2f position() {
         return position;
     }
 
