@@ -406,6 +406,18 @@ public class Vec2f {
         return minComps(this, vector1, vector2);
     }
 
+    public Vec2f setMinComps(float x2, float y2) {
+        return this.setMinComps(this, x2, y2);
+    }
+
+    public Vec2f setMinComps(float xy2) {
+        return this.setMinComps(this, xy2);
+    }
+
+    public Vec2f setMinComps(Vec2f vector2) {
+        return this.setMinComps(this, vector2);
+    }
+
 
     public static Vec2f maxComps(Vec2f dst, float x1, float y1, float x2, float y2) {
         return dst.set(Math.max(x1, x2), Math.max(y1, y2));
@@ -445,6 +457,18 @@ public class Vec2f {
 
     public Vec2f setMaxComps(Vec2f vector1, Vec2f vector2) {
         return maxComps(this, vector1, vector2);
+    }
+
+    public Vec2f setMaxComps(float x2, float y2) {
+        return this.setMaxComps(this, x2, y2);
+    }
+
+    public Vec2f setMaxComps(float xy2) {
+        return this.setMaxComps(this, xy2);
+    }
+
+    public Vec2f setMaxComps(Vec2f vector2) {
+        return this.setMaxComps(this, vector2);
     }
 
 
@@ -860,6 +884,38 @@ public class Vec2f {
 
     public Vec3f to3D() {
         return new Vec3f(this);
+    }
+
+
+    public Vec2f clamp(float minX, float minY, float maxX, float maxY) {
+        return this.set(
+            Maths.clamp(x, minX, maxX),
+            Maths.clamp(y, minY, maxY)
+        );
+    }
+
+    public Vec2f clamp(float minX, float minY, Vec2f max) {
+        return this.clamp(minX, minY, max.x, max.y);
+    }
+
+    public Vec2f clamp(float minXY, float maxXY) {
+        return this.clamp(minXY, minXY, maxXY, maxXY);
+    }
+
+    public Vec2f clamp(float minXY, Vec2f max) {
+        return this.clamp(minXY, minXY, max.x, max.y);
+    }
+
+    public Vec2f clamp(Vec2f min, float maxX, float maxY) {
+        return this.clamp(min.x, min.y, maxX, maxY);
+    }
+
+    public Vec2f clamp(Vec2f min, float maxXY) {
+        return this.clamp(min.x, min.y, maxXY, maxXY);
+    }
+
+    public Vec2f clamp(Vec2f min, Vec2f max) {
+        return this.clamp(min.x, min.y, max.x, max.y);
     }
 
 

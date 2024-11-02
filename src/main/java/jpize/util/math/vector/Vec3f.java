@@ -785,6 +785,18 @@ public class Vec3f {
         return minComps(this, vector1, vector2);
     }
 
+    public Vec3f setMinComps(float x2, float y2, float z2) {
+        return this.setMinComps(this, x2, y2, z2);
+    }
+
+    public Vec3f setMinComps(float xyz2) {
+        return this.setMinComps(this, xyz2);
+    }
+
+    public Vec3f setMinComps(Vec3f vector2) {
+        return this.setMinComps(this, vector2);
+    }
+
 
     public static Vec3f maxComps(Vec3f dst, float x1, float y1, float z1, float x2, float y2, float z2) {
         return dst.set(Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2));
@@ -824,6 +836,18 @@ public class Vec3f {
 
     public Vec3f setMaxComps(Vec3f vector1, Vec3f vector2) {
         return maxComps(this, vector1, vector2);
+    }
+
+    public Vec3f setMaxComps(float x2, float y2, float z2) {
+        return this.setMaxComps(this, x2, y2, z2);
+    }
+
+    public Vec3f setMaxComps(float xyz2) {
+        return this.setMaxComps(this, xyz2);
+    }
+
+    public Vec3f setMaxComps(Vec3f vector2) {
+        return this.setMaxComps(this, vector2);
     }
 
 
@@ -1327,6 +1351,39 @@ public class Vec3f {
 
     public Vec2f yz() {
         return new Vec2f(y, z);
+    }
+
+
+    public Vec3f clamp(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        return this.set(
+            Maths.clamp(x, minX, maxX),
+            Maths.clamp(y, minY, maxY),
+            Maths.clamp(z, minZ, maxZ)
+        );
+    }
+
+    public Vec3f clamp(float minX, float minY, float minZ, Vec3f max) {
+        return this.clamp(minX, minY, minZ, max.x, max.y, max.z);
+    }
+
+    public Vec3f clamp(float minXYZ, float maxXYZ) {
+        return this.clamp(minXYZ, minXYZ, minXYZ, maxXYZ, maxXYZ, maxXYZ);
+    }
+
+    public Vec3f clamp(float minXYZ, Vec3f max) {
+        return this.clamp(minXYZ, minXYZ, minXYZ, max.x, max.y, max.z);
+    }
+
+    public Vec3f clamp(Vec3f min, float maxX, float maxY, float maxZ) {
+        return this.clamp(min.x, min.y, min.z, maxX, maxY, maxZ);
+    }
+
+    public Vec3f clamp(Vec3f min, float maxXYZ) {
+        return this.clamp(min.x, min.y, min.z, maxXYZ, maxXYZ, maxXYZ);
+    }
+
+    public Vec3f clamp(Vec3f min, Vec3f max) {
+        return this.clamp(min.x, min.y, min.z, max.x, max.y, max.z);
     }
 
 

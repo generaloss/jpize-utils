@@ -55,6 +55,44 @@ public class Intersector {
     }
 
 
+    public static float getPointToSegmentDistance(float pointX, float pointY, float ax, float ay, float bx, float by) {
+        final float segmentX = (bx - ax);
+        final float segmentY = (by - ay);
+
+        final float pointToAX = (pointX - ax);
+        final float pointToAY = (pointY - ay);
+
+        final float segmentDotPointToA = (segmentX * pointToAX + segmentY * pointToAY);
+        final float segmentLen2 = (segmentX * segmentX + segmentY * segmentY);
+        final float t = (segmentLen2 == 0) ? 0 : (segmentDotPointToA / segmentLen2);
+
+        if(t < 0F){
+            // point is closer to A
+            return Vec2f.len(pointToAX, pointToAY);
+        }else if(t > 1F){
+            // point is closer to B
+            return Vec2f.dst(pointX, pointY, bx, by);
+        }else{
+            // project point on the segment
+            final float projectionX = (ax + t * segmentX);
+            final float projectionY = (ay + t * segmentY);
+            return Vec2f.dst(pointX, pointY, projectionX, projectionY);
+        }
+    }
+
+    public static float getPointToSegmentDistance(float pointX, float pointY, Vec2f a, Vec2f b) {
+        return getPointToSegmentDistance(pointX, pointY, a.x, a.y, b.x, b.y);
+    }
+
+    public static float getPointToSegmentDistance(Vec2f point, float ax, float ay, float bx, float by) {
+        return getPointToSegmentDistance(point.x, point.y, ax, ay, bx, by);
+    }
+
+    public static float getPointToSegmentDistance(Vec2f point, Vec2f a, Vec2f b) {
+        return getPointToSegmentDistance(point.x, point.y, a.x, a.y, b.x, b.y);
+    }
+
+
     public static float getRayIntersectAABox(Ray3f ray, AABoxBody aabb) {
         final float x1 = (aabb.getMin().x - ray.origin().x) / ray.dir().x;
         final float x2 = (aabb.getMax().x - ray.origin().x) / ray.dir().x;

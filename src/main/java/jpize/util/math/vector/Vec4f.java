@@ -749,6 +749,18 @@ public class Vec4f {
         return minComps(this, vector1, vector2);
     }
 
+    public Vec4f setMinComps(float x2, float y2, float z2, float w2) {
+        return this.setMinComps(this, x2, y2, z2, w2);
+    }
+
+    public Vec4f setMinComps(float xyzw2) {
+        return this.setMinComps(this, xyzw2);
+    }
+
+    public Vec4f setMinComps(Vec4f vector2) {
+        return this.setMinComps(this, vector2);
+    }
+
 
     public static Vec4f maxComps(Vec4f dst, float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
         return dst.set(Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2), Math.max(w1, w2));
@@ -788,6 +800,18 @@ public class Vec4f {
 
     public Vec4f setMaxComps(Vec4f vector1, Vec4f vector2) {
         return maxComps(this, vector1, vector2);
+    }
+
+    public Vec4f setMaxComps(float x2, float y2, float z2, float w2) {
+        return this.setMaxComps(this, x2, y2, z2, w2);
+    }
+
+    public Vec4f setMaxComps(float xyzw2) {
+        return this.setMaxComps(this, xyzw2);
+    }
+
+    public Vec4f setMaxComps(Vec4f vector2) {
+        return this.setMaxComps(this, vector2);
     }
 
 
@@ -1189,6 +1213,40 @@ public class Vec4f {
 
     public Vec4i castInt() {
         return new Vec4i(this);
+    }
+
+
+    public Vec4f clamp(float minX, float minY, float minZ, float minW, float maxX, float maxY, float maxZ, float maxW) {
+        return this.set(
+            Maths.clamp(x, minX, maxX),
+            Maths.clamp(y, minY, maxY),
+            Maths.clamp(z, minZ, maxZ),
+            Maths.clamp(w, minW, maxW)
+        );
+    }
+
+    public Vec4f clamp(float minX, float minY, float minZ, float minW, Vec4f max) {
+        return this.clamp(minX, minY, minZ, minW, max.x, max.y, max.z, max.w);
+    }
+
+    public Vec4f clamp(float minXYZW, float maxXYZW) {
+        return this.clamp(minXYZW, minXYZW, minXYZW, minXYZW, maxXYZW, maxXYZW, maxXYZW, maxXYZW);
+    }
+
+    public Vec4f clamp(float minXYZW, Vec4f max) {
+        return this.clamp(minXYZW, minXYZW, minXYZW, minXYZW, max.x, max.y, max.z, max.w);
+    }
+
+    public Vec4f clamp(Vec4f min, float maxX, float maxY, float maxZ, float maxW) {
+        return this.clamp(min.x, min.y, min.z, min.w, maxX, maxY, maxZ, maxW);
+    }
+
+    public Vec4f clamp(Vec4f min, float maxXYZW) {
+        return this.clamp(min.x, min.y, min.z, min.w, maxXYZW, maxXYZW, maxXYZW, maxXYZW);
+    }
+
+    public Vec4f clamp(Vec4f min, Vec4f max) {
+        return this.clamp(min.x, min.y, min.z, min.w, max.x, max.y, max.z, max.w);
     }
 
 

@@ -749,6 +749,18 @@ public class Vec4i {
         return minComps(this, vector1, vector2);
     }
 
+    public Vec4i setMinComps(int x2, int y2, int z2, int w2) {
+        return this.setMinComps(this, x2, y2, z2, w2);
+    }
+
+    public Vec4i setMinComps(int xyzw2) {
+        return this.setMinComps(this, xyzw2);
+    }
+
+    public Vec4i setMinComps(Vec4i vector2) {
+        return this.setMinComps(this, vector2);
+    }
+
 
     public static Vec4i maxComps(Vec4i dst, int x1, int y1, int z1, int w1, int x2, int y2, int z2, int w2) {
         return dst.set(Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2), Math.max(w1, w2));
@@ -788,6 +800,18 @@ public class Vec4i {
 
     public Vec4i setMaxComps(Vec4i vector1, Vec4i vector2) {
         return maxComps(this, vector1, vector2);
+    }
+
+    public Vec4i setMaxComps(int x2, int y2, int z2, int w2) {
+        return this.setMaxComps(this, x2, y2, z2, w2);
+    }
+
+    public Vec4i setMaxComps(int xyzw2) {
+        return this.setMaxComps(this, xyzw2);
+    }
+
+    public Vec4i setMaxComps(Vec4i vector2) {
+        return this.setMaxComps(this, vector2);
     }
 
 
@@ -1096,6 +1120,40 @@ public class Vec4i {
 
     public Vec4d castDouble() {
         return new Vec4d(this);
+    }
+
+
+    public Vec4i clamp(int minX, int minY, int minZ, int minW, int maxX, int maxY, int maxZ, int maxW) {
+        return this.set(
+            Maths.clamp(x, minX, maxX),
+            Maths.clamp(y, minY, maxY),
+            Maths.clamp(z, minZ, maxZ),
+            Maths.clamp(w, minW, maxW)
+        );
+    }
+
+    public Vec4i clamp(int minX, int minY, int minZ, int minW, Vec4i max) {
+        return this.clamp(minX, minY, minZ, minW, max.x, max.y, max.z, max.w);
+    }
+
+    public Vec4i clamp(int minXYZW, int maxXYZW) {
+        return this.clamp(minXYZW, minXYZW, minXYZW, minXYZW, maxXYZW, maxXYZW, maxXYZW, maxXYZW);
+    }
+
+    public Vec4i clamp(int minXYZW, Vec4i max) {
+        return this.clamp(minXYZW, minXYZW, minXYZW, minXYZW, max.x, max.y, max.z, max.w);
+    }
+
+    public Vec4i clamp(Vec4i min, int maxX, int maxY, int maxZ, int maxW) {
+        return this.clamp(min.x, min.y, min.z, min.w, maxX, maxY, maxZ, maxW);
+    }
+
+    public Vec4i clamp(Vec4i min, int maxXYZW) {
+        return this.clamp(min.x, min.y, min.z, min.w, maxXYZW, maxXYZW, maxXYZW, maxXYZW);
+    }
+
+    public Vec4i clamp(Vec4i min, Vec4i max) {
+        return this.clamp(min.x, min.y, min.z, min.w, max.x, max.y, max.z, max.w);
     }
 
 

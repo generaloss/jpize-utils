@@ -405,6 +405,18 @@ public class Vec2d {
         return minComps(this, vector1, vector2);
     }
 
+    public Vec2d setMinComps(double x2, double y2) {
+        return this.setMinComps(this, x2, y2);
+    }
+
+    public Vec2d setMinComps(double xy2) {
+        return this.setMinComps(this, xy2);
+    }
+
+    public Vec2d setMinComps(Vec2d vector2) {
+        return this.setMinComps(this, vector2);
+    }
+
 
     public static Vec2d maxComps(Vec2d dst, double x1, double y1, double x2, double y2) {
         return dst.set(Math.max(x1, x2), Math.max(y1, y2));
@@ -444,6 +456,18 @@ public class Vec2d {
 
     public Vec2d setMaxComps(Vec2d vector1, Vec2d vector2) {
         return maxComps(this, vector1, vector2);
+    }
+
+    public Vec2d setMaxComps(double x2, double y2) {
+        return this.setMaxComps(this, x2, y2);
+    }
+
+    public Vec2d setMaxComps(double xy2) {
+        return this.setMaxComps(this, xy2);
+    }
+
+    public Vec2d setMaxComps(Vec2d vector2) {
+        return this.setMaxComps(this, vector2);
     }
 
 
@@ -859,6 +883,38 @@ public class Vec2d {
 
     public Vec3d to3D() {
         return new Vec3d(this);
+    }
+
+
+    public Vec2d clamp(double minX, double minY, double maxX, double maxY) {
+        return this.set(
+            Maths.clamp(x, minX, maxX),
+            Maths.clamp(y, minY, maxY)
+        );
+    }
+
+    public Vec2d clamp(double minX, double minY, Vec2d max) {
+        return this.clamp(minX, minY, max.x, max.y);
+    }
+
+    public Vec2d clamp(double minXY, double maxXY) {
+        return this.clamp(minXY, minXY, maxXY, maxXY);
+    }
+
+    public Vec2d clamp(double minXY, Vec2d max) {
+        return this.clamp(minXY, minXY, max.x, max.y);
+    }
+
+    public Vec2d clamp(Vec2d min, double maxX, double maxY) {
+        return this.clamp(min.x, min.y, maxX, maxY);
+    }
+
+    public Vec2d clamp(Vec2d min, double maxXY) {
+        return this.clamp(min.x, min.y, maxXY, maxXY);
+    }
+
+    public Vec2d clamp(Vec2d min, Vec2d max) {
+        return this.clamp(min.x, min.y, max.x, max.y);
     }
 
 

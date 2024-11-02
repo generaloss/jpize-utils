@@ -28,8 +28,12 @@ public class VectorClassesGenerator {
         return args.toString();
     }
 
+    private static String makeDimsLine(int dimensions, String splitter, String element) {
+        return makeDims(dimensions, splitter + "\n        ", element);
+    }
+
     private static String makeDimsLine(int dimensions, String element) {
-        return makeDims(dimensions, "\n        ", element);
+        return makeDimsLine(dimensions, "", element);
     }
 
     private static String makeClassname(int dimensions, String datatype) {
@@ -61,7 +65,7 @@ public class VectorClassesGenerator {
 
         for(VectorType vectorType: VECTOR_TYPES)
             newClass(vectorType);
-        //test newClass(new VectorType(3, "float"));
+        // newClass(new VectorType(3, "float"));
     }
 
 
@@ -74,6 +78,7 @@ public class VectorClassesGenerator {
     private static ClassWriter w; // writer
 
     private static String xyzw_str;
+    private static String XYZW_str;
     private static boolean isDatatypeDouble;
     private static boolean isDatatypeInt;
     private static String numberPostfix;
@@ -88,6 +93,7 @@ public class VectorClassesGenerator {
         VectorClassesGenerator.w = new ClassWriter("jpize.util.math.vector", classname, "");
 
         VectorClassesGenerator.xyzw_str = makeDims(dimensions, "", "%l");
+        VectorClassesGenerator.XYZW_str = xyzw_str.toUpperCase();
         VectorClassesGenerator.isDatatypeDouble = datatype.equals("double");
         VectorClassesGenerator.isDatatypeInt = datatype.equals("int");
         VectorClassesGenerator.numberPostfix = datatype.equals("float") ? "F" : datatype.equals("double") ? "D" : "";
@@ -106,6 +112,7 @@ public class VectorClassesGenerator {
         addSettersOperations();
         // operations
         addDistance();
+        addShorterLonger();
         addMinMax();
         addLenComparation();
         addZero();
@@ -126,6 +133,7 @@ public class VectorClassesGenerator {
         addRounding();
         addCasts();
         addTo2D3D();
+        addClamp();
         addClampLength();
         addReduce();
         // override methods
@@ -174,6 +182,48 @@ public class VectorClassesGenerator {
         w.addMethod("public " + classname + " reduce(" + makeDims(dimensions, ", ", "double reduce%L") + ")",
             "final " + length_method_datatype + " len = this.len();",
             "return this.nor().mul(" + makeDims(dimensions, ", ", "len - reduce%L") + ");"
+        );
+
+        w.addMethodSplitter();
+    }
+
+    private static void addClamp() {
+        w.addMethod("public " + classname + " clamp(" + makeDims(dimensions, ", ", datatype + " min%L") + ", " + makeDims(dimensions, ", ", datatype + " max%L") + ")",
+            "return this.set(\n        " +
+                makeDimsLine(dimensions, ",", "    Maths.clamp(%l, min%L, max%L)") +
+                "\n        );"
+        );
+
+        // w.addMethod("public " + classname + " clamp(" + makeDims(dimensions, ", ", datatype + " min%L") + ", " + datatype + " max" + XYZW_str + ")",
+        //     "return this.clamp(" + makeDims(dimensions, ", ", "min%L") + ", " + makeDims(dimensions, ", ", "max" + XYZW_str) + ");"
+        // );
+
+        w.addMethod("public " + classname + " clamp(" + makeDims(dimensions, ", ", datatype + " min%L") + ", " + classname + " max)",
+            "return this.clamp(" + makeDims(dimensions, ", ", "min%L") + ", " + makeDims(dimensions, ", ", "max.%l") + ");"
+        );
+
+        // w.addMethod("public " + classname + " clamp(" + datatype + " min" + XYZW_str + ", " + makeDims(dimensions, ", ", datatype + " max%L") + ")",
+        //     "return this.clamp(" + makeDims(dimensions, ", ", "min" + XYZW_str) + ", " + makeDims(dimensions, ", ", "max%L") + ");"
+        // );
+
+        w.addMethod("public " + classname + " clamp(" + datatype + " min" + XYZW_str + ", " + datatype + " max" + XYZW_str + ")",
+            "return this.clamp(" + makeDims(dimensions, ", ", "min" + XYZW_str) + ", " + makeDims(dimensions, ", ", "max" + XYZW_str) + ");"
+        );
+
+        w.addMethod("public " + classname + " clamp(" + datatype + " min" + XYZW_str + ", " + classname + " max)",
+            "return this.clamp(" + makeDims(dimensions, ", ", "min" + XYZW_str) + ", " + makeDims(dimensions, ", ", "max.%l") + ");"
+        );
+
+        w.addMethod("public " + classname + " clamp(" + classname + " min, " + makeDims(dimensions, ", ", datatype + " max%L") + ")",
+            "return this.clamp(" + makeDims(dimensions, ", ", "min.%l") + ", " + makeDims(dimensions, ", ", "max%L") + ");"
+        );
+
+        w.addMethod("public " + classname + " clamp(" + classname + " min, " + datatype + " max" + XYZW_str + ")",
+            "return this.clamp(" + makeDims(dimensions, ", ", "min.%l") + ", " + makeDims(dimensions, ", ", "max" + XYZW_str) + ");"
+        );
+
+        w.addMethod("public " + classname + " clamp(" + classname + " min, " + classname + " max)",
+            "return this.clamp(" + makeDims(dimensions, ", ", "min.%l") + ", " + makeDims(dimensions, ", ", "max.%l") + ");"
         );
 
         w.addMethodSplitter();
@@ -695,7 +745,7 @@ public class VectorClassesGenerator {
         w.addMethodSplitter();
     }
 
-    private static void addMinMax() {
+    private static void addShorterLonger() {
         w.addMethod("public static " + classname + " shorter(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
             "return (" + varname + "1.len2() < " + varname + "2.len2()) ? " + varname + "1 : " + varname + "2;"
         );
@@ -714,7 +764,9 @@ public class VectorClassesGenerator {
         );
 
         w.addMethodSplitter();
+    }
 
+    private static void addMinMax() {
         w.addMethod("public " + datatype + " minComp()",
             "return " + funcMultilayer("Math.min", 0, LETTERS[dimensions - 1], LETTERS) + ";"
         );
@@ -724,6 +776,8 @@ public class VectorClassesGenerator {
         );
 
         w.addMethodSplitter();
+
+        // static
 
         w.addMethod("public static " + classname + " minComps(" + classname + " dst, " + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "return dst.set(" + makeDims(dimensions, ", ", "Math.min(%l1, %l2)") + ");"
@@ -745,6 +799,7 @@ public class VectorClassesGenerator {
             "return minComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
         );
 
+        // 2 args
 
         w.addMethod("public " + classname + " setMinComps(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "return minComps(this, " + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
@@ -766,7 +821,23 @@ public class VectorClassesGenerator {
             "return minComps(this, " + varname + "1, " + varname + "2);"
         );
 
+        // 1 arg
+
+        w.addMethod("public " + classname + " setMinComps(" + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return this.setMinComps(this, " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public " + classname + " setMinComps(" + datatype + " " + xyzw_str + "2)",
+            "return this.setMinComps(this, " + xyzw_str + "2);"
+        );
+
+        w.addMethod("public " + classname + " setMinComps(" + classname + " " + varname + "2)",
+            "return this.setMinComps(this, " + varname + "2);"
+        );
+
         w.addMethodSplitter();
+
+        // static
 
         w.addMethod("public static " + classname + " maxComps(" + classname + " dst, "  + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "return dst.set(" + makeDims(dimensions, ", ", "Math.max(%l1, %l2)") + ");"
@@ -788,6 +859,7 @@ public class VectorClassesGenerator {
             "return maxComps(dst, " + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
         );
 
+        // 2 args
 
         w.addMethod("public " + classname + " setMaxComps(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "return maxComps(this, " + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
@@ -807,6 +879,20 @@ public class VectorClassesGenerator {
 
         w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
             "return maxComps(this, " + varname + "1, " + varname + "2);"
+        );
+
+        // 1 arg
+
+        w.addMethod("public " + classname + " setMaxComps(" + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return this.setMaxComps(this, " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+
+        w.addMethod("public " + classname + " setMaxComps(" + datatype + " " + xyzw_str + "2)",
+            "return this.setMaxComps(this, " + xyzw_str + "2);"
+        );
+
+        w.addMethod("public " + classname + " setMaxComps(" + classname + " " + varname + "2)",
+            "return this.setMaxComps(this, " + varname + "2);"
         );
 
         w.addMethodSplitter();

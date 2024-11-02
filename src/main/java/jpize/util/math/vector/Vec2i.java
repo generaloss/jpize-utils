@@ -406,6 +406,18 @@ public class Vec2i {
         return minComps(this, vector1, vector2);
     }
 
+    public Vec2i setMinComps(int x2, int y2) {
+        return this.setMinComps(this, x2, y2);
+    }
+
+    public Vec2i setMinComps(int xy2) {
+        return this.setMinComps(this, xy2);
+    }
+
+    public Vec2i setMinComps(Vec2i vector2) {
+        return this.setMinComps(this, vector2);
+    }
+
 
     public static Vec2i maxComps(Vec2i dst, int x1, int y1, int x2, int y2) {
         return dst.set(Math.max(x1, x2), Math.max(y1, y2));
@@ -445,6 +457,18 @@ public class Vec2i {
 
     public Vec2i setMaxComps(Vec2i vector1, Vec2i vector2) {
         return maxComps(this, vector1, vector2);
+    }
+
+    public Vec2i setMaxComps(int x2, int y2) {
+        return this.setMaxComps(this, x2, y2);
+    }
+
+    public Vec2i setMaxComps(int xy2) {
+        return this.setMaxComps(this, xy2);
+    }
+
+    public Vec2i setMaxComps(Vec2i vector2) {
+        return this.setMaxComps(this, vector2);
     }
 
 
@@ -799,6 +823,38 @@ public class Vec2i {
 
     public Vec3i to3D() {
         return new Vec3i(this);
+    }
+
+
+    public Vec2i clamp(int minX, int minY, int maxX, int maxY) {
+        return this.set(
+            Maths.clamp(x, minX, maxX),
+            Maths.clamp(y, minY, maxY)
+        );
+    }
+
+    public Vec2i clamp(int minX, int minY, Vec2i max) {
+        return this.clamp(minX, minY, max.x, max.y);
+    }
+
+    public Vec2i clamp(int minXY, int maxXY) {
+        return this.clamp(minXY, minXY, maxXY, maxXY);
+    }
+
+    public Vec2i clamp(int minXY, Vec2i max) {
+        return this.clamp(minXY, minXY, max.x, max.y);
+    }
+
+    public Vec2i clamp(Vec2i min, int maxX, int maxY) {
+        return this.clamp(min.x, min.y, maxX, maxY);
+    }
+
+    public Vec2i clamp(Vec2i min, int maxXY) {
+        return this.clamp(min.x, min.y, maxXY, maxXY);
+    }
+
+    public Vec2i clamp(Vec2i min, Vec2i max) {
+        return this.clamp(min.x, min.y, max.x, max.y);
     }
 
 
