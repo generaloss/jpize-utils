@@ -934,32 +934,39 @@ public class Matrix4f implements Matrix4 {
     /* Quaternion */
 
     public Matrix4f setQuaternion(float w, float x, float y, float z) {
-        final float xx = (x * x);
-        final float xy = (x * y);
-        final float xz = (x * z);
-        final float xw = (x * w);
-        final float yy = (y * y);
-        final float yz = (y * z);
-        final float yw = (y * w);
-        final float zz = (z * z);
-        final float zw = (z * w);
+        final float xx = (2F * x * x);
+        final float yy = (2F * y * y);
+        final float zz = (2F * z * z);
 
-        val[m00] = 1F - (yy + zz) * 2F;
-        val[m01] =      (xy - zw) * 2F;
-        val[m02] =      (xz + yw) * 2F;
+        final float xy = (2F * x * y);
+        final float zw = (2F * z * w);
+
+        final float xz = (2F * x * z);
+        final float yw = (2F * y * w);
+
+        final float yz = (2F * y * z);
+        final float xw = (2F * x * w);
+
+        val[m00] = (1F - yy - zz);
+        val[m11] = (1F - zz - xx);
+        val[m22] = (1F - xx - yy);
+
+        val[m10] = (xy + zw);
+        val[m01] = (xy - zw);
+
+        val[m20] = (xz - yw);
+        val[m02] = (xz + yw);
+
+        val[m21] = (yz + xw);
+        val[m12] = (yz - xw);
+
         val[m03] = 0F;
-        val[m10] =      (xy + zw) * 2F;
-        val[m11] = 1F - (xx + zz) * 2F;
-        val[m12] =      (yz - xw) * 2F;
         val[m13] = 0F;
-        val[m20] =      (xz - yw) * 2F;
-        val[m21] =      (yz + xw) * 2F;
-        val[m22] = 1F - (xx + yy) * 2F;
         val[m23] = 0F;
+        val[m33] = 1F;
         val[m30] = 0F;
         val[m31] = 0F;
         val[m32] = 0F;
-        val[m33] = 1F;
         return this;
     }
 
