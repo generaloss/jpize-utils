@@ -309,42 +309,42 @@ public class StringList implements Iterable<String> {
     }
 
 
-    public StringList valAdd(int i, String value) {
+    public StringList elementAdd(int i, String value) {
         array[i] += value;
         return this;
     }
 
-    public StringList valTrim(int i) {
+    public StringList elementTrim(int i) {
         array[i] = array[i].trim();
         return this;
     }
 
-    public StringList valReplace(int i, char oldChar, char newChar) {
+    public StringList elementReplace(int i, char oldChar, char newChar) {
         array[i] = array[i].replace(oldChar, newChar);
         return this;
     }
 
-    public StringList valReplace(int i, CharSequence target, CharSequence replacement) {
+    public StringList elementReplace(int i, CharSequence target, CharSequence replacement) {
         array[i] = array[i].replace(target, replacement);
         return this;
     }
 
-    public StringList valReplaceAll(int i, String regex, String replacement) {
+    public StringList elementReplaceAll(int i, String regex, String replacement) {
         array[i] = array[i].replaceAll(regex, replacement);
         return this;
     }
 
-    public StringList valReplaceFirst(int i, String regex, String replacement) {
+    public StringList elementReplaceFirst(int i, String regex, String replacement) {
         array[i] = array[i].replaceFirst(regex, replacement);
         return this;
     }
 
-    public StringList valToLowerCase(int i) {
+    public StringList elementToLowerCase(int i) {
         array[i] = array[i].toLowerCase();
         return this;
     }
 
-    public StringList valToUpperCase(int i) {
+    public StringList elementToUpperCase(int i) {
         array[i] = array[i].toUpperCase();
         return this;
     }

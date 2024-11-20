@@ -321,22 +321,22 @@ public class ShortList implements Iterable<Short> {
     }
 
 
-    public ShortList valAdd(int i, short value) {
+    public ShortList elementAdd(int i, short value) {
         array[i] += value;
         return this;
     }
 
-    public ShortList valSub(int i, short value) {
+    public ShortList elementSub(int i, short value) {
         array[i] -= value;
         return this;
     }
 
-    public ShortList valMul(int i, short value) {
+    public ShortList elementMul(int i, short value) {
         array[i] *= value;
         return this;
     }
 
-    public ShortList valDiv(int i, short value) {
+    public ShortList elementDiv(int i, short value) {
         array[i] /= value;
         return this;
     }

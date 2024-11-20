@@ -321,22 +321,22 @@ public class FloatList implements Iterable<Float> {
     }
 
 
-    public FloatList valAdd(int i, float value) {
+    public FloatList elementAdd(int i, float value) {
         array[i] += value;
         return this;
     }
 
-    public FloatList valSub(int i, float value) {
+    public FloatList elementSub(int i, float value) {
         array[i] -= value;
         return this;
     }
 
-    public FloatList valMul(int i, float value) {
+    public FloatList elementMul(int i, float value) {
         array[i] *= value;
         return this;
     }
 
-    public FloatList valDiv(int i, float value) {
+    public FloatList elementDiv(int i, float value) {
         array[i] /= value;
         return this;
     }

@@ -321,22 +321,22 @@ public class IntList implements Iterable<Integer> {
     }
 
 
-    public IntList valAdd(int i, int value) {
+    public IntList elementAdd(int i, int value) {
         array[i] += value;
         return this;
     }
 
-    public IntList valSub(int i, int value) {
+    public IntList elementSub(int i, int value) {
         array[i] -= value;
         return this;
     }
 
-    public IntList valMul(int i, int value) {
+    public IntList elementMul(int i, int value) {
         array[i] *= value;
         return this;
     }
 
-    public IntList valDiv(int i, int value) {
+    public IntList elementDiv(int i, int value) {
         array[i] /= value;
         return this;
     }

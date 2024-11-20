@@ -321,22 +321,22 @@ public class DoubleList implements Iterable<Double> {
     }
 
 
-    public DoubleList valAdd(int i, double value) {
+    public DoubleList elementAdd(int i, double value) {
         array[i] += value;
         return this;
     }
 
-    public DoubleList valSub(int i, double value) {
+    public DoubleList elementSub(int i, double value) {
         array[i] -= value;
         return this;
     }
 
-    public DoubleList valMul(int i, double value) {
+    public DoubleList elementMul(int i, double value) {
         array[i] *= value;
         return this;
     }
 
-    public DoubleList valDiv(int i, double value) {
+    public DoubleList elementDiv(int i, double value) {
         array[i] /= value;
         return this;
     }

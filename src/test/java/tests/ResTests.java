@@ -59,21 +59,21 @@ public class ResTests {
     public void internalFileTest1() {
         final InternalResource res = Resource.internal("/testfile1.txt");
         Assert.assertTrue(res.exists());
-        Assert.assertEquals(res.readLines(), new StringList("128", "256"));
+        Assert.assertEquals(new StringList("128", "256"), res.readLines());
     }
 
     @Test
     public void internalFileTest2() {
         final InternalResource res = Resource.internal("/testdir/testfile2.txt");
         Assert.assertTrue(res.exists());
-        Assert.assertEquals(res.readLines(), new StringList("64", "16", "2"));
+        Assert.assertEquals(new StringList("64", "16", "2"), res.readLines());
     }
 
     @Test
     public void urlTest1() {
-        final UrlResource res = Resource.url("https://filesampleshub.com/download/document/txt/sample1.txt");
+        final UrlResource res = Resource.url("http://212.183.159.230/10MB.zip");
         Assert.assertTrue(res.exists());
-        Assert.assertEquals(res.readString().hashCode(), -242807520);
+        Assert.assertEquals(-1950134781, res.readString().hashCode());
     }
 
 }

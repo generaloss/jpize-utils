@@ -321,22 +321,22 @@ public class ByteList implements Iterable<Byte> {
     }
 
 
-    public ByteList valAdd(int i, byte value) {
+    public ByteList elementAdd(int i, byte value) {
         array[i] += value;
         return this;
     }
 
-    public ByteList valSub(int i, byte value) {
+    public ByteList elementSub(int i, byte value) {
         array[i] -= value;
         return this;
     }
 
-    public ByteList valMul(int i, byte value) {
+    public ByteList elementMul(int i, byte value) {
         array[i] *= value;
         return this;
     }
 
-    public ByteList valDiv(int i, byte value) {
+    public ByteList elementDiv(int i, byte value) {
         array[i] /= value;
         return this;
     }

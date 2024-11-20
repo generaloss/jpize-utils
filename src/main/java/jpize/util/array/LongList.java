@@ -321,22 +321,22 @@ public class LongList implements Iterable<Long> {
     }
 
 
-    public LongList valAdd(int i, long value) {
+    public LongList elementAdd(int i, long value) {
         array[i] += value;
         return this;
     }
 
-    public LongList valSub(int i, long value) {
+    public LongList elementSub(int i, long value) {
         array[i] -= value;
         return this;
     }
 
-    public LongList valMul(int i, long value) {
+    public LongList elementMul(int i, long value) {
         array[i] *= value;
         return this;
     }
 
-    public LongList valDiv(int i, long value) {
+    public LongList elementDiv(int i, long value) {
         array[i] /= value;
         return this;
     }

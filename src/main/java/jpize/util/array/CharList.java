@@ -325,22 +325,22 @@ public class CharList implements Iterable<Character> {
     }
 
 
-    public CharList valAdd(int i, char value) {
+    public CharList elementAdd(int i, char value) {
         array[i] += value;
         return this;
     }
 
-    public CharList valSub(int i, char value) {
+    public CharList elementSub(int i, char value) {
         array[i] -= value;
         return this;
     }
 
-    public CharList valMul(int i, char value) {
+    public CharList elementMul(int i, char value) {
         array[i] *= value;
         return this;
     }
 
-    public CharList valDiv(int i, char value) {
+    public CharList elementDiv(int i, char value) {
         array[i] /= value;
         return this;
     }

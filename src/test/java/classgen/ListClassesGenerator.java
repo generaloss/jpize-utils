@@ -411,53 +411,53 @@ public class ListClassesGenerator {
         w.addMethodSplitter();
 
         if(isNumber){
-            w.addMethod("public " + classname + " valAdd(int i, " + datatype + " value)",
+            w.addMethod("public " + classname + " elementAdd(int i, " + datatype + " value)",
                 "array[i] += value;",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valSub(int i, " + datatype + " value)",
+            w.addMethod("public " + classname + " elementSub(int i, " + datatype + " value)",
                 "array[i] -= value;",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valMul(int i, " + datatype + " value)",
+            w.addMethod("public " + classname + " elementMul(int i, " + datatype + " value)",
                 "array[i] *= value;",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valDiv(int i, " + datatype + " value)",
+            w.addMethod("public " + classname + " elementDiv(int i, " + datatype + " value)",
                 "array[i] /= value;",
                 "return this;"
             );
         }
         if(isString){
-            w.addMethod("public " + classname + " valAdd(int i, String value)",
+            w.addMethod("public " + classname + " elementAdd(int i, String value)",
                 "array[i] += value;",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valTrim(int i)",
+            w.addMethod("public " + classname + " elementTrim(int i)",
                 "array[i] = array[i].trim();",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valReplace(int i, char oldChar, char newChar)",
+            w.addMethod("public " + classname + " elementReplace(int i, char oldChar, char newChar)",
                 "array[i] = array[i].replace(oldChar, newChar);",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valReplace(int i, CharSequence target, CharSequence replacement)",
+            w.addMethod("public " + classname + " elementReplace(int i, CharSequence target, CharSequence replacement)",
                 "array[i] = array[i].replace(target, replacement);",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valReplaceAll(int i, String regex, String replacement)",
+            w.addMethod("public " + classname + " elementReplaceAll(int i, String regex, String replacement)",
                 "array[i] = array[i].replaceAll(regex, replacement);",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valReplaceFirst(int i, String regex, String replacement)",
+            w.addMethod("public " + classname + " elementReplaceFirst(int i, String regex, String replacement)",
                 "array[i] = array[i].replaceFirst(regex, replacement);",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valToLowerCase(int i)",
+            w.addMethod("public " + classname + " elementToLowerCase(int i)",
                 "array[i] = array[i].toLowerCase();",
                 "return this;"
             );
-            w.addMethod("public " + classname + " valToUpperCase(int i)",
+            w.addMethod("public " + classname + " elementToUpperCase(int i)",
                 "array[i] = array[i].toUpperCase();",
                 "return this;"
             );
