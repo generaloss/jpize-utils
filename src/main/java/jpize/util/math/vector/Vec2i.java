@@ -730,53 +730,84 @@ public class Vec2i {
     }
 
 
-    public static float rad(int x1, int y1, int x2, int y2) {
-        final float cos = dot(x1, y1, x2, y2) / (len(x1, y1) * len(x2, y2));
+    public static float angleRad(int x, int y) {
+        float angle = Mathc.atan2(y, x);
+        if(angle < 0)
+            angle += 360;
+        return angle;
+    }
+
+    public static float angleRad(Vec2i vector) {
+        return angleRad(vector.x, vector.y);
+    }
+
+    public static float angleDeg(int x, int y) {
+        return angleRad(x, y) * Maths.toDeg;
+    }
+
+    public static float angleDeg(Vec2i vector) {
+        return angleDeg(vector.x, vector.y);
+    }
+
+    public float angleRad() {
+        return angleRad(this);
+    }
+
+    public float angleDeg() {
+        return angleDeg(this);
+    }
+
+
+    public static float angleBetweenRad(int x1, int y1, int x2, int y2) {
+        final float lengthProduct = len(x1, y1) * len(x2, y2);
+        if(lengthProduct == 0)
+            return 0;
+        final float cos = dot(x1, y1, x2, y2) / lengthProduct;
         return Mathc.acos(Maths.clamp(cos, -1, 1));
     }
 
-    public static float rad(Vec2i vector1, int x2, int y2) {
-        return rad(vector1.x, vector1.y, x2, y2);
+    public static float angleBetweenRad(Vec2i vector1, int x2, int y2) {
+        return angleBetweenRad(vector1.x, vector1.y, x2, y2);
     }
 
-    public static float rad(int x1, int y1, Vec2i vector2) {
-        return rad(x1, y1, vector2.x, vector2.y);
+    public static float angleBetweenRad(int x1, int y1, Vec2i vector2) {
+        return angleBetweenRad(x1, y1, vector2.x, vector2.y);
     }
 
-    public static float rad(Vec2i vector1, Vec2i vector2) {
-        return rad(vector1.x, vector1.y, vector2.x, vector2.y);
+    public static float angleBetweenRad(Vec2i vector1, Vec2i vector2) {
+        return angleBetweenRad(vector1.x, vector1.y, vector2.x, vector2.y);
     }
 
-    public float rad(int x, int y) {
-        return rad(this, x, y);
+    public float angleBetweenRad(int x, int y) {
+        return angleBetweenRad(this, x, y);
     }
 
-    public float rad(Vec2i vector) {
-        return rad(this, vector);
+    public float angleBetweenRad(Vec2i vector) {
+        return angleBetweenRad(this, vector);
     }
 
-    public static float deg(int x1, int y1, int x2, int y2) {
-        return rad(x1, y1, x2, y2) * Maths.toDeg;
+    public static float angleBetweenDeg(int x1, int y1, int x2, int y2) {
+        return angleBetweenRad(x1, y1, x2, y2) * Maths.toDeg;
     }
 
-    public static float deg(Vec2i vector1, int x2, int y2) {
-        return deg(vector1.x, vector1.y, x2, y2);
+    public static float angleBetweenDeg(Vec2i vector1, int x2, int y2) {
+        return angleBetweenDeg(vector1.x, vector1.y, x2, y2);
     }
 
-    public static float deg(int x1, int y1, Vec2i vector2) {
-        return deg(x1, y1, vector2.x, vector2.y);
+    public static float angleBetweenDeg(int x1, int y1, Vec2i vector2) {
+        return angleBetweenDeg(x1, y1, vector2.x, vector2.y);
     }
 
-    public static float deg(Vec2i vector1, Vec2i vector2) {
-        return deg(vector1.x, vector1.y, vector2.x, vector2.y);
+    public static float angleBetweenDeg(Vec2i vector1, Vec2i vector2) {
+        return angleBetweenDeg(vector1.x, vector1.y, vector2.x, vector2.y);
     }
 
-    public float deg(int x, int y) {
-        return deg(this, x, y);
+    public float angleBetweenDeg(int x, int y) {
+        return angleBetweenDeg(this, x, y);
     }
 
-    public float deg(Vec2i vector) {
-        return deg(this, vector);
+    public float angleBetweenDeg(Vec2i vector) {
+        return angleBetweenDeg(this, vector);
     }
 
 

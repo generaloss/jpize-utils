@@ -746,53 +746,84 @@ public class Vec2d {
     }
 
 
-    public static double rad(double x1, double y1, double x2, double y2) {
-        final double cos = dot(x1, y1, x2, y2) / (len(x1, y1) * len(x2, y2));
+    public static double angleRad(double x, double y) {
+        double angle = Math.atan2(y, x);
+        if(angle < 0D)
+            angle += 360D;
+        return angle;
+    }
+
+    public static double angleRad(Vec2d vector) {
+        return angleRad(vector.x, vector.y);
+    }
+
+    public static double angleDeg(double x, double y) {
+        return angleRad(x, y) * Maths.toDeg;
+    }
+
+    public static double angleDeg(Vec2d vector) {
+        return angleDeg(vector.x, vector.y);
+    }
+
+    public double angleRad() {
+        return angleRad(this);
+    }
+
+    public double angleDeg() {
+        return angleDeg(this);
+    }
+
+
+    public static double angleBetweenRad(double x1, double y1, double x2, double y2) {
+        final double lengthProduct = len(x1, y1) * len(x2, y2);
+        if(lengthProduct == 0D)
+            return 0D;
+        final double cos = dot(x1, y1, x2, y2) / lengthProduct;
         return Math.acos(Maths.clamp(cos, -1D, 1D));
     }
 
-    public static double rad(Vec2d vector1, double x2, double y2) {
-        return rad(vector1.x, vector1.y, x2, y2);
+    public static double angleBetweenRad(Vec2d vector1, double x2, double y2) {
+        return angleBetweenRad(vector1.x, vector1.y, x2, y2);
     }
 
-    public static double rad(double x1, double y1, Vec2d vector2) {
-        return rad(x1, y1, vector2.x, vector2.y);
+    public static double angleBetweenRad(double x1, double y1, Vec2d vector2) {
+        return angleBetweenRad(x1, y1, vector2.x, vector2.y);
     }
 
-    public static double rad(Vec2d vector1, Vec2d vector2) {
-        return rad(vector1.x, vector1.y, vector2.x, vector2.y);
+    public static double angleBetweenRad(Vec2d vector1, Vec2d vector2) {
+        return angleBetweenRad(vector1.x, vector1.y, vector2.x, vector2.y);
     }
 
-    public double rad(double x, double y) {
-        return rad(this, x, y);
+    public double angleBetweenRad(double x, double y) {
+        return angleBetweenRad(this, x, y);
     }
 
-    public double rad(Vec2d vector) {
-        return rad(this, vector);
+    public double angleBetweenRad(Vec2d vector) {
+        return angleBetweenRad(this, vector);
     }
 
-    public static double deg(double x1, double y1, double x2, double y2) {
-        return rad(x1, y1, x2, y2) * Maths.toDeg;
+    public static double angleBetweenDeg(double x1, double y1, double x2, double y2) {
+        return angleBetweenRad(x1, y1, x2, y2) * Maths.toDeg;
     }
 
-    public static double deg(Vec2d vector1, double x2, double y2) {
-        return deg(vector1.x, vector1.y, x2, y2);
+    public static double angleBetweenDeg(Vec2d vector1, double x2, double y2) {
+        return angleBetweenDeg(vector1.x, vector1.y, x2, y2);
     }
 
-    public static double deg(double x1, double y1, Vec2d vector2) {
-        return deg(x1, y1, vector2.x, vector2.y);
+    public static double angleBetweenDeg(double x1, double y1, Vec2d vector2) {
+        return angleBetweenDeg(x1, y1, vector2.x, vector2.y);
     }
 
-    public static double deg(Vec2d vector1, Vec2d vector2) {
-        return deg(vector1.x, vector1.y, vector2.x, vector2.y);
+    public static double angleBetweenDeg(Vec2d vector1, Vec2d vector2) {
+        return angleBetweenDeg(vector1.x, vector1.y, vector2.x, vector2.y);
     }
 
-    public double deg(double x, double y) {
-        return deg(this, x, y);
+    public double angleBetweenDeg(double x, double y) {
+        return angleBetweenDeg(this, x, y);
     }
 
-    public double deg(Vec2d vector) {
-        return deg(this, vector);
+    public double angleBetweenDeg(Vec2d vector) {
+        return angleBetweenDeg(this, vector);
     }
 
 

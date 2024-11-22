@@ -65,10 +65,8 @@ public class VectorClassesGenerator {
                 VECTOR_TYPES.add(new VectorType(dimensions, datatype));
 
         // create classes
-        //for(VectorType vectorType: VECTOR_TYPES)
-        //    newClass(vectorType);
-        newClass(new VectorType(2, "float"));
-        newClass(new VectorType(3, "float"));
+        for(VectorType vectorType: VECTOR_TYPES)
+            newClass(vectorType);
     }
 
 

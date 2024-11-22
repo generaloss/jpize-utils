@@ -1082,53 +1082,56 @@ public class Vec4d {
     }
 
 
-    public static double rad(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
-        final double cos = dot(x1, y1, z1, w1, x2, y2, z2, w2) / (len(x1, y1, z1, w1) * len(x2, y2, z2, w2));
+    public static double angleBetweenRad(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
+        final double lengthProduct = len(x1, y1, z1, w1) * len(x2, y2, z2, w2);
+        if(lengthProduct == 0D)
+            return 0D;
+        final double cos = dot(x1, y1, z1, w1, x2, y2, z2, w2) / lengthProduct;
         return Math.acos(Maths.clamp(cos, -1D, 1D));
     }
 
-    public static double rad(Vec4d vector1, double x2, double y2, double z2, double w2) {
-        return rad(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
+    public static double angleBetweenRad(Vec4d vector1, double x2, double y2, double z2, double w2) {
+        return angleBetweenRad(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
     }
 
-    public static double rad(double x1, double y1, double z1, double w1, Vec4d vector2) {
-        return rad(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static double angleBetweenRad(double x1, double y1, double z1, double w1, Vec4d vector2) {
+        return angleBetweenRad(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public static double rad(Vec4d vector1, Vec4d vector2) {
-        return rad(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static double angleBetweenRad(Vec4d vector1, Vec4d vector2) {
+        return angleBetweenRad(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public double rad(double x, double y, double z, double w) {
-        return rad(this, x, y, z, w);
+    public double angleBetweenRad(double x, double y, double z, double w) {
+        return angleBetweenRad(this, x, y, z, w);
     }
 
-    public double rad(Vec4d vector) {
-        return rad(this, vector);
+    public double angleBetweenRad(Vec4d vector) {
+        return angleBetweenRad(this, vector);
     }
 
-    public static double deg(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
-        return rad(x1, y1, z1, w1, x2, y2, z2, w2) * Maths.toDeg;
+    public static double angleBetweenDeg(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
+        return angleBetweenRad(x1, y1, z1, w1, x2, y2, z2, w2) * Maths.toDeg;
     }
 
-    public static double deg(Vec4d vector1, double x2, double y2, double z2, double w2) {
-        return deg(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
+    public static double angleBetweenDeg(Vec4d vector1, double x2, double y2, double z2, double w2) {
+        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
     }
 
-    public static double deg(double x1, double y1, double z1, double w1, Vec4d vector2) {
-        return deg(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static double angleBetweenDeg(double x1, double y1, double z1, double w1, Vec4d vector2) {
+        return angleBetweenDeg(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public static double deg(Vec4d vector1, Vec4d vector2) {
-        return deg(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static double angleBetweenDeg(Vec4d vector1, Vec4d vector2) {
+        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public double deg(double x, double y, double z, double w) {
-        return deg(this, x, y, z, w);
+    public double angleBetweenDeg(double x, double y, double z, double w) {
+        return angleBetweenDeg(this, x, y, z, w);
     }
 
-    public double deg(Vec4d vector) {
-        return deg(this, vector);
+    public double angleBetweenDeg(Vec4d vector) {
+        return angleBetweenDeg(this, vector);
     }
 
 

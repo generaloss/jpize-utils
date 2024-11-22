@@ -1083,53 +1083,56 @@ public class Vec4f {
     }
 
 
-    public static float rad(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
-        final float cos = dot(x1, y1, z1, w1, x2, y2, z2, w2) / (len(x1, y1, z1, w1) * len(x2, y2, z2, w2));
+    public static float angleBetweenRad(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        final float lengthProduct = len(x1, y1, z1, w1) * len(x2, y2, z2, w2);
+        if(lengthProduct == 0F)
+            return 0F;
+        final float cos = dot(x1, y1, z1, w1, x2, y2, z2, w2) / lengthProduct;
         return Mathc.acos(Maths.clamp(cos, -1F, 1F));
     }
 
-    public static float rad(Vec4f vector1, float x2, float y2, float z2, float w2) {
-        return rad(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
+    public static float angleBetweenRad(Vec4f vector1, float x2, float y2, float z2, float w2) {
+        return angleBetweenRad(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
     }
 
-    public static float rad(float x1, float y1, float z1, float w1, Vec4f vector2) {
-        return rad(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static float angleBetweenRad(float x1, float y1, float z1, float w1, Vec4f vector2) {
+        return angleBetweenRad(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public static float rad(Vec4f vector1, Vec4f vector2) {
-        return rad(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static float angleBetweenRad(Vec4f vector1, Vec4f vector2) {
+        return angleBetweenRad(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public float rad(float x, float y, float z, float w) {
-        return rad(this, x, y, z, w);
+    public float angleBetweenRad(float x, float y, float z, float w) {
+        return angleBetweenRad(this, x, y, z, w);
     }
 
-    public float rad(Vec4f vector) {
-        return rad(this, vector);
+    public float angleBetweenRad(Vec4f vector) {
+        return angleBetweenRad(this, vector);
     }
 
-    public static float deg(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
-        return rad(x1, y1, z1, w1, x2, y2, z2, w2) * Maths.toDeg;
+    public static float angleBetweenDeg(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        return angleBetweenRad(x1, y1, z1, w1, x2, y2, z2, w2) * Maths.toDeg;
     }
 
-    public static float deg(Vec4f vector1, float x2, float y2, float z2, float w2) {
-        return deg(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
+    public static float angleBetweenDeg(Vec4f vector1, float x2, float y2, float z2, float w2) {
+        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
     }
 
-    public static float deg(float x1, float y1, float z1, float w1, Vec4f vector2) {
-        return deg(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static float angleBetweenDeg(float x1, float y1, float z1, float w1, Vec4f vector2) {
+        return angleBetweenDeg(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public static float deg(Vec4f vector1, Vec4f vector2) {
-        return deg(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static float angleBetweenDeg(Vec4f vector1, Vec4f vector2) {
+        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public float deg(float x, float y, float z, float w) {
-        return deg(this, x, y, z, w);
+    public float angleBetweenDeg(float x, float y, float z, float w) {
+        return angleBetweenDeg(this, x, y, z, w);
     }
 
-    public float deg(Vec4f vector) {
-        return deg(this, vector);
+    public float angleBetweenDeg(Vec4f vector) {
+        return angleBetweenDeg(this, vector);
     }
 
 
