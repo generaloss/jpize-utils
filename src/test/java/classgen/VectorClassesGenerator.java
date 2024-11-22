@@ -7,13 +7,13 @@ import jpize.util.StringUtils;
 
 public class VectorClassesGenerator {
 
-    private static final String[] DATATYPES = {"float", "double", "int"};
+    private static final String[] DATATYPES = { "float", "double", "int" };
 
-    private static final int[] DIM_TYPES = {2, 3, 4};
+    private static final int[] DIM_TYPES = { 2, 3, 4 };
     private static final List<VectorType> VECTOR_TYPES = new ArrayList<>();
 
     private static final String CLASS_PREFIX = "Vec";
-    private static final String[] LETTERS = {"x", "y", "z", "w"};
+    private static final String[] LETTERS = { "x", "y", "z", "w" };
 
 
     private static String letter(int dimension) {
@@ -59,13 +59,16 @@ public class VectorClassesGenerator {
 
 
     public static void main(String[] args) {
+        // init all vector types
         for(int dimensions: DIM_TYPES)
             for(String datatype: DATATYPES)
                 VECTOR_TYPES.add(new VectorType(dimensions, datatype));
 
-        for(VectorType vectorType: VECTOR_TYPES)
-            newClass(vectorType);
-        // newClass(new VectorType(3, "float"));
+        // create classes
+        //for(VectorType vectorType: VECTOR_TYPES)
+        //    newClass(vectorType);
+        newClass(new VectorType(2, "float"));
+        newClass(new VectorType(3, "float"));
     }
 
 
@@ -432,45 +435,81 @@ public class VectorClassesGenerator {
     private static void addGetAngle() {
         final String datatype_l = (isDatatypeInt ? "float" : datatype);
 
-        w.addMethod("public static " + datatype_l + " rad(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "final " + datatype_l + " cos = dot(" + makeDims(dimensions, ", ", "%l1") + ", "  + makeDims(dimensions, ", ", "%l2") + ") / (len(" + makeDims(dimensions, ", ", "%l1") + ") * len(" + makeDims(dimensions, ", ", "%l2") + "));",
+        if(dimensions == 2){
+            final String radiansFuncName = "angleRad";
+            final String degreesFuncName = "angleDeg";
+
+            w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + datatype + " x, " + datatype + " y)",
+                datatype_l + " angle = Math" + (isDatatypeDouble ? "" : "c") + ".atan2(y, x);",
+                "if(angle < 0" + numberPostfix + ")",
+                "    angle += 360" + numberPostfix + ";",
+                "return angle;"
+            );
+            w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + classname + " vector)",
+                    "return " + radiansFuncName + "(vector.x, vector.y);"
+            );
+            w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + datatype + " x, " + datatype + " y)",
+                "return " + radiansFuncName + "(x, y) * Maths.toDeg;"
+            );
+            w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + classname + " vector)",
+                    "return " + degreesFuncName + "(vector.x, vector.y);"
+            );
+
+            w.addMethod("public " + datatype_l + " " + radiansFuncName + "()",
+                    "return " + radiansFuncName + "(this);"
+            );
+            w.addMethod("public " + datatype_l + " " + degreesFuncName + "()",
+                    "return " + degreesFuncName + "(this);"
+            );
+
+            w.addMethodSplitter();
+        }
+
+        final String radiansFuncName = "angleBetweenRad";
+        final String degreesFuncName = "angleBetweenDeg";
+
+        w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "final " + datatype_l + " lengthProduct = len(" + makeDims(dimensions, ", ", "%l1") + ") * len(" + makeDims(dimensions, ", ", "%l2") + ");",
+            "if(lengthProduct == 0" + numberPostfix + ")",
+            "    return 0" + numberPostfix + ";",
+            "final " + datatype_l + " cos = dot(" + makeDims(dimensions, ", ", "%l1") + ", "  + makeDims(dimensions, ", ", "%l2") + ") / lengthProduct;",
             "return Math" + (isDatatypeDouble ? "" : "c") + ".acos(Maths.clamp(cos, -1" + numberPostfix + ", 1" + numberPostfix + "));"
         );
-        w.addMethod("public static " + datatype_l + " rad(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return rad(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
+        w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return " + radiansFuncName + "(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
         );
-        w.addMethod("public static " + datatype_l + " rad(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
-            "return rad(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+        w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
+            "return " + radiansFuncName + "(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
         );
-        w.addMethod("public static " + datatype_l + " rad(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return rad(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
-        );
-
-        w.addMethod("public " + datatype_l + " rad(" + makeDims(dimensions, ", ", datatype + " %l") + ")",
-            "return rad(this, " + makeDims(dimensions, ", ", "%l") + ");"
-        );
-        w.addMethod("public " + datatype_l + " rad(" + classname + " " + varname + ")",
-            "return rad(this, " + varname + ");"
+        w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
+            "return " + radiansFuncName + "(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
         );
 
-        w.addMethod("public static " + datatype_l + " deg(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return rad(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + ") * Maths.toDeg;"
+        w.addMethod("public " + datatype_l + " " + radiansFuncName + "(" + makeDims(dimensions, ", ", datatype + " %l") + ")",
+            "return " + radiansFuncName + "(this, " + makeDims(dimensions, ", ", "%l") + ");"
         );
-        w.addMethod("public static " + datatype_l + " deg(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return deg(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
-        );
-        w.addMethod("public static " + datatype_l + " deg(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
-            "return deg(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
-        );
-        w.addMethod("public static " + datatype_l + " deg(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
-            "return deg(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+        w.addMethod("public " + datatype_l + " " + radiansFuncName + "(" + classname + " " + varname + ")",
+            "return " + radiansFuncName + "(this, " + varname + ");"
         );
 
-        w.addMethod("public " + datatype_l + " deg(" + makeDims(dimensions, ", ", datatype + " %l") + ")",
-            "return deg(this, " + makeDims(dimensions, ", ", "%l") + ");"
+        w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return " + radiansFuncName + "(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + ") * Maths.toDeg;"
         );
-        w.addMethod("public " + datatype_l + " deg(" + classname + " " + varname + ")",
-            "return deg(this, " + varname + ");"
+        w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return " + degreesFuncName + "(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"
+        );
+        w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + classname + " " + varname + "2)",
+            "return " + degreesFuncName + "(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+        );
+        w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + classname + " " + varname + "1, " + classname + " " + varname + "2)",
+            "return " + degreesFuncName + "(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", varname + "2.%l") + ");"
+        );
+
+        w.addMethod("public " + datatype_l + " " + degreesFuncName + "(" + makeDims(dimensions, ", ", datatype + " %l") + ")",
+            "return " + degreesFuncName + "(this, " + makeDims(dimensions, ", ", "%l") + ");"
+        );
+        w.addMethod("public " + datatype_l + " " + degreesFuncName + "(" + classname + " " + varname + ")",
+            "return " + degreesFuncName + "(this, " + varname + ");"
         );
 
         w.addMethodSplitter();

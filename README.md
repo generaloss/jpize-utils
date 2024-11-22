@@ -1,31 +1,11 @@
 # [Utility Module](https://github.com/generaloss/jpize-utils)
 ![logo](logo.svg)
 
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.generaloss/jpize-utils.svg)](https://mvnrepository.com/artifact/io.github.generaloss/jpize-utils)
+
 ---
 
 ## Getting Started
-
-### Maven
-```xml
-<!-- jpize-utils -->
-<dependency>
-    <groupId>io.github.generaloss</groupId>
-    <artifactId>jpize-utils</artifactId>
-    <version>24.11.1</version>
-</dependency>
-```
-### Gradle (Kotlin)
-```kotlin
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation("io.github.generaloss:jpize-utils:24.11.1")
-}
-```
-
----
 
 ## [Resource](src/main/java/jpize/util/res) Concept
 

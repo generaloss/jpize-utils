@@ -51,7 +51,7 @@ public class ExternalResource extends Resource {
         return file.mkdirs();
     }
 
-    /** Creates a directories and file */
+    /** Creates all directories and file */
     public boolean mkAll() {
         final File parent = file.getParentFile();
         if(parent != null){
@@ -100,21 +100,25 @@ public class ExternalResource extends Resource {
 
 
     public String[] list() {
-        return file.list();
+        final String[] list = file.list();
+        if(list == null)
+            return new String[0];
+        return list;
     }
 
     public String[] list(FilenameFilter filter) {
-        return file.list(filter);
+        final String[] list = file.list(filter);
+        if(list == null)
+            return new String[0];
+        return list;
     }
 
     public ExternalResource[] listRes() {
-        final String[] paths = file.list();
-        if(paths == null)
-            return new ExternalResource[0];
+        final String[] list = this.list();
 
-        final ExternalResource[] resources = new ExternalResource[paths.length];
-        for(int i = 0; i < paths.length; i++)
-            resources[i] = this.child(paths[i]);
+        final ExternalResource[] resources = new ExternalResource[list.length];
+        for(int i = 0; i < list.length; i++)
+            resources[i] = this.child(list[i]);
 
         return resources;
     }
