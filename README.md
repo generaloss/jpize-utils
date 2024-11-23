@@ -53,7 +53,7 @@ UrlResource res = Resource.url(stringUrl);
 Examples:
 ```java
 // info
-FileResource res = Resource.internal("images/cat.jpg");
+FileResource res = Resource.internal("/images/cat.jpg");
 
 res.name();         // 'cat.jpg'
 res.simpleName();   // 'cat'
@@ -63,7 +63,7 @@ res.absolutePath(); // '{...}/images/cat.jpg'
 ```
 ```java
 // read
-Resource res = Resource.internal("text/example.txt");
+Resource res = Resource.internal("/text/example.txt");
 
 String text        = res.readString();
 byte[] bytes       = res.readBytes();
