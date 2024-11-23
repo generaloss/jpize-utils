@@ -65,10 +65,10 @@ res.absolutePath(); // '{...}/images/cat.jpg'
 // read
 Resource res = Resource.internal("/text/example.txt");
 
-String text        = res.readString();
-byte[] bytes       = res.readBytes();
-ByteBuffer buffer  = res.readByteBuffer();
-List<String> lines = res.readLines();
+String text       = res.readString();
+byte[] bytes      = res.readBytes();
+ByteBuffer buffer = res.readByteBuffer();
+StringList lines  = res.readLines();
 
 // input
 FastReader reader        = res.reader();
@@ -175,20 +175,20 @@ int[] arr = list.array();        // [347, 0, 0, 0, 0]
 int[] arr = list.arrayTrimmed(); // [347]
 ```
 ```java
-// number value operations
+// number element operations
 FloatList list = new FloatList(54f);
-int val = list.valAdd(0, 2).get(0); // 56.0
-int val = list.valSub(0, 2).get(0); // 52.0
-int val = list.valMul(0, 2).get(0); // 108.0
-int val = list.valDiv(0, 2).get(0); // 27.0
+int val = list.elementAdd(0, 2).get(0); // 56.0
+int val = list.elementSub(0, 2).get(0); // 52.0
+int val = list.elementMul(0, 2).get(0); // 108.0
+int val = list.elementDiv(0, 2).get(0); // 27.0
 ```
 ```java
-// string value operations
+// string element operations
 StringList list = new StringList(" Hello, World!");
-String val = list.valReplace(0, ", World", "").get(0); // ' Hello!'
-String val = list.valToUpperCase(0).get(0);            // ' HELLO, WORLD!'
-String val = list.valToLowerCase(0).get(0);            // ' hello, world!'
-String val = list.valTrim(0).get(0);                   // 'Hello, World!'
+String val = list.elementReplace(0, ", World", "").get(0); // ' Hello!'
+String val = list.elementToUpperCase(0).get(0);            // ' HELLO, WORLD!'
+String val = list.elementToLowerCase(0).get(0);            // ' hello, world!'
+String val = list.elementTrim(0).get(0);                   // 'Hello, World!'
 ```
 ```java
 // copy
@@ -236,7 +236,7 @@ Honorable mention:
 
 Encrypted TCP connection example:
 ``` java
-KeyAes key = new KeyAes(128); // generate key for connection encoding
+KeyAES key = new KeyAES(128); // generate key for connection encoding
 
 // server
 TcpServer server = new TcpServer();
