@@ -17,7 +17,7 @@ The [*Resource*](src/main/java/jpize/util/res/Resource.java) class provides acce
 ---
 The [*InternalResource*](src/main/java/jpize/util/res/InternalResource.java) class can only read files (because they can only be placed in the resource folder in the project or in the .jar archive root).
 
-```java
+``` java
 // Internal Resource loading methods:
 InternalResource res = Resource.internal(filepathStr);
 InternalResource res = Resource.internal(file);
@@ -33,7 +33,7 @@ The [*ExternalResource*](src/main/java/jpize/util/res/ExternalResource.java) cla
 * create and delete files and folders
 * list resources in folder
 
-```java
+``` java
 // External Resource loading methods:
 ExternalResource res = Resource.external(filepathStr);
 ExternalResource res = Resource.external(file);
@@ -42,7 +42,7 @@ ExternalResource res = Resource.external(parentFile, childStr);
 
 The [*UrlResource*](src/main/java/jpize/util/res/UrlResource.java) class can download data
 
-```java
+``` java
 // Url Resource loading methods:
 UrlResource res = Resource.url(url);
 UrlResource res = Resource.url(stringUrl);
@@ -51,7 +51,7 @@ UrlResource res = Resource.url(stringUrl);
 ---
 
 Examples:
-```java
+``` java
 // info
 FileResource res = Resource.internal("/images/cat.jpg");
 
@@ -61,7 +61,7 @@ res.extension();    // 'jpg'
 res.path();         // 'images/cat.jpg'
 res.absolutePath(); // '{...}/images/cat.jpg'
 ```
-```java
+``` java
 // read
 Resource res = Resource.internal("/text/example.txt");
 
@@ -75,7 +75,7 @@ FastReader reader        = res.reader();
 InputStream inStream     = res.inStream();
 ExtDataInputStream input = res.extDataInput();
 ```
-```java
+``` java
 // external
 ExternalResource res = Resource.external(".../external_file.txt");
 
@@ -96,7 +96,7 @@ String[] list   = res.list(filenameFilter);
 Resource[] list = res.listRes();
 Resource[] list = res.listRes(filenameFilter);
 ```
-```java
+``` java
 // url
 UrlResource res = Resource.internal("https://icanhazip.com");
 
@@ -123,7 +123,7 @@ The *List-Classes* are designed to quickly work with primitive arrays:
 * *StringList, ObjectList*
 
 Examples:
-```java
+``` java
 // base constructors
 new IntList();                    // with default capacity (10)
 new IntList(1, 2, 3, 4, 5, 6, 7); // from array or varargs
@@ -131,7 +131,7 @@ new IntList(new List<Integer>()); // from any iterable or collection
 new IntList(new List<String>(), str -> Integer.parseInt(str)); // with function
 new IntList(IntBuffer.wrap(1, 2, 3)); // from buffer
 ```
-```java
+``` java
 // base operations
 fill()
 clear()
@@ -142,7 +142,7 @@ addAll()   // add arrays, lists, iterables, collections, buffers with functions
 isEmpty()    // size == 0
 isNotEmpty() // size != 0
 ```
-```java
+``` java
 // remove
 IntList list = new IntList(1, 3, 5, 10, 5, 3, 1);
 list.remove(1, 3);     // [1,           5, 3, 1]
@@ -150,7 +150,7 @@ list.remove(6);        // [1, 3, 5, 10, 5, 3   ]
 list.removeFirst(3);   // [1,    5, 10, 5, 3, 1]
 list.removeLast(3);    // [1, 3, 5, 10, 5,    1]
 ```
-```java
+``` java
 // search
 IntList list = new IntList(1, 1, 4, 4, 12, 12, 7);
 list.contains(12); // true
@@ -159,14 +159,14 @@ list.lastIndexOf(4); // 3
 list.indexOfRange(4, 1, 6); // 2
 list.lastIndexOfRange(4, 1, 6); // 3
 ```
-```java
+``` java
 // trim
 IntList list = new IntList(5).add(347);
 list.array(); // [347, 0, 0, 0, 0]
 list.trim().array(); // [347]
 list.toString(); // '[347]'
 ```
-```java
+``` java
 // array
 IntList list = new IntList(5).add(347);
 int capacity = list.capacity();  // 5
@@ -174,7 +174,7 @@ int size = list.size();          // 1
 int[] arr = list.array();        // [347, 0, 0, 0, 0]
 int[] arr = list.arrayTrimmed(); // [347]
 ```
-```java
+``` java
 // number element operations
 FloatList list = new FloatList(54f);
 int val = list.elementAdd(0, 2).get(0); // 56.0
@@ -182,7 +182,7 @@ int val = list.elementSub(0, 2).get(0); // 52.0
 int val = list.elementMul(0, 2).get(0); // 108.0
 int val = list.elementDiv(0, 2).get(0); // 27.0
 ```
-```java
+``` java
 // string element operations
 StringList list = new StringList(" Hello, World!");
 String val = list.elementReplace(0, ", World", "").get(0); // ' Hello!'
@@ -190,7 +190,7 @@ String val = list.elementToUpperCase(0).get(0);            // ' HELLO, WORLD!'
 String val = list.elementToLowerCase(0).get(0);            // ' hello, world!'
 String val = list.elementTrim(0).get(0);                   // 'Hello, World!'
 ```
-```java
+``` java
 // copy
 BoolList list = new BoolList(true, false);
 
