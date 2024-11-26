@@ -77,8 +77,11 @@ public class ResTests {
     @Test
     public void zipTest1() throws IOException {
         final ZipFile file = new ZipFile("./src/test/resources/test.zip");
-        final ZipEntryResource res = Resource.zipEntry(file)[1];
-        System.out.println(res.name());
+        final ZipEntryResource[] resources = Resource.zipEntry(file);
+        Assert.assertEquals(4, resources.length);
+        Assert.assertTrue(resources[0].isDir());
+        Assert.assertTrue(resources[1].isFile());
+        Assert.assertEquals("dirt.json", resources[1].name());
     }
 
 }

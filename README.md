@@ -19,13 +19,11 @@ The [*InternalResource*](src/main/java/jpize/util/res/InternalResource.java) cla
 
 ``` java
 // Internal Resource loading methods:
-InternalResource res = Resource.internal(filepathStr);
-InternalResource res = Resource.internal(file);
-InternalResource res = Resource.internal(parentFile, childStr);
-// With class loader:
-InternalResource res = Resource.internal(filepathStr, classLoader);
-InternalResource res = Resource.internal(file, classLoader);
-InternalResource res = Resource.internal(parentFile, childStr, classLoader);
+InternalResource res = Resource.internal(path);
+InternalResource res = Resource.internal(classLoader, path);
+
+InternalResource[] resources = Resource.internal(paths);
+InternalResource[] resources = Resource.internal(classLoader, paths);
 ```
 
 The [*ExternalResource*](src/main/java/jpize/util/res/ExternalResource.java) class has additional options:
@@ -35,9 +33,12 @@ The [*ExternalResource*](src/main/java/jpize/util/res/ExternalResource.java) cla
 
 ``` java
 // External Resource loading methods:
-ExternalResource res = Resource.external(filepathStr);
+ExternalResource res = Resource.external(filepath);
 ExternalResource res = Resource.external(file);
-ExternalResource res = Resource.external(parentFile, childStr);
+ExternalResource res = Resource.external(parentFile, childString);
+
+ExternalResource[] resources = Resource.external(filepaths);
+ExternalResource[] resources = Resource.external(files);
 ```
 
 The [*UrlResource*](src/main/java/jpize/util/res/UrlResource.java) class can download data
@@ -45,7 +46,17 @@ The [*UrlResource*](src/main/java/jpize/util/res/UrlResource.java) class can dow
 ``` java
 // Url Resource loading methods:
 UrlResource res = Resource.url(url);
-UrlResource res = Resource.url(stringUrl);
+UrlResource res = Resource.url(urlString);
+
+UrlResource[] resources = Resource.url(urls);
+UrlResource[] resources = Resource.url(urlsString);
+```
+
+The [*ZipEntryResource*](src/main/java/jpize/util/res/ZipEntryResource.java) class can download data
+``` java
+// ZipEntry Resource loading methods:
+ZipEntryResource res = Resource.zipEntry(zipFile, zipEntry);
+ZipEntryResource[] resources = Resource.zipEntry(zipFile);
 ```
 
 ---

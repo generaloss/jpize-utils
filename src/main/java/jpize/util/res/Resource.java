@@ -31,6 +31,10 @@ public abstract class Resource {
         return this instanceof InternalResource;
     }
 
+    public boolean isZipEntry() {
+        return this instanceof ZipEntryResource;
+    }
+
     public ExternalResource asExternal() {
         return (ExternalResource) this;
     }
@@ -41,6 +45,10 @@ public abstract class Resource {
 
     public UrlResource asUrl() {
         return (UrlResource) this;
+    }
+
+    public ZipEntryResource asZipEntry() {
+        return (ZipEntryResource) this;
     }
 
 
@@ -160,45 +168,45 @@ public abstract class Resource {
     }
 
 
-    public static ExternalResource[] external(String... filepath) {
-        final ExternalResource[] arr = new ExternalResource[filepath.length];
+    public static ExternalResource[] external(String... filepaths) {
+        final ExternalResource[] arr = new ExternalResource[filepaths.length];
         for(int i = 0; i < arr.length; i++)
-            arr[i] = external(filepath[i]);
+            arr[i] = external(filepaths[i]);
         return arr;
     }
 
-    public static ExternalResource[] external(File... file) {
-        final ExternalResource[] arr = new ExternalResource[file.length];
+    public static ExternalResource[] external(File... files) {
+        final ExternalResource[] arr = new ExternalResource[files.length];
         for(int i = 0; i < arr.length; i++)
-            arr[i] = external(file[i]);
+            arr[i] = external(files[i]);
         return arr;
     }
 
-    public static InternalResource[] internal(String... name) {
-        final InternalResource[] arr = new InternalResource[name.length];
+    public static InternalResource[] internal(String... paths) {
+        final InternalResource[] arr = new InternalResource[paths.length];
         for(int i = 0; i < arr.length; i++)
-            arr[i] = internal(name[i]);
+            arr[i] = internal(paths[i]);
         return arr;
     }
 
-    public static InternalResource[] internal(Class<?> classLoader, String... name) {
-        final InternalResource[] arr = new InternalResource[name.length];
+    public static InternalResource[] internal(Class<?> classLoader, String... paths) {
+        final InternalResource[] arr = new InternalResource[paths.length];
         for(int i = 0; i < arr.length; i++)
-            arr[i] = internal(classLoader, name[i]);
+            arr[i] = internal(classLoader, paths[i]);
         return arr;
     }
 
-    public static UrlResource[] url(URL... url) {
-        final UrlResource[] arr = new UrlResource[url.length];
+    public static UrlResource[] url(URL... urls) {
+        final UrlResource[] arr = new UrlResource[urls.length];
         for(int i = 0; i < arr.length; i++)
-            arr[i] = url(url[i]);
+            arr[i] = url(urls[i]);
         return arr;
     }
 
-    public static UrlResource[] url(String... url) {
-        final UrlResource[] arr = new UrlResource[url.length];
+    public static UrlResource[] url(String... urls) {
+        final UrlResource[] arr = new UrlResource[urls.length];
         for(int i = 0; i < arr.length; i++)
-            arr[i] = url(url[i]);
+            arr[i] = url(urls[i]);
         return arr;
     }
 
