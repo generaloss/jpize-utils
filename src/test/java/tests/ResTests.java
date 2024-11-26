@@ -1,10 +1,7 @@
 package tests;
 
 import jpize.util.array.StringList;
-import jpize.util.res.ExternalResource;
-import jpize.util.res.InternalResource;
-import jpize.util.res.Resource;
-import jpize.util.res.UrlResource;
+import jpize.util.res.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,6 +9,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.zip.ZipFile;
 
 public class ResTests {
 
@@ -74,6 +72,13 @@ public class ResTests {
         final UrlResource res = Resource.url("http://212.183.159.230/10MB.zip");
         Assert.assertTrue(res.exists());
         Assert.assertEquals(-1950134781, res.readString().hashCode());
+    }
+
+    @Test
+    public void zipTest1() throws IOException {
+        final ZipFile file = new ZipFile("./src/test/resources/test.zip");
+        final ZipEntryResource res = Resource.zipEntry(file)[1];
+        System.out.println(res.name());
     }
 
 }

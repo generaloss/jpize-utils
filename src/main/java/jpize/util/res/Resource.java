@@ -10,6 +10,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public abstract class Resource {
 
@@ -152,6 +155,11 @@ public abstract class Resource {
     }
 
 
+    public static ZipEntryResource zipEntry(ZipFile zipFile, ZipEntry entry) {
+        return new ZipEntryResource(zipFile, entry);
+    }
+
+
     public static ExternalResource[] external(String... filepath) {
         final ExternalResource[] arr = new ExternalResource[filepath.length];
         for(int i = 0; i < arr.length; i++)
@@ -191,6 +199,14 @@ public abstract class Resource {
         final UrlResource[] arr = new UrlResource[url.length];
         for(int i = 0; i < arr.length; i++)
             arr[i] = url(url[i]);
+        return arr;
+    }
+
+    public static ZipEntryResource[] zipEntry(ZipFile zipFile) {
+        final ZipEntryResource[] arr = new ZipEntryResource[zipFile.size()];
+        final Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        for(int i = 0; entries.hasMoreElements(); i++)
+            arr[i] = zipEntry(zipFile, entries.nextElement());
         return arr;
     }
 
