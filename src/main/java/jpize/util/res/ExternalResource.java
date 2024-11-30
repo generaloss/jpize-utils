@@ -113,7 +113,7 @@ public class ExternalResource extends Resource {
         return list;
     }
 
-    public ExternalResource[] listRes() {
+    public ExternalResource[] listResources() {
         final String[] list = this.list();
 
         final ExternalResource[] resources = new ExternalResource[list.length];
@@ -123,8 +123,8 @@ public class ExternalResource extends Resource {
         return resources;
     }
 
-    public ExternalResource[] listRes(FilenameFilter filter) {
-        final ExternalResource[] resources = this.listRes();
+    public ExternalResource[] listResources(FilenameFilter filter) {
+        final ExternalResource[] resources = this.listResources();
         final List<ExternalResource> filteredResources = new ArrayList<>();
 
         for(ExternalResource resource: resources)

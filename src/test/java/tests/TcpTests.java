@@ -26,12 +26,12 @@ public class TcpTests {
         final int reconnectsNum = 7;
         final AtomicInteger counter = new AtomicInteger();
         new TcpServer()
-                .run(5408)
+                .run(65000)
                 .setOnConnect((connection) -> counter.incrementAndGet())
                 .setOnDisconnect((connection) -> counter.incrementAndGet());
         final TcpClient client = new TcpClient();
         for (int i = 0; i < reconnectsNum; i++)
-            client.connect("localhost", 5408).disconnect();
+            client.connect("localhost", 65000).disconnect();
         TimeUtils.delayMillis(5000);
         TimeUtils.waitFor(() -> counter.get() == reconnectsNum * 2, 500, () -> Assert.fail(counter.get() + " / " + (reconnectsNum * 2)));
     }

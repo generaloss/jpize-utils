@@ -5,8 +5,8 @@ import java.io.InputStream;
 
 public class InternalResource extends Resource {
 
-    private final String path;
-    private final Class<?> classLoader;
+    protected final String path;
+    protected final Class<?> classLoader;
 
     protected InternalResource(Class<?> classLoader, String path) {
         this.classLoader = classLoader;

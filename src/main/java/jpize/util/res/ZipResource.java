@@ -9,16 +9,12 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class ZipEntryResource extends Resource {
+public class ZipResource extends Resource {
 
     protected final ZipFile file;
     protected final ZipEntry entry;
 
-    private List<ZipEntry> entryList;
-    private String[] stringList;
-    private ZipEntryResource[] resourceList;
-
-    protected ZipEntryResource(ZipFile file, ZipEntry entry) {
+    protected ZipResource(ZipFile file, ZipEntry entry) {
         this.file = file;
         this.entry = entry;
     }
@@ -41,10 +37,11 @@ public class ZipEntryResource extends Resource {
     }
 
 
-    private void cacheList() {
-        if(entryList != null)
-            return;
-        entryList = new ArrayList<>();
+    private List<ZipEntry> listEntries() {
+        if(this.isFile())
+            throw new IllegalStateException("File cannot be listed.");
+
+        final List<ZipEntry> entryList = new ArrayList<>();
         final Enumeration<? extends ZipEntry> entries = file.entries();
 
         while(entries.hasMoreElements()) {
@@ -55,39 +52,34 @@ public class ZipEntryResource extends Resource {
                 entryList.add(entry);
         }
 
-        if(stringList != null)
-            return;
-        stringList = new String[entryList.size()];
-        for(int i = 0; i < stringList.length; i++)
-            stringList[i] = entryList.get(i).getName();
-    }
-
-    private void cacheResourceList() {
-        if(resourceList != null)
-            return;
-        this.cacheList();
-        resourceList = new ZipEntryResource[entryList.size()];
-        for(int i = 0; i < resourceList.length; i++)
-            resourceList[i] = new ZipEntryResource(file, entryList.get(i));
+        return entryList;
     }
 
     public String[] list() {
-        if(this.isFile())
-            throw new IllegalStateException("File cannot be listed.");
-        this.cacheList();
-        return stringList;
+        final List<ZipEntry> entries = this.listEntries();
+
+        final String[] array = new String[entries.size()];
+        for(int i = 0; i < array.length; i++)
+            array[i] = entries.get(i).getName();
+
+        return array;
     }
 
-    public ZipEntryResource[] listRes() {
-        this.cacheResourceList();
-        return resourceList;
+    public ZipResource[] listResources() {
+        final List<ZipEntry> entries = this.listEntries();
+
+        final ZipResource[] array = new ZipResource[entries.size()];
+        for(int i = 0; i < array.length; i++)
+            array[i] = new ZipResource(file, entries.get(i));
+
+        return array;
     }
 
 
     public String name() {
+        String name = entry.getName();
         if(this.isDir())
-            return entry.getName();
-        final String name = entry.getName();
+            name = name.substring(0, name.length() - 1);
         return name.substring(name.lastIndexOf('/') + 1);
     }
 

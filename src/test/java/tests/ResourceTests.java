@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
-public class ResTests {
+public class ResourceTests {
 
     private File folder;
     private File file;
@@ -69,18 +69,19 @@ public class ResTests {
 
     @Test
     public void urlTest1() {
-        final UrlResource res = Resource.url("http://212.183.159.230/10MB.zip");
+        final UrlResource res = Resource.url("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
         Assert.assertTrue(res.exists());
-        Assert.assertEquals(-1950134781, res.readString().hashCode());
+        Assert.assertEquals(-250076188, res.readString().hashCode());
     }
 
     @Test
     public void zipTest1() throws IOException {
         final ZipFile file = new ZipFile("./src/test/resources/test.zip");
-        final ZipEntryResource[] resources = Resource.zipEntry(file);
+        final ZipResource[] resources = Resource.zip(file);
         Assert.assertEquals(4, resources.length);
         Assert.assertTrue(resources[0].isDir());
         Assert.assertTrue(resources[1].isFile());
+        Assert.assertEquals("blocks", resources[0].name());
         Assert.assertEquals("dirt.json", resources[1].name());
     }
 

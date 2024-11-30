@@ -18,7 +18,7 @@ The [*Resource*](src/main/java/jpize/util/res/Resource.java) class provides acce
 The [*InternalResource*](src/main/java/jpize/util/res/InternalResource.java) class can only read files (because they can only be placed in the resource folder in the project or in the .jar archive root).
 
 ``` java
-// Internal Resource loading methods:
+// Internal Resource creating methods:
 InternalResource res = Resource.internal(path);
 InternalResource res = Resource.internal(classLoader, path);
 
@@ -32,7 +32,7 @@ The [*ExternalResource*](src/main/java/jpize/util/res/ExternalResource.java) cla
 * list resources in folder
 
 ``` java
-// External Resource loading methods:
+// External Resource creating methods:
 ExternalResource res = Resource.external(filepath);
 ExternalResource res = Resource.external(file);
 ExternalResource res = Resource.external(parentFile, childString);
@@ -44,7 +44,7 @@ ExternalResource[] resources = Resource.external(files);
 The [*UrlResource*](src/main/java/jpize/util/res/UrlResource.java) class can download data
 
 ``` java
-// Url Resource loading methods:
+// URL Resource creating methods:
 UrlResource res = Resource.url(url);
 UrlResource res = Resource.url(urlString);
 
@@ -52,11 +52,11 @@ UrlResource[] resources = Resource.url(urls);
 UrlResource[] resources = Resource.url(urlsString);
 ```
 
-The [*ZipEntryResource*](src/main/java/jpize/util/res/ZipEntryResource.java) class can download data
+The [*ZipResource*](src/main/java/jpize/util/res/ZipResource.java) class can download data
 ``` java
-// ZipEntry Resource loading methods:
-ZipEntryResource res = Resource.zipEntry(zipFile, zipEntry);
-ZipEntryResource[] resources = Resource.zipEntry(zipFile);
+// ZIP Resource creating methods:
+ZipResource res = Resource.zip(zipFile, zipEntry);
+ZipResource[] resources = Resource.zip(zipFile);
 ```
 
 ---
@@ -64,7 +64,7 @@ ZipEntryResource[] resources = Resource.zipEntry(zipFile);
 Examples:
 ``` java
 // info
-FileResource res = Resource.internal("/images/cat.jpg");
+Resource res = Resource.internal("/images/cat.jpg");
 
 res.name();         // 'cat.jpg'
 res.simpleName();   // 'cat'
@@ -102,10 +102,10 @@ ExtDataOutputStream output = res.extDataOutput();
 // list folder
 ExternalResource res = Resource.external(System.getProperty("home.user")); // home folder
 
-String[] list   = res.list();
-String[] list   = res.list(filenameFilter);
-Resource[] list = res.listRes();
-Resource[] list = res.listRes(filenameFilter);
+String[] list = res.list();
+String[] list = res.list(filenameFilter);
+ExternalResource[] list = res.listResources();
+ExternalResource[] list = res.listResources(filenameFilter);
 ```
 ``` java
 // url
@@ -115,13 +115,32 @@ URL url = res.url();
 String protocol = res.protocol(); // 'https'
 String host = res.host();         // 'icanhazip.com'
 ```
+``` java
+// zip
+ZipFile zipFile = new ZipFile("archive.zip");
+ZipEntry zipEntry = zipFile.getEntry("dir/");
+
+ZipResource res = Resource.zip(zipFile, zipEntry);
+
+ZipFile zipFile     = res.file();
+ZipEntry zipEntry   = res.entry();
+String path         = res.path();   // "dir/"
+String name         = res.name();   // "dir"
+boolean isDirectory = res.isDir();  // true
+boolean isFile      = res.isFile(); // false
+String[] list       = res.list();   // ["dir/file.txt", "dir/dir2/", "dir/dir2/file.txt"]
+ZipResource[] list  = res.listResources();
+
+
+
+```
 
 ## [Input/Output](src/main/java/jpize/util/io)
 
 The [*ExtDataInputStream*](src/main/java/jpize/util/io/ExtDataInputStream.java) and [*ExtDataOutputStream*](src/main/java/jpize/util/io/ExtDataOutputStream.java) classes extends *DataInputStream* and *DataOutputStream* and has read/write methods for:
 * { byte / int / short / long / float / double / *boolean* / char } ***Array, Buffer, List***
 * { bytes / chars / UTF } ***String***
-* ***Vector, EulerAngles, Color, UUID***
+* ***UUID, EulerAngles, Color, vectors***
 
 ---
 
@@ -129,7 +148,7 @@ The [*FastReader*](src/main/java/jpize/util/io/FastReader.java) class just fast 
 
 ## [Lists](src/main/java/jpize/util/array)
 
-The *List-Classes* are designed to quickly work with primitive arrays:
+The *List classes* are designed to quickly work with primitive arrays:
 * *ByteList, ShortList, IntList, LongList, FloatList, DoubleList, CharList, BoolList*
 * *StringList, ObjectList*
 
@@ -250,20 +269,20 @@ Encrypted TCP connection example:
 KeyAES key = new KeyAES(128); // generate key for connection encoding
 
 // server
-TcpServer server = new TcpServer();
-server.setOnReceive((sender, bytes) -> {
-    System.out.println("Received: " + new String(bytes)); 
-});
-server.setOnConnect((connection) -> {
-    connection.encode(key);
-});
-server.run(8080);
+TcpServer server = new TcpServer()
+    .setOnReceive((sender, bytes) -> {
+        System.out.println("Received: " + new String(bytes)); 
+    })
+    .setOnConnect((connection) -> {
+        connection.encode(key);
+    })
+    .run(65000);
 
 // client
-TcpClient client = new TcpClient();
-client.connect("localhost", 8080);
-client.encode(key);
-client.send("Hello, World!".getBytes());
+TcpClient client = new TcpClient()
+    .connect("localhost", 65000)
+    .encode(key)
+    .send("Hello, World!".getBytes());
 ```
 
 Packets example:
@@ -276,30 +295,32 @@ PacketDispatcher packetDispatcher = new PacketDispatcher()
 
 // create server and set receiver
 new TcpServer()
-    .run(22854)
     .setOnReceive((sender, bytes) -> {
         packetDispatcher.readPacket(bytes, handler);
         packetDispatcher.handlePackets(); // invoke handleMessage()
-    });
+    })
+    .run(65000);
 
 // create client and send packet
 new TcpClient()
-    .connect("localhost", 22854)
+    .connect("localhost", 65000)
     .send(new MsgPacket("My message!"));
 
 
 // Handler for packets
 public static class MyPacketHandler implements PacketHandler {
     // create methods for each packet
-    public void handleMessage(MsgPacket packet) {
+    public void handleMessagePacket(MsgPacket packet) {
         System.out.println(packet.message);
     }
-    public void handleAnotherPacket(AnotherPacket packet) { ... }
+    public void handleAnotherPacket(AnotherPacket packet) {
+        ...
+    }
 }
 
 // Message Packet
 public static class MsgPacket extends IPacket<MyPacketHandler> { // MyPacketHandler 
-    String message;
+    public String message;
     
     public MsgPacket(String message) {
         this.message = message;
@@ -311,12 +332,12 @@ public static class MsgPacket extends IPacket<MyPacketHandler> { // MyPacketHand
         stream.writeStringUTF(message);
     }
     
-    public void read(ExtDataInputStream stream) throws IOException { // read data after receive
+    public void read(ExtDataInputStream stream) throws IOException { // read data in same order after receive 
         message = stream.readStringUTF();
     }
     
     public void handle(MyPacketHandler handler) { // handle this packet
-        handler.handleMessage(this);
+        handler.handleMessagePacket(this);
     }
 }
 ```
@@ -324,13 +345,13 @@ public static class MsgPacket extends IPacket<MyPacketHandler> { // MyPacketHand
 UDP connection example:
 ``` java
 // open UDP server and listen for datagramm packets
-UdpServer listener = new UdpServer(5454, packet -> {
+UdpServer listener = new UdpServer(65000, packet -> {
     System.out.println(new String(packet.getData())); // receive "Hello, world!"
 });
 
 // connect and send "Hello, world!" bytes
-UdpClient connection = new UdpClient("localhost", 5454);
-connection.send("Hello, world!".getBytes(), "localhost", 5454);
+UdpClient connection = new UdpClient("localhost", 65000);
+connection.send("Hello, world!".getBytes(), "localhost", 65000);
 ```
 
 ---

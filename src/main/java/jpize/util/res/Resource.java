@@ -16,7 +16,7 @@ import java.util.zip.ZipFile;
 
 public abstract class Resource {
 
-    public Resource() { }
+    protected Resource() { }
 
 
     public boolean isExternal() {
@@ -32,7 +32,7 @@ public abstract class Resource {
     }
 
     public boolean isZipEntry() {
-        return this instanceof ZipEntryResource;
+        return this instanceof ZipResource;
     }
 
     public ExternalResource asExternal() {
@@ -47,8 +47,8 @@ public abstract class Resource {
         return (UrlResource) this;
     }
 
-    public ZipEntryResource asZipEntry() {
-        return (ZipEntryResource) this;
+    public ZipResource asZipEntry() {
+        return (ZipResource) this;
     }
 
 
@@ -163,8 +163,8 @@ public abstract class Resource {
     }
 
 
-    public static ZipEntryResource zipEntry(ZipFile zipFile, ZipEntry entry) {
-        return new ZipEntryResource(zipFile, entry);
+    public static ZipResource zip(ZipFile zipFile, ZipEntry entry) {
+        return new ZipResource(zipFile, entry);
     }
 
 
@@ -210,11 +210,11 @@ public abstract class Resource {
         return arr;
     }
 
-    public static ZipEntryResource[] zipEntry(ZipFile zipFile) {
-        final ZipEntryResource[] arr = new ZipEntryResource[zipFile.size()];
+    public static ZipResource[] zip(ZipFile zipFile) {
+        final ZipResource[] arr = new ZipResource[zipFile.size()];
         final Enumeration<? extends ZipEntry> entries = zipFile.entries();
         for(int i = 0; entries.hasMoreElements(); i++)
-            arr[i] = zipEntry(zipFile, entries.nextElement());
+            arr[i] = zip(zipFile, entries.nextElement());
         return arr;
     }
 

@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class UrlResource extends Resource {
 
-    private final URL url;
+    protected final URL url;
 
     protected UrlResource(URL url) {
         this.url = url;
