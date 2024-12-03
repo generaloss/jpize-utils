@@ -517,16 +517,199 @@ public class Matrix4f implements Matrix4 {
 
     /* Rotate */
 
-    public Matrix4f rotate(EulerAngles angles) {
-        return this.rotateXYZ(angles.yaw, angles.pitch, angles.roll);
+    public Matrix4f rotateRadXYZ(double radiansX, double radiansY, double radiansZ) { //! counter-clockwise
+        final float cosX = Mathc.cos(radiansX);
+        final float sinX = Mathc.sin(radiansX);
+        final float cosY = Mathc.cos(radiansY);
+        final float sinY = Mathc.sin(radiansY);
+        final float cosZ = Mathc.cos(radiansZ);
+        final float sinZ = Mathc.sin(radiansZ);
+        final float m_sinX = -sinX;
+        final float m_sinY = -sinY;
+        final float m_sinZ = -sinZ;
+        final float nm01 = m_sinX * m_sinY;
+        final float nm02 = cosX * m_sinY;
+        val[m02] = sinY;
+        val[m12] = m_sinX * cosY;
+        val[m22] = cosX * cosY;
+        val[m32] = 0F;
+        val[m00] = cosY * cosZ;
+        val[m10] = nm01 * cosZ + cosX * sinZ;
+        val[m20] = nm02 * cosZ + sinX * sinZ;
+        val[m30] = 0F;
+        val[m01] = cosY * m_sinZ;
+        val[m11] = nm01 * m_sinZ + cosX * cosZ;
+        val[m21] = nm02 * m_sinZ + sinX * cosZ;
+        val[m31] = 0F;
+        val[m03] = 0F;
+        val[m13] = 0F;
+        val[m23] = 0F;
+        val[m33] = 1F;
+        return this;
     }
 
-    public Matrix4f rotate(Quaternion rotation) {
-        final float x = rotation.x;
-        final float y = rotation.y;
-        final float z = rotation.z;
-        final float w = rotation.w;
+    public Matrix4f rotateXYZ(float degreesX, float degreesY, float degreesZ) { //! counter-clockwise
+        return this.rotateRadXYZ(degreesX * Maths.toRad, degreesY * Maths.toRad, degreesZ * Maths.toRad);
+    }
 
+    public Matrix4f rotateRadZYX(float radiansZ, float radiansY, float radiansX) { //! counter-clockwise
+        final float cosZ = Mathc.cos(radiansZ);
+        final float sinZ = Mathc.sin(radiansZ);
+        final float cosY = Mathc.cos(radiansY);
+        final float sinY = Mathc.sin(radiansY);
+        final float cosX = Mathc.cos(radiansX);
+        final float sinX = Mathc.sin(radiansX);
+        final float m_sinZ = -sinZ;
+        final float m_sinY = -sinY;
+        final float m_sinX = -sinX;
+        final float nm20 = cosZ * sinY;
+        final float nm21 = sinZ * sinY;
+        val[m00] = cosZ * cosY;
+        val[m10] = sinZ * cosY;
+        val[m20] = m_sinY;
+        val[m30] = 0F;
+        val[m01] = m_sinZ * cosX + nm20 * sinX;
+        val[m11] = cosZ * cosX + nm21 * sinX;
+        val[m21] = cosY * sinX;
+        val[m31] = 0F;
+        val[m02] = m_sinZ * m_sinX + nm20 * cosX;
+        val[m12] = cosZ * m_sinX + nm21 * cosX;
+        val[m22] = cosY * cosX;
+        val[m32] = 0F;
+        val[m03] = 0F;
+        val[m13] = 0F;
+        val[m23] = 0F;
+        val[m33] = 1F;
+        return this;
+    }
+
+    public Matrix4f rotateZYX(float degreesZ, float degreesY, float degreesX) { //! counter-clockwise
+        return this.rotateRadYXZ(degreesZ * Maths.toRad, degreesY * Maths.toRad, degreesX * Maths.toRad);
+    }
+
+    public Matrix4f rotateRadYXZ(float radiansY, float radiansX, float radiansZ) { //! counter-clockwise
+        final float cosY = Mathc.cos(radiansY);
+        final float sinY = Mathc.sin(radiansY);
+        final float cosX = Mathc.cos(radiansX);
+        final float sinX = Mathc.sin(radiansX);
+        final float cosZ = Mathc.cos(radiansZ);
+        final float sinZ = Mathc.sin(radiansZ);
+        final float m_sinY = -sinY;
+        final float m_sinX = -sinX;
+        final float m_sinZ = -sinZ;
+        final float nm10 = sinY * sinX;
+        final float nm11 = cosX;
+        final float nm12 = cosY * sinX;
+        val[m20] = sinY * cosX;
+        val[m21] = m_sinX;
+        val[m22] = cosY * cosX;
+        val[m23] = 0F;
+        val[m00] = cosY * cosZ + nm10 * sinZ;
+        val[m01] = nm11 * sinZ;
+        val[m02] = m_sinY * cosZ + nm12 * sinZ;
+        val[m03] = 0F;
+        val[m10] = cosY * m_sinZ + nm10 * cosZ;
+        val[m11] = nm11 * cosZ;
+        val[m12] = m_sinY * m_sinZ + nm12 * cosZ;
+        val[m13] = 0F;
+        val[m30] = 0F;
+        val[m31] = 0F;
+        val[m32] = 0F;
+        val[m33] = 1F;
+        return this;
+    }
+
+    public Matrix4f rotateYXZ(float degreesY, float degreesX, float degreesZ) { //! counter-clockwise
+        return this.rotateRadYXZ(degreesY * Maths.toRad, degreesX * Maths.toRad, degreesZ * Maths.toRad);
+    }
+
+
+    public Matrix4f rotateRadX(float radians) {
+        final float cos = Mathc.cos(radians);
+        final float sin = Mathc.sin(radians);
+        final float rm11 = cos;
+        final float rm12 = -sin;
+        final float rm21 = sin;
+        final float rm22 = cos;
+        // merge temporaries for dependent values
+        final float nm01 = val[m01] * rm11 + val[m02] * rm12;
+        final float nm11 = val[m11] * rm11 + val[m12] * rm12;
+        final float nm21 = val[m21] * rm11 + val[m22] * rm12;
+        final float nm31 = val[m31] * rm11 + val[m32] * rm12;
+        // set non-dependent values directly
+        val[m02] = val[m01] * rm21 + val[m02] * rm22;
+        val[m12] = val[m11] * rm21 + val[m12] * rm22;
+        val[m22] = val[m21] * rm21 + val[m22] * rm22;
+        val[m32] = val[m31] * rm21 + val[m32] * rm22;
+        // set other values
+        val[m01] = nm01;
+        val[m11] = nm11;
+        val[m21] = nm21;
+        val[m31] = nm31;
+        return this;
+    }
+
+    public Matrix4f rotateX(float degrees) {
+        return this.rotateRadX(degrees * Maths.toRad);
+    }
+
+    public Matrix4f rotateRadY(float radians) {
+        final float cos = Mathc.cos(radians);
+        final float sin = Mathc.sin(radians);
+        final float rm00 = cos;
+        final float rm02 = sin;
+        final float rm20 = -sin;
+        final float rm22 = cos;
+        // merge temporaries for dependent values
+        final float nm00 = val[m00] * rm00 + val[m02] * rm02;
+        final float nm10 = val[m10] * rm00 + val[m12] * rm02;
+        final float nm20 = val[m20] * rm00 + val[m22] * rm02;
+        final float nm30 = val[m30] * rm00 + val[m32] * rm02;
+        // set non-dependent values directly
+        val[m02] = val[m00] * rm20 + val[m02] * rm22;
+        val[m12] = val[m10] * rm20 + val[m12] * rm22;
+        val[m22] = val[m20] * rm20 + val[m22] * rm22;
+        val[m32] = val[m30] * rm20 + val[m32] * rm22;
+        // set other values
+        val[m00] = nm00;
+        val[m10] = nm10;
+        val[m20] = nm20;
+        val[m30] = nm30;
+        return this;
+    }
+
+    public Matrix4f rotateY(float degrees) {
+        return this.rotateRadY(degrees * Maths.toRad);
+    }
+
+    public Matrix4f rotateRadZ(float radians) {
+        final float cos = Mathc.cos(radians);
+        final float sin = Mathc.sin(radians);
+        final float rm00 = cos;
+        final float rm01 = -sin;
+        final float rm10 = sin;
+        final float rm11 = cos;
+
+        final float nm00 = val[m00] * rm00 + val[m01] * rm01;
+        final float nm10 = val[m10] * rm00 + val[m11] * rm01;
+        final float nm20 = val[m20] * rm00 + val[m21] * rm01;
+        final float nm30 = val[m30] * rm00 + val[m31] * rm01;
+        val[m01] = val[m00] * rm10 + val[m01] * rm11;
+        val[m11] = val[m10] * rm10 + val[m11] * rm11;
+        val[m21] = val[m20] * rm10 + val[m21] * rm11;
+        val[m31] = val[m30] * rm10 + val[m31] * rm11;
+        val[m00] = nm00;
+        val[m10] = nm10;
+        val[m20] = nm20;
+        val[m30] = nm30;
+        return this;
+    }
+
+    public Matrix4f rotateZ(float degrees) {
+        return this.rotateRadZ(degrees * Maths.toRad);
+    }
+
+    public Matrix4f rotateQuaternion(float x, float y, float z, float w) {
         final float xx = x * x;
         final float xy = x * y;
         final float xz = x * z;
@@ -575,205 +758,19 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
-    public Matrix4f rotateXYZ(double angleX, double angleY, double angleZ) {
-        final float cosX = Mathc.cos(angleX);
-        final float sinX = Mathc.sin(angleX);
-        final float cosY = Mathc.cos(angleY);
-        final float sinY = Mathc.sin(angleY);
-        final float cosZ = Mathc.cos(angleZ);
-        final float sinZ = Mathc.sin(angleZ);
-        final float m_sinX = -sinX;
-        final float m_sinY = -sinY;
-        final float m_sinZ = -sinZ;
-        // Rotate X
-        final float nm11 = cosX;
-        final float nm12 = sinX;
-        final float nm21 = m_sinX;
-        final float nm22 = cosX;
-        // Rotate Y
-        final float nm00 = cosY;
-        final float nm01 = nm21 * m_sinY;
-        final float nm02 = nm22 * m_sinY;
-        val[m02] = sinY;
-        val[m12] = nm21 * cosY;
-        val[m22] = nm22 * cosY;
-        val[m32] = 0F;
-        // Rotate Z
-        val[m00] = nm00 * cosZ;
-        val[m10] = nm01 * cosZ + nm11 * sinZ;
-        val[m20] = nm02 * cosZ + nm12 * sinZ;
-        val[m30] = 0F;
-        val[m01] = nm00 * m_sinZ;
-        val[m11] = nm01 * m_sinZ + nm11 * cosZ;
-        val[m21] = nm02 * m_sinZ + nm12 * cosZ;
-        val[m31] = 0F;
-        // Set last column to identity
-        val[m03] = 0F;
-        val[m13] = 0F;
-        val[m23] = 0F;
-        val[m33] = 1F;
-        return this;
+    public Matrix4f rotateQuaternion(Quaternion quaternion) {
+        return this.rotateQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     }
 
-    public Matrix4f rotateZYX(float angleZ, float angleY, float angleX) {
-        final float cosZ = Mathc.cos(angleZ);
-        final float sinZ = Mathc.sin(angleZ);
-        final float cosY = Mathc.cos(angleY);
-        final float sinY = Mathc.sin(angleY);
-        final float cosX = Mathc.cos(angleX);
-        final float sinX = Mathc.sin(angleX);
-        final float m_sinZ = -sinZ;
-        final float m_sinY = -sinY;
-        final float m_sinX = -sinX;
-        // Rotate Z
-        final float nm00 = cosZ;
-        final float nm01 = sinZ;
-        final float nm10 = m_sinZ;
-        final float nm11 = cosZ;
-        // Rotate Y
-        final float nm20 = nm00 * sinY;
-        final float nm21 = nm01 * sinY;
-        final float nm22 = cosY;
-        val[m00] = nm00 * cosY;
-        val[m10] = nm01 * cosY;
-        val[m20] = m_sinY;
-        val[m30] = 0F;
-        // Rotate X
-        val[m01] = nm10 * cosX + nm20 * sinX;
-        val[m11] = nm11 * cosX + nm21 * sinX;
-        val[m21] = nm22 * sinX;
-        val[m31] = 0F;
-        val[m02] = nm10 * m_sinX + nm20 * cosX;
-        val[m12] = nm11 * m_sinX + nm21 * cosX;
-        val[m22] = nm22 * cosX;
-        val[m32] = 0F;
-        // Set last column to identity
-        val[m03] = 0F;
-        val[m13] = 0F;
-        val[m23] = 0F;
-        val[m33] = 1F;
-        return this;
-    }
-
-    public Matrix4f rotateYXZ(float angleY, float angleX, float angleZ) {
-        final float cosY = Mathc.cos(angleY);
-        final float sinY = Mathc.sin(angleY);
-        final float cosX = Mathc.cos(angleX);
-        final float sinX = Mathc.sin(angleX);
-        final float cosZ = Mathc.cos(angleZ);
-        final float sinZ = Mathc.sin(angleZ);
-        final float m_sinY = -sinY;
-        final float m_sinX = -sinX;
-        final float m_sinZ = -sinZ;
-        // Rotate Y
-        final float nm00 = cosY;
-        final float nm02 = m_sinY;
-        final float nm20 = sinY;
-        final float nm22 = cosY;
-        // Rotate X
-        final float nm10 = nm20 * sinX;
-        final float nm11 = cosX;
-        final float nm12 = nm22 * sinX;
-        val[m20] = nm20 * cosX;
-        val[m21] = m_sinX;
-        val[m22] = nm22 * cosX;
-        val[m23] = 0F;
-        // Rotate Z
-        val[m00] = nm00 * cosZ + nm10 * sinZ;
-        val[m01] = nm11 * sinZ;
-        val[m02] = nm02 * cosZ + nm12 * sinZ;
-        val[m03] = 0F;
-        val[m10] = nm00 * m_sinZ + nm10 * cosZ;
-        val[m11] = nm11 * cosZ;
-        val[m12] = nm02 * m_sinZ + nm12 * cosZ;
-        val[m13] = 0F;
-        // Set last column to identity
-        val[m30] = 0F;
-        val[m31] = 0F;
-        val[m32] = 0F;
-        val[m33] = 1F;
-        return this;
-    }
-
-
-    public Matrix4f rotateX(float ang) {
-        final float cos = Mathc.cos(ang);
-        final float sin = Mathc.sin(ang);
-        final float rm11 = cos;
-        final float rm12 = sin;
-        final float rm21 = -sin;
-        final float rm22 = cos;
-        // merge temporaries for dependent values
-        final float nm01 = val[m01] * rm11 + val[m02] * rm12;
-        final float nm11 = val[m11] * rm11 + val[m12] * rm12;
-        final float nm21 = val[m21] * rm11 + val[m22] * rm12;
-        final float nm31 = val[m31] * rm11 + val[m32] * rm12;
-        // set non-dependent values directly
-        val[m02] = val[m01] * rm21 + val[m02] * rm22;
-        val[m12] = val[m11] * rm21 + val[m12] * rm22;
-        val[m22] = val[m21] * rm21 + val[m22] * rm22;
-        val[m32] = val[m31] * rm21 + val[m32] * rm22;
-        // set other values
-        val[m01] = nm01;
-        val[m11] = nm11;
-        val[m21] = nm21;
-        val[m31] = nm31;
-        return this;
-    }
-
-    public Matrix4f rotateY(float ang) {
-        final float cos = Mathc.cos(ang);
-        final float sin = Mathc.sin(ang);
-        final float rm00 = cos;
-        final float rm02 = -sin;
-        final float rm20 = sin;
-        final float rm22 = cos;
-        // merge temporaries for dependent values
-        final float nm00 = val[m00] * rm00 + val[m02] * rm02;
-        final float nm10 = val[m10] * rm00 + val[m12] * rm02;
-        final float nm20 = val[m20] * rm00 + val[m22] * rm02;
-        final float nm30 = val[m30] * rm00 + val[m32] * rm02;
-        // set non-dependent values directly
-        val[m02] = val[m00] * rm20 + val[m02] * rm22;
-        val[m12] = val[m10] * rm20 + val[m12] * rm22;
-        val[m22] = val[m20] * rm20 + val[m22] * rm22;
-        val[m32] = val[m30] * rm20 + val[m32] * rm22;
-        // set other values
-        val[m00] = nm00;
-        val[m10] = nm10;
-        val[m20] = nm20;
-        val[m30] = nm30;
-        return this;
-    }
-
-    public Matrix4f rotateZ(float ang) {
-        final float cos = Mathc.cos(ang);
-        final float sin = Mathc.sin(ang);
-        final float rm00 = cos;
-        final float rm01 = sin;
-        final float rm10 = -sin;
-        final float rm11 = cos;
-
-        final float nm00 = val[m00] * rm00 + val[m01] * rm01;
-        final float nm10 = val[m10] * rm00 + val[m11] * rm01;
-        final float nm20 = val[m20] * rm00 + val[m21] * rm01;
-        final float nm30 = val[m30] * rm00 + val[m31] * rm01;
-        val[m01] = val[m00] * rm10 + val[m01] * rm11;
-        val[m11] = val[m10] * rm10 + val[m11] * rm11;
-        val[m21] = val[m20] * rm10 + val[m21] * rm11;
-        val[m31] = val[m30] * rm10 + val[m31] * rm11;
-        val[m00] = nm00;
-        val[m10] = nm10;
-        val[m20] = nm20;
-        val[m30] = nm30;
-        return this;
+    public Matrix4f rotate(EulerAngles angles) {
+        return this.rotateXYZ(angles.yaw, angles.pitch, angles.roll);
     }
 
     /* Set Rotation */
 
-    public Matrix4f setRotation(float angle, float x, float y, float z) {
-        final float cos = Mathc.cos(angle);
-        final float sin = Mathc.sin(angle);
+    public Matrix4f setRotationRad(float radians, float x, float y, float z) {
+        final float cos = Mathc.cos(radians);
+        final float sin = Mathc.sin(radians);
         final float C = 1F - cos;
         final float xy = x * y;
         final float xz = x * z;
@@ -797,10 +794,14 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
-    public Matrix4f setRotationX(double degrees) {
+    public Matrix4f setRotation(float degrees, float x, float y, float z) {
+        return this.setRotationRad(degrees * Maths.toRad, x, y, z);
+    }
+
+    public Matrix4f setRotationRadX(double radians) {
         this.identity();
-        final float cos = Maths.cosDeg(degrees);
-        final float sin = Maths.sinDeg(degrees);
+        final float cos = Mathc.cos(radians);
+        final float sin = Mathc.sin(radians);
         val[m11] = cos;
         val[m21] = -sin;
         val[m12] = sin;
@@ -808,10 +809,14 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
-    public Matrix4f setRotationY(double degrees) {
+    public Matrix4f setRotationX(double degrees) {
+        return this.setRotationRadX(degrees * Maths.toRad);
+    }
+
+    public Matrix4f setRotationRadY(double radians) {
         this.identity();
-        final float cos = Maths.cosDeg(degrees);
-        final float sin = Maths.sinDeg(degrees);
+        final float cos = Mathc.cos(radians);
+        final float sin = Mathc.sin(radians);
         val[m00] = cos;
         val[m20] = sin;
         val[m02] = -sin;
@@ -819,10 +824,14 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
-    public Matrix4f setRotationZ(double degrees) {
+    public Matrix4f setRotationY(double degrees) {
+        return this.setRotationRadY(degrees * Maths.toRad);
+    }
+
+    public Matrix4f setRotationRadZ(double radians) {
         this.identity();
-        final float cos = Maths.cosDeg(degrees);
-        final float sin = Maths.sinDeg(degrees);
+        final float cos = Mathc.cos(radians);
+        final float sin = Mathc.sin(radians);
         val[m00] = cos;
         val[m10] = -sin;
         val[m01] = sin;
@@ -830,13 +839,17 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
-    public Matrix4f setRotationXYZ(float angleX, float angleY, float angleZ) {
-        final float cosX = Mathc.cos(angleX);
-        final float sinX = Mathc.sin(angleX);
-        final float cosY = Mathc.cos(angleY);
-        final float sinY = Mathc.sin(angleY);
-        final float cosZ = Mathc.cos(angleZ);
-        final float sinZ = Mathc.sin(angleZ);
+    public Matrix4f setRotationZ(double degrees) {
+        return this.setRotationRadZ(degrees * Maths.toRad);
+    }
+
+    public Matrix4f setRotationRadXYZ(float radiansX, float radiansY, float radiansZ) {
+        final float cosX = Mathc.cos(radiansX);
+        final float sinX = Mathc.sin(radiansX);
+        final float cosY = Mathc.cos(radiansY);
+        final float sinY = Mathc.sin(radiansY);
+        final float cosZ = Mathc.cos(radiansZ);
+        final float sinZ = Mathc.sin(radiansZ);
         final float m_sinX = -sinX;
         final float m_sinY = -sinY;
         final float m_sinZ = -sinZ;
@@ -862,13 +875,17 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
-    public Matrix4f setRotationZYX(float angleZ, float angleY, float angleX) {
-        final float cosZ = Mathc.cos(angleZ);
-        final float sinZ = Mathc.sin(angleZ);
-        final float cosY = Mathc.cos(angleY);
-        final float sinY = Mathc.sin(angleY);
-        final float cosX = Mathc.cos(angleX);
-        final float sinX = Mathc.sin(angleX);
+    public Matrix4f setRotationXYZ(float degreesX, float degreesY, float degreesZ) {
+        return this.setRotationRadXYZ(degreesX * Maths.toRad, degreesY * Maths.toRad, degreesZ * Maths.toRad);
+    }
+
+    public Matrix4f setRotationRadZYX(float radiansZ, float radiansY, float radiansX) {
+        final float cosZ = Mathc.cos(radiansZ);
+        final float sinZ = Mathc.sin(radiansZ);
+        final float cosY = Mathc.cos(radiansY);
+        final float sinY = Mathc.sin(radiansY);
+        final float cosX = Mathc.cos(radiansX);
+        final float sinX = Mathc.sin(radiansX);
         final float m_sinZ = -sinZ;
         final float m_sinY = -sinY;
         final float m_sinX = -sinX;
@@ -894,13 +911,17 @@ public class Matrix4f implements Matrix4 {
         return this;
     }
 
-    public Matrix4f setRotationYXZ(float angleY, float angleX, float angleZ) {
-        final float cosY = Mathc.cos(angleY);
-        final float sinY = Mathc.sin(angleY);
-        final float cosX = Mathc.cos(angleX);
-        final float sinX = Mathc.sin(angleX);
-        final float cosZ = Mathc.cos(angleZ);
-        final float sinZ = Mathc.sin(angleZ);
+    public Matrix4f setRotationZYX(float degreesZ, float degreesY, float degreesX) {
+        return this.setRotationRadZYX(degreesZ * Maths.toRad, degreesY * Maths.toRad, degreesX * Maths.toRad);
+    }
+
+    public Matrix4f setRotationRadYXZ(float radiansY, float radiansX, float radiansZ) {
+        final float cosY = Mathc.cos(radiansY);
+        final float sinY = Mathc.sin(radiansY);
+        final float cosX = Mathc.cos(radiansX);
+        final float sinX = Mathc.sin(radiansX);
+        final float cosZ = Mathc.cos(radiansZ);
+        final float sinZ = Mathc.sin(radiansZ);
         final float m_sinY = -sinY;
         final float m_sinX = -sinX;
         final float m_sinZ = -sinZ;
@@ -924,6 +945,10 @@ public class Matrix4f implements Matrix4 {
         val[m11] = nm11 * cosZ;
         val[m21] = nm02 * m_sinZ + nm12 * cosZ;
         return this;
+    }
+
+    public Matrix4f setRotationYXZ(float degreesY, float degreesX, float degreesZ) {
+        return this.setRotationRadYXZ(degreesY * Maths.toRad, degreesX * Maths.toRad, degreesZ * Maths.toRad);
     }
 
     public Matrix4f setRotation(EulerAngles angles) {

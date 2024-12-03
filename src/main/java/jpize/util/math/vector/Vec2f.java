@@ -750,7 +750,7 @@ public class Vec2f {
     public static float angleRad(float x, float y) {
         float angle = Mathc.atan2(y, x);
         if(angle < 0F)
-            angle += 360F;
+            angle += Maths.twoPI;
         return angle;
     }
 

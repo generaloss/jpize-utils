@@ -749,7 +749,7 @@ public class Vec2d {
     public static double angleRad(double x, double y) {
         double angle = Math.atan2(y, x);
         if(angle < 0D)
-            angle += 360D;
+            angle += Maths.twoPI;
         return angle;
     }
 

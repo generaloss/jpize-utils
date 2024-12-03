@@ -440,7 +440,7 @@ public class VectorClassesGenerator {
             w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + datatype + " x, " + datatype + " y)",
                 datatype_l + " angle = Math" + (isDatatypeDouble ? "" : "c") + ".atan2(y, x);",
                 "if(angle < 0" + numberPostfix + ")",
-                "    angle += 360" + numberPostfix + ";",
+                "    angle += Maths.twoPI;",
                 "return angle;"
             );
             w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + classname + " vector)",

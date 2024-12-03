@@ -733,7 +733,7 @@ public class Vec2i {
     public static float angleRad(int x, int y) {
         float angle = Mathc.atan2(y, x);
         if(angle < 0)
-            angle += 360;
+            angle += Maths.twoPI;
         return angle;
     }
 
