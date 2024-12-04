@@ -8,7 +8,9 @@ import java.util.Objects;
 
 public class EulerAngles {
 
-    public float yaw, pitch, roll;
+    public float yaw;
+    public float pitch;
+    public float roll;
 
     public EulerAngles() { }
 
@@ -16,7 +18,15 @@ public class EulerAngles {
         this.set(yaw, pitch);
     }
 
+    public EulerAngles(double yaw, double pitch) {
+        this.set(yaw, pitch);
+    }
+
     public EulerAngles(float yaw, float pitch, float roll) {
+        this.set(yaw, pitch, roll);
+    }
+
+    public EulerAngles(double yaw, double pitch, double roll) {
         this.set(yaw, pitch, roll);
     }
 
@@ -38,14 +48,14 @@ public class EulerAngles {
 
 
     public void constrain() {
-        if(yaw >= 360){
-            yaw -= 360;
-        }else if(yaw <= -360)
-            yaw += 360;
+        if(yaw >= 360F){
+            yaw -= 360F;
+        }else if(yaw <= -360F)
+            yaw += 360F;
     }
 
     public void clampPitch() {
-        pitch = Maths.clamp(pitch, -90, 90);
+        pitch = Maths.clamp(pitch, -90F, 90F);
     }
 
     public Vec3f getDirection(Vec3f dst) {
@@ -53,7 +63,7 @@ public class EulerAngles {
     }
 
     public Vec3f getDirectionHorizontal(Vec3f dst) {
-        return dst.set(Maths.cosDeg(yaw), 0, Maths.sinDeg(yaw));
+        return dst.set(Maths.cosDeg(yaw), 0F, Maths.sinDeg(yaw));
     }
 
     public EulerAngles setDirection(double x, double y, double z) {
@@ -85,10 +95,18 @@ public class EulerAngles {
         return this;
     }
 
+    public EulerAngles set(double yaw, double pitch, double roll) {
+        return this.set((float) yaw, (float) pitch, (float) roll);
+    }
+
     public EulerAngles set(float yaw, float pitch) {
         this.yaw = yaw;
         this.pitch = pitch;
         return this;
+    }
+
+    public EulerAngles set(double yaw, double pitch) {
+        return this.set((float) yaw, (float) pitch);
     }
 
 
@@ -99,10 +117,18 @@ public class EulerAngles {
         return this;
     }
 
+    public EulerAngles add(double yaw, double pitch, double roll) {
+        return this.add((float) yaw, (float) pitch, (float) roll);
+    }
+
     public EulerAngles add(float yaw, float pitch) {
         this.yaw += yaw;
         this.pitch += pitch;
         return this;
+    }
+
+    public EulerAngles add(double yaw, double pitch) {
+        return this.add((float) yaw, (float) pitch);
     }
 
 
@@ -167,7 +193,7 @@ public class EulerAngles {
     }
 
     public static Vec3f directionOf(Vec3f dst, double yaw) {
-        return dst.set(Maths.cosDeg(yaw), 0, Maths.sinDeg(yaw));
+        return dst.set(Maths.cosDeg(yaw), 0F, Maths.sinDeg(yaw));
     }
 
 }

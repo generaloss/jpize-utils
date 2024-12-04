@@ -153,7 +153,7 @@ public class Quaternion {
 
 
     public Quaternion setRotationRad(float axisX, float axisY, float axisZ, double angle) {
-        final double omega = -0.5 * angle;
+        final double omega = 0.5D * angle;
         final float sin = Mathc.sin(omega);
         w = Mathc.cos(omega);
         x = axisX * sin;
@@ -176,9 +176,9 @@ public class Quaternion {
 
 
     public Quaternion setRotationRad(double yaw, double pitch, double roll) {
-        final double hy = (yaw   * -0.5);
-        final double hp = (pitch * -0.5);
-        final double hr = (roll  * -0.5);
+        final double hy = (yaw   * 0.5D);
+        final double hp = (pitch * 0.5D);
+        final double hr = (roll  * 0.5D);
 
         final float chy = Mathc.cos(hy);
         final float shy = Mathc.sin(hy);
@@ -219,40 +219,68 @@ public class Quaternion {
 
     public int getGimbalPole() {
         final float t = (x * y + z * w);
-        return (t > 0.5F) ? -1 : (t < -0.5F ? 1 : 0);
+        return (t > 0.5F) ? 1 : (t < -0.5F ? -1 : 0);
     }
 
-    public float getYawRad() {
-        if(this.getGimbalPole() == 0)
-            return Mathc.atan2((1F - (y * y + x * x) * 2F),  ((y * w + x * z) * 2F));
+    private float getYawRad(int gimbalPole) {
+        if(gimbalPole == 0)
+            return Mathc.atan2((x * z + y * w) * 2F, 1F - (x * x + y * y) * 2F);
         return 0F;
     }
 
+    public float getYawRad() {
+        return this.getYawRad(this.getGimbalPole());
+    }
+
+    private float getPitchRad(int gimbalPole) {
+        if(gimbalPole == 0)
+            return Mathc.asin(Maths.clamp(((x * w - y * z) * 2F),  -1F, 1F));
+        return gimbalPole * Maths.halfPI;
+    }
+
     public float getPitchRad() {
-        final int pole = this.getGimbalPole();
-        if(pole == 0)
-            return Mathc.asin(Maths.clamp(((z * y - w * x) * 2F),  -1F, 1F));
-        return pole * Maths.halfPI;
+        return this.getPitchRad(this.getGimbalPole());
+    }
+
+    private float getRollRad(int gimbalPole) {
+        if(gimbalPole == 0)
+            return Mathc.atan2((x * y + z * w) * 2F, 1F - (x * x + z * z) * 2F);
+        return Mathc.atan2(y, w) * gimbalPole * 2F;
     }
 
     public float getRollRad() {
-        final int pole = this.getGimbalPole();
-        if(pole == 0)
-            return Mathc.atan2((1F - (x * x + z * z) * 2F),  ((w * z + y * x) * 2F));
-        return Mathc.atan2(y, w) * pole * 2F;
+        return this.getRollRad(this.getGimbalPole());
     }
 
 
+    private float getYaw(int gimbalPole) {
+        return this.getYawRad(gimbalPole) * Maths.toDeg;
+    }
+
     public float getYaw() {
-        return this.getYawRad() * Maths.toDeg;
+        return this.getYaw(this.getGimbalPole());
+    }
+
+    private float getPitch(int gimbalPole) {
+        return this.getPitchRad(gimbalPole) * Maths.toDeg;
     }
 
     public float getPitch() {
-        return this.getPitchRad() * Maths.toDeg;
+        return this.getPitch(this.getGimbalPole());
+    }
+
+    private float getRoll(int gimbalPole) {
+        return this.getRollRad(gimbalPole) * Maths.toDeg;
     }
 
     public float getRoll() {
-        return this.getRollRad() * Maths.toDeg;
+        return this.getRoll(this.getGimbalPole());
+    }
+
+
+    public EulerAngles getEulerAngles(EulerAngles dst) {
+        final int pole = this.getGimbalPole();
+        return dst.set(this.getYaw(pole), this.getPitch(pole), this.getRoll(pole));
     }
 
 
