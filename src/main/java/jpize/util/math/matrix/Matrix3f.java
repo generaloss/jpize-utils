@@ -1,5 +1,6 @@
 package jpize.util.math.matrix;
 
+import jpize.util.math.Mathc;
 import jpize.util.math.Maths;
 import jpize.util.math.vector.*;
 
@@ -183,16 +184,20 @@ public class Matrix3f implements Matrix3 {
 
     /* Set Rotation */
 
-    public Matrix3f setRotation(double degrees) {
+    public Matrix3f setRotationRad(double radians) {
         this.identity();
-        final float cos = Maths.cosDeg(degrees);
-        final float sin = Maths.sinDeg(degrees);
+        final float cos = Mathc.cos(radians);
+        final float sin = Mathc.sin(radians);
 
         val[m00] = cos;
         val[m10] = sin;
         val[m01] = -sin;
         val[m11] = cos;
         return this;
+    }
+
+    public Matrix3f setRotation(double degrees) {
+        return this.setRotationRad(degrees * Maths.toRad);
     }
 
 
