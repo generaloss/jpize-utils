@@ -830,7 +830,7 @@ public class Vec2d {
     public Vec2d rotateRad(double radians) {
         final double cos = Math.cos(radians);
         final double sin = Math.sin(radians);
-        return this.set((x * cos + y * sin), (x * -sin + y * cos));
+        return this.set((x * cos - y * sin), (x * sin + y * cos));
     }
 
     public Vec2d rotate(double degrees) {

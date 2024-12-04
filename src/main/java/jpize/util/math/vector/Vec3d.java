@@ -1228,7 +1228,7 @@ public class Vec3d {
     public Vec3d rotateRadY(double radians) {
         final double cos = Math.cos(radians);
         final double sin = Math.sin(radians);
-        return this.setXZ((x * cos + z * -sin), (x * sin + z * cos));
+        return this.setXZ((x * cos - z * sin), (x * sin + z * cos));
     }
 
     public Vec3d rotateRadZ(double radians) {

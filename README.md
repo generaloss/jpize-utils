@@ -246,7 +246,7 @@ list.copyTo(dst, 0, 2);
 | _**Int**_    | _Vec2i_ | _Vec3i_ | _Vec4i_ |
 
 Honorable mention:
-*  Rotation operations are clockwise
+*  Rotation operations are counter-clockwise
 
 ---
 
@@ -258,7 +258,7 @@ Honorable mention:
 Honorable mention:
 *  Matrices indexed with _**mᵢⱼ**_, where _**i**_ - column index, _**j**_ - row index
 *  Left-Hand Coordinate System
-*  Rotation operations are clockwise
+*  Rotation operations are counter-clockwise
 
 ---
 

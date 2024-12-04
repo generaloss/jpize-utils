@@ -190,8 +190,8 @@ public class Matrix3f implements Matrix3 {
         final float sin = Mathc.sin(radians);
 
         val[m00] = cos;
-        val[m10] = sin;
-        val[m01] = -sin;
+        val[m10] = -sin;
+        val[m01] = sin;
         val[m11] = cos;
         return this;
     }

@@ -391,7 +391,7 @@ public class VectorClassesGenerator {
             w.addMethod("public " + classname + " rotateRad(double radians)",
                 "final double cos = Math.cos(radians);",
                 "final double sin = Math.sin(radians);",
-                "return this.set((x * cos + y * sin), (x * -sin + y * cos));"
+                "return this.set((x * cos - y * sin), (x * sin + y * cos));"
             );
 
             w.addMethod("public " + classname + " rotate(double degrees)",
@@ -407,7 +407,7 @@ public class VectorClassesGenerator {
             w.addMethod("public " + classname + " rotateRadY(double radians)",
                 "final double cos = Math.cos(radians);",
                 "final double sin = Math.sin(radians);",
-                "return this.setXZ((x * cos + z * -sin), (x * sin + z * cos));"
+                "return this.setXZ((x * cos - z * sin), (x * sin + z * cos));"
             );
             w.addMethod("public " + classname + " rotateRadZ(double radians)",
                 "final double cos = Math.cos(radians);",

@@ -814,7 +814,7 @@ public class Vec2i {
     public Vec2i rotateRad(double radians) {
         final double cos = Math.cos(radians);
         final double sin = Math.sin(radians);
-        return this.set((x * cos + y * sin), (x * -sin + y * cos));
+        return this.set((x * cos - y * sin), (x * sin + y * cos));
     }
 
     public Vec2i rotate(double degrees) {
