@@ -1194,28 +1194,28 @@ public class Vec3d {
         return angleBetweenRad(this, vector);
     }
 
-    public static double angleBetweenDeg(double x1, double y1, double z1, double x2, double y2, double z2) {
+    public static double angleBetween(double x1, double y1, double z1, double x2, double y2, double z2) {
         return angleBetweenRad(x1, y1, z1, x2, y2, z2) * Maths.toDeg;
     }
 
-    public static double angleBetweenDeg(Vec3d vector1, double x2, double y2, double z2) {
-        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, x2, y2, z2);
+    public static double angleBetween(Vec3d vector1, double x2, double y2, double z2) {
+        return angleBetween(vector1.x, vector1.y, vector1.z, x2, y2, z2);
     }
 
-    public static double angleBetweenDeg(double x1, double y1, double z1, Vec3d vector2) {
-        return angleBetweenDeg(x1, y1, z1, vector2.x, vector2.y, vector2.z);
+    public static double angleBetween(double x1, double y1, double z1, Vec3d vector2) {
+        return angleBetween(x1, y1, z1, vector2.x, vector2.y, vector2.z);
     }
 
-    public static double angleBetweenDeg(Vec3d vector1, Vec3d vector2) {
-        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    public static double angleBetween(Vec3d vector1, Vec3d vector2) {
+        return angleBetween(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
-    public double angleBetweenDeg(double x, double y, double z) {
-        return angleBetweenDeg(this, x, y, z);
+    public double angleBetween(double x, double y, double z) {
+        return angleBetween(this, x, y, z);
     }
 
-    public double angleBetweenDeg(Vec3d vector) {
-        return angleBetweenDeg(this, vector);
+    public double angleBetween(Vec3d vector) {
+        return angleBetween(this, vector);
     }
 
 

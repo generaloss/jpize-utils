@@ -1110,28 +1110,28 @@ public class Vec4d {
         return angleBetweenRad(this, vector);
     }
 
-    public static double angleBetweenDeg(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
+    public static double angleBetween(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
         return angleBetweenRad(x1, y1, z1, w1, x2, y2, z2, w2) * Maths.toDeg;
     }
 
-    public static double angleBetweenDeg(Vec4d vector1, double x2, double y2, double z2, double w2) {
-        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
+    public static double angleBetween(Vec4d vector1, double x2, double y2, double z2, double w2) {
+        return angleBetween(vector1.x, vector1.y, vector1.z, vector1.w, x2, y2, z2, w2);
     }
 
-    public static double angleBetweenDeg(double x1, double y1, double z1, double w1, Vec4d vector2) {
-        return angleBetweenDeg(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static double angleBetween(double x1, double y1, double z1, double w1, Vec4d vector2) {
+        return angleBetween(x1, y1, z1, w1, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public static double angleBetweenDeg(Vec4d vector1, Vec4d vector2) {
-        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    public static double angleBetween(Vec4d vector1, Vec4d vector2) {
+        return angleBetween(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public double angleBetweenDeg(double x, double y, double z, double w) {
-        return angleBetweenDeg(this, x, y, z, w);
+    public double angleBetween(double x, double y, double z, double w) {
+        return angleBetween(this, x, y, z, w);
     }
 
-    public double angleBetweenDeg(Vec4d vector) {
-        return angleBetweenDeg(this, vector);
+    public double angleBetween(Vec4d vector) {
+        return angleBetween(this, vector);
     }
 
 

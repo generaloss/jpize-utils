@@ -435,7 +435,7 @@ public class VectorClassesGenerator {
 
         if(dimensions == 2){
             final String radiansFuncName = "angleRad";
-            final String degreesFuncName = "angleDeg";
+            final String degreesFuncName = "angle";
 
             w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + datatype + " x, " + datatype + " y)",
                 datatype_l + " angle = Math" + (isDatatypeDouble ? "" : "c") + ".atan2(y, x);",
@@ -464,7 +464,7 @@ public class VectorClassesGenerator {
         }
 
         final String radiansFuncName = "angleBetweenRad";
-        final String degreesFuncName = "angleBetweenDeg";
+        final String degreesFuncName = "angleBetween";
 
         w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "final " + datatype_l + " lengthProduct = len(" + makeDims(dimensions, ", ", "%l1") + ") * len(" + makeDims(dimensions, ", ", "%l2") + ");",

@@ -1195,28 +1195,28 @@ public class Vec3f {
         return angleBetweenRad(this, vector);
     }
 
-    public static float angleBetweenDeg(float x1, float y1, float z1, float x2, float y2, float z2) {
+    public static float angleBetween(float x1, float y1, float z1, float x2, float y2, float z2) {
         return angleBetweenRad(x1, y1, z1, x2, y2, z2) * Maths.toDeg;
     }
 
-    public static float angleBetweenDeg(Vec3f vector1, float x2, float y2, float z2) {
-        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, x2, y2, z2);
+    public static float angleBetween(Vec3f vector1, float x2, float y2, float z2) {
+        return angleBetween(vector1.x, vector1.y, vector1.z, x2, y2, z2);
     }
 
-    public static float angleBetweenDeg(float x1, float y1, float z1, Vec3f vector2) {
-        return angleBetweenDeg(x1, y1, z1, vector2.x, vector2.y, vector2.z);
+    public static float angleBetween(float x1, float y1, float z1, Vec3f vector2) {
+        return angleBetween(x1, y1, z1, vector2.x, vector2.y, vector2.z);
     }
 
-    public static float angleBetweenDeg(Vec3f vector1, Vec3f vector2) {
-        return angleBetweenDeg(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    public static float angleBetween(Vec3f vector1, Vec3f vector2) {
+        return angleBetween(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
-    public float angleBetweenDeg(float x, float y, float z) {
-        return angleBetweenDeg(this, x, y, z);
+    public float angleBetween(float x, float y, float z) {
+        return angleBetween(this, x, y, z);
     }
 
-    public float angleBetweenDeg(Vec3f vector) {
-        return angleBetweenDeg(this, vector);
+    public float angleBetween(Vec3f vector) {
+        return angleBetween(this, vector);
     }
 
 

@@ -757,20 +757,20 @@ public class Vec2d {
         return angleRad(vector.x, vector.y);
     }
 
-    public static double angleDeg(double x, double y) {
+    public static double angle(double x, double y) {
         return angleRad(x, y) * Maths.toDeg;
     }
 
-    public static double angleDeg(Vec2d vector) {
-        return angleDeg(vector.x, vector.y);
+    public static double angle(Vec2d vector) {
+        return angle(vector.x, vector.y);
     }
 
     public double angleRad() {
         return angleRad(this);
     }
 
-    public double angleDeg() {
-        return angleDeg(this);
+    public double angle() {
+        return angle(this);
     }
 
 
@@ -802,28 +802,28 @@ public class Vec2d {
         return angleBetweenRad(this, vector);
     }
 
-    public static double angleBetweenDeg(double x1, double y1, double x2, double y2) {
+    public static double angleBetween(double x1, double y1, double x2, double y2) {
         return angleBetweenRad(x1, y1, x2, y2) * Maths.toDeg;
     }
 
-    public static double angleBetweenDeg(Vec2d vector1, double x2, double y2) {
-        return angleBetweenDeg(vector1.x, vector1.y, x2, y2);
+    public static double angleBetween(Vec2d vector1, double x2, double y2) {
+        return angleBetween(vector1.x, vector1.y, x2, y2);
     }
 
-    public static double angleBetweenDeg(double x1, double y1, Vec2d vector2) {
-        return angleBetweenDeg(x1, y1, vector2.x, vector2.y);
+    public static double angleBetween(double x1, double y1, Vec2d vector2) {
+        return angleBetween(x1, y1, vector2.x, vector2.y);
     }
 
-    public static double angleBetweenDeg(Vec2d vector1, Vec2d vector2) {
-        return angleBetweenDeg(vector1.x, vector1.y, vector2.x, vector2.y);
+    public static double angleBetween(Vec2d vector1, Vec2d vector2) {
+        return angleBetween(vector1.x, vector1.y, vector2.x, vector2.y);
     }
 
-    public double angleBetweenDeg(double x, double y) {
-        return angleBetweenDeg(this, x, y);
+    public double angleBetween(double x, double y) {
+        return angleBetween(this, x, y);
     }
 
-    public double angleBetweenDeg(Vec2d vector) {
-        return angleBetweenDeg(this, vector);
+    public double angleBetween(Vec2d vector) {
+        return angleBetween(this, vector);
     }
 
 

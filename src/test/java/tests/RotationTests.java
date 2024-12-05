@@ -58,7 +58,7 @@ public class RotationTests {
 
     @Test
     public void vector2_angle() {
-        Assert.assertEquals(45F, point2.set(1F, 1F).angleDeg(), 0F);
+        Assert.assertEquals(45F, point2.set(1F, 1F).angle(), 0F);
     }
 
 
