@@ -36,8 +36,8 @@ public class NativeTcpConnection extends TcpConnection {
             return this.tryToDecryptBytes(bytes.toByteArray());
         }catch(IOException ignored) {
             super.close();
+            return null;
         }
-        return null;
     }
 
     @Override

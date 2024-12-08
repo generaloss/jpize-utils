@@ -28,6 +28,10 @@ public class TcpClient {
         this.setConnectionType(BufferedTcpConnection.class);
     }
 
+    public TcpConnection connection() {
+        return connection;
+    }
+
 
     public TcpClient setConnectionType(Type tcpConnectionClass) {
         this.connectionFactory = TcpConnection.getFactory(tcpConnectionClass);
@@ -110,10 +114,6 @@ public class TcpClient {
             onReceive.receive(connection, bytes);
     }
 
-
-    public TcpConnection getConnection() {
-        return connection;
-    }
 
     public boolean isConnected() {
         return (connection != null && connection.isConnected());
