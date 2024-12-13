@@ -2,6 +2,7 @@ package jpize.util.io;
 
 import jpize.util.Utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,14 @@ public class FastReader implements Closeable {
         this.inputStream = inputStream;
         this.buffer = new byte[65536];
         this.charBuffer = new char[128];
+    }
+
+    public FastReader(byte[] bytes) {
+        this(new ByteArrayInputStream(bytes));
+    }
+
+    public FastReader(String string) {
+        this(string.getBytes());
     }
 
     public FastReader() {
@@ -52,11 +61,12 @@ public class FastReader implements Closeable {
 
 
     public String next() {
-        try{
-            if(!this.hasNext())
-                return null;
+        if(!this.hasNext())
+            return null;
 
-            for(int i = 0; ; ){
+        try{
+            int i = 0;
+            while(true){
                 while(pointer < bytesRead){
                     if(buffer[pointer] > SPACE){
                         if(i == charBuffer.length)
