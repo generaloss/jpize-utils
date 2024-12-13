@@ -2,10 +2,11 @@ package jpize.util.io;
 
 import jpize.util.Utils;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class FastReader {
+public class FastReader implements Closeable {
 
     private static final byte EOF = -1;
     private static final byte NEW_LINE = 10;
@@ -32,7 +33,7 @@ public class FastReader {
             throw new IOException();
 
         if(pointer == bytesRead)
-            fillBuffer();
+            this.fillBuffer();
 
         return buffer[pointer++];
     }
@@ -41,7 +42,7 @@ public class FastReader {
         try{
             pointer = 0;
             bytesRead = inputStream.read(buffer);
-            if(!hasNext())
+            if(!this.hasNext())
                 buffer[0] = EOF;
 
         }catch(IOException e){
@@ -52,14 +53,14 @@ public class FastReader {
 
     public String next() {
         try{
-            if(!hasNext() || readJunkSpace() == EOF)
+            if(!this.hasNext())
                 return null;
 
             for(int i = 0; ; ){
                 while(pointer < bytesRead){
                     if(buffer[pointer] > SPACE){
                         if(i == charBuffer.length)
-                            doubleCharBufferSize();
+                            this.doubleCharBufferSize();
                         charBuffer[i++] = (char) buffer[pointer++];
                     }else{
                         pointer++;
@@ -92,15 +93,16 @@ public class FastReader {
 
         do{
             while(pointer < bytesRead){
-                if(buffer[pointer] > SPACE)
+                if(buffer[pointer] > SPACE){
                     return 0;
-
+                }
                 pointer++;
             }
 
             bytesRead = inputStream.read(buffer);
-            if(bytesRead == EOF)
+            if(bytesRead == EOF){
                 return EOF;
+            }
 
             pointer = 0;
 
@@ -109,7 +111,7 @@ public class FastReader {
 
     public String nextLine() {
         try{
-            final byte c = read();
+            final byte c = this.read();
             if(c == NEW_LINE || c == EOF)
                 return "";
 
@@ -120,7 +122,7 @@ public class FastReader {
                 while(pointer < bytesRead){
                     if(buffer[pointer] != NEW_LINE){
                         if(i == charBuffer.length)
-                            doubleCharBufferSize();
+                            this.doubleCharBufferSize();
                         charBuffer[i++] = (char) buffer[pointer++];
                     }else{
                         pointer++;
@@ -129,8 +131,9 @@ public class FastReader {
                 }
 
                 bytesRead = inputStream.read(buffer);
-                if(bytesRead == EOF)
+                if(bytesRead == EOF){
                     return new String(charBuffer, 0, i);
+                }
 
                 pointer = 0;
 
@@ -150,35 +153,40 @@ public class FastReader {
 
 
     public int nextInt() {
-        return Integer.parseInt(next());
+        return Integer.parseInt(this.next());
     }
 
     public float nextFloat() {
-        return Float.parseFloat(next());
+        return Float.parseFloat(this.next());
     }
 
     public long nextLong() {
-        return Long.parseLong(next());
+        return Long.parseLong(this.next());
     }
 
     public double nextDouble() {
-        return Double.parseDouble(next());
+        return Double.parseDouble(this.next());
     }
 
     public boolean nextBool() {
-        return Boolean.parseBoolean(next());
+        return Boolean.parseBoolean(this.next());
     }
 
 
     public boolean hasNext() {
-        return bytesRead != EOF;
+        try{
+            return (this.readJunkSpace() != EOF);
+        }catch(IOException ignored){
+            return false;
+        }
     }
 
     public void waitNext() {
-        while(!hasNext())
+        while(!this.hasNext())
             Thread.yield();
     }
 
+    @Override
     public void close() {
         Utils.close(inputStream);
     }
