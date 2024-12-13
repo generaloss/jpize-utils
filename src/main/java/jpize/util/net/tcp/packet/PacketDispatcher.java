@@ -71,7 +71,7 @@ public class PacketDispatcher {
         try{
             final Constructor<?> constructor = packetClass.getDeclaredConstructor();
             constructor.setAccessible(true);
-            //noinspection unchecked
+            // noinspection unchecked
             return (IPacket<PacketHandler>) constructor.newInstance();
 
         }catch(Exception e){

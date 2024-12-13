@@ -25,6 +25,7 @@ public abstract class TcpConnection implements Closeable {
     protected final SelectionKey selectionKey;
     protected final Consumer<TcpConnection> onDisconnect;
     private KeyAES encodeKey;
+    private Object attachment;
 
     public TcpConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect) {
         this.channel = channel;
@@ -32,13 +33,27 @@ public abstract class TcpConnection implements Closeable {
         this.onDisconnect = onDisconnect;
     }
 
-    public SocketChannel getChannel() {
+    public SocketChannel channel() {
         return channel;
     }
 
-    public SelectionKey getSelectionKey() {
+    public Socket socket() {
+        return channel.socket();
+    }
+
+    public SelectionKey selectionKey() {
         return selectionKey;
     }
+
+    public <O> O attachment() {
+        // noinspection unchecked
+        return (O) attachment;
+    }
+
+    public void attach(Object attachment) {
+        this.attachment = attachment;
+    }
+
 
 
     public void encode(KeyAES encodeKey) {
@@ -46,13 +61,11 @@ public abstract class TcpConnection implements Closeable {
     }
 
     protected byte[] tryToEncryptBytes(byte[] bytes) {
-        if(encodeKey == null){ return bytes;
-        }else return encodeKey.encrypt(bytes);
+        return (encodeKey == null) ? bytes : encodeKey.encrypt(bytes);
     }
 
     protected byte[] tryToDecryptBytes(byte[] bytes) {
-        if(encodeKey == null){ return bytes;
-        }else return encodeKey.decrypt(bytes);
+        return (encodeKey == null) ? bytes : encodeKey.decrypt(bytes);
     }
 
 
@@ -91,106 +104,102 @@ public abstract class TcpConnection implements Closeable {
     }
 
 
-    public Socket getSocket() {
-        return channel.socket();
-    }
-
     public boolean isConnected() {
-        return this.getSocket().isConnected();
+        return this.socket().isConnected();
     }
 
     public boolean isClosed() {
-        return this.getSocket().isClosed();
+        return this.socket().isClosed();
     }
 
     public int getPort() {
-        return this.getSocket().getPort();
+        return this.socket().getPort();
     }
 
     public int getLocalPort() {
-        return this.getSocket().getLocalPort();
+        return this.socket().getLocalPort();
     }
 
     public InetAddress getAddress() {
-        return this.getSocket().getInetAddress();
+        return this.socket().getInetAddress();
     }
 
     public InetAddress getLocalAddress() {
-        return this.getSocket().getLocalAddress();
+        return this.socket().getLocalAddress();
     }
 
 
     public boolean getTcpNoDelay() {
-        try{ return this.getSocket().getTcpNoDelay(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.socket().getTcpNoDelay(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getSoTimeout() {
-        try{ return this.getSocket().getSoTimeout(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.socket().getSoTimeout(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public boolean getKeepAlive() {
-        try{ return this.getSocket().getKeepAlive(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.socket().getKeepAlive(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getSendBufferSize() {
-        try{ return this.getSocket().getSendBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.socket().getSendBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getReceiveBufferSize() {
-        try{ return this.getSocket().getReceiveBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.socket().getReceiveBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getTrafficClass() {
-        try{ return this.getSocket().getTrafficClass(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.socket().getTrafficClass(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public boolean getReuseAddress() {
-        try{ return this.getSocket().getReuseAddress(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.socket().getReuseAddress(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public boolean getOOBInline() {
-        try{ return this.getSocket().getOOBInline(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.socket().getOOBInline(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public int getSoLinger() {
-        try{ return this.getSocket().getSoLinger(); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ return this.socket().getSoLinger(); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
 
     public void setTcpNoDelay(boolean on) {
-        try{ this.getSocket().setTcpNoDelay(on); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.socket().setTcpNoDelay(on); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setSoTimeout(int timeout) {
-        try{ this.getSocket().setSoTimeout(timeout); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.socket().setSoTimeout(timeout); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setKeepAlive(boolean on) {
-        try{ this.getSocket().setKeepAlive(on); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.socket().setKeepAlive(on); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setSendBufferSize(int size) {
-        try{ this.getSocket().setSendBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.socket().setSendBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setReceiveBufferSize(int size) {
-        try{ this.getSocket().setReceiveBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.socket().setReceiveBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setTrafficClass(int trafficClass) {
-        try{ this.getSocket().setTrafficClass(trafficClass); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.socket().setTrafficClass(trafficClass); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setReuseAddress(boolean on) {
-        try{ this.getSocket().setReuseAddress(on); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.socket().setReuseAddress(on); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setOOBInline(boolean on) {
-        try{ this.getSocket().setOOBInline(on); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.socket().setOOBInline(on); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
     public void setSoLinger(boolean on, int linger) {
-        try{ this.getSocket().setSoLinger(on, linger); }catch(SocketException e){ throw new RuntimeException(e); }
+        try{ this.socket().setSoLinger(on, linger); }catch(SocketException e){ throw new RuntimeException(e); }
     }
 
 

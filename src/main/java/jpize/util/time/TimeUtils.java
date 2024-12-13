@@ -53,10 +53,14 @@ public class TimeUtils {
             Thread.onSpinWait();
     }
 
-    public static void waitFor(BooleanSupplier supplier, long timeoutMillis, Runnable timeoutRunnable) {
+    public static void waitFor(BooleanSupplier supplier, long timeoutMillis) {
         final long oldMillis = System.currentTimeMillis();
         while(!supplier.getAsBoolean() && System.currentTimeMillis() - oldMillis < timeoutMillis)
             Thread.onSpinWait();
+    }
+
+    public static void waitFor(BooleanSupplier supplier, long timeoutMillis, Runnable timeoutRunnable) {
+        waitFor(supplier, timeoutMillis);
         if(!supplier.getAsBoolean())
             timeoutRunnable.run();
     }
