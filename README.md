@@ -12,7 +12,7 @@
 The [*Resource*](src/main/java/jpize/util/res/Resource.java) class provides access to files and folders and is extended by:
 * *ExternalResource* - (in filesystem)
 * *InternalResource* - (in resources folder / jar archive root)
-* *UrlResource* - (remote url resource)
+* *URLResource* - (remote url resource)
 
 ---
 The [*InternalResource*](src/main/java/jpize/util/res/InternalResource.java) class can only read files (because they can only be placed in the resource folder in the project or in the .jar archive root).
@@ -41,15 +41,15 @@ ExternalResource[] resources = Resource.external(filepaths);
 ExternalResource[] resources = Resource.external(files);
 ```
 
-The [*UrlResource*](src/main/java/jpize/util/res/UrlResource.java) class can download data
+The [*URLResource*](src/main/java/jpize/util/res/URLResource.java) class can download data
 
 ``` java
 // URL Resource creating methods:
-UrlResource res = Resource.url(url);
-UrlResource res = Resource.url(urlString);
+URLResource res = Resource.url(url);
+URLResource res = Resource.url(urlString);
 
-UrlResource[] resources = Resource.url(urls);
-UrlResource[] resources = Resource.url(urlsString);
+URLResource[] resources = Resource.url(urls);
+URLResource[] resources = Resource.url(urlsString);
 ```
 
 The [*ZipResource*](src/main/java/jpize/util/res/ZipResource.java) class can download data
@@ -109,7 +109,7 @@ ExternalResource[] list = res.listResources(filenameFilter);
 ```
 ``` java
 // url
-UrlResource res = Resource.internal("https://icanhazip.com");
+URLResource res = Resource.internal("https://icanhazip.com");
 
 URL url = res.url();
 String protocol = res.protocol(); // 'https'
@@ -140,7 +140,7 @@ ZipResource[] list  = res.listResources();
 The [*ExtDataInputStream*](src/main/java/jpize/util/io/ExtDataInputStream.java) and [*ExtDataOutputStream*](src/main/java/jpize/util/io/ExtDataOutputStream.java) classes extends *DataInputStream* and *DataOutputStream* and has read/write methods for:
 * { byte / int / short / long / float / double / *boolean* / char } ***Array, Buffer, List***
 * { bytes / chars / UTF } ***String***
-* ***UUID, EulerAngles, Color, vectors***
+* ***UUID, EulerAngles, IColor, vectors***
 
 ---
 
@@ -266,10 +266,10 @@ Honorable mention:
 
 Encrypted TCP connection example:
 ``` java
-KeyAES key = new KeyAES(128); // generate key for connection encoding
+AESKey key = new AESKey(128); // generate key for connection encoding
 
 // server
-TcpServer server = new TcpServer()
+TCPServer server = new TCPServer()
     .setOnReceive((sender, bytes) -> {
         System.out.println("Received: " + new String(bytes)); 
     })
@@ -279,7 +279,7 @@ TcpServer server = new TcpServer()
     .run(65000);
 
 // client
-TcpClient client = new TcpClient()
+TCPClient client = new TCPClient()
     .connect("localhost", 65000)
     .encode(key)
     .send("Hello, World!".getBytes());
@@ -294,7 +294,7 @@ PacketDispatcher packetDispatcher = new PacketDispatcher()
         .register(MsgPacket.class, AnotherPacket.class, ...);
 
 // create server and set receiver
-new TcpServer()
+new TCPServer()
     .setOnReceive((sender, bytes) -> {
         packetDispatcher.readPacket(bytes, handler);
         packetDispatcher.handlePackets(); // invoke handleMessage()
@@ -302,7 +302,7 @@ new TcpServer()
     .run(65000);
 
 // create client and send packet
-new TcpClient()
+new TCPClient()
     .connect("localhost", 65000)
     .send(new MsgPacket("My message!"));
 
@@ -345,12 +345,12 @@ public static class MsgPacket extends IPacket<MyPacketHandler> { // MyPacketHand
 UDP connection example:
 ``` java
 // open UDP server and listen for datagramm packets
-UdpServer listener = new UdpServer(65000, packet -> {
+UDPServer listener = new UDPServer(65000, packet -> {
     System.out.println(new String(packet.getData())); // receive "Hello, world!"
 });
 
 // connect and send "Hello, world!" bytes
-UdpClient connection = new UdpClient("localhost", 65000);
+UDPClient connection = new UDPClient("localhost", 65000);
 connection.send("Hello, world!".getBytes(), "localhost", 65000);
 ```
 

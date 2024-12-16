@@ -2,13 +2,13 @@ package tests;
 
 import jpize.util.io.ExtDataInputStream;
 import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.tcp.TcpClient;
-import jpize.util.net.tcp.TcpConnection;
-import jpize.util.net.tcp.TcpServer;
+import jpize.util.net.tcp.TCPClient;
+import jpize.util.net.tcp.TCPConnection;
+import jpize.util.net.tcp.TCPServer;
 import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.net.tcp.packet.PacketDispatcher;
 import jpize.util.net.tcp.packet.PacketHandler;
-import jpize.util.security.KeyAES;
+import jpize.util.security.AESKey;
 import jpize.util.time.TimeUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,11 +25,11 @@ public class TcpTests {
     public void reconnect_client() {
         final int reconnectsNum = 7;
         final AtomicInteger counter = new AtomicInteger();
-        new TcpServer()
+        new TCPServer()
                 .run(65000)
                 .setOnConnect((connection) -> counter.incrementAndGet())
                 .setOnDisconnect((connection) -> counter.incrementAndGet());
-        final TcpClient client = new TcpClient();
+        final TCPClient client = new TCPClient();
         for (int i = 0; i < reconnectsNum; i++)
             client.connect("localhost", 65000).disconnect();
         TimeUtils.delayMillis(5000);
@@ -39,10 +39,10 @@ public class TcpTests {
     @Test
     public void disconnect_client() {
         final AtomicBoolean closed = new AtomicBoolean();
-        new TcpServer()
-                .setOnConnect(TcpConnection::close)
+        new TCPServer()
+                .setOnConnect(TCPConnection::close)
                 .run(5406);
-        new TcpClient()
+        new TCPClient()
                 .setOnDisconnect((connection) -> closed.set(true))
                 .connect("localhost", 5406);
         TimeUtils.waitFor(closed::get, 500, Assert::fail);
@@ -51,10 +51,10 @@ public class TcpTests {
     @Test
     public void close_server_connection() {
         final AtomicBoolean closed = new AtomicBoolean();
-        new TcpServer()
+        new TCPServer()
                 .setOnDisconnect((connection) -> closed.set(true))
                 .run(5407);
-        new TcpClient()
+        new TCPClient()
                 .connect("localhost", 5407)
                 .disconnect();
         TimeUtils.waitFor(closed::get, 500, Assert::fail);
@@ -64,7 +64,7 @@ public class TcpTests {
     public void send_hello_world_to_server() {
         final String message = "Hello, World!";
 
-        new TcpServer()
+        new TCPServer()
                 .setOnReceive((sender, bytes) -> {
                     final String received = new String(bytes);
                     Assert.assertEquals(message, received);
@@ -72,7 +72,7 @@ public class TcpTests {
                 })
                 .run(5400);
 
-        final TcpClient client = new TcpClient()
+        final TCPClient client = new TCPClient()
                 .connect("localhost", 5400)
                 .send(message.getBytes());
 
@@ -81,10 +81,10 @@ public class TcpTests {
 
     @Test
     public void send_hello_world_encrypted() {
-        final KeyAES key = new KeyAES(128);
+        final AESKey key = new AESKey(128);
         final String message = "Hello, World!";
 
-        new TcpServer()
+        new TCPServer()
                 .setOnConnect((connection) -> connection.encode(key))
                 .setOnReceive((sender, bytes) -> {
                     final String received = new String(bytes);
@@ -93,7 +93,7 @@ public class TcpTests {
                 })
                 .run(5405);
 
-        final TcpClient client = new TcpClient()
+        final TCPClient client = new TCPClient()
             .connect("localhost", 5405)
             .encode(key)
             .send(message.getBytes());
@@ -106,11 +106,11 @@ public class TcpTests {
     public void send_hello_world_to_client() {
         final String message = "Hello, World!";
 
-        new TcpServer()
+        new TCPServer()
                 .setOnConnect((connection) -> connection.send(message.getBytes()))
                 .run(5401);
 
-        final TcpClient client = new TcpClient()
+        final TCPClient client = new TCPClient()
                 .setOnReceive((connection, bytes) -> {
                     final String received = new String(bytes);
                     Assert.assertEquals(message, received);
@@ -125,7 +125,7 @@ public class TcpTests {
     public void send_a_lot_of_data_to_server() {
         final String message = "Hello, DDoS! ".repeat(100000);
 
-        new TcpServer()
+        new TCPServer()
                 .setOnReceive((sender, bytes) -> {
                     final String received = new String(bytes);
                     Assert.assertEquals(received, message);
@@ -133,7 +133,7 @@ public class TcpTests {
                 })
                 .run(5402);
 
-        final TcpClient client = new TcpClient()
+        final TCPClient client = new TCPClient()
                 .connect("localhost", 5402)
                 .send(message.getBytes());
 
@@ -146,7 +146,7 @@ public class TcpTests {
         final int clientsAmount = 100;
         final AtomicInteger done = new AtomicInteger();
 
-        final TcpServer server = new TcpServer()
+        final TCPServer server = new TCPServer()
                 .setOnReceive((sender, bytes) -> {
                     final String received = new String(bytes);
                     Assert.assertEquals(received, message);
@@ -154,11 +154,11 @@ public class TcpTests {
                 })
                 .run(5404);
 
-        final List<TcpClient> clients = new CopyOnWriteArrayList<>();
+        final List<TCPClient> clients = new CopyOnWriteArrayList<>();
         for(int i = 0; i < clientsAmount; i++)
-            clients.add(new TcpClient().connect("localhost", 5404));
+            clients.add(new TCPClient().connect("localhost", 5404));
 
-        for(TcpClient client: clients)
+        for(TCPClient client: clients)
             new Thread(() -> client.send(message.getBytes()).disconnect()).start();
 
         int prevDone = -1;
@@ -183,13 +183,13 @@ public class TcpTests {
             counter.incrementAndGet();
         };
 
-        new TcpServer()
+        new TCPServer()
             .setOnReceive((sender, bytes) -> {
                 dispatcher.readPacket(bytes, handler);
                 dispatcher.handlePackets();
             }).run(5403);
 
-        final TcpClient client = new TcpClient()
+        final TCPClient client = new TCPClient()
                 .connect("localhost", 5403)
                 .send(new MsgPacket(message))
                 .send(new MsgPacket(message));

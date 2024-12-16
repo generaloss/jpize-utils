@@ -8,26 +8,26 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-public class KeyAES {
+public class AESKey {
 
     private final SecretKey key;
     private final Cipher decryptCipher, encryptCipher;
 
-    public KeyAES(SecretKey key) {
+    public AESKey(SecretKey key) {
         this.key = key;
         this.decryptCipher = getDecryptCipher(key);
         this.encryptCipher = getEncryptCipher(key);
     }
 
-    public KeyAES(byte[] bytes) {
+    public AESKey(byte[] bytes) {
         this(new SecretKeySpec(bytes, "AES"));
     }
 
-    public KeyAES(Resource res) {
+    public AESKey(Resource res) {
         this(res.readBytes());
     }
 
-    public KeyAES(int size) {
+    public AESKey(int size) {
         this(generateSecretKey(size));
     }
 

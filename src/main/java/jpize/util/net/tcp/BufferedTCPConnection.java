@@ -6,13 +6,13 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.function.Consumer;
 
-public class BufferedTcpConnection extends TcpConnection {
+public class BufferedTCPConnection extends TCPConnection {
 
     private final ByteBuffer lengthBuffer;
     private ByteBuffer readBuffer;
     private int bytesRemaining;
 
-    protected BufferedTcpConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect) {
+    protected BufferedTCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
         super(channel, selectionKey, onDisconnect);
         this.lengthBuffer = ByteBuffer.allocate(4); // 4 bytes for integer
     }

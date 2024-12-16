@@ -19,18 +19,18 @@ import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-public class TcpServer {
+public class TCPServer {
 
-    private Consumer<TcpConnection> onConnect, onDisconnect;
-    private TcpListener onReceive;
-    private TcpConnection.Factory connectionFactory;
-    private CopyOnWriteArrayList<TcpConnection> connections;
+    private Consumer<TCPConnection> onConnect, onDisconnect;
+    private TCPListener onReceive;
+    private TCPConnection.Factory connectionFactory;
+    private CopyOnWriteArrayList<TCPConnection> connections;
     private ServerSocketChannel serverSocketChannel;
     private Selector selector;
-    private final Consumer<TcpConnection> disconnector;
+    private final Consumer<TCPConnection> disconnector;
 
-    public TcpServer() {
-        this.setConnectionType(BufferedTcpConnection.class);
+    public TCPServer() {
+        this.setConnectionType(BufferedTCPConnection.class);
         this.disconnector = (connection) -> {
             if(onDisconnect != null) onDisconnect.accept(connection);
             connections.remove(connection);
@@ -38,28 +38,28 @@ public class TcpServer {
     }
 
 
-    public TcpServer setConnectionType(Type tcpConnectionClass) {
-        this.connectionFactory = TcpConnection.getFactory(tcpConnectionClass);
+    public TCPServer setConnectionType(Type tcpConnectionClass) {
+        this.connectionFactory = TCPConnection.getFactory(tcpConnectionClass);
         return this;
     }
 
 
-    public TcpServer setOnConnect(Consumer<TcpConnection> onConnect) {
+    public TCPServer setOnConnect(Consumer<TCPConnection> onConnect) {
         this.onConnect = onConnect;
         return this;
     }
 
-    public TcpServer setOnDisconnect(Consumer<TcpConnection> onDisconnect) {
+    public TCPServer setOnDisconnect(Consumer<TCPConnection> onDisconnect) {
         this.onDisconnect = onDisconnect;
         return this;
     }
 
-    public TcpServer setOnReceive(TcpListener onReceive) {
+    public TCPServer setOnReceive(TCPListener onReceive) {
         this.onReceive = onReceive;
         return this;
     }
 
-    public TcpServer setOnReceiveStream(TcpStreamListener onReceive) {
+    public TCPServer setOnReceiveStream(TCPStreamListener onReceive) {
         this.onReceive = (sender, bytes) -> {
             try{
                 final ExtDataInputStream stream = new ExtDataInputStream(bytes);
@@ -73,7 +73,7 @@ public class TcpServer {
     }
 
 
-    public TcpServer run(SocketAddress address) {
+    public TCPServer run(SocketAddress address) {
         if(this.isAlive())
             throw new IllegalStateException("TCP-Server already running.");
 
@@ -95,11 +95,11 @@ public class TcpServer {
         return this;
     }
 
-    public TcpServer run(String host, int port) {
+    public TCPServer run(String host, int port) {
         return run(new InetSocketAddress(host, port));
     }
 
-    public TcpServer run(int port) {
+    public TCPServer run(int port) {
         return run(new InetSocketAddress(port));
     }
 
@@ -125,14 +125,14 @@ public class TcpServer {
                 continue;
 
             if(key.isReadable()){
-                this.receiveBytes((TcpConnection) key.attachment());
+                this.receiveBytes((TCPConnection) key.attachment());
             }else if(key.isAcceptable()){
                 this.acceptNewConnection();
             }
         }
     }
 
-    private void receiveBytes(TcpConnection connection) {
+    private void receiveBytes(TCPConnection connection) {
         final byte[] bytes = connection.read();
         if(bytes != null && onReceive != null)
             onReceive.receive(connection, bytes);
@@ -146,7 +146,7 @@ public class TcpServer {
         channel.configureBlocking(false);
         final SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
 
-        final TcpConnection connection = connectionFactory.create(channel, key, disconnector);
+        final TCPConnection connection = connectionFactory.create(channel, key, disconnector);
         connections.add(connection);
         key.attach(connection);
 
@@ -155,7 +155,7 @@ public class TcpServer {
     }
 
 
-    public Collection<TcpConnection> getConnections() {
+    public Collection<TCPConnection> getConnections() {
         return connections;
     }
 
@@ -167,11 +167,11 @@ public class TcpServer {
         return (serverSocketChannel == null || serverSocketChannel.socket().isClosed());
     }
 
-    public TcpServer close() {
+    public TCPServer close() {
         if(this.isClosed())
             return this;
 
-        for(TcpConnection connection: connections)
+        for(TCPConnection connection: connections)
             connection.close();
         connections.clear();
 
@@ -181,12 +181,12 @@ public class TcpServer {
 
 
     public void broadcast(byte[] bytes) {
-        for(TcpConnection connection: connections)
+        for(TCPConnection connection: connections)
             connection.send(bytes);
     }
 
-    public void broadcast(TcpConnection except, byte[] bytes) {
-        for(TcpConnection connection: connections)
+    public void broadcast(TCPConnection except, byte[] bytes) {
+        for(TCPConnection connection: connections)
             if(connection != except)
                 connection.send(bytes);
     }
@@ -195,7 +195,7 @@ public class TcpServer {
         this.broadcast(stream.toByteArray());
     }
 
-    public void broadcast(TcpConnection except, ByteArrayOutputStream stream) {
+    public void broadcast(TCPConnection except, ByteArrayOutputStream stream) {
         this.broadcast(except, stream.toByteArray());
     }
 
@@ -210,7 +210,7 @@ public class TcpServer {
         }
     }
 
-    public void broadcast(TcpConnection except, IOConsumer<ExtDataOutputStream> streamConsumer) {
+    public void broadcast(TCPConnection except, IOConsumer<ExtDataOutputStream> streamConsumer) {
         try{
             final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             final ExtDataOutputStream dataStream = new ExtDataOutputStream(byteStream);
@@ -228,7 +228,7 @@ public class TcpServer {
         });
     }
 
-    public void broadcast(TcpConnection except, IPacket<?> packet) {
+    public void broadcast(TCPConnection except, IPacket<?> packet) {
         this.broadcast(except, dataStream -> {
             dataStream.writeShort(packet.getPacketID());
             packet.write(dataStream);

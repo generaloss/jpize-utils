@@ -4,12 +4,12 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
-public class KeyRSA {
+public class RSAKey {
 
     private final PublicRSA publicKey;
     private final PrivateRSA privateKey;
 
-    public KeyRSA(int size) {
+    public RSAKey(int size) {
         final KeyPair pair = generateKeyPair(size);
         if(pair == null)
             throw new RuntimeException("Unable to generate RSA key pair.");

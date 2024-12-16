@@ -7,13 +7,13 @@ import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.util.function.Consumer;
 
-public class UdpServer {
+public class UDPServer {
 
     private final DatagramSocket socket;
     private final Consumer<DatagramPacket> packetConsumer;
     private final Thread thread;
 
-    public UdpServer(int port, Consumer<DatagramPacket> packetConsumer){
+    public UDPServer(int port, Consumer<DatagramPacket> packetConsumer){
         try{
             this.socket = new DatagramSocket(port);
             this.packetConsumer = packetConsumer;
@@ -23,7 +23,7 @@ public class UdpServer {
         }
     }
 
-    public UdpServer(String host, int port, Consumer<DatagramPacket> packetConsumer){
+    public UDPServer(String host, int port, Consumer<DatagramPacket> packetConsumer){
         try{
             this.socket = new DatagramSocket(port, InetAddress.getByName(host));
             this.packetConsumer = packetConsumer;
@@ -43,7 +43,7 @@ public class UdpServer {
 
     private void receiveLoop(){
         try{
-            while(!isClosed()){ //! !Thread.interrupted()
+            while(!this.isClosed()){ //! !Thread.interrupted()
                 // receive size
                 final DatagramPacket sizePacket = new DatagramPacket(new byte[4], 4);
                 socket.receive(sizePacket);
@@ -75,7 +75,7 @@ public class UdpServer {
     }
 
     public void close() {
-        if(isClosed())
+        if(this.isClosed())
             return;
         thread.interrupt();
         socket.close();

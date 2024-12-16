@@ -385,17 +385,17 @@ public class ExtDataOutputStream extends DataOutputStream {
     }
 
     public void writeColor(ImmutableColor color) throws IOException {
-        writeFloat(color.r);
-        writeFloat(color.g);
-        writeFloat(color.b);
-        writeFloat(color.a);
+        writeFloat(color.red);
+        writeFloat(color.green);
+        writeFloat(color.blue);
+        writeFloat(color.alpha);
     }
 
     public void writeColor(Color color) throws IOException {
-        writeFloat(color.r);
-        writeFloat(color.g);
-        writeFloat(color.b);
-        writeFloat(color.a);
+        writeFloat(color.red);
+        writeFloat(color.green);
+        writeFloat(color.blue);
+        writeFloat(color.alpha);
     }
 
 }

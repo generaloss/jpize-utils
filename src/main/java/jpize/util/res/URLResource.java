@@ -5,15 +5,15 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class UrlResource extends Resource {
+public class URLResource extends Resource {
 
     protected final URL url;
 
-    protected UrlResource(URL url) {
+    protected URLResource(URL url) {
         this.url = url;
     }
 
-    protected UrlResource(String url) {
+    protected URLResource(String url) {
         try{
             this.url = new URL(url);
         }catch(MalformedURLException e){

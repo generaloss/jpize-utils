@@ -4,7 +4,7 @@ import jpize.util.Utils;
 import jpize.util.function.IOConsumer;
 import jpize.util.io.ExtDataOutputStream;
 import jpize.util.net.tcp.packet.IPacket;
-import jpize.util.security.KeyAES;
+import jpize.util.security.AESKey;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -19,15 +19,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public abstract class TcpConnection implements Closeable {
+public abstract class TCPConnection implements Closeable {
 
     protected final SocketChannel channel;
     protected final SelectionKey selectionKey;
-    protected final Consumer<TcpConnection> onDisconnect;
-    private KeyAES encodeKey;
+    protected final Consumer<TCPConnection> onDisconnect;
+    private AESKey encodeKey;
     private Object attachment;
 
-    public TcpConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect) {
+    public TCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
         this.channel = channel;
         this.selectionKey = selectionKey;
         this.onDisconnect = onDisconnect;
@@ -56,7 +56,7 @@ public abstract class TcpConnection implements Closeable {
 
 
 
-    public void encode(KeyAES encodeKey) {
+    public void encode(AESKey encodeKey) {
         this.encodeKey = encodeKey;
     }
 
@@ -204,12 +204,12 @@ public abstract class TcpConnection implements Closeable {
 
 
     public interface Factory {
-        TcpConnection create(SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect);
+        TCPConnection create(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect);
     }
 
     private static final Map<Type, Factory> FACTORY_BY_CLASS = new HashMap<>(){{{
-        put(BufferedTcpConnection.class, BufferedTcpConnection::new);
-        put(NativeTcpConnection.class, NativeTcpConnection::new);
+        put(BufferedTCPConnection.class, BufferedTCPConnection::new);
+        put(NativeTCPConnection.class, NativeTCPConnection::new);
     }}};
 
     public static void registerFactory(Type connectionClass, Factory factory) {
@@ -222,7 +222,7 @@ public abstract class TcpConnection implements Closeable {
         return FACTORY_BY_CLASS.get(connectionClass);
     }
 
-    public static TcpConnection create(Type connectionClass, SocketChannel channel, SelectionKey selectionKey, Consumer<TcpConnection> onDisconnect) {
+    public static TCPConnection create(Type connectionClass, SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
         final Factory factory = getFactory(connectionClass);
         return factory.create(channel, selectionKey, onDisconnect);
     }
