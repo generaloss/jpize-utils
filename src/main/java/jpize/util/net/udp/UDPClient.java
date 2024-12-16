@@ -3,11 +3,11 @@ package jpize.util.net.udp;
 import java.io.IOException;
 import java.net.*;
 
-public class UdpClient {
+public class UDPClient {
 
     private final DatagramSocket socket;
 
-    public UdpClient(String host, int port) {
+    public UDPClient(String host, int port) {
         try{
             this.socket = new DatagramSocket();
             this.socket.connect(InetAddress.getByName(host), port);
@@ -18,7 +18,7 @@ public class UdpClient {
 
 
     public void send(byte[] bytes, SocketAddress address) {
-        if(isClosed())
+        if(this.isClosed())
             return;
 
         try{
@@ -61,7 +61,7 @@ public class UdpClient {
     }
 
     public void close() {
-        if(isConnected())
+        if(this.isConnected())
             socket.close();
     }
 

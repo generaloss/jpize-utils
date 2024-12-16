@@ -1,8 +1,13 @@
 package jpize.util.color;
 
-public class Color {
+import jpize.util.math.Maths;
 
-    public float r, g, b, a;
+public class Color extends IColor {
+
+    public float red;
+    public float green;
+    public float blue;
+    public float alpha;
 
     public Color() {
         this.reset();
@@ -12,7 +17,15 @@ public class Color {
         this.set(red, green, blue, alpha);
     }
 
+    public Color(double red, double green, double blue, double alpha) {
+        this.set(red, green, blue, alpha);
+    }
+
     public Color(float red, float green, float blue) {
+        this.set(red, green, blue);
+    }
+
+    public Color(double red, double green, double blue) {
         this.set(red, green, blue);
     }
 
@@ -20,248 +33,306 @@ public class Color {
         this.set(grayscale, alpha);
     }
 
-    public Color(float grayscale) {
-        this.set(grayscale);
-    }
-
-    public Color(double red, double green, double blue, double alpha) {
-        this.set(red, green, blue, alpha);
-    }
-
-    public Color(double red, double green, double blue) {
-        this.set(red, green, blue);
-    }
-
     public Color(double grayscale, double alpha) {
         this.set(grayscale, alpha);
+    }
+
+    public Color(float grayscale) {
+        this.set(grayscale);
     }
 
     public Color(double grayscale) {
         this.set(grayscale);
     }
 
-    public Color(Color color) {
+    public Color(IColor color) {
         this.set(color);
     }
 
-    public Color(ImmutableColor immutableColor) {
-        this.set(immutableColor);
+    public Color(float[] array) {
+        this.set(array);
     }
 
-    public Color(float[] colorArray) {
-        this.set(colorArray);
+    public Color(double[] array) {
+        this.set(array);
     }
 
-    public Color(double[] colorArray) {
-        this.set(colorArray);
+    public Color(int[] array) {
+        this.seti(array);
     }
 
 
-    public Color reset() {
-        return set(1F, 1F, 1F, 1F);
+    @Override
+    public float getRed() {
+        return red;
+    }
+
+    public Color setRed(float red) {
+        this.red = red;
+        return this;
+    }
+
+    public Color setRed(double red) {
+        return this.setRed((float) red);
+    }
+
+    public Color setRedi(int red) {
+        return this.setRed(red / 255F);
+    }
+
+
+    @Override
+    public float getGreen() {
+        return green;
+    }
+
+    public Color setGreen(float green) {
+        this.green = green;
+        return this;
+    }
+
+    public Color setGreen(double green) {
+        return this.setGreen((float) green);
+    }
+
+    public Color setGreeni(int green) {
+        return this.setGreen(green / 255F);
+    }
+
+
+    @Override
+    public float getBlue() {
+        return blue;
+    }
+
+    public Color setBlue(float blue) {
+        this.blue = blue;
+        return this;
+    }
+
+    public Color setBlue(double blue) {
+        return this.setBlue((float) blue);
+    }
+
+    public Color setBluei(int blue) {
+        return this.setBlue(blue / 255F);
+    }
+
+
+    @Override
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public Color setAlpha(float alpha) {
+        this.alpha = alpha;
+        return this;
+    }
+
+    public Color setAlpha(double alpha) {
+        return this.setAlpha((float) alpha);
+    }
+
+    public Color setAlphai(int alpha) {
+        return this.setAlpha(alpha / 255F);
     }
 
 
     public Color set(float red, float green, float blue, float alpha) {
-        this.r = red;
-        this.g = green;
-        this.b = blue;
-        this.a = alpha;
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.alpha = alpha;
         return this;
-    }
-
-    public Color set(float red, float green, float blue) {
-        return set(red, green, blue, 1F);
-    }
-
-    public Color set(float grayscale, float alpha) {
-        return set(grayscale, grayscale, grayscale, alpha);
-    }
-
-    public Color set(float grayscale) {
-        return set(grayscale, 1F);
     }
 
     public Color set(double red, double green, double blue, double alpha) {
-        return set((float) red, (float) green, (float) blue, (float) alpha);
+        return this.set((float) red, (float) green, (float) blue, (float) alpha);
+    }
+
+    public Color seti(int red, int green, int blue, int alpha) {
+        return this.set(
+            (red   / 255F),
+            (green / 255F),
+            (blue  / 255F),
+            (alpha / 255F)
+        );
+    }
+
+
+    public Color set(float red, float green, float blue) {
+        return this.set(red, green, blue, 1F);
     }
 
     public Color set(double red, double green, double blue) {
-        return set((float) red, (float) green, (float) blue, 1F);
+        return this.set((float) red, (float) green, (float) blue, 1F);
+    }
+
+    public Color seti(int red, int green, int blue) {
+        return this.set(
+            (red   / 255F),
+            (green / 255F),
+            (blue  / 255F)
+        );
+    }
+
+
+    public Color set(float grayscale, float alpha) {
+        return this.set(grayscale, grayscale, grayscale, alpha);
     }
 
     public Color set(double grayscale, double alpha) {
-        return set(grayscale, grayscale, grayscale, alpha);
+        return this.set(grayscale, grayscale, grayscale, alpha);
+    }
+
+    public Color seti(int grayscale, int alpha) {
+        return this.set(
+            (grayscale / 255F),
+            (alpha     / 255F)
+        );
+    }
+
+
+    public Color set(float grayscale) {
+        return this.set(grayscale, 1F);
     }
 
     public Color set(double grayscale) {
-        return set((float) grayscale, 1F);
+        return this.set((float) grayscale, 1F);
     }
 
-    public Color set(Color color) {
-        return set(color.r, color.g, color.b, color.a);
-    }
-
-    public Color set(ImmutableColor immutableColor) {
-        return set(immutableColor.r, immutableColor.g, immutableColor.b, immutableColor.a);
-    }
-
-    public Color set(float[] colorArray) {
-        return set(colorArray[0], colorArray[1], colorArray[2], colorArray[3]);
-    }
-
-    public Color set(double[] colorArray) {
-        return set(colorArray[0], colorArray[1], colorArray[2], colorArray[3]);
-    }
-
-    public Color setInt(int red, int green, int blue, int alpha) {
-        return set(
-            red   / 255F,
-            green / 255F,
-            blue  / 255F,
-            alpha / 255F
-        );
-    }
-
-    public Color setInt(int red, int green, int blue) {
-        return set(
-            red   / 255F,
-            green / 255F,
-            blue  / 255F
-        );
-    }
-
-    public Color setInt(int grayscale, int alpha) {
-        return set(
-            grayscale / 255F,
-            alpha     / 255F
-        );
-    }
-
-    public Color setInt(int grayscale) {
-        return set(
-            grayscale / 255F
-        );
+    public Color seti(int grayscale) {
+        return this.set(grayscale / 255F);
     }
 
 
-    public Color setR(float red) {
-        this.r = red;
+    public Color reset() {
+        return this.set(1F, 1F, 1F, 1F);
+    }
+
+
+    public Color set(IColor color) {
+        return this.set(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+    }
+
+    public Color set(float[] array) {
+        return this.set(array[0], array[1], array[2], array[3]);
+    }
+
+    public Color set(double[] array) {
+        return this.set(array[0], array[1], array[2], array[3]);
+    }
+
+    public Color seti(int[] array) {
+        return this.seti(array[0], array[1], array[2], array[3]);
+    }
+
+
+    public Color set(String hexString) {
+        // remove '#'
+        if(hexString.startsWith("#")) {
+            hexString = hexString.substring(1);
+        }
+        final int length = hexString.length();
+        final int mul = Maths.ceil(length * 0.25F);
+        final int repeat = (3 - mul);
+        final int components = (length / mul);
+        try{
+            // red
+            final String redStr = hexString.substring(0, mul).repeat(repeat);
+            this.setRedi(Integer.parseInt(redStr, 16));
+            // green
+            final String greenStr = hexString.substring(mul, 2 * mul).repeat(repeat);
+            this.setGreeni(Integer.parseInt(greenStr, 16));
+            // blue
+            final String blueStr = hexString.substring(2 * mul, 3 * mul).repeat(repeat);
+            this.setBluei(Integer.parseInt(blueStr, 16));
+            // alpha
+            if(components == 4){
+                final String alphaStr = hexString.substring(3 * mul, 4 * mul).repeat(repeat);
+                this.setAlphai(Integer.parseInt(alphaStr, 16));
+            }
+        }catch(Exception e){
+            throw new IllegalArgumentException("Invalid hexadecimal color: '" + hexString + "'");
+        }
         return this;
     }
 
-    public Color setG(float green) {
-        this.g = green;
-        return this;
-    }
-
-    public Color setB(float blue) {
-        this.b = blue;
-        return this;
-    }
-
-    public Color setA(float alpha) {
-        this.a = alpha;
-        return this;
-    }
-
-
-    public Color setR(double red) {
-        return setR((float) red);
-    }
-
-    public Color setG(double green) {
-        return setG((float) green);
-    }
-
-    public Color setB(double blue) {
-        return setB((float) blue);
-    }
-
-    public Color setA(double alpha) {
-        return setA((float) alpha);
+    public Color set(int hexInteger) {
+        return this.set(Integer.toHexString(hexInteger));
     }
 
 
     public Color addRGB(double red, double green, double blue) {
-        return set(
-            this.r + red,
-            this.g + green,
-            this.b + blue
+        return this.set(
+            (this.red   + red  ),
+            (this.green + green),
+            (this.blue  + blue )
         );
     }
 
     public Color addRGB(Color color) {
-        return addRGB(color.r, color.g, color.b);
+        return this.addRGB(color.red, color.green, color.blue);
     }
 
 
     public Color mul(double red, double green, double blue, double alpha) {
-        return set(
-            this.r * red,
-            this.g * green,
-            this.b * blue,
-            this.a * alpha
+        return this.set(
+            (this.red   * red  ),
+            (this.green * green),
+            (this.blue  * blue ),
+            (this.alpha * alpha)
         );
     }
 
     public Color mulRGB(double value) {
-        return set(
-            this.r * value,
-            this.g * value,
-            this.b * value
+        return this.set(
+            (red   * value),
+            (green * value),
+            (blue  * value)
         );
     }
 
     public Color divRGB(double value) {
-        return set(
-            this.r / value,
-            this.g / value,
-            this.b / value
+        return this.set(
+            (red   / value),
+            (green / value),
+            (blue  / value)
         );
     }
 
 
     public Color blend(Color color) {
-        float alphaSum = this.a + color.a;
-        float w1 = this.a / alphaSum;
-        float w2 = color.a / alphaSum;
+        final float invAlphaSum = (1F / (alpha + color.alpha));
+        final float a1 = (invAlphaSum * alpha);
+        final float a2 = (invAlphaSum * color.alpha);
 
-        return set(
-            this.r * w1 + color.r * w2,
-            this.g * w1 + color.g * w2,
-            this.b * w1 + color.b * w2,
-            Math.max(this.a, color.a)
+        return this.set(
+            (red   * a1) + (color.red   * a2),
+            (green * a1) + (color.green * a2),
+            (blue  * a1) + (color.blue  * a2),
+            Math.max(alpha, color.alpha)
         );
     }
 
 
     public Color inverseRGB() {
-        return set(
-            1F - this.r,
-            1F - this.g,
-            1F - this.b
+        return this.set(
+            (1F - red  ),
+            (1F - green),
+            (1F - blue )
         );
     }
 
     public Color inverseRGBA() {
-        inverseRGB();
-        return setA(1F - this.a);
+        this.inverseRGB();
+        return this.setAlpha(1F - this.alpha);
     }
 
-
-    public float[] toArray(){
-        return Colors.rgbaToArray(this);
-    }
-
-
-    public Color copy() {
-        return new Color(this);
-    }
 
     @Override
-    public String toString(){
-        return Colors.toString(this);
+    public Color copy() {
+        return new Color(this);
     }
 
 }

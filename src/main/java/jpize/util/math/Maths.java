@@ -29,7 +29,7 @@ public class Maths {
 
 
     public static int floor(double a) {
-        return (int) (a < 0 ? a - 1 : a);
+        return (int) (a < 0 ? a - 0.999999999999999D : a);
     }
 
     public static int round(double a) {
@@ -37,7 +37,7 @@ public class Maths {
     }
 
     public static int ceil(double a) {
-        return (int) (a > 0 ? a + 1 : a);
+        return (int) (a > 0 ? a + 0.999999999999999D : a);
     }
 
 
@@ -50,13 +50,13 @@ public class Maths {
     }
 
     public static double frac(double value, double min, double max) {
-        final double interval = max - min;
+        final double interval = (max - min);
         return frac((value - min) / interval) * interval + min;
     }
 
 
     public static boolean isPow2(int a) {
-        return a != 0 && (a & -a) == a;
+        return (a != 0 && (a & -a) == a);
     }
 
 
@@ -111,31 +111,31 @@ public class Maths {
     }
 
     public static long randomSeed(int length) {
-        if(length <= 0)
+        if(length < 1)
             return 0;
 
-        StringBuilder seed = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         for(int i = 0; i < length; i++)
-            seed.append(random((i == 0 ? 1 : 0), 9));
+            builder.append(random((i == 0 ? 1 : 0), 9));
 
-        return Long.parseLong(seed.toString());
+        return Long.parseLong(builder.toString());
     }
 
     public static void randomInts(int[] array, int min, int max) {
-        final int range = max - min;
+        final int range = (max - min);
         for(int i = 0; i < array.length; i++)
             array[i] = Maths.round(Math.random() * range + min);
     }
 
     public static void randomShorts(Short[] array, int min, int max) {
-        final int range = max - min;
+        final int range = (max - min);
         for(int i = 0; i < array.length; i++){
             array[i] = (short) Maths.round(Math.random() * range + min);
         }
     }
 
     public static void randomBytes(byte[] array, int min, int max) {
-        final int range = max - min;
+        final int range = (max - min);
         for(int i = 0; i < array.length; i++)
             array[i] = (byte) Maths.round(Math.random() * range + min);
     }
@@ -156,7 +156,7 @@ public class Maths {
     public static float cerp(float a, float b, float c, float d, float t) {
         float p = (d - c) - (a - b);
         float q = (a - b) - p;
-        float r = c - a;
+        float r = (c - a);
 
         return t * (t * (t * p + q) + r) + b; // pt^3 + qt^2 + rt^1 + b
     }
@@ -215,15 +215,15 @@ public class Maths {
 
 
     public static int nonZeroSignum(int a) {
-        return a >= 0 ? 1 : -1;
+        return (a >= 0 ? 1 : -1);
     }
 
     public static int nonZeroSignum(float a) {
-        return a >= 0 ? 1 : -1;
+        return (a >= 0 ? 1 : -1);
     }
 
     public static int nonZeroSignum(double a) {
-        return a >= 0 ? 1 : -1;
+        return (a >= 0 ? 1 : -1);
     }
 
 
@@ -231,7 +231,6 @@ public class Maths {
         float result = 0;
         for(int i = 0; i < a.length; i++)
             result += a[i] * b[i];
-
         return result;
     }
 

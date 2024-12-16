@@ -43,8 +43,8 @@ public abstract class Resource {
         return (InternalResource) this;
     }
 
-    public UrlResource asUrl() {
-        return (UrlResource) this;
+    public URLResource asUrl() {
+        return (URLResource) this;
     }
 
     public ZipResource asZipEntry() {
@@ -154,12 +154,12 @@ public abstract class Resource {
     }
 
 
-    public static UrlResource url(URL url) {
-        return new UrlResource(url);
+    public static URLResource url(URL url) {
+        return new URLResource(url);
     }
 
-    public static UrlResource url(String url) {
-        return new UrlResource(url);
+    public static URLResource url(String url) {
+        return new URLResource(url);
     }
 
 
@@ -196,15 +196,15 @@ public abstract class Resource {
         return arr;
     }
 
-    public static UrlResource[] url(URL... urls) {
-        final UrlResource[] arr = new UrlResource[urls.length];
+    public static URLResource[] url(URL... urls) {
+        final URLResource[] arr = new URLResource[urls.length];
         for(int i = 0; i < arr.length; i++)
             arr[i] = url(urls[i]);
         return arr;
     }
 
-    public static UrlResource[] url(String... urls) {
-        final UrlResource[] arr = new UrlResource[urls.length];
+    public static URLResource[] url(String... urls) {
+        final URLResource[] arr = new URLResource[urls.length];
         for(int i = 0; i < arr.length; i++)
             arr[i] = url(urls[i]);
         return arr;

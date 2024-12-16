@@ -4,7 +4,7 @@ import jpize.util.function.IOConsumer;
 import jpize.util.io.ExtDataInputStream;
 import jpize.util.io.ExtDataOutputStream;
 import jpize.util.net.tcp.packet.IPacket;
-import jpize.util.security.KeyAES;
+import jpize.util.security.AESKey;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,44 +16,44 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.function.Consumer;
 
-public class TcpClient {
+public class TCPClient {
 
-    private Consumer<TcpConnection> onConnect, onDisconnect;
-    private TcpListener onReceive;
-    private TcpConnection.Factory connectionFactory;
-    private TcpConnection connection;
+    private Consumer<TCPConnection> onConnect, onDisconnect;
+    private TCPListener onReceive;
+    private TCPConnection.Factory connectionFactory;
+    private TCPConnection connection;
     private Selector selector;
 
-    public TcpClient() {
-        this.setConnectionType(BufferedTcpConnection.class);
+    public TCPClient() {
+        this.setConnectionType(BufferedTCPConnection.class);
     }
 
-    public TcpConnection connection() {
+    public TCPConnection connection() {
         return connection;
     }
 
 
-    public TcpClient setConnectionType(Type tcpConnectionClass) {
-        this.connectionFactory = TcpConnection.getFactory(tcpConnectionClass);
+    public TCPClient setConnectionType(Type tcpConnectionClass) {
+        this.connectionFactory = TCPConnection.getFactory(tcpConnectionClass);
         return this;
     }
 
-    public TcpClient setOnConnect(Consumer<TcpConnection> onConnect) {
+    public TCPClient setOnConnect(Consumer<TCPConnection> onConnect) {
         this.onConnect = onConnect;
         return this;
     }
 
-    public TcpClient setOnDisconnect(Consumer<TcpConnection> onDisconnect) {
+    public TCPClient setOnDisconnect(Consumer<TCPConnection> onDisconnect) {
         this.onDisconnect = onDisconnect;
         return this;
     }
 
-    public TcpClient setOnReceive(TcpListener onReceive) {
+    public TCPClient setOnReceive(TCPListener onReceive) {
         this.onReceive = onReceive;
         return this;
     }
 
-    public TcpClient setOnReceiveStream(TcpStreamListener onReceive) {
+    public TCPClient setOnReceiveStream(TCPStreamListener onReceive) {
         this.onReceive = (sender, bytes) -> {
             try{
                 final ExtDataInputStream stream = new ExtDataInputStream(bytes);
@@ -67,7 +67,7 @@ public class TcpClient {
     }
 
 
-    public TcpClient connect(SocketAddress socketAddress) {
+    public TCPClient connect(SocketAddress socketAddress) {
         if(this.isConnected())
             throw new IllegalStateException("TCP-Client already connected.");
 
@@ -88,7 +88,7 @@ public class TcpClient {
         return this;
     }
 
-    public TcpClient connect(String host, int port) {
+    public TCPClient connect(String host, int port) {
         return connect(new InetSocketAddress(host, port));
     }
 
@@ -123,39 +123,39 @@ public class TcpClient {
         return (connection == null || connection.isClosed());
     }
 
-    public TcpClient disconnect() {
+    public TCPClient disconnect() {
         if(this.isConnected())
             connection.close();
         return this;
     }
 
 
-    public TcpClient encode(KeyAES encodeKey) {
+    public TCPClient encode(AESKey encodeKey) {
         if(this.isConnected())
             connection.encode(encodeKey);
         return this;
     }
 
 
-    public TcpClient send(byte[] bytes) {
+    public TCPClient send(byte[] bytes) {
         if(this.isConnected())
             connection.send(bytes);
         return this;
     }
 
-    public TcpClient send(ByteArrayOutputStream stream) {
+    public TCPClient send(ByteArrayOutputStream stream) {
         if(this.isConnected())
             connection.send(stream);
         return this;
     }
 
-    public TcpClient send(IOConsumer<ExtDataOutputStream> streamConsumer) {
+    public TCPClient send(IOConsumer<ExtDataOutputStream> streamConsumer) {
         if(this.isConnected())
             connection.send(streamConsumer);
         return this;
     }
 
-    public TcpClient send(IPacket<?> packet) {
+    public TCPClient send(IPacket<?> packet) {
         if(this.isConnected())
             connection.send(packet);
         return this;
