@@ -259,7 +259,21 @@ public class Color extends IColor {
     }
 
     public Color set(int hexInteger) {
-        return this.set(Integer.toHexString(hexInteger));
+        // rgba
+        if(hexInteger > 0xFFFFFF) {
+            return this.seti(
+                (hexInteger >> 24 & 0xFF),
+                (hexInteger >> 16 & 0xFF),
+                (hexInteger >> 8  & 0xFF),
+                (hexInteger       & 0xFF)
+            );
+        }
+        // rgb
+        return this.seti(
+            (hexInteger >> 16 & 0xFF),
+            (hexInteger >> 8  & 0xFF),
+            (hexInteger       & 0xFF)
+        );
     }
 
 

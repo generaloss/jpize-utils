@@ -106,4 +106,40 @@ public abstract class IColor {
         return intBits;
     }
 
+
+    public static Color blend(Color dst, float r1, float g1, float b1, float a1, float r2, float g2, float b2, float a2){
+        final float inv_a2 = (1F - a2);
+        dst.set(
+            (r1 * inv_a2) + (r2 * a2),
+            (g1 * inv_a2) + (g2 * a2),
+            (b1 * inv_a2) + (b2 * a2),
+            Math.max(a1, a2)
+        );
+        return dst;
+    }
+
+    public static Color blend(Color dst, IColor color1, float r2, float g2, float b2, float a2){
+        return blend(
+            dst,
+            color1.getRed(), color1.getGreen(), color1.getBlue(), color1.getAlpha(),
+            r2, g2, b2, a2
+        );
+    }
+
+    public static Color blend(Color dst, float r1, float g1, float b1, float a1, IColor color2){
+        return blend(
+            dst,
+            r1, g1, b1, a1,
+            color2.getRed(), color2.getGreen(), color2.getBlue(), color2.getAlpha()
+        );
+    }
+
+    public static Color blend(Color dst, IColor color1, IColor color2){
+        return blend(
+            dst,
+            color1.getRed(), color1.getGreen(), color1.getBlue(), color1.getAlpha(),
+            color2.getRed(), color2.getGreen(), color2.getBlue(), color2.getAlpha()
+        );
+    }
+
 }
