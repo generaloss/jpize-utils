@@ -2,7 +2,7 @@ package jpize.util.color;
 
 import jpize.util.math.Maths;
 
-public abstract class IColor {
+public abstract class AbstractColor {
 
     public static final ImmutableColor WHITE = new ImmutableColor(1F, 1F, 1F, 1F);
     public static final ImmutableColor BLACK = new ImmutableColor(0F, 0F, 0F, 1F);
@@ -16,7 +16,7 @@ public abstract class IColor {
 
     public abstract float getAlpha();
 
-    public abstract IColor copy();
+    public abstract AbstractColor copy();
 
 
     public int getRedi() {
@@ -135,7 +135,7 @@ public abstract class IColor {
         return dst;
     }
 
-    public static Color blend(Color dst, IColor color1, float r2, float g2, float b2, float a2){
+    public static Color blend(Color dst, AbstractColor color1, float r2, float g2, float b2, float a2){
         return blend(
             dst,
             color1.getRed(), color1.getGreen(), color1.getBlue(), color1.getAlpha(),
@@ -143,7 +143,7 @@ public abstract class IColor {
         );
     }
 
-    public static Color blend(Color dst, float r1, float g1, float b1, float a1, IColor color2){
+    public static Color blend(Color dst, float r1, float g1, float b1, float a1, AbstractColor color2){
         return blend(
             dst,
             r1, g1, b1, a1,
@@ -151,7 +151,7 @@ public abstract class IColor {
         );
     }
 
-    public static Color blend(Color dst, IColor color1, IColor color2){
+    public static Color blend(Color dst, AbstractColor color1, AbstractColor color2){
         return blend(
             dst,
             color1.getRed(), color1.getGreen(), color1.getBlue(), color1.getAlpha(),

@@ -4,7 +4,7 @@
 
     <groupId>io.github.generaloss</groupId>
     <artifactId>jpize-utils</artifactId>
-    <version>24.12.4.02</version>
+    <version>24.12.4.04</version>
     <name>jpize-utils</name>
 
     <description>utils library</description>
@@ -18,7 +18,8 @@
 
     <developers>
         <developer>
-            <name>generaloss</name>
+            <id>generaloss</id>
+            <name>Pavel Vladimirovich</name>
             <email>generaloss@proton.me</email>
         </developer>
     </developers>

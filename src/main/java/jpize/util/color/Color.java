@@ -2,7 +2,7 @@ package jpize.util.color;
 
 import jpize.util.math.Maths;
 
-public class Color extends IColor {
+public class Color extends AbstractColor {
 
     public float red;
     public float green;
@@ -45,7 +45,7 @@ public class Color extends IColor {
         this.set(grayscale);
     }
 
-    public Color(IColor color) {
+    public Color(AbstractColor color) {
         this.set(color);
     }
 
@@ -211,7 +211,7 @@ public class Color extends IColor {
     }
 
 
-    public Color set(IColor color) {
+    public Color set(AbstractColor color) {
         return this.set(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
     }
 
@@ -258,21 +258,30 @@ public class Color extends IColor {
         return this;
     }
 
-    public Color set(int hexInteger) {
-        // rgba
-        if(hexInteger > 0xFFFFFF) {
-            return this.seti(
-                (hexInteger >> 24 & 0xFF),
-                (hexInteger >> 16 & 0xFF),
-                (hexInteger >> 8  & 0xFF),
-                (hexInteger       & 0xFF)
-            );
-        }
-        // rgb
+
+    public Color setRGB(int color) {
         return this.seti(
-            (hexInteger >> 16 & 0xFF),
-            (hexInteger >> 8  & 0xFF),
-            (hexInteger       & 0xFF)
+                (color >> 16 & 0xFF),
+                (color >> 8  & 0xFF),
+                (color       & 0xFF)
+        );
+    }
+
+    public Color setRGBA(int color) {
+        return this.seti(
+            (color >> 24 & 0xFF),
+            (color >> 16 & 0xFF),
+            (color >> 8  & 0xFF),
+            (color       & 0xFF)
+        );
+    }
+
+    public Color setARGB(int color) {
+        return this.seti(
+                (color >> 16 & 0xFF),
+                (color >> 8  & 0xFF),
+                (color       & 0xFF),
+                (color >> 24 & 0xFF)
         );
     }
 

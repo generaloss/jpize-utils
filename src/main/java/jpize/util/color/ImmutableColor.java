@@ -1,6 +1,6 @@
 package jpize.util.color;
 
-public class ImmutableColor extends IColor {
+public class ImmutableColor extends AbstractColor {
 
     public final float red;
     public final float green;
@@ -49,7 +49,7 @@ public class ImmutableColor extends IColor {
         this((float) grayscale, 1F);
     }
 
-    public ImmutableColor(IColor color) {
+    public ImmutableColor(AbstractColor color) {
         this(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
     }
 
