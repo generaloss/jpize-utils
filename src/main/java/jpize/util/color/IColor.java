@@ -19,6 +19,23 @@ public abstract class IColor {
     public abstract IColor copy();
 
 
+    public int getRedi() {
+        return (int) (this.getRed() * 255);
+    }
+
+    public float getGreeni() {
+        return (int) (this.getGreen() * 255);
+    }
+
+    public float getBluei() {
+        return (int) (this.getBlue() * 255);
+    }
+
+    public float getAlphai() {
+        return (int) (this.getAlpha() * 255);
+    }
+
+
     public String getHexString() {
         final String redStr   = Integer.toHexString(Maths.round(Maths.clamp(this.getRed()  , 0F, 1F) * 255F));
         final String greenStr = Integer.toHexString(Maths.round(Maths.clamp(this.getGreen(), 0F, 1F) * 255F));
