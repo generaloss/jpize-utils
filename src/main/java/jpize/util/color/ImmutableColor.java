@@ -7,18 +7,15 @@ public class ImmutableColor extends AbstractColor {
     public final float blue;
     public final float alpha;
 
-    public ImmutableColor() {
-        this.red = 1F;
-        this.green = 1F;
-        this.blue = 1F;
-        this.alpha = 1F;
-    }
-
     public ImmutableColor(float red, float green, float blue, float alpha) {
         this.red = red;
         this.green = green;
         this.blue = blue;
         this.alpha = alpha;
+    }
+
+    public ImmutableColor() {
+        this(1F, 1F, 1F, 1F);
     }
 
     public ImmutableColor(double red, double green, double blue, double alpha) {
