@@ -25,94 +25,94 @@ public class ExtDataInputStream extends DataInputStream {
 
 
     public byte[] readBytes(int length) throws IOException {
-        return readNBytes(length);
+        return super.readNBytes(length);
     }
 
     public short[] readShorts(int length) throws IOException {
         final short[] array = new short[length];
         for(int i = 0; i < array.length; i++)
-            array[i] = readShort();
+            array[i] = super.readShort();
         return array;
     }
 
     public int[] readInts(int length) throws IOException {
         final int[] array = new int[length];
         for(int i = 0; i < array.length; i++)
-            array[i] = readInt();
+            array[i] = super.readInt();
         return array;
     }
 
     public long[] readLongs(int length) throws IOException {
         final long[] array = new long[length];
         for(int i = 0; i < array.length; i++)
-            array[i] = readLong();
+            array[i] = super.readLong();
         return array;
     }
 
     public float[] readFloats(int length) throws IOException {
         final float[] array = new float[length];
         for(int i = 0; i < array.length; i++)
-            array[i] = readFloat();
+            array[i] = super.readFloat();
         return array;
     }
 
     public double[] readDoubles(int length) throws IOException {
         final double[] array = new double[length];
         for(int i = 0; i < array.length; i++)
-            array[i] = readDouble();
+            array[i] = super.readDouble();
         return array;
     }
 
     public boolean[] readBools(int length) throws IOException {
         final boolean[] array = new boolean[length];
         for(int i = 0; i < array.length; i++)
-            array[i] = readBoolean();
+            array[i] = super.readBoolean();
         return array;
     }
 
     public char[] readChars(int length) throws IOException {
         final char[] array = new char[length];
         for(int i = 0; i < array.length; i++)
-            array[i] = readChar();
+            array[i] = super.readChar();
         return array;
     }
 
 
     public byte[] readByteArray() throws IOException {
-        return readBytes(readInt());
+        return this.readBytes(super.readInt());
     }
 
     public short[] readShortArray() throws IOException {
-        return readShorts(readInt());
+        return this.readShorts(super.readInt());
     }
 
     public int[] readIntArray() throws IOException {
-        return readInts(readInt());
+        return this.readInts(super.readInt());
     }
 
     public long[] readLongArray() throws IOException {
-        return readLongs(readInt());
+        return this.readLongs(super.readInt());
     }
 
     public float[] readFloatArray() throws IOException {
-        return readFloats(readInt());
+        return this.readFloats(super.readInt());
     }
 
     public double[] readDoubleArray() throws IOException {
-        return readDoubles(readInt());
+        return this.readDoubles(super.readInt());
     }
 
     public boolean[] readBoolArray() throws IOException {
-        return readBools(readInt());
+        return this.readBools(super.readInt());
     }
 
     public char[] readCharArray() throws IOException {
-        return readChars(readInt());
+        return this.readChars(super.readInt());
     }
 
 
     public ByteBuffer readDirectByteBuffer() throws IOException {
-        final byte[] array = readByteArray();
+        final byte[] array = this.readByteArray();
         final ByteBuffer buffer = ByteBuffer.allocateDirect(array.length);
         buffer.put(array);
         buffer.flip();
@@ -120,7 +120,7 @@ public class ExtDataInputStream extends DataInputStream {
     }
 
     public ByteBuffer readByteBuffer() throws IOException {
-        final byte[] array = readByteArray();
+        final byte[] array = this.readByteArray();
         final ByteBuffer buffer = ByteBuffer.allocate(array.length);
         buffer.put(array);
         buffer.flip();
@@ -128,7 +128,7 @@ public class ExtDataInputStream extends DataInputStream {
     }
 
     public ShortBuffer readShortBuffer() throws IOException {
-        final short[] array = readShortArray();
+        final short[] array = this.readShortArray();
         final ShortBuffer buffer = ShortBuffer.allocate(array.length);
         buffer.put(array);
         buffer.flip();
@@ -136,7 +136,7 @@ public class ExtDataInputStream extends DataInputStream {
     }
 
     public IntBuffer readIntBuffer() throws IOException {
-        final int[] array = readIntArray();
+        final int[] array = this.readIntArray();
         final IntBuffer buffer = IntBuffer.allocate(array.length);
         buffer.put(array);
         buffer.flip();
@@ -144,7 +144,7 @@ public class ExtDataInputStream extends DataInputStream {
     }
 
     public LongBuffer readLongBuffer() throws IOException {
-        final long[] array = readLongArray();
+        final long[] array = this.readLongArray();
         final LongBuffer buffer = LongBuffer.allocate(array.length);
         buffer.put(array);
         buffer.flip();
@@ -152,7 +152,7 @@ public class ExtDataInputStream extends DataInputStream {
     }
 
     public FloatBuffer readFloatBuffer() throws IOException {
-        final float[] array = readFloatArray();
+        final float[] array = this.readFloatArray();
         final FloatBuffer buffer = FloatBuffer.allocate(array.length);
         buffer.put(array);
         buffer.flip();
@@ -160,7 +160,7 @@ public class ExtDataInputStream extends DataInputStream {
     }
 
     public DoubleBuffer readDoubleBuffer() throws IOException {
-        final double[] array = readDoubleArray();
+        final double[] array = this.readDoubleArray();
         final DoubleBuffer buffer = DoubleBuffer.allocate(array.length);
         buffer.put(array);
         buffer.flip();
@@ -168,7 +168,7 @@ public class ExtDataInputStream extends DataInputStream {
     }
 
     public CharBuffer readCharBuffer() throws IOException {
-        final char[] array = readCharArray();
+        final char[] array = this.readCharArray();
         final CharBuffer buffer = CharBuffer.allocate(array.length);
         buffer.put(array);
         buffer.flip();
@@ -177,125 +177,152 @@ public class ExtDataInputStream extends DataInputStream {
 
 
     public BoolList readBoolList() throws IOException {
-        return new BoolList(readBoolArray());
+        return new BoolList(this.readBoolArray());
     }
 
     public ByteList readByteList() throws IOException {
-        return new ByteList(readByteArray());
+        return new ByteList(this.readByteArray());
     }
 
     public CharList readCharList() throws IOException {
-        return new CharList(readCharArray());
+        return new CharList(this.readCharArray());
     }
 
     public DoubleList readDoubleList() throws IOException {
-        return new DoubleList(readDoubleArray());
+        return new DoubleList(this.readDoubleArray());
     }
 
     public FloatList readFloatList() throws IOException {
-        return new FloatList(readFloatArray());
+        return new FloatList(this.readFloatArray());
     }
 
     public IntList readIntList() throws IOException {
-        return new IntList(readIntArray());
+        return new IntList(this.readIntArray());
     }
 
     public LongList readLongList() throws IOException {
-        return new LongList(readLongArray());
+        return new LongList(this.readLongArray());
     }
 
     public ShortList readShortList() throws IOException {
-        return new ShortList(readShortArray());
+        return new ShortList(this.readShortArray());
     }
 
 
     public String readStringBytes() throws IOException {
-        final int length = readInt();
-        return new String(readNBytes(length));
+        final int length = super.readInt();
+        return new String(super.readNBytes(length));
     }
 
     public String readStringChars() throws IOException {
-        return new String(readCharArray());
+        return new String(this.readCharArray());
     }
 
     public String readStringUTF() throws IOException {
-        return readUTF();
+        return super.readUTF();
     }
 
 
     public Vec2i readVec2i() throws IOException {
         return new Vec2i(
-            readInt(),
-            readInt()
+            super.readInt(),
+            super.readInt()
         );
     }
 
     public Vec2f readVec2f() throws IOException {
         return new Vec2f(
-            readFloat(),
-            readFloat()
+            super.readFloat(),
+            super.readFloat()
         );
     }
 
     public Vec2d readVec2d() throws IOException {
         return new Vec2d(
-            readDouble(),
-            readDouble()
+            super.readDouble(),
+            super.readDouble()
         );
     }
     
     public Vec3i readVec3i() throws IOException {
         return new Vec3i(
-            readInt(),
-            readInt(),
-            readInt()
+            super.readInt(),
+            super.readInt(),
+            super.readInt()
         );
     }
     
     public Vec3f readVec3f() throws IOException {
         return new Vec3f(
-            readFloat(),
-            readFloat(),
-            readFloat()
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat()
         );
     }
 
     public Vec3d readVec3d() throws IOException {
         return new Vec3d(
-            readDouble(),
-            readDouble(),
-            readDouble()
+            super.readDouble(),
+            super.readDouble(),
+            super.readDouble()
+        );
+    }
+
+    public Vec4i readVec4i() throws IOException {
+        return new Vec4i(
+            super.readInt(),
+            super.readInt(),
+            super.readInt(),
+            super.readInt()
+        );
+    }
+
+    public Vec4f readVec4f() throws IOException {
+        return new Vec4f(
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat()
+        );
+    }
+
+    public Vec4d readVec4d() throws IOException {
+        return new Vec4d(
+            super.readDouble(),
+            super.readDouble(),
+            super.readDouble(),
+            super.readDouble()
         );
     }
 
 
     public EulerAngles readEulerAngles() throws IOException {
         return new EulerAngles(
-            readFloat(),
-            readFloat(),
-            readFloat()
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat()
         );
     }
     
     public UUID readUUID() throws IOException {
-        return new UUID(readLong(), readLong());
+        return new UUID(super.readLong(), super.readLong());
     }
     
     public Color readColor() throws IOException {
         return new Color(
-            readFloat(),
-            readFloat(),
-            readFloat(),
-            readFloat()
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat()
         );
     }
 
     public ImmutableColor readImmutableColor() throws IOException {
         return new ImmutableColor(
-            readFloat(),
-            readFloat(),
-            readFloat(),
-            readFloat()
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat()
         );
     }
     
