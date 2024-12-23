@@ -22,8 +22,8 @@ public class PacketDispatcher {
 
     @SafeVarargs
     public final PacketDispatcher register(Class<? extends IPacket<?>>... packetClasses) {
-        for(Class<? extends IPacket<?>> packetClass: packetClasses){
-            final short ID = IPacket.makeID(packetClass);
+        for(Class<? extends IPacket<?>> packetClass : packetClasses){
+            final short ID = IPacket.getIDByClass(packetClass);
             this.packetClasses.put(ID, packetClass);
         }
         return this;
@@ -53,7 +53,7 @@ public class PacketDispatcher {
             return true;
 
         }catch(IOException e){
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to read packet: " + e);
         }
     }
 
@@ -75,7 +75,7 @@ public class PacketDispatcher {
             return (IPacket<PacketHandler>) constructor.newInstance();
 
         }catch(Exception e){
-            throw new RuntimeException("Failed to instance packet " + packetClass.getName(), e);
+            throw new RuntimeException("Failed to instance packet: " + packetClass.getName(), e);
         }
     }
 

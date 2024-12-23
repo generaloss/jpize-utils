@@ -10,7 +10,7 @@ public abstract class IPacket<T extends PacketHandler> {
     private final short ID;
 
     public IPacket() {
-        this.ID = makeID(this.getClass());
+        this.ID = IPacket.getIDByClass(this.getClass());
     }
 
     public short getPacketID() {
@@ -24,7 +24,7 @@ public abstract class IPacket<T extends PacketHandler> {
     abstract public void handle(T handler);
 
 
-    public static short makeID(Class<?> c) {
+    public static short getIDByClass(Class<?> c) {
         final int nameHash = c.getSimpleName().hashCode();
         return (short) (nameHash ^ (nameHash << 16));
     }

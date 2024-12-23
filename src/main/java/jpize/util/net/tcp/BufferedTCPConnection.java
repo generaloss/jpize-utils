@@ -26,7 +26,7 @@ public class BufferedTCPConnection extends TCPConnection {
         // try to read length
         final int length = super.channel.read(lengthBuffer);
 
-        if(length == -1) { // connection was closed on the other side
+        if(length == -1) { // connection was closed by the other side
             super.close();
             return false;
         }else if(length < 4) // not int size (length)

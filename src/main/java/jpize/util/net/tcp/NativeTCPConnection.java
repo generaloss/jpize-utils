@@ -29,7 +29,7 @@ public class NativeTCPConnection extends TCPConnection {
                 readBuffer.clear();
                 length = super.channel.read(readBuffer);
             }
-            if(length == -1) // connection was closed on the other side
+            if(length == -1) // connection was closed by the other side
                 super.close();
             if(bytes.size() == 0) // nothing to return
                 return null;

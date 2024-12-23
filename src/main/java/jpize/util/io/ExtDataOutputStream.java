@@ -23,7 +23,7 @@ public class ExtDataOutputStream extends DataOutputStream {
     }
 
 
-    public void writeBytes(byte[] byteArray) throws IOException {
+    public void writeBytes(byte... byteArray) throws IOException {
         super.write(byteArray);
     }
 
@@ -35,7 +35,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.write(byteArray, length);
     }
 
-    public void writeShorts(short[] shortArray) throws IOException {
+    public void writeShorts(short... shortArray) throws IOException {
         for(short v: shortArray)
             super.writeShort(v);
     }
@@ -49,7 +49,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeShorts(shortArray, 0, length);
     }
 
-    public void writeInts(int[] intArray) throws IOException {
+    public void writeInts(int... intArray) throws IOException {
         for(int v: intArray)
             super.writeInt(v);
     }
@@ -63,7 +63,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeInts(intArray, 0, length);
     }
 
-    public void writeLongs(long[] longArray) throws IOException {
+    public void writeLongs(long... longArray) throws IOException {
         for(long v: longArray)
             super.writeLong(v);
     }
@@ -77,7 +77,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeLongs(longArray, 0, length);
     }
 
-    public void writeFloats(float[] floatArray) throws IOException {
+    public void writeFloats(float... floatArray) throws IOException {
         for(float v: floatArray)
             super.writeFloat(v);
     }
@@ -91,7 +91,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeFloats(floatArray, 0, length);
     }
 
-    public void writeDoubles(double[] doubleArray) throws IOException {
+    public void writeDoubles(double... doubleArray) throws IOException {
         for(double v: doubleArray)
             super.writeDouble(v);
     }
@@ -105,7 +105,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeDoubles(doubleArray, 0, length);
     }
 
-    public void writeBools(boolean[] boolArray) throws IOException {
+    public void writeBools(boolean... boolArray) throws IOException {
         for(boolean v: boolArray)
             super.writeBoolean(v);
     }
@@ -119,7 +119,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeBools(boolArray, 0, length);
     }
 
-    public void writeChars(char[] charArray) throws IOException {
+    public void writeChars(char... charArray) throws IOException {
         for(char v: charArray)
             super.writeChar(v);
     }
@@ -134,7 +134,7 @@ public class ExtDataOutputStream extends DataOutputStream {
     }
 
 
-    public void writeByteArray(byte[] byteArray) throws IOException {
+    public void writeByteArray(byte... byteArray) throws IOException {
         super.writeInt(byteArray.length);
         super.write(byteArray);
     }
@@ -148,7 +148,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeByteArray(byteArray, 0, length);
     }
 
-    public void writeShortArray(short[] shortArray) throws IOException {
+    public void writeShortArray(short... shortArray) throws IOException {
         super.writeInt(shortArray.length);
         this.writeShorts(shortArray);
     }
@@ -162,7 +162,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeShortArray(shortArray, 0, length);
     }
 
-    public void writeIntArray(int[] intArray) throws IOException {
+    public void writeIntArray(int... intArray) throws IOException {
         super.writeInt(intArray.length);
         this.writeInts(intArray);
     }
@@ -176,7 +176,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeIntArray(intArray, 0, length);
     }
 
-    public void writeLongArray(long[] longArray) throws IOException {
+    public void writeLongArray(long... longArray) throws IOException {
         super.writeInt(longArray.length);
         this.writeLongs(longArray);
     }
@@ -190,7 +190,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeLongArray(longArray, 0, length);
     }
 
-    public void writeFloatArray(float[] floatArray) throws IOException {
+    public void writeFloatArray(float... floatArray) throws IOException {
         super.writeInt(floatArray.length);
         this.writeFloats(floatArray);
     }
@@ -204,7 +204,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeFloatArray(floatArray, 0, length);
     }
 
-    public void writeDoubleArray(double[] doubleArray) throws IOException {
+    public void writeDoubleArray(double... doubleArray) throws IOException {
         super.writeInt(doubleArray.length);
         this.writeDoubles(doubleArray);
     }
@@ -218,7 +218,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeDoubleArray(doubleArray, 0, length);
     }
 
-    public void writeBoolArray(boolean[] boolArray) throws IOException {
+    public void writeBoolArray(boolean... boolArray) throws IOException {
         super.writeInt(boolArray.length);
         this.writeBools(boolArray);
     }
@@ -232,7 +232,7 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeBoolArray(boolArray, 0, length);
     }
 
-    public void writeCharArray(char[] charArray) throws IOException {
+    public void writeCharArray(char... charArray) throws IOException {
         super.writeInt(charArray.length);
         this.writeChars(charArray);
     }
