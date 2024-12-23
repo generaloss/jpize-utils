@@ -46,11 +46,11 @@ public class BufferedTCPConnection extends TCPConnection {
     protected byte[] read() {
         try{
             // if previous buffer is full allocate new buffer
-            if(isDataBufferFull() && !allocateDataBuffer())
+            if(this.isDataBufferFull() && !this.allocateDataBuffer())
                 return null;
             // read bytes and when the buffer is full accept them
             bytesRemaining -= super.channel.read(readBuffer);
-            if(isDataBufferFull()){
+            if(this.isDataBufferFull()){
                 final byte[] bytes = this.tryToDecryptBytes(readBuffer.array());
                 readBuffer.clear();
                 return bytes;

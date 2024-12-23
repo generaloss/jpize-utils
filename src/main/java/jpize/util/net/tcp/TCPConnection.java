@@ -1,14 +1,11 @@
 package jpize.util.net.tcp;
 
 import jpize.util.Utils;
-import jpize.util.function.IOConsumer;
-import jpize.util.io.ExtDataOutputStream;
+import jpize.util.io.DataStreamWriter;
 import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.security.AESKey;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -73,25 +70,14 @@ public abstract class TCPConnection implements Closeable {
 
     public abstract void send(byte[] bytes);
 
-    public void send(ByteArrayOutputStream byteStream) {
-        this.send(byteStream.toByteArray());
-    }
-
-    public void send(IOConsumer<ExtDataOutputStream> streamConsumer) {
-        try{
-            final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            final ExtDataOutputStream dataStream = new ExtDataOutputStream(byteStream);
-            streamConsumer.accept(dataStream);
-            this.send(byteStream);
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
+    public void send(DataStreamWriter streamWriter) {
+        this.send(DataStreamWriter.writeBytes(streamWriter));
     }
 
     public void send(IPacket<?> packet) {
-        this.send(dataStream -> {
-            dataStream.writeShort(packet.getPacketID());
-            packet.write(dataStream);
+        this.send(stream -> {
+            stream.writeShort(packet.getPacketID());
+            packet.write(stream);
         });
     }
 

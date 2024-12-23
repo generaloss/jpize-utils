@@ -1,12 +1,10 @@
 package jpize.util.net.tcp;
 
-import jpize.util.function.IOConsumer;
+import jpize.util.io.DataStreamWriter;
 import jpize.util.io.ExtDataInputStream;
 import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.Utils;
-import jpize.util.io.ExtDataOutputStream;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
@@ -109,7 +107,9 @@ public class TCPServer {
                 while(!Thread.interrupted()){
                     this.selectKeys();
                 }
-            }catch(IOException ignored){ }
+            }catch(IOException e){
+                throw new RuntimeException(e); //!ignored
+            }
         }, "TCP-server Thread #" + this.hashCode());
 
         selectorThread.setPriority(8);
@@ -191,47 +191,25 @@ public class TCPServer {
                 connection.send(bytes);
     }
 
-    public void broadcast(ByteArrayOutputStream stream) {
-        this.broadcast(stream.toByteArray());
+    public void broadcast(DataStreamWriter streamWriter) {
+        this.broadcast(DataStreamWriter.writeBytes(streamWriter));
     }
 
-    public void broadcast(TCPConnection except, ByteArrayOutputStream stream) {
-        this.broadcast(except, stream.toByteArray());
-    }
-
-    public void broadcast(IOConsumer<ExtDataOutputStream> streamConsumer) {
-        try{
-            final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            final ExtDataOutputStream dataStream = new ExtDataOutputStream(byteStream);
-            streamConsumer.accept(dataStream);
-            this.broadcast(byteStream);
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void broadcast(TCPConnection except, IOConsumer<ExtDataOutputStream> streamConsumer) {
-        try{
-            final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            final ExtDataOutputStream dataStream = new ExtDataOutputStream(byteStream);
-            streamConsumer.accept(dataStream);
-            this.broadcast(except, byteStream);
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
+    public void broadcast(TCPConnection except, DataStreamWriter streamWriter) {
+        this.broadcast(except, DataStreamWriter.writeBytes(streamWriter));
     }
 
     public void broadcast(IPacket<?> packet) {
-        this.broadcast(dataStream -> {
-            dataStream.writeShort(packet.getPacketID());
-            packet.write(dataStream);
+        this.broadcast(stream -> {
+            stream.writeShort(packet.getPacketID());
+            packet.write(stream);
         });
     }
 
     public void broadcast(TCPConnection except, IPacket<?> packet) {
-        this.broadcast(except, dataStream -> {
-            dataStream.writeShort(packet.getPacketID());
-            packet.write(dataStream);
+        this.broadcast(except, stream -> {
+            stream.writeShort(packet.getPacketID());
+            packet.write(stream);
         });
     }
 

@@ -1,12 +1,10 @@
 package jpize.util.net.tcp;
 
-import jpize.util.function.IOConsumer;
+import jpize.util.io.DataStreamWriter;
 import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
 import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.security.AESKey;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
@@ -84,7 +82,9 @@ public class TCPClient {
                 onConnect.accept(connection);
 
             this.startReceiveThread();
-        }catch(IOException ignored){ }
+        }catch(IOException e){
+            throw new RuntimeException(e); //!ignored
+        }
         return this;
     }
 
@@ -100,7 +100,9 @@ public class TCPClient {
                     selector.select();
                     this.receiveBytes();
                 }
-            }catch(IOException ignored){ }
+            }catch(IOException e){
+                throw new RuntimeException(e); //!ignored
+            }
         }, "TCP-client Thread #" + this.hashCode());
 
         selectorThread.setPriority(7);
@@ -143,15 +145,9 @@ public class TCPClient {
         return this;
     }
 
-    public TCPClient send(ByteArrayOutputStream stream) {
+    public TCPClient send(DataStreamWriter streamWriter) {
         if(this.isConnected())
-            connection.send(stream);
-        return this;
-    }
-
-    public TCPClient send(IOConsumer<ExtDataOutputStream> streamConsumer) {
-        if(this.isConnected())
-            connection.send(streamConsumer);
+            connection.send(streamWriter);
         return this;
     }
 
