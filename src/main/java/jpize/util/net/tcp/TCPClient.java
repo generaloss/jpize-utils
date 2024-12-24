@@ -5,6 +5,7 @@ import jpize.util.io.ExtDataInputStream;
 import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.security.AESKey;
 
+import javax.crypto.Cipher;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
@@ -67,7 +68,7 @@ public class TCPClient {
 
     public TCPClient connect(SocketAddress socketAddress) {
         if(this.isConnected())
-            throw new IllegalStateException("TCP-Client already connected.");
+            throw new IllegalStateException("TCP client is already connected");
 
         try{
             final SocketChannel socket = SocketChannel.open();
@@ -83,7 +84,7 @@ public class TCPClient {
 
             this.startReceiveThread();
         }catch(IOException e){
-            throw new RuntimeException(e); //!ignored
+            throw new RuntimeException("TCP client failed to connect: " + e.getMessage()); //!ignored
         }
         return this;
     }
@@ -131,6 +132,24 @@ public class TCPClient {
         return this;
     }
 
+
+    public TCPClient encodeOutput(Cipher encryptCipher) {
+        if(this.isConnected())
+            connection.encodeOutput(encryptCipher);
+        return this;
+    }
+
+    public TCPClient encodeInput(Cipher decryptCipher) {
+        if(this.isConnected())
+            connection.encodeInput(decryptCipher);
+        return this;
+    }
+
+    public TCPClient encode(Cipher encryptCipher, Cipher decryptCipher) {
+        if(this.isConnected())
+            connection.encode(encryptCipher, decryptCipher);
+        return this;
+    }
 
     public TCPClient encode(AESKey encodeKey) {
         if(this.isConnected())

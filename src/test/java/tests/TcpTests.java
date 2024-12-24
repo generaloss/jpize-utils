@@ -13,6 +13,9 @@ import jpize.util.time.TimeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,12 +29,15 @@ public class TcpTests {
         final int reconnectsNum = 7;
         final AtomicInteger counter = new AtomicInteger();
         new TCPServer()
-                .run(65000)
                 .setOnConnect((connection) -> counter.incrementAndGet())
-                .setOnDisconnect((connection) -> counter.incrementAndGet());
+                .setOnDisconnect((connection) -> counter.incrementAndGet())
+                .run(65000);
+
         final TCPClient client = new TCPClient();
-        for (int i = 0; i < reconnectsNum; i++)
-            client.connect("localhost", 65000).disconnect();
+        for (int i = 0; i < reconnectsNum; i++){
+            client.connect("localhost", 65000);
+            client.disconnect();
+        }
         TimeUtils.delayMillis(5000);
         TimeUtils.waitFor(() -> counter.get() == reconnectsNum * 2, 500, () -> Assert.fail(counter.get() + " / " + (reconnectsNum * 2)));
     }
@@ -54,9 +60,9 @@ public class TcpTests {
         new TCPServer()
                 .setOnDisconnect((connection) -> closed.set(true))
                 .run(5407);
-        new TCPClient()
-                .connect("localhost", 5407)
-                .disconnect();
+        final TCPClient client = new TCPClient();
+        client.connect("localhost", 5407);
+        client.disconnect();
         TimeUtils.waitFor(closed::get, 500, Assert::fail);
     }
 
@@ -72,9 +78,9 @@ public class TcpTests {
                 })
                 .run(5400);
 
-        final TCPClient client = new TCPClient()
-                .connect("localhost", 5400)
-                .send(message.getBytes());
+        final TCPClient client = new TCPClient();
+        client.connect("localhost", 5400);
+        client.send(message.getBytes());
 
         TimeUtils.waitFor(client::isClosed, 1000, Assert::fail);
     }
@@ -93,10 +99,57 @@ public class TcpTests {
                 })
                 .run(5405);
 
-        final TCPClient client = new TCPClient()
-            .connect("localhost", 5405)
-            .encode(key)
-            .send(message.getBytes());
+        final TCPClient client = new TCPClient();
+        client.connect("localhost", 5405);
+        client.encode(key);
+        client.send(message.getBytes());
+
+
+        TimeUtils.waitFor(client::isClosed);
+    }
+
+    public static void main(String[] args) throws Exception {
+        // generate key
+        final KeyGenerator generator = KeyGenerator.getInstance("AES");
+        generator.init(256);
+        SecretKey key = generator.generateKey();
+        // encrypt cipher
+        final Cipher encryptCipher = Cipher.getInstance("AES");
+        encryptCipher.init(Cipher.ENCRYPT_MODE, key);
+        // decrypt cipher
+        final Cipher decryptCipher = Cipher.getInstance("AES");
+        decryptCipher.init(Cipher.DECRYPT_MODE, key);
+
+        // final
+        final String message = "Secret message".repeat(10000000);
+        for(int i = 0; i < 100; i++){
+            final byte[] encryptedMessage = encryptCipher.doFinal(message.getBytes());
+            final String decryptedMessage = new String(decryptCipher.doFinal(encryptedMessage));
+            System.out.println(i + " message : success");
+        }
+    }
+
+    @Test
+    public void send_a_lot_of_data_encrypted() {
+        final AESKey key = new AESKey(256);
+        final String message = "Hello, Data!".repeat(100000);
+
+        new TCPServer()
+                .setOnConnect((connection) -> connection.encode(key))
+                .setOnReceive((sender, bytes) -> {
+                    final String received = new String(bytes);
+                    Assert.assertEquals(message, received);
+                    //sender.close();
+                    System.out.println("a");
+                })
+                .run(5406);
+
+        final TCPClient client = new TCPClient();
+        client.connect("localhost", 5406);
+        client.encode(key);
+
+        for(int i = 0; i < 100; i++)
+            client.send(message.getBytes());
 
 
         TimeUtils.waitFor(client::isClosed);
@@ -110,20 +163,20 @@ public class TcpTests {
                 .setOnConnect((connection) -> connection.send(message.getBytes()))
                 .run(5401);
 
-        final TCPClient client = new TCPClient()
-                .setOnReceive((connection, bytes) -> {
-                    final String received = new String(bytes);
-                    Assert.assertEquals(message, received);
-                    connection.close();
-                })
-                .connect("localhost", 5401);
+        final TCPClient client = new TCPClient();
+        client.setOnReceive((connection, bytes) -> {
+            final String received = new String(bytes);
+            Assert.assertEquals(message, received);
+            connection.close();
+        });
+        client.connect("localhost", 5401);
 
         TimeUtils.waitFor(client::isClosed);
     }
 
     @Test
     public void send_a_lot_of_data_to_server() {
-        final String message = "Hello, DDoS! ".repeat(100000);
+        final String message = "Hello, Data! ".repeat(100000);
 
         new TCPServer()
                 .setOnReceive((sender, bytes) -> {
@@ -133,9 +186,9 @@ public class TcpTests {
                 })
                 .run(5402);
 
-        final TCPClient client = new TCPClient()
-                .connect("localhost", 5402)
-                .send(message.getBytes());
+        final TCPClient client = new TCPClient();
+        client.connect("localhost", 5402);
+        client.send(message.getBytes());
 
         TimeUtils.waitFor(client::isClosed, 2000, Assert::fail);
     }
@@ -146,17 +199,20 @@ public class TcpTests {
         final int clientsAmount = 100;
         final AtomicInteger done = new AtomicInteger();
 
-        final TCPServer server = new TCPServer()
-                .setOnReceive((sender, bytes) -> {
-                    final String received = new String(bytes);
-                    Assert.assertEquals(received, message);
-                    done.incrementAndGet();
-                })
-                .run(5404);
+        final TCPServer server = new TCPServer();
+        server.setOnReceive((sender, bytes) -> {
+            final String received = new String(bytes);
+            Assert.assertEquals(received, message);
+            done.incrementAndGet();
+        });
+        server.run(5404);
 
         final List<TCPClient> clients = new CopyOnWriteArrayList<>();
-        for(int i = 0; i < clientsAmount; i++)
-            clients.add(new TCPClient().connect("localhost", 5404));
+        for(int i = 0; i < clientsAmount; i++){
+            final TCPClient client = new TCPClient();
+            client.connect("localhost", 5404);
+            clients.add(client);
+        }
 
         for(TCPClient client: clients)
             new Thread(() -> client.send(message.getBytes()).disconnect()).start();
@@ -189,10 +245,10 @@ public class TcpTests {
                 dispatcher.handlePackets();
             }).run(5403);
 
-        final TCPClient client = new TCPClient()
-                .connect("localhost", 5403)
-                .send(new MsgPacket(message))
-                .send(new MsgPacket(message));
+        final TCPClient client = new TCPClient();
+        client.connect("localhost", 5403);
+        client.send(new MsgPacket(message));
+        client.send(new MsgPacket(message));
 
         TimeUtils.waitFor(() -> (counter.get() == 2), 2000, Assert::fail);
     }

@@ -43,7 +43,7 @@ public class NativeTCPConnection extends TCPConnection {
     @Override
     public void send(byte[] bytes) {
         if(super.isClosed())
-            throw new IllegalStateException("TCP-connection is closed.");
+            throw new IllegalStateException("TCP-connection is closed");
 
         try{
             bytes = this.tryToEncryptBytes(bytes);

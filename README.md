@@ -269,20 +269,20 @@ Encrypted TCP connection example:
 AESKey key = new AESKey(128); // generate key for connection encoding
 
 // server
-TCPServer server = new TCPServer()
-    .setOnReceive((sender, bytes) -> {
-        System.out.println("Received: " + new String(bytes)); 
-    })
-    .setOnConnect((connection) -> {
-        connection.encode(key);
-    })
-    .run(65000);
+TCPServer server = new TCPServer();
+server.setOnReceive((sender, bytes) -> {
+    System.out.println("Received: " + new String(bytes)); 
+});
+server.setOnConnect((connection) -> {
+    connection.encode(key);
+});
+server.run(65000);
 
 // client
-TCPClient client = new TCPClient()
-    .connect("localhost", 65000)
-    .encode(key)
-    .send("Hello, World!".getBytes());
+TCPClient client = new TCPClient();
+client.connect("localhost", 65000);
+client.encode(key);
+client.send("Hello, World!".getBytes());
 ```
 
 Packets example:
@@ -294,17 +294,17 @@ PacketDispatcher packetDispatcher = new PacketDispatcher()
         .register(MsgPacket.class, AnotherPacket.class, ...);
 
 // create server and set receiver
-new TCPServer()
-    .setOnReceive((sender, bytes) -> {
-        packetDispatcher.readPacket(bytes, handler);
-        packetDispatcher.handlePackets(); // invoke handleMessage()
-    })
-    .run(65000);
+TCPServer server = new TCPServer();
+server.setOnReceive((sender, bytes) -> {
+    packetDispatcher.readPacket(bytes, handler);
+    packetDispatcher.handlePackets(); // invoke handleMessage()
+});
+server.run(65000);
 
 // create client and send packet
-new TCPClient()
-    .connect("localhost", 65000)
-    .send(new MsgPacket("My message!"));
+TCPClient client = new TCPClient();
+client.connect("localhost", 65000);
+client.send(new MsgPacket("My message!"));
 
 
 // Handler for packets

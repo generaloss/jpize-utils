@@ -53,7 +53,7 @@ public class PacketDispatcher {
             return true;
 
         }catch(IOException e){
-            throw new RuntimeException("Failed to read packet: " + e);
+            throw new RuntimeException("Unable to read packet: " + e);
         }
     }
 
@@ -75,7 +75,7 @@ public class PacketDispatcher {
             return (IPacket<PacketHandler>) constructor.newInstance();
 
         }catch(Exception e){
-            throw new RuntimeException("Failed to instance packet: " + packetClass.getName(), e);
+            throw new RuntimeException("Unable to instance packet: " + packetClass.getName(), e);
         }
     }
 

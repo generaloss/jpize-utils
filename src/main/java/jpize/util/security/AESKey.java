@@ -11,12 +11,12 @@ import java.security.NoSuchAlgorithmException;
 public class AESKey {
 
     private final SecretKey key;
-    private final Cipher decryptCipher, encryptCipher;
+    private final Cipher encryptCipher, decryptCipher;
 
     public AESKey(SecretKey key) {
         this.key = key;
-        this.decryptCipher = getDecryptCipher(key);
         this.encryptCipher = getEncryptCipher(key);
+        this.decryptCipher = getDecryptCipher(key);
     }
 
     public AESKey(byte[] bytes) {
@@ -31,8 +31,17 @@ public class AESKey {
         this(generateSecretKey(size));
     }
 
+
     public SecretKey getKey() {
         return key;
+    }
+
+    public Cipher getEncryptCipher() {
+        return encryptCipher;
+    }
+
+    public Cipher getDecryptCipher() {
+        return decryptCipher;
     }
 
 
@@ -40,7 +49,7 @@ public class AESKey {
         try{
             return encryptCipher.doFinal(bytes);
         }catch(IllegalBlockSizeException | BadPaddingException e){
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -48,7 +57,7 @@ public class AESKey {
         try{
             return decryptCipher.doFinal(bytes);
         }catch(IllegalBlockSizeException | BadPaddingException e){
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -72,10 +81,10 @@ public class AESKey {
         }
     }
 
-    private static Cipher getDecryptCipher(SecretKey key) {
+    private static Cipher getEncryptCipher(SecretKey key) {
         try{
             final Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, key);
+            cipher.init(Cipher.ENCRYPT_MODE, key);
             return cipher;
 
         }catch(NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e){
@@ -83,10 +92,10 @@ public class AESKey {
         }
     }
 
-    private static Cipher getEncryptCipher(SecretKey key) {
+    private static Cipher getDecryptCipher(SecretKey key) {
         try{
             final Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, key);
+            cipher.init(Cipher.DECRYPT_MODE, key);
             return cipher;
 
         }catch(NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e){

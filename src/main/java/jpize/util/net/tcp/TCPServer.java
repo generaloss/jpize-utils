@@ -22,13 +22,14 @@ public class TCPServer {
     private Consumer<TCPConnection> onConnect, onDisconnect;
     private TCPListener onReceive;
     private TCPConnection.Factory connectionFactory;
-    private CopyOnWriteArrayList<TCPConnection> connections;
+    private final CopyOnWriteArrayList<TCPConnection> connections;
     private ServerSocketChannel serverSocketChannel;
     private Selector selector;
     private final Consumer<TCPConnection> disconnector;
 
     public TCPServer() {
         this.setConnectionType(BufferedTCPConnection.class);
+        this.connections = new CopyOnWriteArrayList<>();
         this.disconnector = (connection) -> {
             if(onDisconnect != null) onDisconnect.accept(connection);
             connections.remove(connection);
@@ -73,10 +74,10 @@ public class TCPServer {
 
     public TCPServer run(SocketAddress address) {
         if(this.isAlive())
-            throw new IllegalStateException("TCP-Server already running.");
+            throw new IllegalStateException("TCP server is already running");
 
         try{
-            connections = new CopyOnWriteArrayList<>();
+            connections.clear();
 
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.bind(address);
@@ -87,7 +88,7 @@ public class TCPServer {
             this.startSelectorThread();
 
         }catch(Exception e){
-            throw new RuntimeException(e);
+            throw new IllegalStateException("TCP server failed to start: " + e.getMessage());
         }
 
         return this;

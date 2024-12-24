@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class BufferedTCPConnection extends TCPConnection {
@@ -19,7 +20,7 @@ public class BufferedTCPConnection extends TCPConnection {
 
 
     private boolean isDataBufferFull() {
-        return bytesRemaining == 0;
+        return (bytesRemaining == 0);
     }
 
     private boolean allocateDataBuffer() throws IOException {
@@ -39,6 +40,7 @@ public class BufferedTCPConnection extends TCPConnection {
 
         // allocate buffer
         readBuffer = ByteBuffer.allocate(bytesRemaining);
+        System.out.println("allocated: " + bytesRemaining);
         return true;
     }
 
@@ -49,8 +51,11 @@ public class BufferedTCPConnection extends TCPConnection {
             if(this.isDataBufferFull() && !this.allocateDataBuffer())
                 return null;
             // read bytes and when the buffer is full accept them
-            bytesRemaining -= super.channel.read(readBuffer);
+            final int readBytes = super.channel.read(readBuffer);
+            bytesRemaining -= readBytes;
+            System.out.println("read: " + readBytes + ", remaining: " + bytesRemaining);
             if(this.isDataBufferFull()){
+                System.out.println("array: " + readBuffer.array().length + " (" + Arrays.hashCode(readBuffer.array()) + ")");
                 final byte[] bytes = this.tryToDecryptBytes(readBuffer.array());
                 readBuffer.clear();
                 return bytes;
@@ -64,7 +69,7 @@ public class BufferedTCPConnection extends TCPConnection {
     @Override
     public void send(byte[] bytes) {
         if(super.isClosed())
-            throw new IllegalStateException("TCP-connection is closed.");
+            throw new IllegalStateException("TCP-connection is closed");
 
         try{
             bytes = this.tryToEncryptBytes(bytes);

@@ -5,6 +5,9 @@ import jpize.util.io.DataStreamWriter;
 import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.security.AESKey;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import java.io.Closeable;
 import java.lang.reflect.Type;
 import java.net.InetAddress;
@@ -21,7 +24,7 @@ public abstract class TCPConnection implements Closeable {
     protected final SocketChannel channel;
     protected final SelectionKey selectionKey;
     protected final Consumer<TCPConnection> onDisconnect;
-    private AESKey encodeKey;
+    private Cipher encryptCipher, decryptCipher;
     private Object attachment;
 
     public TCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
@@ -53,16 +56,37 @@ public abstract class TCPConnection implements Closeable {
 
 
 
+    public void encodeOutput(Cipher encryptCipher) {
+        this.encryptCipher = encryptCipher;
+    }
+
+    public void encodeInput(Cipher decryptCipher) {
+        this.decryptCipher = decryptCipher;
+    }
+
+    public void encode(Cipher encryptCipher, Cipher decryptCipher) {
+        this.encodeOutput(encryptCipher);
+        this.encodeInput(decryptCipher);
+    }
+
     public void encode(AESKey encodeKey) {
-        this.encodeKey = encodeKey;
+        this.encode(encodeKey.getEncryptCipher(), encodeKey.getDecryptCipher());
     }
 
     protected byte[] tryToEncryptBytes(byte[] bytes) {
-        return (encodeKey == null) ? bytes : encodeKey.encrypt(bytes);
+        try{
+            return (encryptCipher == null) ? bytes : encryptCipher.doFinal(bytes);
+        }catch(IllegalBlockSizeException | BadPaddingException e){
+            throw new IllegalStateException("Encryption error: " + e.getMessage());
+        }
     }
 
     protected byte[] tryToDecryptBytes(byte[] bytes) {
-        return (encodeKey == null) ? bytes : encodeKey.decrypt(bytes);
+        try{
+            return (decryptCipher == null) ? bytes : decryptCipher.doFinal(bytes);
+        }catch(IllegalBlockSizeException | BadPaddingException e){
+            throw new IllegalStateException("Decryption error: " + e.getMessage());
+        }
     }
 
 
@@ -204,7 +228,7 @@ public abstract class TCPConnection implements Closeable {
 
     public static Factory getFactory(Type connectionClass) {
         if(!FACTORY_BY_CLASS.containsKey(connectionClass))
-            throw new Error("Class '" + connectionClass + "' is not registered as a TCP connection factory.");
+            throw new Error("Class '" + connectionClass + "' is not registered as a TCP connection factory");
         return FACTORY_BY_CLASS.get(connectionClass);
     }
 

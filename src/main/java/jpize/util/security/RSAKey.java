@@ -12,7 +12,7 @@ public class RSAKey {
     public RSAKey(int size) {
         final KeyPair pair = generateKeyPair(size);
         if(pair == null)
-            throw new RuntimeException("Unable to generate RSA key pair.");
+            throw new RuntimeException("Unable to generate RSA key pair");
 
         this.publicKey = new PublicRSA(pair.getPublic());
         this.privateKey = new PrivateRSA(pair.getPrivate());

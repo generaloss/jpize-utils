@@ -39,7 +39,7 @@ public class ZipResource extends Resource {
 
     private List<ZipEntry> listEntries() {
         if(this.isFile())
-            throw new IllegalStateException("File cannot be listed.");
+            throw new IllegalStateException("File entry cannot be listed");
 
         final List<ZipEntry> entryList = new ArrayList<>();
         final Enumeration<? extends ZipEntry> entries = file.entries();
