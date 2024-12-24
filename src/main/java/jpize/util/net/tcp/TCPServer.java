@@ -107,6 +107,7 @@ public class TCPServer {
             try{
                 while(!Thread.interrupted()){
                     this.selectKeys();
+                    Thread.yield();
                 }
             }catch(IOException e){
                 throw new RuntimeException(e); //!ignored
@@ -118,7 +119,7 @@ public class TCPServer {
         selectorThread.start();
     }
 
-    private void selectKeys() throws IOException {
+    private synchronized void selectKeys() throws IOException {
         selector.select();
 
         for(SelectionKey key: selector.selectedKeys()){

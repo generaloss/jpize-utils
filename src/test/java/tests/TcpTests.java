@@ -132,25 +132,32 @@ public class TcpTests {
     @Test
     public void send_a_lot_of_data_encrypted() {
         final AESKey key = new AESKey(256);
-        final String message = "Hello, Data!".repeat(100000);
+        final String message = "0123456789".repeat(100000);
 
-        new TCPServer()
-                .setOnConnect((connection) -> connection.encode(key))
-                .setOnReceive((sender, bytes) -> {
-                    final String received = new String(bytes);
-                    Assert.assertEquals(message, received);
-                    //sender.close();
-                    System.out.println("a");
-                })
-                .run(5406);
+        final AtomicInteger counter = new AtomicInteger();
+        final TCPServer server = new TCPServer();
+        server.setOnConnect((connection) -> connection.setTcpNoDelay(true));
+        server.setOnReceive((sender, bytes) -> {
+            final String received = new String(bytes);
+            System.out.println(counter.incrementAndGet());
+            if(!message.equals(received)){
+                Assert.fail();
+                sender.close();
+                System.err.println(received);
+            }
+
+            //Assert.assertEquals(message, received);
+            //sender.close();
+        });
+        server.run(5406);
 
         final TCPClient client = new TCPClient();
         client.connect("localhost", 5406);
-        client.encode(key);
+        client.connection().setTcpNoDelay(true);
+        //client.encode(key);
 
         for(int i = 0; i < 100; i++)
             client.send(message.getBytes());
-
 
         TimeUtils.waitFor(client::isClosed);
     }

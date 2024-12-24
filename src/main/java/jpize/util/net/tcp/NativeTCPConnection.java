@@ -33,7 +33,7 @@ public class NativeTCPConnection extends TCPConnection {
                 super.close();
             if(bytes.size() == 0) // nothing to return
                 return null;
-            return this.tryToDecryptBytes(bytes.toByteArray());
+            return super.tryToDecryptBytes(bytes.toByteArray());
         }catch(IOException ignored) {
             super.close();
             return null;
@@ -52,7 +52,6 @@ public class NativeTCPConnection extends TCPConnection {
             buffer.put(bytes);
             buffer.flip();
             super.channel.write(buffer);
-            buffer.clear();
         }catch(IOException e){
             super.close();
         }
