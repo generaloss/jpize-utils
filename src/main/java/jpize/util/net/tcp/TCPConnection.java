@@ -111,16 +111,17 @@ public abstract class TCPConnection implements Closeable {
         });
     }
 
-    protected void writeSends() throws IOException {
+    protected void writeSends(SelectionKey key) throws IOException {
         while(!sendQueue.isEmpty()) {
             final ByteBuffer buffer = sendQueue.peek();
-            final long writtenBytes = channel.write(buffer);
+            channel.write(buffer);
             if(buffer.hasRemaining()){
-                break;
+                return;
             }else{
                 sendQueue.poll();
             }
         }
+        key.interestOps(SelectionKey.OP_READ);
     }
 
 

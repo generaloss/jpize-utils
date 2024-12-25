@@ -87,7 +87,7 @@ public class TCPServer {
 
             selector = Selector.open();
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            this.startSelectorThread();
+            this.startThread();
 
         }catch(Exception e){
             throw new IllegalStateException("TCP server failed to start: " + e.getMessage());
@@ -104,13 +104,11 @@ public class TCPServer {
         return run(new InetSocketAddress(port));
     }
 
-    private void startSelectorThread() {
+    private void startThread() {
         final Thread selectorThread = new Thread(() -> {
-            while(!Thread.interrupted())
+            while(!Thread.interrupted() && !this.isClosed())
                 this.selectKeys();
         }, "TCP server thread #" + this.hashCode());
-
-        selectorThread.setPriority(8);
         selectorThread.setDaemon(true);
         selectorThread.start();
     }
@@ -122,17 +120,7 @@ public class TCPServer {
             final Iterator<SelectionKey> iterator = selectedKeys.iterator();
 
             while(iterator.hasNext()){
-                final SelectionKey key = iterator.next();
-
-                if(key.isReadable()){
-                    final TCPConnection connection = ((TCPConnection) key.attachment());
-                    this.receiveBytes(connection);
-                }else if(key.isWritable()){
-                    final TCPConnection connection = ((TCPConnection) key.attachment());
-                    connection.writeSends();
-                }else if(key.isAcceptable()){
-                    this.acceptNewConnection();
-                }
+                this.processKey(iterator.next());
                 iterator.remove();
             }
         }catch(IOException e){
@@ -140,10 +128,23 @@ public class TCPServer {
         }
     }
 
-    private void receiveBytes(TCPConnection connection) {
-        final byte[] bytes = connection.read();
-        if(bytes != null && onReceive != null)
-            onReceive.receive(connection, bytes);
+    private void processKey(SelectionKey key) throws IOException {
+        if(!key.isValid())
+            return;
+
+        if(key.isReadable()){
+            final TCPConnection connection = ((TCPConnection) key.attachment());
+            final byte[] bytes = connection.read();
+            if(bytes != null && onReceive != null)
+                onReceive.receive(connection, bytes);
+
+        }else if(key.isWritable()){
+            final TCPConnection connection = ((TCPConnection) key.attachment());
+            connection.writeSends(key);
+
+        }else if(key.isAcceptable()){
+            this.acceptNewConnection();
+        }
     }
 
     private void acceptNewConnection() throws IOException {

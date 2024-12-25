@@ -55,7 +55,8 @@ public class NativeTCPConnection extends TCPConnection {
             super.channel.write(buffer);
             if(buffer.hasRemaining()){
                 sendQueue.add(buffer);
-                // register write_op
+                selectionKey.interestOpsOr(SelectionKey.OP_WRITE);
+                selectionKey.selector().wakeup();
             }
         }catch(IOException e){
             super.close();

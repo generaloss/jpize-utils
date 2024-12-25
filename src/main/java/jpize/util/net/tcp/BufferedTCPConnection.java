@@ -73,10 +73,13 @@ public class BufferedTCPConnection extends TCPConnection {
         buffer.flip();
 
         try{
-            super.channel.write(buffer);
-            if(buffer.hasRemaining())
+            if(sendQueue.isEmpty())
+                super.channel.write(buffer);
+            if(buffer.hasRemaining()){
                 sendQueue.add(buffer);
-            // register write_op
+                selectionKey.interestOps(SelectionKey.OP_WRITE);
+                selectionKey.selector().wakeup();
+            }
         }catch(IOException e){
             super.close();
         }

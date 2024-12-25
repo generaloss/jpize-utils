@@ -13,6 +13,7 @@ import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class TCPClient {
@@ -96,25 +97,37 @@ public class TCPClient {
 
     private void startReceiveThread() {
         final Thread selectorThread = new Thread(() -> {
-            try{
-                while(!Thread.interrupted() && !this.isClosed()){
-                    selector.select();
-                    this.receiveBytes();
-                }
-            }catch(IOException e){
-                throw new RuntimeException(e); //!ignored
-            }
+            while(!Thread.interrupted() && !this.isClosed())
+                this.selectKeys();
         }, "TCP client thread #" + this.hashCode());
-
-        selectorThread.setPriority(7);
         selectorThread.setDaemon(true);
         selectorThread.start();
     }
 
-    private void receiveBytes() {
-        final byte[] bytes = connection.read();
-        if(bytes != null && onReceive != null)
-            onReceive.receive(connection, bytes);
+    private void selectKeys() {
+        try{
+            selector.select();
+            final Set<SelectionKey> selectedKeys = selector.selectedKeys();
+            for(SelectionKey selectedKey : selectedKeys)
+                this.processKey(selectedKey);
+            selectedKeys.clear();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void processKey(SelectionKey key) throws IOException {
+        if(!key.isValid())
+            return;
+
+        if(key.isReadable()){
+            final byte[] bytes = connection.read();
+            if(bytes != null && onReceive != null)
+                onReceive.receive(connection, bytes);
+
+        }else if(key.isWritable()){
+            connection.writeSends(key);
+        }
     }
 
 
