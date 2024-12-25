@@ -119,7 +119,7 @@ public class TCPServer {
             final Set<SelectionKey> selectedKeys = selector.selectedKeys();
             final Iterator<SelectionKey> iterator = selectedKeys.iterator();
 
-            while(iterator.hasNext()){
+            while(iterator.hasNext()) {
                 this.processKey(iterator.next());
                 iterator.remove();
             }

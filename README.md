@@ -130,9 +130,6 @@ boolean isDirectory = res.isDir();  // true
 boolean isFile      = res.isFile(); // false
 String[] list       = res.list();   // ["dir/file.txt", "dir/dir2/", "dir/dir2/file.txt"]
 ZipResource[] list  = res.listResources();
-
-
-
 ```
 
 ## [Input/Output](src/main/java/jpize/util/io)
@@ -264,21 +261,24 @@ Honorable mention:
 
 ## [*Net*](src/main/java/jpize/util/net)
 
+
+
 Encrypted TCP connection example:
 ``` java
-AESKey key = new AESKey(128); // generate key for connection encoding
+// generate key for connection encoding (you can also use any other Cipher)
+AESKey key = new AESKey(256); 
 
-// server
+// create server
 TCPServer server = new TCPServer();
 server.setOnReceive((sender, bytes) -> {
     System.out.println("Received: " + new String(bytes)); 
 });
 server.setOnConnect((connection) -> {
-    connection.encode(key);
+    connection.encode(key); 
 });
 server.run(65000);
 
-// client
+// create client
 TCPClient client = new TCPClient();
 client.connect("localhost", 65000);
 client.encode(key);

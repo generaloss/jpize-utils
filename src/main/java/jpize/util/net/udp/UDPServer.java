@@ -27,7 +27,7 @@ public class UDPServer {
         try{
             this.socket = new DatagramSocket(port, InetAddress.getByName(host));
             this.packetConsumer = packetConsumer;
-            this.thread = startReceiveLoop();
+            this.thread = this.startReceiveLoop();
         }catch(IOException e){
             throw new RuntimeException(e);
         }
