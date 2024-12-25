@@ -9,91 +9,50 @@ import java.util.function.Consumer;
 public class BufferedTCPConnection extends TCPConnection {
 
     private final ByteBuffer lengthBuffer;
-    private ByteBuffer readBuffer;
-    private int bytesRemaining;
+    private ByteBuffer dataBuffer;
 
     protected BufferedTCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
         super(channel, selectionKey, onDisconnect);
-        this.lengthBuffer = ByteBuffer.allocate(4); // 4 bytes for integer
-    }
-
-
-    // private boolean isDataBufferFull() {
-    //     return (bytesRemaining == 0);
-    // }
-
-    // private boolean allocateDataBuffer() throws IOException {
-    //     // try to read length
-    //     final int length = super.channel.read(lengthBuffer);
-
-    //     if(length == -1) { // connection was closed by the other side
-    //         super.close();
-    //         return false;
-    //     }else if(length < 4) // not int size (length)
-    //         return false;
-
-    //     // read length
-    //     lengthBuffer.flip();
-    //     bytesRemaining = lengthBuffer.getInt();
-    //     lengthBuffer.clear();
-
-    //     // allocate buffer
-    //     readBuffer = ByteBuffer.allocate(bytesRemaining);
-    //     System.out.println("allocated: " + bytesRemaining);
-    //     return true;
-    // }
-
-    // @Override
-    // protected byte[] read() {
-    //     try{
-    //         // if previous buffer is full allocate new buffer
-    //         if(this.isDataBufferFull() && !this.allocateDataBuffer())
-    //             return null;
-    //         // read bytes and when the buffer is full accept them
-    //         final int readBytes = super.channel.read(readBuffer);
-    //         bytesRemaining -= readBytes;
-    //         System.out.println("read: " + readBytes + ", remaining: " + bytesRemaining);
-    //         if(this.isDataBufferFull()){
-    //             System.out.println("array: " + readBuffer.array().length + " (" + Arrays.hashCode(readBuffer.array()) + ")");
-    //             final byte[] bytes = super.tryToDecryptBytes(readBuffer.array());
-    //             readBuffer.clear();
-    //             return bytes;
-    //         }
-    //     }catch(IOException ignore){
-    //         this.close();
-    //     }
-    //     return null;
-    // }
-
-    private boolean read(ByteBuffer buffer) throws IOException {
-        while(buffer.hasRemaining()){
-            if(super.channel.read(buffer) == -1){
-                // connection was closed by the other side
-                super.close();
-                return false;
-            }
-        }
-        buffer.flip();
-        return true;
+        this.lengthBuffer = ByteBuffer.allocate(4);
     }
 
     @Override
     protected byte[] read() {
         try{
-            // read lenght
-            if(!this.read(lengthBuffer))
-                return null;
+            if(lengthBuffer.hasRemaining()){
+                final int bytesRead = super.channel.read(lengthBuffer);
+                if(bytesRead == -1){
+                    // connection closed
+                    this.close();
+                    return null;
+                }
+                if(lengthBuffer.hasRemaining())
+                    return null; // partial read, keep the channel open
 
-            final int length = lengthBuffer.getInt();
-            lengthBuffer.clear();
+                // allocate buffer
+                lengthBuffer.flip();
+                final int length = lengthBuffer.getInt();
+                dataBuffer = ByteBuffer.allocate(length);
+            }
 
             // read data
-            final ByteBuffer dataBuffer = ByteBuffer.allocate(length);
-            if(!this.read(dataBuffer))
+            final int bytesRead = super.channel.read(dataBuffer);
+            if(bytesRead == -1){
+                // connection closed
+                this.close();
                 return null;
+            }
 
-            return super.tryToDecryptBytes(dataBuffer.array());
-
+            if(dataBuffer.hasRemaining()){
+                // not done reading
+                return null;
+            }else{
+                // reset length buffer for next message
+                lengthBuffer.clear();
+                // process the message
+                dataBuffer.flip();
+                return super.tryToDecryptBytes(dataBuffer.array());
+            }
         }catch(IOException ignore){
             this.close();
             return null;
@@ -106,15 +65,19 @@ public class BufferedTCPConnection extends TCPConnection {
         if(super.isClosed())
             throw new IllegalStateException("TCP connection is closed");
 
-        try{
-            bytes = this.tryToEncryptBytes(bytes);
+        bytes = this.tryToEncryptBytes(bytes);
 
-            final ByteBuffer buffer = ByteBuffer.allocate(4 + bytes.length);
-            buffer.putInt(bytes.length);
-            buffer.put(bytes);
-            buffer.flip();
-            //TimeUtils.delayMillis(10);
-            super.channel.write(buffer);
+        final ByteBuffer buffer = ByteBuffer.allocate(4 + bytes.length);
+        buffer.putInt(bytes.length);
+        buffer.put(bytes);
+        buffer.flip();
+
+        try{
+            while(buffer.hasRemaining()){
+                final int writtenBytes = super.channel.write(buffer);
+                if(writtenBytes == 0)
+                    Thread.onSpinWait();
+            }
         }catch(IOException e){
             super.close();
         }

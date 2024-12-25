@@ -104,33 +104,31 @@ public class TCPServer {
 
     private void startSelectorThread() {
         final Thread selectorThread = new Thread(() -> {
-            try{
-                while(!Thread.interrupted()){
-                    this.selectKeys();
-                    Thread.yield();
-                }
-            }catch(IOException e){
-                throw new RuntimeException(e); //!ignored
-            }
-        }, "TCP-server Thread #" + this.hashCode());
+            while(!Thread.interrupted())
+                this.selectKeys();
+        }, "TCP server thread #" + this.hashCode());
 
         selectorThread.setPriority(8);
         selectorThread.setDaemon(true);
         selectorThread.start();
     }
 
-    private synchronized void selectKeys() throws IOException {
-        selector.select();
+    private void selectKeys() {
+        try{
+            selector.select();
 
-        for(SelectionKey key: selector.selectedKeys()){
-            if(!key.isValid())
-                continue;
+            for(SelectionKey key: selector.selectedKeys()){
+                if(!key.isValid())
+                    continue;
 
-            if(key.isReadable()){
-                this.receiveBytes((TCPConnection) key.attachment());
-            }else if(key.isAcceptable()){
-                this.acceptNewConnection();
+                if(key.isReadable()){
+                    this.receiveBytes((TCPConnection) key.attachment());
+                }else if(key.isAcceptable()){
+                    this.acceptNewConnection();
+                }
             }
+        }catch(IOException e){
+            throw new RuntimeException(e); //!ignored
         }
     }
 
@@ -178,6 +176,7 @@ public class TCPServer {
         connections.clear();
 
         Utils.close(serverSocketChannel);
+        Utils.close(selector);
         return this;
     }
 

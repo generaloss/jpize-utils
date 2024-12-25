@@ -71,14 +71,14 @@ public class TCPClient {
             throw new IllegalStateException("TCP client is already connected");
 
         try{
-            final SocketChannel socket = SocketChannel.open();
-            socket.connect(socketAddress);
-            socket.configureBlocking(false);
+            final SocketChannel channel = SocketChannel.open();
+            channel.connect(socketAddress);
+            channel.configureBlocking(false);
 
             selector = Selector.open();
-            final SelectionKey key = socket.register(selector, SelectionKey.OP_READ);
+            final SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
 
-            connection = connectionFactory.create(socket, key, onDisconnect);
+            connection = connectionFactory.create(channel, key, onDisconnect);
             if(onConnect != null)
                 onConnect.accept(connection);
 
@@ -104,7 +104,7 @@ public class TCPClient {
             }catch(IOException e){
                 throw new RuntimeException(e); //!ignored
             }
-        }, "TCP-client Thread #" + this.hashCode());
+        }, "TCP client thread #" + this.hashCode());
 
         selectorThread.setPriority(7);
         selectorThread.setDaemon(true);
