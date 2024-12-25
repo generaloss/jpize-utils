@@ -14,6 +14,8 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
@@ -116,19 +118,25 @@ public class TCPServer {
     private void selectKeys() {
         try{
             selector.select();
+            final Set<SelectionKey> selectedKeys = selector.selectedKeys();
+            final Iterator<SelectionKey> iterator = selectedKeys.iterator();
 
-            for(SelectionKey key: selector.selectedKeys()){
-                if(!key.isValid())
-                    continue;
+            while(iterator.hasNext()){
+                final SelectionKey key = iterator.next();
 
                 if(key.isReadable()){
-                    this.receiveBytes((TCPConnection) key.attachment());
+                    final TCPConnection connection = ((TCPConnection) key.attachment());
+                    this.receiveBytes(connection);
+                }else if(key.isWritable()){
+                    final TCPConnection connection = ((TCPConnection) key.attachment());
+                    connection.writeSends();
                 }else if(key.isAcceptable()){
                     this.acceptNewConnection();
                 }
+                iterator.remove();
             }
         }catch(IOException e){
-            throw new RuntimeException(e); //!ignored
+            throw new RuntimeException(e);
         }
     }
 

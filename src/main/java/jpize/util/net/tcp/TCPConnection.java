@@ -9,14 +9,18 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.Closeable;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 
 public abstract class TCPConnection implements Closeable {
@@ -24,6 +28,7 @@ public abstract class TCPConnection implements Closeable {
     protected final SocketChannel channel;
     protected final SelectionKey selectionKey;
     protected final Consumer<TCPConnection> onDisconnect;
+    protected final Queue<ByteBuffer> sendQueue;
     private Cipher encryptCipher, decryptCipher;
     private Object attachment;
 
@@ -31,6 +36,7 @@ public abstract class TCPConnection implements Closeable {
         this.channel = channel;
         this.selectionKey = selectionKey;
         this.onDisconnect = onDisconnect;
+        this.sendQueue = new ConcurrentLinkedQueue<>();
     }
 
     public SocketChannel channel() {
@@ -103,6 +109,18 @@ public abstract class TCPConnection implements Closeable {
             stream.writeShort(packet.getPacketID());
             packet.write(stream);
         });
+    }
+
+    protected void writeSends() throws IOException {
+        while(!sendQueue.isEmpty()) {
+            final ByteBuffer buffer = sendQueue.peek();
+            final long writtenBytes = channel.write(buffer);
+            if(buffer.hasRemaining()){
+                break;
+            }else{
+                sendQueue.poll();
+            }
+        }
     }
 
 

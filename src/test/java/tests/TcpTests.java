@@ -23,7 +23,7 @@ public class TcpTests {
 
     @Test
     public void reconnect_client() {
-        final int reconnectsNum = 7;
+        final int reconnectsNum = 100;
         final AtomicInteger counter = new AtomicInteger();
         new TCPServer()
                 .setOnConnect((connection) -> counter.incrementAndGet())
@@ -35,7 +35,6 @@ public class TcpTests {
             client.connect("localhost", 65000);
             client.disconnect();
         }
-        TimeUtils.delayMillis(5000);
         TimeUtils.waitFor(() -> counter.get() == reconnectsNum * 2, 500, () -> Assert.fail(counter.get() + " / " + (reconnectsNum * 2)));
     }
 
@@ -115,7 +114,7 @@ public class TcpTests {
         server.setOnConnect((connection) -> connection.encode(key));
         server.setOnReceive((sender, bytes) -> {
             final String received = new String(bytes);
-            System.out.println(counter.incrementAndGet());
+            counter.incrementAndGet();
             if(!message.equals(received)){
                 Assert.fail();
                 sender.close();

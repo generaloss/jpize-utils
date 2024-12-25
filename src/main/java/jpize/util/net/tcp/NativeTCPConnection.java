@@ -52,10 +52,10 @@ public class NativeTCPConnection extends TCPConnection {
         buffer.flip();
 
         try{
-            while(buffer.hasRemaining()){
-                final int writtenBytes = super.channel.write(buffer);
-                if(writtenBytes == 0)
-                    Thread.onSpinWait();
+            super.channel.write(buffer);
+            if(buffer.hasRemaining()){
+                sendQueue.add(buffer);
+                // register write_op
             }
         }catch(IOException e){
             super.close();
