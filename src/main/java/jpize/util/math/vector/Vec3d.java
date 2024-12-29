@@ -1411,6 +1411,10 @@ public class Vec3d {
         return x1 == x2 && y1 == y2 && z1 == z2;
     }
 
+    public static boolean notEquals(double x1, double y1, double z1, double x2, double y2, double z2) {
+        return x1 != x2 || y1 != y2 || z1 != z2;
+    }
+
     @Override
     public boolean equals(Object object) {
         if(object == null || getClass() != object.getClass())

@@ -157,6 +157,11 @@ public class VectorClassesGenerator {
             "return " + makeDims(dimensions, " && ", "%l1 == %l2") + ";"
         );
 
+        // not equals
+        w.addMethod("public static boolean notEquals(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return " + makeDims(dimensions, " || ", "%l1 != %l2") + ";"
+        );
+
         w.addAnnotatedMethod("@Override", "public boolean equals(Object object)",
             "if(object == null || getClass() != object.getClass())",
             "    return false;",

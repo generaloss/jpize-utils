@@ -1275,6 +1275,10 @@ public class Vec4f {
         return x1 == x2 && y1 == y2 && z1 == z2 && w1 == w2;
     }
 
+    public static boolean notEquals(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        return x1 != x2 || y1 != y2 || z1 != z2 || w1 != w2;
+    }
+
     @Override
     public boolean equals(Object object) {
         if(object == null || getClass() != object.getClass())

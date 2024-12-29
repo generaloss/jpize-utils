@@ -10,7 +10,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.Closeable;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
@@ -25,10 +24,12 @@ import java.util.function.Consumer;
 
 public abstract class TCPConnection implements Closeable {
 
+    public static TCPConnectionType DEFAULT_TYPE = TCPConnectionType.PACKET;
+
     protected final SocketChannel channel;
     protected final SelectionKey selectionKey;
     protected final Consumer<TCPConnection> onDisconnect;
-    protected final Queue<ByteBuffer> sendQueue;
+    protected final Queue<ByteBuffer> writeQueue;
     private Cipher encryptCipher, decryptCipher;
     private Object attachment;
 
@@ -36,7 +37,7 @@ public abstract class TCPConnection implements Closeable {
         this.channel = channel;
         this.selectionKey = selectionKey;
         this.onDisconnect = onDisconnect;
-        this.sendQueue = new ConcurrentLinkedQueue<>();
+        this.writeQueue = new ConcurrentLinkedQueue<>();
     }
 
     public SocketChannel channel() {
@@ -112,16 +113,20 @@ public abstract class TCPConnection implements Closeable {
     }
 
     protected void writeSends(SelectionKey key) throws IOException {
-        while(!sendQueue.isEmpty()) {
-            final ByteBuffer buffer = sendQueue.peek();
+        while(!writeQueue.isEmpty()) {
+            final ByteBuffer buffer = writeQueue.peek();
             channel.write(buffer);
             if(buffer.hasRemaining()){
                 return;
             }else{
-                sendQueue.poll();
+                writeQueue.poll();
             }
         }
         key.interestOps(SelectionKey.OP_READ);
+    }
+
+    public int getWriteQueueSize() {
+        return writeQueue.size();
     }
 
 
@@ -236,22 +241,26 @@ public abstract class TCPConnection implements Closeable {
         TCPConnection create(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect);
     }
 
-    private static final Map<Type, Factory> FACTORY_BY_CLASS = new HashMap<>(){{{
-        put(BufferedTCPConnection.class, BufferedTCPConnection::new);
-        put(NativeTCPConnection.class, NativeTCPConnection::new);
+    private static final Map<Class<?>, Factory> FACTORY_BY_CLASS = new HashMap<>(){{{
+        put(PacketTCPConnection.class, PacketTCPConnection::new);
+        put(DefaultTCPConnection.class, DefaultTCPConnection::new);
     }}};
 
-    public static void registerFactory(Type connectionClass, Factory factory) {
+    public static void registerFactory(Class<?> connectionClass, Factory factory) {
         FACTORY_BY_CLASS.put(connectionClass, factory);
     }
 
-    public static Factory getFactory(Type connectionClass) {
+    public static Factory getFactory(Class<?> connectionClass) {
         if(!FACTORY_BY_CLASS.containsKey(connectionClass))
             throw new Error("Class '" + connectionClass + "' is not registered as a TCP connection factory");
         return FACTORY_BY_CLASS.get(connectionClass);
     }
 
-    public static TCPConnection create(Type connectionClass, SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
+    public static Factory getFactory(TCPConnectionType type) {
+        return getFactory(type.getConnectionClass());
+    }
+
+    public static TCPConnection create(Class<?> connectionClass, SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
         final Factory factory = getFactory(connectionClass);
         return factory.create(channel, selectionKey, onDisconnect);
     }

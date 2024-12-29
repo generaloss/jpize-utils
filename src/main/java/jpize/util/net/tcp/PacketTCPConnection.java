@@ -6,12 +6,12 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.function.Consumer;
 
-public class BufferedTCPConnection extends TCPConnection {
+public class PacketTCPConnection extends TCPConnection {
 
     private final ByteBuffer lengthBuffer;
     private ByteBuffer dataBuffer;
 
-    protected BufferedTCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
+    protected PacketTCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
         super(channel, selectionKey, onDisconnect);
         this.lengthBuffer = ByteBuffer.allocate(4);
     }
@@ -29,7 +29,7 @@ public class BufferedTCPConnection extends TCPConnection {
                 if(lengthBuffer.hasRemaining())
                     return null; // partial read, keep the channel open
 
-                // allocate buffer
+                // allocate data buffer
                 lengthBuffer.flip();
                 final int length = lengthBuffer.getInt();
                 dataBuffer = ByteBuffer.allocate(length);
@@ -73,10 +73,10 @@ public class BufferedTCPConnection extends TCPConnection {
         buffer.flip();
 
         try{
-            if(sendQueue.isEmpty())
+            if(writeQueue.isEmpty())
                 super.channel.write(buffer);
             if(buffer.hasRemaining()){
-                sendQueue.add(buffer);
+                writeQueue.add(buffer);
                 selectionKey.interestOps(SelectionKey.OP_WRITE);
                 selectionKey.selector().wakeup();
             }

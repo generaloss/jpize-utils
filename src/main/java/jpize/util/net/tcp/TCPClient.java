@@ -7,7 +7,6 @@ import jpize.util.security.AESKey;
 
 import javax.crypto.Cipher;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
@@ -25,7 +24,7 @@ public class TCPClient {
     private Selector selector;
 
     public TCPClient() {
-        this.setConnectionType(BufferedTCPConnection.class);
+        this.setConnectionType(TCPConnection.DEFAULT_TYPE);
     }
 
     public TCPConnection connection() {
@@ -33,10 +32,16 @@ public class TCPClient {
     }
 
 
-    public TCPClient setConnectionType(Type tcpConnectionClass) {
+    public TCPClient setConnectionType(Class<?> tcpConnectionClass) {
         this.connectionFactory = TCPConnection.getFactory(tcpConnectionClass);
         return this;
     }
+
+    public TCPClient setConnectionType(TCPConnectionType type) {
+        this.connectionFactory = TCPConnection.getFactory(type);
+        return this;
+    }
+
 
     public TCPClient setOnConnect(Consumer<TCPConnection> onConnect) {
         this.onConnect = onConnect;

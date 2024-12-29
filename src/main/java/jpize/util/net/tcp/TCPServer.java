@@ -6,7 +6,6 @@ import jpize.util.net.tcp.packet.IPacket;
 import jpize.util.Utils;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
@@ -30,7 +29,7 @@ public class TCPServer {
     private final Consumer<TCPConnection> disconnector;
 
     public TCPServer() {
-        this.setConnectionType(BufferedTCPConnection.class);
+        this.setConnectionType(TCPConnection.DEFAULT_TYPE);
         this.connections = new CopyOnWriteArrayList<>();
         this.disconnector = (connection) -> {
             if(onDisconnect != null) onDisconnect.accept(connection);
@@ -39,8 +38,13 @@ public class TCPServer {
     }
 
 
-    public TCPServer setConnectionType(Type tcpConnectionClass) {
+    public TCPServer setConnectionType(Class<?> tcpConnectionClass) {
         this.connectionFactory = TCPConnection.getFactory(tcpConnectionClass);
+        return this;
+    }
+
+    public TCPServer setConnectionType(TCPConnectionType type) {
+        this.connectionFactory = TCPConnection.getFactory(type);
         return this;
     }
 

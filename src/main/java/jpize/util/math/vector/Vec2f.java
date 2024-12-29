@@ -972,6 +972,10 @@ public class Vec2f {
         return x1 == x2 && y1 == y2;
     }
 
+    public static boolean notEquals(float x1, float y1, float x2, float y2) {
+        return x1 != x2 || y1 != y2;
+    }
+
     @Override
     public boolean equals(Object object) {
         if(object == null || getClass() != object.getClass())

@@ -1321,6 +1321,10 @@ public class Vec3i {
         return x1 == x2 && y1 == y2 && z1 == z2;
     }
 
+    public static boolean notEquals(int x1, int y1, int z1, int x2, int y2, int z2) {
+        return x1 != x2 || y1 != y2 || z1 != z2;
+    }
+
     @Override
     public boolean equals(Object object) {
         if(object == null || getClass() != object.getClass())
