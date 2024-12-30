@@ -127,12 +127,10 @@ public class TCPServer {
                 this.processKey(iterator.next());
                 iterator.remove();
             }
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
+        }catch(IOException ignored){ }
     }
 
-    private void processKey(SelectionKey key) throws IOException {
+    private void processKey(SelectionKey key) {
         if(!key.isValid())
             return;
 
@@ -144,27 +142,29 @@ public class TCPServer {
 
         }else if(key.isWritable()){
             final TCPConnection connection = ((TCPConnection) key.attachment());
-            connection.writeSends(key);
+            connection.processWriteQueue(key);
 
         }else if(key.isAcceptable()){
             this.acceptNewConnection();
         }
     }
 
-    private void acceptNewConnection() throws IOException {
-        final SocketChannel channel = serverSocketChannel.accept();
-        if(channel == null)
-            return;
+    private void acceptNewConnection() {
+        try{
+            final SocketChannel channel = serverSocketChannel.accept();
+            if(channel == null)
+                return;
 
-        channel.configureBlocking(false);
-        final SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
+            channel.configureBlocking(false);
+            final SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
 
-        final TCPConnection connection = connectionFactory.create(channel, key, disconnector);
-        connections.add(connection);
-        key.attach(connection);
+            final TCPConnection connection = connectionFactory.create(channel, key, disconnector);
+            connections.add(connection);
+            key.attach(connection);
 
-        if(onConnect != null)
-            onConnect.accept(connection);
+            if(onConnect != null)
+                onConnect.accept(connection);
+        }catch(IOException ignored){ }
     }
 
 

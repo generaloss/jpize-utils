@@ -9,7 +9,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.Closeable;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
@@ -112,15 +111,19 @@ public abstract class TCPConnection implements Closeable {
         });
     }
 
-    protected void writeSends(SelectionKey key) throws IOException {
-        while(!writeQueue.isEmpty()) {
-            final ByteBuffer buffer = writeQueue.peek();
-            channel.write(buffer);
-            if(buffer.hasRemaining()){
-                return;
-            }else{
-                writeQueue.poll();
+    protected void processWriteQueue(SelectionKey key) {
+        try{
+            while(!writeQueue.isEmpty()){
+                final ByteBuffer buffer = writeQueue.peek();
+                channel.write(buffer);
+                if(buffer.hasRemaining()){
+                    return;
+                }else{
+                    writeQueue.poll();
+                }
             }
+        }catch(Exception ignored){
+            this.close();
         }
         key.interestOps(SelectionKey.OP_READ);
     }

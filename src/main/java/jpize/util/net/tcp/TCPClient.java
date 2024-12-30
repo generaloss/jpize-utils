@@ -116,12 +116,10 @@ public class TCPClient {
             for(SelectionKey selectedKey : selectedKeys)
                 this.processKey(selectedKey);
             selectedKeys.clear();
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
+        }catch(IOException ignored){ }
     }
 
-    private void processKey(SelectionKey key) throws IOException {
+    private void processKey(SelectionKey key) {
         if(!key.isValid())
             return;
 
@@ -131,7 +129,7 @@ public class TCPClient {
                 onReceive.receive(connection, bytes);
 
         }else if(key.isWritable()){
-            connection.writeSends(key);
+            connection.processWriteQueue(key);
         }
     }
 

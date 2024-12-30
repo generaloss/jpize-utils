@@ -59,6 +59,14 @@ public class Maths {
         return (a != 0 && (a & -a) == a);
     }
 
+    public static boolean isEven(int a) {
+        return (a % 2 == 0);
+    }
+
+    public static boolean isOdd(int a) {
+        return (a % 2 != 0);
+    }
+
 
     public static int clamp(int a, int min, int max) {
         return Math.max(min, Math.min(a, max));
