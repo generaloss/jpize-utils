@@ -5,9 +5,9 @@ import jpize.util.io.ExtDataOutputStream;
 import jpize.util.net.tcp.TCPClient;
 import jpize.util.net.tcp.TCPConnection;
 import jpize.util.net.tcp.TCPServer;
-import jpize.util.net.tcp.packet.IPacket;
-import jpize.util.net.tcp.packet.PacketDispatcher;
-import jpize.util.net.tcp.packet.PacketHandler;
+import jpize.util.net.tcp.packet.NetPacket;
+import jpize.util.net.tcp.packet.NetPacketDispatcher;
+import jpize.util.net.tcp.packet.INetPacketHandler;
 import jpize.util.security.AESKey;
 import jpize.util.time.TimeUtils;
 import org.junit.Assert;
@@ -209,7 +209,7 @@ public class TcpTests {
     public void send_packet() {
         final String message = "Hello, World!";
 
-        final PacketDispatcher dispatcher = new PacketDispatcher()
+        final NetPacketDispatcher dispatcher = new NetPacketDispatcher()
                 .register(MsgPacket.class);
 
         final AtomicInteger counter = new AtomicInteger();
@@ -232,11 +232,11 @@ public class TcpTests {
         TimeUtils.waitFor(() -> (counter.get() == 2), 2000, Assert::fail);
     }
 
-    interface MsgHandler extends PacketHandler {
+    interface MsgHandler extends INetPacketHandler {
         void acceptMsg(String message);
     }
 
-    static class MsgPacket extends IPacket<MsgHandler> {
+    static class MsgPacket extends NetPacket<MsgHandler> {
         private String message;
         public MsgPacket(String message) {
             this.message = message;

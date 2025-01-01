@@ -5,12 +5,12 @@ import jpize.util.io.ExtDataOutputStream;
 
 import java.io.IOException;
 
-public abstract class IPacket<T extends PacketHandler> {
+public abstract class NetPacket<T extends INetPacketHandler> {
 
     private final short ID;
 
-    public IPacket() {
-        this.ID = IPacket.getIDByClass(this.getClass());
+    public NetPacket() {
+        this.ID = NetPacket.getIDByClass(this.getClass());
     }
 
     public short getPacketID() {

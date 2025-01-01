@@ -2,7 +2,7 @@ package jpize.util.net.tcp;
 
 import jpize.util.io.DataStreamWriter;
 import jpize.util.io.ExtDataInputStream;
-import jpize.util.net.tcp.packet.IPacket;
+import jpize.util.net.tcp.packet.NetPacket;
 import jpize.util.Utils;
 
 import java.io.IOException;
@@ -213,14 +213,14 @@ public class TCPServer {
         this.broadcast(except, DataStreamWriter.writeBytes(streamWriter));
     }
 
-    public void broadcast(IPacket<?> packet) {
+    public void broadcast(NetPacket<?> packet) {
         this.broadcast(stream -> {
             stream.writeShort(packet.getPacketID());
             packet.write(stream);
         });
     }
 
-    public void broadcast(TCPConnection except, IPacket<?> packet) {
+    public void broadcast(TCPConnection except, NetPacket<?> packet) {
         this.broadcast(except, stream -> {
             stream.writeShort(packet.getPacketID());
             packet.write(stream);

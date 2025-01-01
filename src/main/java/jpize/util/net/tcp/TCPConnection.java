@@ -2,7 +2,7 @@ package jpize.util.net.tcp;
 
 import jpize.util.Utils;
 import jpize.util.io.DataStreamWriter;
-import jpize.util.net.tcp.packet.IPacket;
+import jpize.util.net.tcp.packet.NetPacket;
 import jpize.util.security.AESKey;
 
 import javax.crypto.BadPaddingException;
@@ -104,7 +104,7 @@ public abstract class TCPConnection implements Closeable {
         this.send(DataStreamWriter.writeBytes(streamWriter));
     }
 
-    public void send(IPacket<?> packet) {
+    public void send(NetPacket<?> packet) {
         this.send(stream -> {
             stream.writeShort(packet.getPacketID());
             packet.write(stream);
@@ -122,10 +122,10 @@ public abstract class TCPConnection implements Closeable {
                     writeQueue.poll();
                 }
             }
+            key.interestOps(SelectionKey.OP_READ);
         }catch(Exception ignored){
             this.close();
         }
-        key.interestOps(SelectionKey.OP_READ);
     }
 
     public int getWriteQueueSize() {

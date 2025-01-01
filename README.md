@@ -290,7 +290,7 @@ Packets example:
 // create packet handler
 MyPacketHandler handler = new MyPacketHandler();
 // create packet dispatcher and register packets
-PacketDispatcher packetDispatcher = new PacketDispatcher()
+NetPacketDispatcher packetDispatcher = new NetPacketDispatcher()
         .register(MsgPacket.class, AnotherPacket.class, ...);
 
 // create server and set receiver
@@ -308,7 +308,7 @@ client.send(new MsgPacket("My message!"));
 
 
 // Handler for packets
-public static class MyPacketHandler implements PacketHandler {
+public static class MyPacketHandler implements INetPacketHandler {
     // create methods for each packet
     public void handleMessagePacket(MsgPacket packet) {
         System.out.println(packet.message);
@@ -319,7 +319,7 @@ public static class MyPacketHandler implements PacketHandler {
 }
 
 // Message Packet
-public static class MsgPacket extends IPacket<MyPacketHandler> { // MyPacketHandler 
+public static class MsgPacket extends NetPacket<MyPacketHandler> { // MyPacketHandler 
     public String message;
     
     public MsgPacket(String message) {

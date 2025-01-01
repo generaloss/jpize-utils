@@ -94,14 +94,14 @@ public class Intersector {
 
 
     public static float getRayIntersectAABox(Ray3f ray, AABoxBody aabb) {
-        final float x1 = (aabb.getMin().x - ray.origin().x) / ray.dir().x;
-        final float x2 = (aabb.getMax().x - ray.origin().x) / ray.dir().x;
+        final float x1 = (aabb.getMin().x - ray.origin().x) / ray.directory().x;
+        final float x2 = (aabb.getMax().x - ray.origin().x) / ray.directory().x;
 
-        final float y1 = (aabb.getMin().y - ray.origin().y) / ray.dir().y;
-        final float y2 = (aabb.getMax().y - ray.origin().y) / ray.dir().y;
+        final float y1 = (aabb.getMin().y - ray.origin().y) / ray.directory().y;
+        final float y2 = (aabb.getMax().y - ray.origin().y) / ray.directory().y;
 
-        final float z1 = (aabb.getMin().z - ray.origin().z) / ray.dir().z;
-        final float z2 = (aabb.getMax().z - ray.origin().z) / ray.dir().z;
+        final float z1 = (aabb.getMin().z - ray.origin().z) / ray.directory().z;
+        final float z2 = (aabb.getMax().z - ray.origin().z) / ray.directory().z;
 
         final float max = Maths.max(Math.min(x1, x2), Math.min(y1, y2), Math.min(z1, z2));
         final float min = Maths.min(Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2));
@@ -125,9 +125,9 @@ public class Intersector {
         final float edge2z = z3 - z1;
 
         // h = cross(direction, edge2)
-        final float hx = ray.dir().y * edge2z - ray.dir().z * edge2y;
-        final float hy = ray.dir().z * edge2x - ray.dir().x * edge2z;
-        final float hz = ray.dir().x * edge2y - ray.dir().y * edge2x;
+        final float hx = ray.directory().y * edge2z - ray.directory().z * edge2y;
+        final float hy = ray.directory().z * edge2x - ray.directory().x * edge2z;
+        final float hz = ray.directory().x * edge2y - ray.directory().y * edge2x;
 
         // a = 1 / dot(h, edge1)
         final float a = 1F / (hx * edge1x + hy * edge1y + hz * edge1z);
@@ -150,12 +150,12 @@ public class Intersector {
         final float qz = sx * edge1y - sy * edge1x;
 
         // a * dot(q, direction)
-        final float v = a * (qx * ray.dir().x + qy * ray.dir().y + qz * ray.dir().z);
+        final float v = a * (qx * ray.directory().x + qy * ray.directory().y + qz * ray.directory().z);
         if(v < 0F || u + v > 1F)
             return -1F;
 
         // t = a * dot(q, edge2) * len(direction)
-        final float t = a * (qx * edge2x + qy * edge2y + qz * edge2z) * ray.len();
+        final float t = a * (qx * edge2x + qy * edge2y + qz * edge2z) * ray.length();
         return (t > 0F) ? t : -1F;
     }
 

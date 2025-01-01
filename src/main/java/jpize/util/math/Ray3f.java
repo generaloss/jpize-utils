@@ -46,11 +46,11 @@ public class Ray3f {
         return origin;
     }
 
-    public Vec3f dir() {
+    public Vec3f directory() {
         return direction;
     }
 
-    public float len() {
+    public float length() {
         return direction.len();
     }
 

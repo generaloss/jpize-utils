@@ -10,26 +10,26 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class PacketDispatcher {
+public class NetPacketDispatcher {
 
-    private final Map<Short, Class<? extends IPacket<?>>> packetClasses;
+    private final Map<Short, Class<? extends NetPacket<?>>> packetClasses;
     private final Queue<Runnable> toHandleQueue;
 
-    public PacketDispatcher() {
+    public NetPacketDispatcher() {
         this.packetClasses = new ConcurrentHashMap<>();
         this.toHandleQueue = new ConcurrentLinkedQueue<>();
     }
 
     @SafeVarargs
-    public final PacketDispatcher register(Class<? extends IPacket<?>>... packetClasses) {
-        for(Class<? extends IPacket<?>> packetClass : packetClasses){
-            final short ID = IPacket.getIDByClass(packetClass);
+    public final NetPacketDispatcher register(Class<? extends NetPacket<?>>... packetClasses) {
+        for(Class<? extends NetPacket<?>> packetClass : packetClasses){
+            final short ID = NetPacket.getIDByClass(packetClass);
             this.packetClasses.put(ID, packetClass);
         }
         return this;
     }
 
-    public boolean readPacket(byte[] bytes, PacketHandler handler) {
+    public boolean readPacket(byte[] bytes, INetPacketHandler handler) {
         try{
             // check
             if(bytes.length < 2) // 'short' (ID) size = 2
@@ -40,12 +40,12 @@ public class PacketDispatcher {
 
             // read ID and get packet class
             final short ID = dataStream.readShort();
-            final Class<? extends IPacket<?>> packetClass = packetClasses.get(ID);
+            final Class<? extends NetPacket<?>> packetClass = packetClasses.get(ID);
             if(packetClass == null)
                 return false;
 
             // create packet class instance and read remaining data
-            final IPacket<PacketHandler> packetInstance = instancePacket(packetClass);
+            final NetPacket<INetPacketHandler> packetInstance = instancePacket(packetClass);
             packetInstance.read(dataStream);
 
             // handle and return
@@ -67,12 +67,12 @@ public class PacketDispatcher {
         return count;
     }
 
-    private IPacket<PacketHandler> instancePacket(Class<?> packetClass) {
+    private NetPacket<INetPacketHandler> instancePacket(Class<?> packetClass) {
         try{
             final Constructor<?> constructor = packetClass.getDeclaredConstructor();
             constructor.setAccessible(true);
             // noinspection unchecked
-            return (IPacket<PacketHandler>) constructor.newInstance();
+            return (NetPacket<INetPacketHandler>) constructor.newInstance();
 
         }catch(Exception e){
             throw new RuntimeException("Unable to instance packet: " + packetClass.getName(), e);

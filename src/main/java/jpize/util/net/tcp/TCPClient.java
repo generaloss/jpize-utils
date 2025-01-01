@@ -2,7 +2,7 @@ package jpize.util.net.tcp;
 
 import jpize.util.io.DataStreamWriter;
 import jpize.util.io.ExtDataInputStream;
-import jpize.util.net.tcp.packet.IPacket;
+import jpize.util.net.tcp.packet.NetPacket;
 import jpize.util.security.AESKey;
 
 import javax.crypto.Cipher;
@@ -186,7 +186,7 @@ public class TCPClient {
         return this;
     }
 
-    public TCPClient send(IPacket<?> packet) {
+    public TCPClient send(NetPacket<?> packet) {
         if(this.isConnected())
             connection.send(packet);
         return this;
