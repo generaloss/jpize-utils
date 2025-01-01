@@ -194,7 +194,10 @@ public class TcpTests {
         }
 
         for(TCPClient client: clients)
-            new Thread(() -> client.send(message.getBytes()).disconnect()).start();
+            new Thread(() -> {
+                client.send(message.getBytes());
+                client.disconnect();
+            }).start();
 
         int prevDone = -1;
         while(done.get() != clientsAmount){
