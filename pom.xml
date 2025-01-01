@@ -4,7 +4,7 @@
 
     <groupId>io.github.generaloss</groupId>
     <artifactId>jpize-utils</artifactId>
-    <version>25.1.1</version>
+    <version>25.1.2</version>
     <name>jpize-utils</name>
 
     <description>utils library</description>

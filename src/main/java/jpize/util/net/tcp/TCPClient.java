@@ -90,13 +90,13 @@ public class TCPClient {
 
             this.startReceiveThread();
         }catch(IOException e){
-            throw new RuntimeException("TCP client failed to connect: " + e.getMessage()); //!ignored
+            throw new RuntimeException("TCP client failed to connect: " + e.getMessage());
         }
         return this;
     }
 
     public TCPClient connect(String host, int port) {
-        return connect(new InetSocketAddress(host, port));
+        return this.connect(new InetSocketAddress(host, port));
     }
 
 
@@ -174,22 +174,22 @@ public class TCPClient {
     }
 
 
-    public TCPClient send(byte[] bytes) {
+    public boolean send(byte[] bytes) {
         if(this.isConnected())
-            connection.send(bytes);
-        return this;
+            return connection.send(bytes);
+        return false;
     }
 
-    public TCPClient send(DataStreamWriter streamWriter) {
+    public boolean send(DataStreamWriter streamWriter) {
         if(this.isConnected())
-            connection.send(streamWriter);
-        return this;
+            return connection.send(streamWriter);
+        return false;
     }
 
-    public TCPClient send(NetPacket<?> packet) {
+    public boolean send(NetPacket<?> packet) {
         if(this.isConnected())
-            connection.send(packet);
-        return this;
+            return connection.send(packet);
+        return false;
     }
 
 }

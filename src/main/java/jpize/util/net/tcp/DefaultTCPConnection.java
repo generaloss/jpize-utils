@@ -42,9 +42,9 @@ public class DefaultTCPConnection extends TCPConnection {
     }
 
     @Override
-    public void send(byte[] bytes) {
+    public boolean send(byte[] bytes) {
         if(super.isClosed())
-            throw new IllegalStateException("TCP connection is closed");
+            return false;
 
         bytes = this.tryToEncryptBytes(bytes);
         final ByteBuffer buffer = ByteBuffer.allocate(bytes.length);
@@ -58,8 +58,11 @@ public class DefaultTCPConnection extends TCPConnection {
                 selectionKey.interestOpsOr(SelectionKey.OP_WRITE);
                 selectionKey.selector().wakeup();
             }
+            return true;
         }catch(IOException e){
+
             super.close();
+            return false;
         }
     }
 

@@ -32,8 +32,9 @@ public class TCPServer {
         this.setConnectionType(TCPConnection.DEFAULT_TYPE);
         this.connections = new CopyOnWriteArrayList<>();
         this.disconnector = (connection) -> {
-            if(onDisconnect != null) onDisconnect.accept(connection);
             connections.remove(connection);
+            if(onDisconnect != null)
+                onDisconnect.accept(connection);
         };
     }
 
@@ -101,11 +102,11 @@ public class TCPServer {
     }
 
     public TCPServer run(String host, int port) {
-        return run(new InetSocketAddress(host, port));
+        return this.run(new InetSocketAddress(host, port));
     }
 
     public TCPServer run(int port) {
-        return run(new InetSocketAddress(port));
+        return this.run(new InetSocketAddress(port));
     }
 
     private void startThread() {
@@ -194,34 +195,38 @@ public class TCPServer {
     }
 
 
-    public void broadcast(byte[] bytes) {
+    public boolean broadcast(byte[] bytes) {
+        boolean result = false;
         for(TCPConnection connection: connections)
-            connection.send(bytes);
+            result |= connection.send(bytes);
+        return result;
     }
 
-    public void broadcast(TCPConnection except, byte[] bytes) {
+    public boolean broadcast(TCPConnection except, byte[] bytes) {
+        boolean result = false;
         for(TCPConnection connection: connections)
             if(connection != except)
-                connection.send(bytes);
+                result |= connection.send(bytes);
+        return result;
     }
 
-    public void broadcast(DataStreamWriter streamWriter) {
-        this.broadcast(DataStreamWriter.writeBytes(streamWriter));
+    public boolean broadcast(DataStreamWriter streamWriter) {
+        return this.broadcast(DataStreamWriter.writeBytes(streamWriter));
     }
 
-    public void broadcast(TCPConnection except, DataStreamWriter streamWriter) {
-        this.broadcast(except, DataStreamWriter.writeBytes(streamWriter));
+    public boolean broadcast(TCPConnection except, DataStreamWriter streamWriter) {
+        return this.broadcast(except, DataStreamWriter.writeBytes(streamWriter));
     }
 
-    public void broadcast(NetPacket<?> packet) {
-        this.broadcast(stream -> {
+    public boolean broadcast(NetPacket<?> packet) {
+        return this.broadcast(stream -> {
             stream.writeShort(packet.getPacketID());
             packet.write(stream);
         });
     }
 
-    public void broadcast(TCPConnection except, NetPacket<?> packet) {
-        this.broadcast(except, stream -> {
+    public boolean broadcast(TCPConnection except, NetPacket<?> packet) {
+        return this.broadcast(except, stream -> {
             stream.writeShort(packet.getPacketID());
             packet.write(stream);
         });

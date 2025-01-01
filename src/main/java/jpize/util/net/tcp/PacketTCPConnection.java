@@ -61,9 +61,9 @@ public class PacketTCPConnection extends TCPConnection {
 
 
     @Override
-    public void send(byte[] bytes) {
+    public boolean send(byte[] bytes) {
         if(super.isClosed())
-            throw new IllegalStateException("TCP connection is closed");
+            return false;
 
         bytes = this.tryToEncryptBytes(bytes);
 
@@ -80,8 +80,11 @@ public class PacketTCPConnection extends TCPConnection {
                 selectionKey.interestOps(SelectionKey.OP_WRITE);
                 selectionKey.selector().wakeup();
             }
+            return true;
         }catch(IOException e){
+
             super.close();
+            return false;
         }
     }
 

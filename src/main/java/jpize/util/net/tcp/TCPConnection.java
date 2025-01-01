@@ -98,14 +98,14 @@ public abstract class TCPConnection implements Closeable {
 
     protected abstract byte[] read();
 
-    public abstract void send(byte[] bytes);
+    public abstract boolean send(byte[] bytes);
 
-    public void send(DataStreamWriter streamWriter) {
-        this.send(DataStreamWriter.writeBytes(streamWriter));
+    public boolean send(DataStreamWriter streamWriter) {
+        return this.send(DataStreamWriter.writeBytes(streamWriter));
     }
 
-    public void send(NetPacket<?> packet) {
-        this.send(stream -> {
+    public boolean send(NetPacket<?> packet) {
+        return this.send(stream -> {
             stream.writeShort(packet.getPacketID());
             packet.write(stream);
         });
