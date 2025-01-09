@@ -26,6 +26,83 @@ public class Intersector {
     }
 
 
+    public static boolean isPointInQuad(float pointX, float pointY, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - pointX, y1 - pointY) >= 0F) return false;
+        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - pointX, y2 - pointY) >= 0F) return false;
+        if(Vec2f.crs(x3 - x4, y3 - y4, x3 - pointX, y3 - pointY) >= 0F) return false;
+        if(Vec2f.crs(x4 - x1, y4 - y1, x4 - pointX, y4 - pointY) >= 0F) return false;
+        return true;
+    }
+
+    public static boolean isPointOnQuad(float pointX, float pointY, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - pointX, y1 - pointY) > 0F) return false;
+        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - pointX, y2 - pointY) > 0F) return false;
+        if(Vec2f.crs(x3 - x4, y3 - y4, x3 - pointX, y3 - pointY) > 0F) return false;
+        if(Vec2f.crs(x4 - x1, y4 - y1, x4 - pointX, y4 - pointY) > 0F) return false;
+        return true;
+    }
+
+
+    public static boolean isPointInTriangle(float pointX, float pointY, float x1, float y1, float x2, float y2, float x3, float y3) {
+        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - pointX, y1 - pointY) >= 0F) return false;
+        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - pointX, y2 - pointY) >= 0F) return false;
+        if(Vec2f.crs(x3 - x1, y3 - y1, x3 - pointX, y3 - pointY) >= 0F) return false;
+        return true;
+    }
+
+    public static boolean isPointOnTriangle(float pointX, float pointY, float x1, float y1, float x2, float y2, float x3, float y3) {
+        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - pointX, y1 - pointY) > 0F) return false;
+        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - pointX, y2 - pointY) > 0F) return false;
+        if(Vec2f.crs(x3 - x1, y3 - y1, x3 - pointX, y3 - pointY) > 0F) return false;
+        return true;
+    }
+
+
+    public static boolean isPointInPolygon(float pointX, float pointY, float... vertices) {
+        boolean inside = false;
+        boolean insideX = false;
+
+        for(int i = 0; i < vertices.length; i += 2) {
+            final float x1 = vertices[i];
+            final float y1 = vertices[i + 1];
+
+            final int j = (i + 2) % vertices.length;
+            final float x2 = vertices[j];
+            final float y2 = vertices[j + 1];
+
+            if(((pointY < y1) != (pointY <= y2))) {
+                insideX = !insideX;
+                final float intersectionX = (pointY - y1) * (x2 - x1) / (y2 - y1) + x1;
+                if(pointX + (insideX ? 0 : 1) <= intersectionX)
+                    inside = !inside;
+            }
+        }
+        return inside;
+    }
+
+    public static boolean isPointOnPolygon(float pointX, float pointY, float... vertices) {
+        boolean inside = false;
+        boolean insideX = false;
+
+        for(int i = 0; i < vertices.length; i += 2) {
+            final float x1 = vertices[i];
+            final float y1 = vertices[i + 1];
+
+            final int j = (i + 2) % vertices.length;
+            final float x2 = vertices[j];
+            final float y2 = vertices[j + 1];
+
+            if(((pointY <= y1) != (pointY < y2))) {
+                insideX = !insideX;
+                final float intersectionX = (pointY - y1) * (x2 - x1) / (y2 - y1) + x1;
+                if(pointX + (insideX ? 1 : 0) <= intersectionX)
+                    inside = !inside;
+            }
+        }
+        return inside;
+    }
+
+
     public static boolean isGapIntersectGap(float begin1, float end1, float begin2, float end2) {
         return begin1 <= end2 && end1 >= begin2;
     }
@@ -115,47 +192,47 @@ public class Intersector {
 
     public static float getRayIntersectTriangle(Ray3f ray, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
         // edge1 = v2 - v1
-        final float edge1x = x2 - x1;
-        final float edge1y = y2 - y1;
-        final float edge1z = z2 - z1;
+        final float edge1x = (x2 - x1);
+        final float edge1y = (y2 - y1);
+        final float edge1z = (z2 - z1);
 
         // edge2 = v3 - v1
-        final float edge2x = x3 - x1;
-        final float edge2y = y3 - y1;
-        final float edge2z = z3 - z1;
+        final float edge2x = (x3 - x1);
+        final float edge2y = (y3 - y1);
+        final float edge2z = (z3 - z1);
 
         // h = cross(direction, edge2)
-        final float hx = ray.directory().y * edge2z - ray.directory().z * edge2y;
-        final float hy = ray.directory().z * edge2x - ray.directory().x * edge2z;
-        final float hz = ray.directory().x * edge2y - ray.directory().y * edge2x;
+        final float hx = (ray.directory().y * edge2z - ray.directory().z * edge2y);
+        final float hy = (ray.directory().z * edge2x - ray.directory().x * edge2z);
+        final float hz = (ray.directory().x * edge2y - ray.directory().y * edge2x);
 
         // a = 1 / dot(h, edge1)
-        final float a = 1F / (hx * edge1x + hy * edge1y + hz * edge1z);
+        final float a = (1F / (hx * edge1x + hy * edge1y + hz * edge1z));
         if(a == 0F)
             return -1F;
 
         // s = origin - v1
-        final float sx = ray.origin().x - x1;
-        final float sy = ray.origin().y - y1;
-        final float sz = ray.origin().z - z1;
+        final float sx = (ray.origin().x - x1);
+        final float sy = (ray.origin().y - y1);
+        final float sz = (ray.origin().z - z1);
 
         // u = a * dot(h, s)
-        final float u = a * (hx * sx + hy * sy + hz * sz);
+        final float u = (a * (hx * sx + hy * sy + hz * sz));
         if(u < 0F || u > 1F)
             return -1F;
 
         // q = cross(s, edge1)
-        final float qx = sy * edge1z - sz * edge1y;
-        final float qy = sz * edge1x - sx * edge1z;
-        final float qz = sx * edge1y - sy * edge1x;
+        final float qx = (sy * edge1z - sz * edge1y);
+        final float qy = (sz * edge1x - sx * edge1z);
+        final float qz = (sx * edge1y - sy * edge1x);
 
         // a * dot(q, direction)
-        final float v = a * (qx * ray.directory().x + qy * ray.directory().y + qz * ray.directory().z);
+        final float v = (a * (qx * ray.directory().x + qy * ray.directory().y + qz * ray.directory().z));
         if(v < 0F || u + v > 1F)
             return -1F;
 
         // t = a * dot(q, edge2) * len(direction)
-        final float t = a * (qx * edge2x + qy * edge2y + qz * edge2z) * ray.length();
+        final float t = (a * (qx * edge2x + qy * edge2y + qz * edge2z) * ray.length());
         return (t > 0F) ? t : -1F;
     }
 
@@ -193,14 +270,18 @@ public class Intersector {
 
 
     public static float getRayIntersectMesh(Ray3f ray, Matrix4f mat, float[] vertices, int[] indices, int stride, int positionAttributeOffset) {
-        for(int i = 0; i < indices.length; ){
-            int offset1 = indices[i++] * stride + positionAttributeOffset;
-            int offset2 = indices[i++] * stride + positionAttributeOffset;
-            int offset3 = indices[i++] * stride + positionAttributeOffset;
+        final Vec3f v1 = new Vec3f();
+        final Vec3f v2 = new Vec3f();
+        final Vec3f v3 = new Vec3f();
 
-            final Vec3f v1 = new Vec3f(vertices[offset1++], vertices[offset1++], vertices[offset1]).mulMat4(mat);
-            final Vec3f v2 = new Vec3f(vertices[offset2++], vertices[offset2++], vertices[offset2]).mulMat4(mat);
-            final Vec3f v3 = new Vec3f(vertices[offset3++], vertices[offset3++], vertices[offset3]).mulMat4(mat);
+        for(int i = 0; i < indices.length; ){
+            int offset1 = (indices[i++] * stride + positionAttributeOffset);
+            int offset2 = (indices[i++] * stride + positionAttributeOffset);
+            int offset3 = (indices[i++] * stride + positionAttributeOffset);
+
+            v1.set(vertices[offset1++], vertices[offset1++], vertices[offset1]).mulMat4(mat);
+            v2.set(vertices[offset2++], vertices[offset2++], vertices[offset2]).mulMat4(mat);
+            v3.set(vertices[offset3++], vertices[offset3++], vertices[offset3]).mulMat4(mat);
 
             final float result = getRayIntersectTriangle(ray, v1, v2, v3);
             if(result != -1F)
@@ -230,17 +311,22 @@ public class Intersector {
     }
 
 
-    public static float getRayIntersectQuadMesh(Ray3f ray, Matrix4f mat, float[] vertices, int[] indices, int stride, int positionAttributeOffset) {
-        for(int i = 0; i < indices.length; ){
-            int offset1 = indices[i++] * stride + positionAttributeOffset;
-            int offset2 = indices[i++] * stride + positionAttributeOffset;
-            int offset3 = indices[i++] * stride + positionAttributeOffset;
-            int offset4 = indices[i++] * stride + positionAttributeOffset;
+    public static float getRayIntersectQuadMesh(Ray3f ray, Matrix4f matrix, float[] vertices, int[] indices, int stride, int positionAttributeOffset) {
+        final Vec3f v1 = new Vec3f();
+        final Vec3f v2 = new Vec3f();
+        final Vec3f v3 = new Vec3f();
+        final Vec3f v4 = new Vec3f();
 
-            final Vec3f v1 = new Vec3f(vertices[offset1++], vertices[offset1++], vertices[offset1]).mulMat4(mat);
-            final Vec3f v2 = new Vec3f(vertices[offset2++], vertices[offset2++], vertices[offset2]).mulMat4(mat);
-            final Vec3f v3 = new Vec3f(vertices[offset3++], vertices[offset3++], vertices[offset3]).mulMat4(mat);
-            final Vec3f v4 = new Vec3f(vertices[offset4++], vertices[offset4++], vertices[offset4]).mulMat4(mat);
+        for(int i = 0; i < indices.length; ){
+            int offset1 = (indices[i++] * stride + positionAttributeOffset);
+            int offset2 = (indices[i++] * stride + positionAttributeOffset);
+            int offset3 = (indices[i++] * stride + positionAttributeOffset);
+            int offset4 = (indices[i++] * stride + positionAttributeOffset);
+
+            v1.set(vertices[offset1++], vertices[offset1++], vertices[offset1]).mulMat4(matrix);
+            v2.set(vertices[offset2++], vertices[offset2++], vertices[offset2]).mulMat4(matrix);
+            v3.set(vertices[offset3++], vertices[offset3++], vertices[offset3]).mulMat4(matrix);
+            v4.set(vertices[offset4++], vertices[offset4++], vertices[offset4]).mulMat4(matrix);
 
             final float result = getRayIntersectQuad(ray, v1, v2, v3, v4);
             if(result != -1F)
@@ -270,39 +356,8 @@ public class Intersector {
     }
 
 
-    public static boolean isPointInQuad(float px, float py, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - px, y1 - py) >= 0F) return false;
-        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - px, y2 - py) >= 0F) return false;
-        if(Vec2f.crs(x3 - x4, y3 - y4, x3 - px, y3 - py) >= 0F) return false;
-        if(Vec2f.crs(x4 - x1, y4 - y1, x4 - px, y4 - py) >= 0F) return false;
-        return true;
-    }
-
-    public static boolean isPointOnQuad(float px, float py, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - px, y1 - py) > 0F) return false;
-        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - px, y2 - py) > 0F) return false;
-        if(Vec2f.crs(x3 - x4, y3 - y4, x3 - px, y3 - py) > 0F) return false;
-        if(Vec2f.crs(x4 - x1, y4 - y1, x4 - px, y4 - py) > 0F) return false;
-        return true;
-    }
-
-    public static boolean isPointInTriangle(float px, float py, float x1, float y1, float x2, float y2, float x3, float y3) {
-        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - px, y1 - py) >= 0F) return false;
-        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - px, y2 - py) >= 0F) return false;
-        if(Vec2f.crs(x3 - x1, y3 - y1, x3 - px, y3 - py) >= 0F) return false;
-        return true;
-    }
-
-    public static boolean isPointOnTriangle(float px, float py, float x1, float y1, float x2, float y2, float x3, float y3) {
-        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - px, y1 - py) > 0F) return false;
-        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - px, y2 - py) > 0F) return false;
-        if(Vec2f.crs(x3 - x1, y3 - y1, x3 - px, y3 - py) > 0F) return false;
-        return true;
-    }
-
-    public static boolean isPointInPolygon(float px, float py, float... vertices) {
-        boolean inside = false;
-        boolean insideX = false;
+    public static float getPolygonArea(float... vertices) {
+        float area = 0;
 
         for(int i = 0; i < vertices.length; i += 2) {
             final float x1 = vertices[i];
@@ -312,20 +367,16 @@ public class Intersector {
             final float x2 = vertices[j];
             final float y2 = vertices[j + 1];
 
-            if(((py < y1) != (py <= y2))) {
-                insideX = !insideX;
-                final float intersectionX = (py - y1) * (x2 - x1) / (y2 - y1) + x1;
-                if(px + (insideX ? 0 : 1) <= intersectionX)
-                    inside = !inside;
-            }
+            area += (y1 + y2) * (x1 - x2);
         }
-        return inside;
+
+        return area * 0.5F;
     }
 
-    public static boolean isPointOnPolygon(float px, float py, float... vertices) {
-        boolean inside = false;
-        boolean insideX = false;
+    public void getPolygonCenterOfGravity(Vec2f dst, float... vertices) {
+        final float area = getPolygonArea(vertices);
 
+        dst.zero();
         for(int i = 0; i < vertices.length; i += 2) {
             final float x1 = vertices[i];
             final float y1 = vertices[i + 1];
@@ -334,14 +385,13 @@ public class Intersector {
             final float x2 = vertices[j];
             final float y2 = vertices[j + 1];
 
-            if(((py <= y1) != (py < y2))) {
-                insideX = !insideX;
-                final float intersectionX = (py - y1) * (x2 - x1) / (y2 - y1) + x1;
-                if(px + (insideX ? 1 : 0) <= intersectionX)
-                    inside = !inside;
-            }
+            dst.add(
+                (x1 + x2) * (x1 * y2 - x2 * y1),
+                (y1 + y2) * (x1 * y2 - x2 * y1)
+            );
         }
-        return inside;
+
+        dst.div(area * 6);
     }
 
 }
