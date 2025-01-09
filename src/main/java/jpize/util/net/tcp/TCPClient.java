@@ -89,7 +89,7 @@ public class TCPClient {
                 onConnect.accept(connection);
 
             this.startReceiveThread();
-        }catch(IOException e){
+        }catch(Exception e){
             throw new RuntimeException("TCP client failed to connect: " + e.getMessage());
         }
         return this;
