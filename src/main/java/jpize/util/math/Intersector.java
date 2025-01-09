@@ -269,4 +269,79 @@ public class Intersector {
         return isRayIntersectQuadMesh(ray, mat, vertices, indices, 3);
     }
 
+
+    public static boolean isPointInQuad(float px, float py, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - px, y1 - py) >= 0F) return false;
+        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - px, y2 - py) >= 0F) return false;
+        if(Vec2f.crs(x3 - x4, y3 - y4, x3 - px, y3 - py) >= 0F) return false;
+        if(Vec2f.crs(x4 - x1, y4 - y1, x4 - px, y4 - py) >= 0F) return false;
+        return true;
+    }
+
+    public static boolean isPointOnQuad(float px, float py, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - px, y1 - py) > 0F) return false;
+        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - px, y2 - py) > 0F) return false;
+        if(Vec2f.crs(x3 - x4, y3 - y4, x3 - px, y3 - py) > 0F) return false;
+        if(Vec2f.crs(x4 - x1, y4 - y1, x4 - px, y4 - py) > 0F) return false;
+        return true;
+    }
+
+    public static boolean isPointInTriangle(float px, float py, float x1, float y1, float x2, float y2, float x3, float y3) {
+        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - px, y1 - py) >= 0F) return false;
+        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - px, y2 - py) >= 0F) return false;
+        if(Vec2f.crs(x3 - x1, y3 - y1, x3 - px, y3 - py) >= 0F) return false;
+        return true;
+    }
+
+    public static boolean isPointOnTriangle(float px, float py, float x1, float y1, float x2, float y2, float x3, float y3) {
+        if(Vec2f.crs(x1 - x2, y1 - y2, x1 - px, y1 - py) > 0F) return false;
+        if(Vec2f.crs(x2 - x3, y2 - y3, x2 - px, y2 - py) > 0F) return false;
+        if(Vec2f.crs(x3 - x1, y3 - y1, x3 - px, y3 - py) > 0F) return false;
+        return true;
+    }
+
+    public static boolean isPointInPolygon(float px, float py, float... vertices) {
+        boolean inside = false;
+        boolean insideX = false;
+
+        for(int i = 0; i < vertices.length; i += 2) {
+            final float x1 = vertices[i];
+            final float y1 = vertices[i + 1];
+
+            final int j = (i + 2) % vertices.length;
+            final float x2 = vertices[j];
+            final float y2 = vertices[j + 1];
+
+            if(((py < y1) != (py <= y2))) {
+                insideX = !insideX;
+                final float intersectionX = (py - y1) * (x2 - x1) / (y2 - y1) + x1;
+                if(px + (insideX ? 0 : 1) <= intersectionX)
+                    inside = !inside;
+            }
+        }
+        return inside;
+    }
+
+    public static boolean isPointOnPolygon(float px, float py, float... vertices) {
+        boolean inside = false;
+        boolean insideX = false;
+
+        for(int i = 0; i < vertices.length; i += 2) {
+            final float x1 = vertices[i];
+            final float y1 = vertices[i + 1];
+
+            final int j = (i + 2) % vertices.length;
+            final float x2 = vertices[j];
+            final float y2 = vertices[j + 1];
+
+            if(((py <= y1) != (py < y2))) {
+                insideX = !insideX;
+                final float intersectionX = (py - y1) * (x2 - x1) / (y2 - y1) + x1;
+                if(px + (insideX ? 1 : 0) <= intersectionX)
+                    inside = !inside;
+            }
+        }
+        return inside;
+    }
+
 }
