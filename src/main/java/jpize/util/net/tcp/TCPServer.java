@@ -8,12 +8,8 @@ import jpize.util.Utils;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.*;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
@@ -95,7 +91,7 @@ public class TCPServer {
             this.startThread();
 
         }catch(Exception e){
-            throw new IllegalStateException("TCP server failed to start: " + e.getMessage());
+            throw new IllegalStateException("Failed to start TCP server: " + e.getMessage());
         }
 
         return this;
@@ -122,30 +118,25 @@ public class TCPServer {
         try{
             selector.select();
             final Set<SelectionKey> selectedKeys = selector.selectedKeys();
-            final Iterator<SelectionKey> iterator = selectedKeys.iterator();
+            for(SelectionKey key : selectedKeys)
+                this.processKey(key);
+            selectedKeys.clear();
 
-            while(iterator.hasNext()) {
-                this.processKey(iterator.next());
-                iterator.remove();
-            }
-        }catch(IOException ignored){ }
+        }catch(Exception ignored) { }
     }
 
     private void processKey(SelectionKey key) {
-        if(!key.isValid())
-            return;
-
-        if(key.isReadable()){
+        if(key.isValid() && key.isReadable()){
             final TCPConnection connection = ((TCPConnection) key.attachment());
             final byte[] bytes = connection.read();
             if(bytes != null && onReceive != null)
                 onReceive.receive(connection, bytes);
-
-        }else if(key.isWritable()){
+        }
+        if(key.isValid() && key.isWritable()){
             final TCPConnection connection = ((TCPConnection) key.attachment());
             connection.processWriteQueue(key);
-
-        }else if(key.isAcceptable()){
+        }
+        if(key.isValid() && key.isAcceptable()){
             this.acceptNewConnection();
         }
     }

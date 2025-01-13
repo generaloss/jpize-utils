@@ -605,13 +605,85 @@ public class Vec4f {
     }
 
 
+    public static float dst2(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
+        final float dx = (x2 - x1);
+        final float dy = (y2 - y1);
+        final float dz = (z2 - z1);
+        final float dw = (w2 - w1);
+        return (dx * dx + dy * dy + dz * dz + dw * dw);
+    }
+
+    public static float dst2(float x1, float y1, float z1, float w1, double x2, double y2, double z2, double w2) {
+        return dst2(x1, y1, z1, w1, (float) x2, (float) y2, (float) z2, (float) w2);
+    }
+
+    public static float dst2(float x1, float y1, float z1, float w1, int x2, int y2, int z2, int w2) {
+        return dst2(x1, y1, z1, w1, (float) x2, (float) y2, (float) z2, (float) w2);
+    }
+
+    public static float dst2(float x, float y, float z, float w, Vec4f vector) {
+        return dst2(x, y, z, w, vector.x, vector.y, vector.z, vector.w);
+    }
+
+    public static float dst2(float x, float y, float z, float w, Vec4d vector) {
+        return dst2(x, y, z, w, vector.x, vector.y, vector.z, vector.w);
+    }
+
+    public static float dst2(float x, float y, float z, float w, Vec4i vector) {
+        return dst2(x, y, z, w, vector.x, vector.y, vector.z, vector.w);
+    }
+
+    public static float dst2(Vec4f vector, float x, float y, float z, float w) {
+        return dst2(vector.x, vector.y, vector.z, vector.w, x, y, z, w);
+    }
+
+    public static float dst2(Vec4f vector, double x, double y, double z, double w) {
+        return dst2(vector.x, vector.y, vector.z, vector.w, x, y, z, w);
+    }
+
+    public static float dst2(Vec4f vector, int x, int y, int z, int w) {
+        return dst2(vector.x, vector.y, vector.z, vector.w, x, y, z, w);
+    }
+
+    public static float dst2(Vec4f vector1, Vec4f vector2) {
+        return dst2(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public static float dst2(Vec4f vector1, Vec4d vector2) {
+        return dst2(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public static float dst2(Vec4f vector1, Vec4i vector2) {
+        return dst2(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
+    }
+
+    public float dst2(float x, float y, float z, float w) {
+        return dst2(this, x, y, z, w);
+    }
+
+    public float dst2(double x, double y, double z, double w) {
+        return dst2(this, x, y, z, w);
+    }
+
+    public float dst2(int x, int y, int z, int w) {
+        return dst2(this, x, y, z, w);
+    }
+
+    public float dst2(Vec4f vector) {
+        return dst2(this, vector);
+    }
+
+    public float dst2(Vec4d vector) {
+        return dst2(this, vector);
+    }
+
+    public float dst2(Vec4i vector) {
+        return dst2(this, vector);
+    }
+
+
     public static float dst(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
-        final float dx = x2 - x1;
-        final float dy = y2 - y1;
-        final float dz = z2 - z1;
-        final float dw = w2 - w1;
-        
-        return Mathc.sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
+        return Mathc.sqrt(dst2(x1, y1, z1, w1, x2, y2, z2, w2));
     }
 
     public static float dst(float x1, float y1, float z1, float w1, double x2, double y2, double z2, double w2) {
@@ -646,15 +718,15 @@ public class Vec4f {
         return dst(vector.x, vector.y, vector.z, vector.w, x, y, z, w);
     }
 
-    public static float dst(Vec4f vector1 , Vec4f vector2) {
+    public static float dst(Vec4f vector1, Vec4f vector2) {
         return dst(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public static float dst(Vec4f vector1 , Vec4d vector2) {
+    public static float dst(Vec4f vector1, Vec4d vector2) {
         return dst(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 
-    public static float dst(Vec4f vector1 , Vec4i vector2) {
+    public static float dst(Vec4f vector1, Vec4i vector2) {
         return dst(vector1.x, vector1.y, vector1.z, vector1.w, vector2.x, vector2.y, vector2.z, vector2.w);
     }
 

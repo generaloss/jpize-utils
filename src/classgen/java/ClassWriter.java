@@ -1,5 +1,3 @@
-package classgen;
-
 import jpize.util.res.ExternalResource;
 import jpize.util.res.Resource;
 

@@ -264,11 +264,83 @@ public class Vec2f {
     }
 
 
+    public static float dst2(float x1, float y1, float x2, float y2) {
+        final float dx = (x2 - x1);
+        final float dy = (y2 - y1);
+        return (dx * dx + dy * dy);
+    }
+
+    public static float dst2(float x1, float y1, double x2, double y2) {
+        return dst2(x1, y1, (float) x2, (float) y2);
+    }
+
+    public static float dst2(float x1, float y1, int x2, int y2) {
+        return dst2(x1, y1, (float) x2, (float) y2);
+    }
+
+    public static float dst2(float x, float y, Vec2f vector) {
+        return dst2(x, y, vector.x, vector.y);
+    }
+
+    public static float dst2(float x, float y, Vec2d vector) {
+        return dst2(x, y, vector.x, vector.y);
+    }
+
+    public static float dst2(float x, float y, Vec2i vector) {
+        return dst2(x, y, vector.x, vector.y);
+    }
+
+    public static float dst2(Vec2f vector, float x, float y) {
+        return dst2(vector.x, vector.y, x, y);
+    }
+
+    public static float dst2(Vec2f vector, double x, double y) {
+        return dst2(vector.x, vector.y, x, y);
+    }
+
+    public static float dst2(Vec2f vector, int x, int y) {
+        return dst2(vector.x, vector.y, x, y);
+    }
+
+    public static float dst2(Vec2f vector1, Vec2f vector2) {
+        return dst2(vector1.x, vector1.y, vector2.x, vector2.y);
+    }
+
+    public static float dst2(Vec2f vector1, Vec2d vector2) {
+        return dst2(vector1.x, vector1.y, vector2.x, vector2.y);
+    }
+
+    public static float dst2(Vec2f vector1, Vec2i vector2) {
+        return dst2(vector1.x, vector1.y, vector2.x, vector2.y);
+    }
+
+    public float dst2(float x, float y) {
+        return dst2(this, x, y);
+    }
+
+    public float dst2(double x, double y) {
+        return dst2(this, x, y);
+    }
+
+    public float dst2(int x, int y) {
+        return dst2(this, x, y);
+    }
+
+    public float dst2(Vec2f vector) {
+        return dst2(this, vector);
+    }
+
+    public float dst2(Vec2d vector) {
+        return dst2(this, vector);
+    }
+
+    public float dst2(Vec2i vector) {
+        return dst2(this, vector);
+    }
+
+
     public static float dst(float x1, float y1, float x2, float y2) {
-        final float dx = x2 - x1;
-        final float dy = y2 - y1;
-        
-        return Mathc.sqrt(dx * dx + dy * dy);
+        return Mathc.sqrt(dst2(x1, y1, x2, y2));
     }
 
     public static float dst(float x1, float y1, double x2, double y2) {
@@ -303,15 +375,15 @@ public class Vec2f {
         return dst(vector.x, vector.y, x, y);
     }
 
-    public static float dst(Vec2f vector1 , Vec2f vector2) {
+    public static float dst(Vec2f vector1, Vec2f vector2) {
         return dst(vector1.x, vector1.y, vector2.x, vector2.y);
     }
 
-    public static float dst(Vec2f vector1 , Vec2d vector2) {
+    public static float dst(Vec2f vector1, Vec2d vector2) {
         return dst(vector1.x, vector1.y, vector2.x, vector2.y);
     }
 
-    public static float dst(Vec2f vector1 , Vec2i vector2) {
+    public static float dst(Vec2f vector1, Vec2i vector2) {
         return dst(vector1.x, vector1.y, vector2.x, vector2.y);
     }
 

@@ -90,7 +90,7 @@ public class TCPClient {
 
             this.startReceiveThread();
         }catch(Exception e){
-            throw new RuntimeException("TCP client failed to connect: " + e.getMessage());
+            throw new RuntimeException("Failed to connect TCP client: " + e.getMessage());
         }
         return this;
     }
@@ -113,22 +113,20 @@ public class TCPClient {
         try{
             selector.select();
             final Set<SelectionKey> selectedKeys = selector.selectedKeys();
-            for(SelectionKey selectedKey : selectedKeys)
-                this.processKey(selectedKey);
+            for(SelectionKey key : selectedKeys)
+                this.processKey(key);
             selectedKeys.clear();
-        }catch(IOException ignored){ }
+
+        }catch(Exception ignored) { }
     }
 
     private void processKey(SelectionKey key) {
-        if(!key.isValid())
-            return;
-
-        if(key.isReadable()){
+        if(key.isValid() && key.isReadable()){
             final byte[] bytes = connection.read();
             if(bytes != null && onReceive != null)
                 onReceive.receive(connection, bytes);
-
-        }else if(key.isWritable()){
+        }
+        if(key.isValid() && key.isWritable()){
             connection.processWriteQueue(key);
         }
     }

@@ -1,5 +1,3 @@
-package tests;
-
 import jpize.util.math.EulerAngles;
 import jpize.util.math.Quaternion;
 import jpize.util.math.matrix.Matrix3f;

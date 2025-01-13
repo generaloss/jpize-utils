@@ -1,11 +1,11 @@
-package classgen;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 import jpize.util.StringUtils;
 
 public class VectorClassesGenerator {
+
+    private static final boolean TEST = false;
 
     private static final String[] DATATYPES = { "float", "double", "int" };
 
@@ -23,8 +23,16 @@ public class VectorClassesGenerator {
     //  (3, ', ', 'v%d.%l')  =>  v1.x, v2.y, v3.z
     private static String makeDims(int dimensions, String splitter, String element) {
         final StringJoiner args = new StringJoiner(splitter);
-        for(int d = 1; d <= dimensions; d++)
-            args.add(element.replace("%l", letter(d)).replace("%L", letter(d).toUpperCase()).replace("%d", "" + d));
+        for(int d = 1; d <= dimensions; d++) {
+            final String formatElement = element
+                .replace("%l", letter(d))
+                .replace("%L", letter(d).toUpperCase())
+                .replace("%d", "" + d)
+                .replace("%(double) ", (d == 1 ? "(double) " : "")) // do not repeat double cast
+                .replace("%(", "(");
+
+            args.add(formatElement);
+        }
         return args.toString();
     }
 
@@ -65,8 +73,12 @@ public class VectorClassesGenerator {
                 VECTOR_TYPES.add(new VectorType(dimensions, datatype));
 
         // create classes
-        for(VectorType vectorType: VECTOR_TYPES)
-            newClass(vectorType);
+        if(TEST){
+            newClass(new VectorType(2, "float"));
+        }else{
+            for(VectorType vectorType : VECTOR_TYPES)
+                newClass(vectorType);
+        }
     }
 
 
@@ -196,8 +208,8 @@ public class VectorClassesGenerator {
     private static void addClamp() {
         w.addMethod("public " + classname + " clamp(" + makeDims(dimensions, ", ", datatype + " min%L") + ", " + makeDims(dimensions, ", ", datatype + " max%L") + ")",
             "return this.set(\n        " +
-                makeDimsLine(dimensions, ",", "    Maths.clamp(%l, min%L, max%L)") +
-                "\n        );"
+            makeDimsLine(dimensions, ",", "    Maths.clamp(%l, min%L, max%L)") +
+            "\n        );"
         );
 
         // w.addMethod("public " + classname + " clamp(" + makeDims(dimensions, ", ", datatype + " min%L") + ", " + datatype + " max" + XYZW_str + ")",
@@ -753,7 +765,7 @@ public class VectorClassesGenerator {
                 continue;
 
             w.addMethod("public " + classname + " " + methodName + "(" + makeDims(dimensions, ", ", datatype_l + " %l") + ")",
-                "return this." + methodName + "(" + makeDims(dimensions, ", ", "(" + datatype + ") %l") + ");"
+                "return this." + methodName + "(" + makeDims(dimensions, ", ", "%(" + datatype + ") %l") + ");"
             );
         }
         for(String datatype_l: DATATYPES){
@@ -953,20 +965,19 @@ public class VectorClassesGenerator {
     private static void addDistance() {
         // static
         final String header12 = makeDims(dimensions, ", ", datatype + " %l1");
-        final String datatype_ret = (isDatatypeInt ? "float" : datatype);
+        final String datatype_dst = (isDatatypeInt ? "float" : datatype);
 
-        w.addMethod("public static " + datatype_ret + " dst(" + header12 + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            makeDimsLine(dimensions, "final " + datatype + " d%l = %l2 - %l1;"),
-            "",
-            "return Math" + (isDatatypeDouble ? "" : "c") + ".sqrt(" + makeDims(dimensions, " + ", "d%l * d%l") + ");"
+        w.addMethod("public static " + datatype + " dst2(" + header12 + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            makeDimsLine(dimensions, "final " + datatype + " d%l = (%l2 - %l1);"),
+            "return (" + makeDims(dimensions, " + ", "d%l * d%l") + ");"
         );
 
         for(String datatype_l: DATATYPES){
             if(datatype_l.equals(datatype))
                 continue;
 
-            w.addMethod("public static " + datatype_ret + " dst(" + header12 + ", " + makeDims(dimensions, ", ", datatype_l + " %l2") + ")",
-                "return dst(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "(" + datatype + ") %l2") + ");"
+            w.addMethod("public static " + datatype + " dst2(" + header12 + ", " + makeDims(dimensions, ", ", datatype_l + " %l2") + ")",
+                "return dst2(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%(" + datatype + ") %l2") + ");"
             );
         }
 
@@ -974,7 +985,64 @@ public class VectorClassesGenerator {
             if(vectorType.dimensions != dimensions)
                 continue;
 
-            w.addMethod("public static " + datatype_ret + " dst(" + makeDims(dimensions, ", ", datatype + " %l") + ", " + vectorType.classname + " " + vectorType.varname + ")",
+            w.addMethod("public static " + datatype + " dst2(" + makeDims(dimensions, ", ", datatype + " %l") + ", " + vectorType.classname + " " + vectorType.varname + ")",
+                "return dst2(" + makeDims(dimensions, ", ", "%l") + ", " + makeDims(dimensions, ", ", vectorType.varname + ".%l") + ");"
+            );
+        }
+
+        for(VectorType vectorType: VECTOR_TYPES){
+            if(vectorType.dimensions != dimensions)
+                continue;
+
+            w.addMethod("public static " + datatype + " dst2(" + classname + " " + vectorType.varname + ", " + makeDims(dimensions, ", ", vectorType.datatype + " %l") + ")",
+                "return dst2(" + makeDims(dimensions, ", ", vectorType.varname + ".%l") + ", " + makeDims(dimensions, ", ", "%l") + ");"
+            );
+        }
+
+        for(VectorType vectorType: VECTOR_TYPES){
+            if(vectorType.dimensions != dimensions)
+                continue;
+
+            w.addMethod("public static " + datatype + " dst2(" + classname + " " + vectorType.varname + "1, " + vectorType.classname + " " + vectorType.varname + "2)",
+                "return dst2(" + makeDims(dimensions, ", ", vectorType.varname + "1.%l") + ", " + makeDims(dimensions, ", ", vectorType.varname + "2.%l") + ");"
+            );
+        }
+
+        for(String datatype_l: DATATYPES){
+            w.addMethod("public " + datatype + " dst2(" + makeDims(dimensions, ", ", datatype_l + " %l") + ")",
+                "return dst2(this, " + makeDims(dimensions, ", ", "%l") + ");"
+            );
+        }
+
+        for(VectorType vectorType: VECTOR_TYPES){
+            if(vectorType.dimensions != dimensions)
+                continue;
+
+            w.addMethod("public " + datatype + " dst2(" + vectorType.classname + " " + varname + ")",
+                "return dst2(this, " + varname + ");"
+            );
+        }
+
+        w.addMethodSplitter();
+
+        w.addMethod("public static " + datatype_dst + " dst(" + header12 + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
+            "return Math" + (isDatatypeDouble ? "" : "c") + ".sqrt(dst2(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + "));"
+        );
+
+        for(String datatype_l: DATATYPES){
+            if(datatype_l.equals(datatype))
+                continue;
+
+            w.addMethod("public static " + datatype_dst + " dst(" + header12 + ", " + makeDims(dimensions, ", ", datatype_l + " %l2") + ")",
+                "return dst(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%(" + datatype + ") %l2") + ");"
+            );
+        }
+
+        for(VectorType vectorType: VECTOR_TYPES){
+            if(vectorType.dimensions != dimensions)
+                continue;
+
+            w.addMethod("public static " + datatype_dst + " dst(" + makeDims(dimensions, ", ", datatype + " %l") + ", " + vectorType.classname + " " + vectorType.varname + ")",
                 "return dst(" + makeDims(dimensions, ", ", "%l") + ", " + makeDims(dimensions, ", ", vectorType.varname + ".%l") + ");"
             );
         }
@@ -983,7 +1051,7 @@ public class VectorClassesGenerator {
             if(vectorType.dimensions != dimensions)
                 continue;
 
-            w.addMethod("public static " + datatype_ret + " dst(" + classname + " " + vectorType.varname + ", " + makeDims(dimensions, ", ", vectorType.datatype + " %l") + ")",
+            w.addMethod("public static " + datatype_dst + " dst(" + classname + " " + vectorType.varname + ", " + makeDims(dimensions, ", ", vectorType.datatype + " %l") + ")",
                 "return dst(" + makeDims(dimensions, ", ", vectorType.varname + ".%l") + ", " + makeDims(dimensions, ", ", "%l") + ");"
             );
         }
@@ -992,13 +1060,13 @@ public class VectorClassesGenerator {
             if(vectorType.dimensions != dimensions)
                 continue;
 
-            w.addMethod("public static " + datatype_ret + " dst(" + classname + " " + vectorType.varname + "1 , " + vectorType.classname + " " + vectorType.varname + "2)",
+            w.addMethod("public static " + datatype_dst + " dst(" + classname + " " + vectorType.varname + "1, " + vectorType.classname + " " + vectorType.varname + "2)",
                 "return dst(" + makeDims(dimensions, ", ", vectorType.varname + "1.%l") + ", " + makeDims(dimensions, ", ", vectorType.varname + "2.%l") + ");"
             );
         }
 
         for(String datatype_l: DATATYPES){
-            w.addMethod("public " + datatype_ret + " dst(" + makeDims(dimensions, ", ", datatype_l + " %l") + ")",
+            w.addMethod("public " + datatype_dst + " dst(" + makeDims(dimensions, ", ", datatype_l + " %l") + ")",
                 "return dst(this, " + makeDims(dimensions, ", ", "%l") + ");"
             );
         }
@@ -1007,11 +1075,10 @@ public class VectorClassesGenerator {
             if(vectorType.dimensions != dimensions)
                 continue;
 
-            w.addMethod("public " + datatype_ret + " dst(" + vectorType.classname + " " + varname + ")",
+            w.addMethod("public " + datatype_dst + " dst(" + vectorType.classname + " " + varname + ")",
                 "return dst(this, " + varname + ");"
             );
         }
-
 
         w.addMethodSplitter();
     }
@@ -1044,7 +1111,7 @@ public class VectorClassesGenerator {
                 continue;
 
             w.addMethod("public " + classname + " " + methodname + "(" + datatype_l + " " + xyzw_str + ")",
-                "return this." + methodname + "(" + "(" + datatype + ") " + xyzw_str + ");"
+                "return this." + methodname + "((" + datatype + ") " + xyzw_str + ");"
             );
         }
 
@@ -1066,7 +1133,7 @@ public class VectorClassesGenerator {
                 // add(int x, int y, int z)
                 //     add((float) x, (float) y, (float) z);
                 w.addMethod("public " + classname + " " + methodname + "(" + makeDims(dimType, ", ", datatype_l + " %l") + ")",
-                    "return this." + methodname + "(" + makeDims(dimType, ", ", "(" + datatype + ") %l") + ");"
+                    "return this." + methodname + "(" + makeDims(dimType, ", ", "%(" + datatype + ") %l") + ");"
                 );
             }
         }
@@ -1104,7 +1171,7 @@ public class VectorClassesGenerator {
                     // addXY(int x, int y)
                     //     addXY((float) x, (float) y);
                     w.addMethod("public " + classname + " " + methodname_l + "(" + datatype_l + " " + letter1 + ", " + datatype_l + " " + letter2 + ")",
-                        "return " + methodname_l + "(" + "(" + datatype + ") " + letter1 + ", " + "(" + datatype + ") " + letter2 + ");"
+                        "return " + methodname_l + "(" + "(" + datatype + ") " + letter1 + ", " + (datatype.equals("double") ? "" : "(" + datatype + ") ") + letter2 + ");"
                     );
                 }
             }

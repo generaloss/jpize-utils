@@ -108,11 +108,11 @@ public class Vec3d {
     }
 
     public Vec3d set(float x, float y) {
-        return this.set((double) x, (double) y);
+        return this.set((double) x, y);
     }
 
     public Vec3d set(int x, int y) {
-        return this.set((double) x, (double) y);
+        return this.set((double) x, y);
     }
 
     public Vec3d set(double x, double y, double z) {
@@ -123,11 +123,11 @@ public class Vec3d {
     }
 
     public Vec3d set(float x, float y, float z) {
-        return this.set((double) x, (double) y, (double) z);
+        return this.set((double) x, y, z);
     }
 
     public Vec3d set(int x, int y, int z) {
-        return this.set((double) x, (double) y, (double) z);
+        return this.set((double) x, y, z);
     }
 
     public Vec3d set(Vec2f vector) {
@@ -161,11 +161,11 @@ public class Vec3d {
     }
 
     public Vec3d setXY(float x, float y) {
-        return setXY((double) x, (double) y);
+        return setXY((double) x, y);
     }
 
     public Vec3d setXY(int x, int y) {
-        return setXY((double) x, (double) y);
+        return setXY((double) x, y);
     }
 
     public Vec3d setXZ(double x, double z) {
@@ -175,11 +175,11 @@ public class Vec3d {
     }
 
     public Vec3d setXZ(float x, float z) {
-        return setXZ((double) x, (double) z);
+        return setXZ((double) x, z);
     }
 
     public Vec3d setXZ(int x, int z) {
-        return setXZ((double) x, (double) z);
+        return setXZ((double) x, z);
     }
 
     public Vec3d setYZ(double y, double z) {
@@ -189,11 +189,11 @@ public class Vec3d {
     }
 
     public Vec3d setYZ(float y, float z) {
-        return setYZ((double) y, (double) z);
+        return setYZ((double) y, z);
     }
 
     public Vec3d setYZ(int y, int z) {
-        return setYZ((double) y, (double) z);
+        return setYZ((double) y, z);
     }
 
 
@@ -219,11 +219,11 @@ public class Vec3d {
     }
 
     public Vec3d add(float x, float y) {
-        return this.add((double) x, (double) y);
+        return this.add((double) x, y);
     }
 
     public Vec3d add(int x, int y) {
-        return this.add((double) x, (double) y);
+        return this.add((double) x, y);
     }
 
     public Vec3d add(double x, double y, double z) {
@@ -234,11 +234,11 @@ public class Vec3d {
     }
 
     public Vec3d add(float x, float y, float z) {
-        return this.add((double) x, (double) y, (double) z);
+        return this.add((double) x, y, z);
     }
 
     public Vec3d add(int x, int y, int z) {
-        return this.add((double) x, (double) y, (double) z);
+        return this.add((double) x, y, z);
     }
 
     public Vec3d add(Vec2f vector) {
@@ -272,11 +272,11 @@ public class Vec3d {
     }
 
     public Vec3d addXY(float x, float y) {
-        return addXY((double) x, (double) y);
+        return addXY((double) x, y);
     }
 
     public Vec3d addXY(int x, int y) {
-        return addXY((double) x, (double) y);
+        return addXY((double) x, y);
     }
 
     public Vec3d addXZ(double x, double z) {
@@ -286,11 +286,11 @@ public class Vec3d {
     }
 
     public Vec3d addXZ(float x, float z) {
-        return addXZ((double) x, (double) z);
+        return addXZ((double) x, z);
     }
 
     public Vec3d addXZ(int x, int z) {
-        return addXZ((double) x, (double) z);
+        return addXZ((double) x, z);
     }
 
     public Vec3d addYZ(double y, double z) {
@@ -300,11 +300,11 @@ public class Vec3d {
     }
 
     public Vec3d addYZ(float y, float z) {
-        return addYZ((double) y, (double) z);
+        return addYZ((double) y, z);
     }
 
     public Vec3d addYZ(int y, int z) {
-        return addYZ((double) y, (double) z);
+        return addYZ((double) y, z);
     }
 
 
@@ -330,11 +330,11 @@ public class Vec3d {
     }
 
     public Vec3d sub(float x, float y) {
-        return this.sub((double) x, (double) y);
+        return this.sub((double) x, y);
     }
 
     public Vec3d sub(int x, int y) {
-        return this.sub((double) x, (double) y);
+        return this.sub((double) x, y);
     }
 
     public Vec3d sub(double x, double y, double z) {
@@ -345,11 +345,11 @@ public class Vec3d {
     }
 
     public Vec3d sub(float x, float y, float z) {
-        return this.sub((double) x, (double) y, (double) z);
+        return this.sub((double) x, y, z);
     }
 
     public Vec3d sub(int x, int y, int z) {
-        return this.sub((double) x, (double) y, (double) z);
+        return this.sub((double) x, y, z);
     }
 
     public Vec3d sub(Vec2f vector) {
@@ -383,11 +383,11 @@ public class Vec3d {
     }
 
     public Vec3d subXY(float x, float y) {
-        return subXY((double) x, (double) y);
+        return subXY((double) x, y);
     }
 
     public Vec3d subXY(int x, int y) {
-        return subXY((double) x, (double) y);
+        return subXY((double) x, y);
     }
 
     public Vec3d subXZ(double x, double z) {
@@ -397,11 +397,11 @@ public class Vec3d {
     }
 
     public Vec3d subXZ(float x, float z) {
-        return subXZ((double) x, (double) z);
+        return subXZ((double) x, z);
     }
 
     public Vec3d subXZ(int x, int z) {
-        return subXZ((double) x, (double) z);
+        return subXZ((double) x, z);
     }
 
     public Vec3d subYZ(double y, double z) {
@@ -411,11 +411,11 @@ public class Vec3d {
     }
 
     public Vec3d subYZ(float y, float z) {
-        return subYZ((double) y, (double) z);
+        return subYZ((double) y, z);
     }
 
     public Vec3d subYZ(int y, int z) {
-        return subYZ((double) y, (double) z);
+        return subYZ((double) y, z);
     }
 
 
@@ -441,11 +441,11 @@ public class Vec3d {
     }
 
     public Vec3d mul(float x, float y) {
-        return this.mul((double) x, (double) y);
+        return this.mul((double) x, y);
     }
 
     public Vec3d mul(int x, int y) {
-        return this.mul((double) x, (double) y);
+        return this.mul((double) x, y);
     }
 
     public Vec3d mul(double x, double y, double z) {
@@ -456,11 +456,11 @@ public class Vec3d {
     }
 
     public Vec3d mul(float x, float y, float z) {
-        return this.mul((double) x, (double) y, (double) z);
+        return this.mul((double) x, y, z);
     }
 
     public Vec3d mul(int x, int y, int z) {
-        return this.mul((double) x, (double) y, (double) z);
+        return this.mul((double) x, y, z);
     }
 
     public Vec3d mul(Vec2f vector) {
@@ -494,11 +494,11 @@ public class Vec3d {
     }
 
     public Vec3d mulXY(float x, float y) {
-        return mulXY((double) x, (double) y);
+        return mulXY((double) x, y);
     }
 
     public Vec3d mulXY(int x, int y) {
-        return mulXY((double) x, (double) y);
+        return mulXY((double) x, y);
     }
 
     public Vec3d mulXZ(double x, double z) {
@@ -508,11 +508,11 @@ public class Vec3d {
     }
 
     public Vec3d mulXZ(float x, float z) {
-        return mulXZ((double) x, (double) z);
+        return mulXZ((double) x, z);
     }
 
     public Vec3d mulXZ(int x, int z) {
-        return mulXZ((double) x, (double) z);
+        return mulXZ((double) x, z);
     }
 
     public Vec3d mulYZ(double y, double z) {
@@ -522,11 +522,11 @@ public class Vec3d {
     }
 
     public Vec3d mulYZ(float y, float z) {
-        return mulYZ((double) y, (double) z);
+        return mulYZ((double) y, z);
     }
 
     public Vec3d mulYZ(int y, int z) {
-        return mulYZ((double) y, (double) z);
+        return mulYZ((double) y, z);
     }
 
 
@@ -552,11 +552,11 @@ public class Vec3d {
     }
 
     public Vec3d div(float x, float y) {
-        return this.div((double) x, (double) y);
+        return this.div((double) x, y);
     }
 
     public Vec3d div(int x, int y) {
-        return this.div((double) x, (double) y);
+        return this.div((double) x, y);
     }
 
     public Vec3d div(double x, double y, double z) {
@@ -567,11 +567,11 @@ public class Vec3d {
     }
 
     public Vec3d div(float x, float y, float z) {
-        return this.div((double) x, (double) y, (double) z);
+        return this.div((double) x, y, z);
     }
 
     public Vec3d div(int x, int y, int z) {
-        return this.div((double) x, (double) y, (double) z);
+        return this.div((double) x, y, z);
     }
 
     public Vec3d div(Vec2f vector) {
@@ -605,11 +605,11 @@ public class Vec3d {
     }
 
     public Vec3d divXY(float x, float y) {
-        return divXY((double) x, (double) y);
+        return divXY((double) x, y);
     }
 
     public Vec3d divXY(int x, int y) {
-        return divXY((double) x, (double) y);
+        return divXY((double) x, y);
     }
 
     public Vec3d divXZ(double x, double z) {
@@ -619,11 +619,11 @@ public class Vec3d {
     }
 
     public Vec3d divXZ(float x, float z) {
-        return divXZ((double) x, (double) z);
+        return divXZ((double) x, z);
     }
 
     public Vec3d divXZ(int x, int z) {
-        return divXZ((double) x, (double) z);
+        return divXZ((double) x, z);
     }
 
     public Vec3d divYZ(double y, double z) {
@@ -633,28 +633,100 @@ public class Vec3d {
     }
 
     public Vec3d divYZ(float y, float z) {
-        return divYZ((double) y, (double) z);
+        return divYZ((double) y, z);
     }
 
     public Vec3d divYZ(int y, int z) {
-        return divYZ((double) y, (double) z);
+        return divYZ((double) y, z);
+    }
+
+
+    public static double dst2(double x1, double y1, double z1, double x2, double y2, double z2) {
+        final double dx = (x2 - x1);
+        final double dy = (y2 - y1);
+        final double dz = (z2 - z1);
+        return (dx * dx + dy * dy + dz * dz);
+    }
+
+    public static double dst2(double x1, double y1, double z1, float x2, float y2, float z2) {
+        return dst2(x1, y1, z1, (double) x2, y2, z2);
+    }
+
+    public static double dst2(double x1, double y1, double z1, int x2, int y2, int z2) {
+        return dst2(x1, y1, z1, (double) x2, y2, z2);
+    }
+
+    public static double dst2(double x, double y, double z, Vec3f vector) {
+        return dst2(x, y, z, vector.x, vector.y, vector.z);
+    }
+
+    public static double dst2(double x, double y, double z, Vec3d vector) {
+        return dst2(x, y, z, vector.x, vector.y, vector.z);
+    }
+
+    public static double dst2(double x, double y, double z, Vec3i vector) {
+        return dst2(x, y, z, vector.x, vector.y, vector.z);
+    }
+
+    public static double dst2(Vec3d vector, float x, float y, float z) {
+        return dst2(vector.x, vector.y, vector.z, x, y, z);
+    }
+
+    public static double dst2(Vec3d vector, double x, double y, double z) {
+        return dst2(vector.x, vector.y, vector.z, x, y, z);
+    }
+
+    public static double dst2(Vec3d vector, int x, int y, int z) {
+        return dst2(vector.x, vector.y, vector.z, x, y, z);
+    }
+
+    public static double dst2(Vec3d vector1, Vec3f vector2) {
+        return dst2(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public static double dst2(Vec3d vector1, Vec3d vector2) {
+        return dst2(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public static double dst2(Vec3d vector1, Vec3i vector2) {
+        return dst2(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public double dst2(float x, float y, float z) {
+        return dst2(this, x, y, z);
+    }
+
+    public double dst2(double x, double y, double z) {
+        return dst2(this, x, y, z);
+    }
+
+    public double dst2(int x, int y, int z) {
+        return dst2(this, x, y, z);
+    }
+
+    public double dst2(Vec3f vector) {
+        return dst2(this, vector);
+    }
+
+    public double dst2(Vec3d vector) {
+        return dst2(this, vector);
+    }
+
+    public double dst2(Vec3i vector) {
+        return dst2(this, vector);
     }
 
 
     public static double dst(double x1, double y1, double z1, double x2, double y2, double z2) {
-        final double dx = x2 - x1;
-        final double dy = y2 - y1;
-        final double dz = z2 - z1;
-        
-        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+        return Math.sqrt(dst2(x1, y1, z1, x2, y2, z2));
     }
 
     public static double dst(double x1, double y1, double z1, float x2, float y2, float z2) {
-        return dst(x1, y1, z1, (double) x2, (double) y2, (double) z2);
+        return dst(x1, y1, z1, (double) x2, y2, z2);
     }
 
     public static double dst(double x1, double y1, double z1, int x2, int y2, int z2) {
-        return dst(x1, y1, z1, (double) x2, (double) y2, (double) z2);
+        return dst(x1, y1, z1, (double) x2, y2, z2);
     }
 
     public static double dst(double x, double y, double z, Vec3f vector) {
@@ -681,15 +753,15 @@ public class Vec3d {
         return dst(vector.x, vector.y, vector.z, x, y, z);
     }
 
-    public static double dst(Vec3d vector1 , Vec3f vector2) {
+    public static double dst(Vec3d vector1, Vec3f vector2) {
         return dst(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
-    public static double dst(Vec3d vector1 , Vec3d vector2) {
+    public static double dst(Vec3d vector1, Vec3d vector2) {
         return dst(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
-    public static double dst(Vec3d vector1 , Vec3i vector2) {
+    public static double dst(Vec3d vector1, Vec3i vector2) {
         return dst(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
@@ -886,11 +958,11 @@ public class Vec3d {
     }
 
     public Vec3d zeroCompsThatLess(float x, float y, float z) {
-        return this.zeroCompsThatLess((double) x, (double) y, (double) z);
+        return this.zeroCompsThatLess((double) x, y, z);
     }
 
     public Vec3d zeroCompsThatLess(int x, int y, int z) {
-        return this.zeroCompsThatLess((double) x, (double) y, (double) z);
+        return this.zeroCompsThatLess((double) x, y, z);
     }
 
     public Vec3d zeroCompsThatLess(float xyz) {
@@ -928,11 +1000,11 @@ public class Vec3d {
     }
 
     public Vec3d zeroCompsThatZero(float x, float y, float z) {
-        return this.zeroCompsThatZero((double) x, (double) y, (double) z);
+        return this.zeroCompsThatZero((double) x, y, z);
     }
 
     public Vec3d zeroCompsThatZero(int x, int y, int z) {
-        return this.zeroCompsThatZero((double) x, (double) y, (double) z);
+        return this.zeroCompsThatZero((double) x, y, z);
     }
 
     public Vec3d zeroCompsThatZero(float xyz) {
@@ -970,11 +1042,11 @@ public class Vec3d {
     }
 
     public Vec3d zeroCompsThatBigger(float x, float y, float z) {
-        return this.zeroCompsThatBigger((double) x, (double) y, (double) z);
+        return this.zeroCompsThatBigger((double) x, y, z);
     }
 
     public Vec3d zeroCompsThatBigger(int x, int y, int z) {
-        return this.zeroCompsThatBigger((double) x, (double) y, (double) z);
+        return this.zeroCompsThatBigger((double) x, y, z);
     }
 
     public Vec3d zeroCompsThatBigger(float xyz) {

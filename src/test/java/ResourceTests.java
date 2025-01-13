@@ -1,5 +1,3 @@
-package tests;
-
 import jpize.util.array.StringList;
 import jpize.util.res.*;
 import org.junit.After;

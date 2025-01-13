@@ -1,9 +1,6 @@
-package tests;
-
-public class InDev {
+public class Main {
 
     public static void main(String[] args) {
-
 
     }
 

@@ -1,4 +1,3 @@
-package classgen;
 
 public class ListClassesGenerator {
 

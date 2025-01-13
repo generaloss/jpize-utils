@@ -642,12 +642,84 @@ public class Vec3i {
     }
 
 
+    public static int dst2(int x1, int y1, int z1, int x2, int y2, int z2) {
+        final int dx = (x2 - x1);
+        final int dy = (y2 - y1);
+        final int dz = (z2 - z1);
+        return (dx * dx + dy * dy + dz * dz);
+    }
+
+    public static int dst2(int x1, int y1, int z1, float x2, float y2, float z2) {
+        return dst2(x1, y1, z1, (int) x2, (int) y2, (int) z2);
+    }
+
+    public static int dst2(int x1, int y1, int z1, double x2, double y2, double z2) {
+        return dst2(x1, y1, z1, (int) x2, (int) y2, (int) z2);
+    }
+
+    public static int dst2(int x, int y, int z, Vec3f vector) {
+        return dst2(x, y, z, vector.x, vector.y, vector.z);
+    }
+
+    public static int dst2(int x, int y, int z, Vec3d vector) {
+        return dst2(x, y, z, vector.x, vector.y, vector.z);
+    }
+
+    public static int dst2(int x, int y, int z, Vec3i vector) {
+        return dst2(x, y, z, vector.x, vector.y, vector.z);
+    }
+
+    public static int dst2(Vec3i vector, float x, float y, float z) {
+        return dst2(vector.x, vector.y, vector.z, x, y, z);
+    }
+
+    public static int dst2(Vec3i vector, double x, double y, double z) {
+        return dst2(vector.x, vector.y, vector.z, x, y, z);
+    }
+
+    public static int dst2(Vec3i vector, int x, int y, int z) {
+        return dst2(vector.x, vector.y, vector.z, x, y, z);
+    }
+
+    public static int dst2(Vec3i vector1, Vec3f vector2) {
+        return dst2(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public static int dst2(Vec3i vector1, Vec3d vector2) {
+        return dst2(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public static int dst2(Vec3i vector1, Vec3i vector2) {
+        return dst2(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
+    }
+
+    public int dst2(float x, float y, float z) {
+        return dst2(this, x, y, z);
+    }
+
+    public int dst2(double x, double y, double z) {
+        return dst2(this, x, y, z);
+    }
+
+    public int dst2(int x, int y, int z) {
+        return dst2(this, x, y, z);
+    }
+
+    public int dst2(Vec3f vector) {
+        return dst2(this, vector);
+    }
+
+    public int dst2(Vec3d vector) {
+        return dst2(this, vector);
+    }
+
+    public int dst2(Vec3i vector) {
+        return dst2(this, vector);
+    }
+
+
     public static float dst(int x1, int y1, int z1, int x2, int y2, int z2) {
-        final int dx = x2 - x1;
-        final int dy = y2 - y1;
-        final int dz = z2 - z1;
-        
-        return Mathc.sqrt(dx * dx + dy * dy + dz * dz);
+        return Mathc.sqrt(dst2(x1, y1, z1, x2, y2, z2));
     }
 
     public static float dst(int x1, int y1, int z1, float x2, float y2, float z2) {
@@ -682,15 +754,15 @@ public class Vec3i {
         return dst(vector.x, vector.y, vector.z, x, y, z);
     }
 
-    public static float dst(Vec3i vector1 , Vec3f vector2) {
+    public static float dst(Vec3i vector1, Vec3f vector2) {
         return dst(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
-    public static float dst(Vec3i vector1 , Vec3d vector2) {
+    public static float dst(Vec3i vector1, Vec3d vector2) {
         return dst(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
-    public static float dst(Vec3i vector1 , Vec3i vector2) {
+    public static float dst(Vec3i vector1, Vec3i vector2) {
         return dst(vector1.x, vector1.y, vector1.z, vector2.x, vector2.y, vector2.z);
     }
 
