@@ -30,9 +30,39 @@ public class Insets implements Serializable {
     public Insets() { }
 
 
-    public void set(Insets insets) {
-        this.set(insets.top, insets.left, insets.bottom, insets.right);
+    public float getTop() {
+        return top;
     }
+
+    public float getLeft() {
+        return left;
+    }
+
+    public float getBottom() {
+        return bottom;
+    }
+
+    public float getRight() {
+        return right;
+    }
+
+
+    public void setTop(float top) {
+        this.top = top;
+    }
+
+    public void setLeft(float left) {
+        this.left = left;
+    }
+
+    public void setBottom(float bottom) {
+        this.bottom = bottom;
+    }
+
+    public void setRight(float right) {
+        this.right = right;
+    }
+
 
     public void set(float top, float left, float bottom, float right) {
         this.top = top;
@@ -47,6 +77,14 @@ public class Insets implements Serializable {
 
     public void set(float all) {
         this.set(all, all, all, all);
+    }
+
+    public void set(Insets insets) {
+        this.set(insets.top, insets.left, insets.bottom, insets.right);
+    }
+
+    public void reset() {
+        this.set(0F, 0F, 0F, 0F);
     }
 
 

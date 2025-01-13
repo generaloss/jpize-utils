@@ -12,7 +12,7 @@ import java.util.*;
 public class Intersector {
 
     public static boolean isPointInAARect(float pointX, float pointY, float minX, float minY, float maxX, float maxY) {
-        return pointX > minX && pointY > minY && pointX < maxX && pointY < maxY;
+        return (pointX > minX && pointY > minY && pointX < maxX && pointY < maxY);
     }
 
     public static boolean isPointInRect(float pointX, float pointY, float x, float y, float width, float height) {
@@ -21,7 +21,7 @@ public class Intersector {
 
 
     public static boolean isPointOnAARect(float pointX, float pointY, float minX, float minY, float maxX, float maxY) {
-        return pointX >= minX && pointY >= minY && pointX <= maxX && pointY <= maxY;
+        return (pointX >= minX && pointY >= minY && pointX <= maxX && pointY <= maxY);
     }
 
     public static boolean isPointOnRect(float pointX, float pointY, float x, float y, float width, float height) {
