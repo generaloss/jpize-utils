@@ -802,6 +802,15 @@ public class Vec2i {
     }
 
 
+    public Vec2i setAngleRad(double radians) {
+        return this.set(Math.cos(radians), Math.sin(radians));
+    }
+
+    public Vec2i setAngle(double degrees) {
+        return this.setAngleRad(degrees * Maths.toRad);
+    }
+
+
     public static float angleRad(int x, int y) {
         float angle = Mathc.atan2(y, x);
         if(angle < 0)

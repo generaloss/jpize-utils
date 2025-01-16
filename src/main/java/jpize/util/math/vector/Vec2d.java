@@ -818,6 +818,15 @@ public class Vec2d {
     }
 
 
+    public Vec2d setAngleRad(double radians) {
+        return this.set(Math.cos(radians), Math.sin(radians));
+    }
+
+    public Vec2d setAngle(double degrees) {
+        return this.setAngleRad(degrees * Maths.toRad);
+    }
+
+
     public static double angleRad(double x, double y) {
         double angle = Math.atan2(y, x);
         if(angle < 0D)

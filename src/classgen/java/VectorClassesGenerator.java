@@ -74,7 +74,7 @@ public class VectorClassesGenerator {
 
         // create classes
         if(TEST){
-            newClass(new VectorType(2, "float"));
+            newClass(new VectorType(3, "float"));
         }else{
             for(VectorType vectorType : VECTOR_TYPES)
                 newClass(vectorType);
@@ -122,7 +122,7 @@ public class VectorClassesGenerator {
         addConstructors();
         // setters, operations
         addGetters(); // for lambda functions
-        addSettersOperations();
+        addDefaultOperations();
         // operations
         addDistance();
         addShorterLonger();
@@ -138,7 +138,7 @@ public class VectorClassesGenerator {
         addCrsProduct();
         addFrac();
         addSignum();
-        addGetAngle();
+        addAngleOperations();
         addRotate();
         addMatrixMultiplication();
         addRoundingComponents();
@@ -447,10 +447,20 @@ public class VectorClassesGenerator {
         w.addMethodSplitter();
     }
 
-    private static void addGetAngle() {
+    private static void addAngleOperations() {
         final String datatype_l = (isDatatypeInt ? "float" : datatype);
 
         if(dimensions == 2){
+            w.addMethod("public " + classname + " setAngleRad(double radians)",
+                "return this.set(Math.cos(radians), Math.sin(radians));"
+            );
+
+            w.addMethod("public " + classname + " setAngle(double degrees)",
+                "return this.setAngleRad(degrees * Maths.toRad);"
+            );
+
+            w.addMethodSplitter();
+
             final String radiansFuncName = "angleRad";
             final String degreesFuncName = "angle";
 
@@ -461,20 +471,20 @@ public class VectorClassesGenerator {
                 "return angle;"
             );
             w.addMethod("public static " + datatype_l + " " + radiansFuncName + "(" + classname + " vector)",
-                    "return " + radiansFuncName + "(vector.x, vector.y);"
+                "return " + radiansFuncName + "(vector.x, vector.y);"
             );
             w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + datatype + " x, " + datatype + " y)",
                 "return " + radiansFuncName + "(x, y) * Maths.toDeg;"
             );
             w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + classname + " vector)",
-                    "return " + degreesFuncName + "(vector.x, vector.y);"
+                "return " + degreesFuncName + "(vector.x, vector.y);"
             );
 
             w.addMethod("public " + datatype_l + " " + radiansFuncName + "()",
-                    "return " + radiansFuncName + "(this);"
+                "return " + radiansFuncName + "(this);"
             );
             w.addMethod("public " + datatype_l + " " + degreesFuncName + "()",
-                    "return " + degreesFuncName + "(this);"
+                "return " + degreesFuncName + "(this);"
             );
 
             w.addMethodSplitter();
@@ -1083,7 +1093,7 @@ public class VectorClassesGenerator {
         w.addMethodSplitter();
     }
 
-    private static void addSettersOperations() {
+    private static void addDefaultOperations() {
         addOperation("set", "=");
         w.addMethodSplitter();
 
@@ -1172,6 +1182,23 @@ public class VectorClassesGenerator {
                     //     addXY((float) x, (float) y);
                     w.addMethod("public " + classname + " " + methodname_l + "(" + datatype_l + " " + letter1 + ", " + datatype_l + " " + letter2 + ")",
                         "return " + methodname_l + "(" + "(" + datatype + ") " + letter1 + ", " + (datatype.equals("double") ? "" : "(" + datatype + ") ") + letter2 + ");"
+                    );
+                }
+
+            }
+            for(String twoLetters: TWO_LETTERS){
+                for(VectorType type: VECTOR_TYPES){
+                    if(type.dimensions != 2)
+                        continue;
+
+                    final char letter1 = twoLetters.charAt(0);
+                    final char letter2 = twoLetters.charAt(1);
+                    final String methodname_l = (methodname + twoLetters.toUpperCase());
+
+                    // addXY(Vec2i vector)
+                    //     ret addXY(vector.x, vector.y);
+                    w.addMethod("public " + classname + " " + methodname_l + "(" + type.classname + " vector)",
+                            "return " + methodname_l + "(vector.x, vector.y);"
                     );
                 }
             }

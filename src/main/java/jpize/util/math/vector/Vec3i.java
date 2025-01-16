@@ -197,6 +197,42 @@ public class Vec3i {
         return setYZ((int) y, (int) z);
     }
 
+    public Vec3i setXY(Vec2f vector) {
+        return setXY(vector.x, vector.y);
+    }
+
+    public Vec3i setXY(Vec2d vector) {
+        return setXY(vector.x, vector.y);
+    }
+
+    public Vec3i setXY(Vec2i vector) {
+        return setXY(vector.x, vector.y);
+    }
+
+    public Vec3i setXZ(Vec2f vector) {
+        return setXZ(vector.x, vector.y);
+    }
+
+    public Vec3i setXZ(Vec2d vector) {
+        return setXZ(vector.x, vector.y);
+    }
+
+    public Vec3i setXZ(Vec2i vector) {
+        return setXZ(vector.x, vector.y);
+    }
+
+    public Vec3i setYZ(Vec2f vector) {
+        return setYZ(vector.x, vector.y);
+    }
+
+    public Vec3i setYZ(Vec2d vector) {
+        return setYZ(vector.x, vector.y);
+    }
+
+    public Vec3i setYZ(Vec2i vector) {
+        return setYZ(vector.x, vector.y);
+    }
+
 
     public Vec3i add(int xyz) {
         this.x += xyz;
@@ -306,6 +342,42 @@ public class Vec3i {
 
     public Vec3i addYZ(double y, double z) {
         return addYZ((int) y, (int) z);
+    }
+
+    public Vec3i addXY(Vec2f vector) {
+        return addXY(vector.x, vector.y);
+    }
+
+    public Vec3i addXY(Vec2d vector) {
+        return addXY(vector.x, vector.y);
+    }
+
+    public Vec3i addXY(Vec2i vector) {
+        return addXY(vector.x, vector.y);
+    }
+
+    public Vec3i addXZ(Vec2f vector) {
+        return addXZ(vector.x, vector.y);
+    }
+
+    public Vec3i addXZ(Vec2d vector) {
+        return addXZ(vector.x, vector.y);
+    }
+
+    public Vec3i addXZ(Vec2i vector) {
+        return addXZ(vector.x, vector.y);
+    }
+
+    public Vec3i addYZ(Vec2f vector) {
+        return addYZ(vector.x, vector.y);
+    }
+
+    public Vec3i addYZ(Vec2d vector) {
+        return addYZ(vector.x, vector.y);
+    }
+
+    public Vec3i addYZ(Vec2i vector) {
+        return addYZ(vector.x, vector.y);
     }
 
 
@@ -419,6 +491,42 @@ public class Vec3i {
         return subYZ((int) y, (int) z);
     }
 
+    public Vec3i subXY(Vec2f vector) {
+        return subXY(vector.x, vector.y);
+    }
+
+    public Vec3i subXY(Vec2d vector) {
+        return subXY(vector.x, vector.y);
+    }
+
+    public Vec3i subXY(Vec2i vector) {
+        return subXY(vector.x, vector.y);
+    }
+
+    public Vec3i subXZ(Vec2f vector) {
+        return subXZ(vector.x, vector.y);
+    }
+
+    public Vec3i subXZ(Vec2d vector) {
+        return subXZ(vector.x, vector.y);
+    }
+
+    public Vec3i subXZ(Vec2i vector) {
+        return subXZ(vector.x, vector.y);
+    }
+
+    public Vec3i subYZ(Vec2f vector) {
+        return subYZ(vector.x, vector.y);
+    }
+
+    public Vec3i subYZ(Vec2d vector) {
+        return subYZ(vector.x, vector.y);
+    }
+
+    public Vec3i subYZ(Vec2i vector) {
+        return subYZ(vector.x, vector.y);
+    }
+
 
     public Vec3i mul(int xyz) {
         this.x *= xyz;
@@ -530,6 +638,42 @@ public class Vec3i {
         return mulYZ((int) y, (int) z);
     }
 
+    public Vec3i mulXY(Vec2f vector) {
+        return mulXY(vector.x, vector.y);
+    }
+
+    public Vec3i mulXY(Vec2d vector) {
+        return mulXY(vector.x, vector.y);
+    }
+
+    public Vec3i mulXY(Vec2i vector) {
+        return mulXY(vector.x, vector.y);
+    }
+
+    public Vec3i mulXZ(Vec2f vector) {
+        return mulXZ(vector.x, vector.y);
+    }
+
+    public Vec3i mulXZ(Vec2d vector) {
+        return mulXZ(vector.x, vector.y);
+    }
+
+    public Vec3i mulXZ(Vec2i vector) {
+        return mulXZ(vector.x, vector.y);
+    }
+
+    public Vec3i mulYZ(Vec2f vector) {
+        return mulYZ(vector.x, vector.y);
+    }
+
+    public Vec3i mulYZ(Vec2d vector) {
+        return mulYZ(vector.x, vector.y);
+    }
+
+    public Vec3i mulYZ(Vec2i vector) {
+        return mulYZ(vector.x, vector.y);
+    }
+
 
     public Vec3i div(int xyz) {
         this.x /= xyz;
@@ -639,6 +783,42 @@ public class Vec3i {
 
     public Vec3i divYZ(double y, double z) {
         return divYZ((int) y, (int) z);
+    }
+
+    public Vec3i divXY(Vec2f vector) {
+        return divXY(vector.x, vector.y);
+    }
+
+    public Vec3i divXY(Vec2d vector) {
+        return divXY(vector.x, vector.y);
+    }
+
+    public Vec3i divXY(Vec2i vector) {
+        return divXY(vector.x, vector.y);
+    }
+
+    public Vec3i divXZ(Vec2f vector) {
+        return divXZ(vector.x, vector.y);
+    }
+
+    public Vec3i divXZ(Vec2d vector) {
+        return divXZ(vector.x, vector.y);
+    }
+
+    public Vec3i divXZ(Vec2i vector) {
+        return divXZ(vector.x, vector.y);
+    }
+
+    public Vec3i divYZ(Vec2f vector) {
+        return divYZ(vector.x, vector.y);
+    }
+
+    public Vec3i divYZ(Vec2d vector) {
+        return divYZ(vector.x, vector.y);
+    }
+
+    public Vec3i divYZ(Vec2i vector) {
+        return divYZ(vector.x, vector.y);
     }
 
 
