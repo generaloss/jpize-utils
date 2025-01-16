@@ -242,14 +242,14 @@ public class CharList implements Iterable<Character> {
         return this.remove(this.lastIndex());
     }
 
-    public char removeFirst(char value) {
+    public Character removeFirst(char value) {
         final int index = this.indexOf(value);
         if(index > -1)
             return this.remove(index);
         return null;
     }
 
-    public char removeLast(char value) {
+    public Character removeLast(char value) {
         final int index = this.lastIndexOf(value);
         if(index > -1)
             return this.remove(index);

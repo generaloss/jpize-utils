@@ -238,14 +238,14 @@ public class LongList implements Iterable<Long> {
         return this.remove(this.lastIndex());
     }
 
-    public long removeFirst(long value) {
+    public Long removeFirst(long value) {
         final int index = this.indexOf(value);
         if(index > -1)
             return this.remove(index);
         return null;
     }
 
-    public long removeLast(long value) {
+    public Long removeLast(long value) {
         final int index = this.lastIndexOf(value);
         if(index > -1)
             return this.remove(index);

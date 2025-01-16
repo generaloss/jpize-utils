@@ -238,14 +238,14 @@ public class FloatList implements Iterable<Float> {
         return this.remove(this.lastIndex());
     }
 
-    public float removeFirst(float value) {
+    public Float removeFirst(float value) {
         final int index = this.indexOf(value);
         if(index > -1)
             return this.remove(index);
         return null;
     }
 
-    public float removeLast(float value) {
+    public Float removeLast(float value) {
         final int index = this.lastIndexOf(value);
         if(index > -1)
             return this.remove(index);

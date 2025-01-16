@@ -238,14 +238,14 @@ public class ShortList implements Iterable<Short> {
         return this.remove(this.lastIndex());
     }
 
-    public short removeFirst(short value) {
+    public Short removeFirst(short value) {
         final int index = this.indexOf(value);
         if(index > -1)
             return this.remove(index);
         return null;
     }
 
-    public short removeLast(short value) {
+    public Short removeLast(short value) {
         final int index = this.lastIndexOf(value);
         if(index > -1)
             return this.remove(index);

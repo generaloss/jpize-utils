@@ -2,10 +2,9 @@ package jpize.util.io;
 
 import jpize.util.Utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class FastReader implements Closeable {
 
@@ -15,13 +14,13 @@ public class FastReader implements Closeable {
 
     private final InputStream inputStream;
     private final byte[] buffer;
-    private char[] charBuffer;
+    private byte[] charBuffer;
     private int pointer, bytesRead;
 
     public FastReader(InputStream inputStream) {
         this.inputStream = inputStream;
         this.buffer = new byte[65536];
-        this.charBuffer = new char[128];
+        this.charBuffer = new byte[256];
     }
 
     public FastReader(byte[] bytes) {
@@ -60,7 +59,7 @@ public class FastReader implements Closeable {
     }
 
 
-    public String next() {
+    public String next(Charset charset) {
         if(!this.hasNext())
             return null;
 
@@ -68,19 +67,20 @@ public class FastReader implements Closeable {
             int i = 0;
             while(true){
                 while(pointer < bytesRead){
-                    if(buffer[pointer] > SPACE){
+                    final byte b = buffer[pointer];
+                    if(b != SPACE && b != NEW_LINE){
                         if(i == charBuffer.length)
                             this.doubleCharBufferSize();
-                        charBuffer[i++] = (char) buffer[pointer++];
+                        charBuffer[i++] = buffer[pointer++];
                     }else{
                         pointer++;
-                        return new String(charBuffer, 0, i);
+                        return new String(charBuffer, 0, i, charset);
                     }
                 }
 
                 bytesRead = inputStream.read(buffer);
                 if(bytesRead == EOF)
-                    return new String(charBuffer, 0, i);
+                    return new String(charBuffer, 0, i, charset);
 
                 pointer = 0;
             }
@@ -90,8 +90,12 @@ public class FastReader implements Closeable {
         }
     }
 
+    public String next() {
+        return this.next(StandardCharsets.UTF_8);
+    }
+
     private void doubleCharBufferSize() {
-        final char[] newBuffer = new char[charBuffer.length << 1];
+        final byte[] newBuffer = new byte[charBuffer.length << 1];
         System.arraycopy(charBuffer, 0, newBuffer, 0, charBuffer.length);
         charBuffer = newBuffer;
     }
@@ -103,7 +107,7 @@ public class FastReader implements Closeable {
 
         do{
             while(pointer < bytesRead){
-                if(buffer[pointer] > SPACE){
+                if(buffer[pointer] != SPACE){
                     return 0;
                 }
                 pointer++;
@@ -119,46 +123,50 @@ public class FastReader implements Closeable {
         }while(true);
     }
 
-    public String nextLine() {
+    public String nextLine(Charset charset) {
         try{
-            final byte c = this.read();
-            if(c == NEW_LINE || c == EOF)
-                return "";
-
-            int i = 0;
-            charBuffer[i++] = (char) c;
-
+            int charPointer = 0;
             do{
                 while(pointer < bytesRead){
                     if(buffer[pointer] != NEW_LINE){
-                        if(i == charBuffer.length)
+                        if(charPointer == charBuffer.length)
                             this.doubleCharBufferSize();
-                        charBuffer[i++] = (char) buffer[pointer++];
+                        charBuffer[charPointer++] = buffer[pointer++];
                     }else{
                         pointer++;
-                        return new String(charBuffer, 0, i);
+                        return new String(charBuffer, 0, charPointer, charset);
                     }
                 }
 
                 bytesRead = inputStream.read(buffer);
                 if(bytesRead == EOF){
-                    return new String(charBuffer, 0, i);
+                    return new String(charBuffer, 0, charPointer, charset);
                 }
 
                 pointer = 0;
 
             }while(true);
+
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String nextLine() {
+        return this.nextLine(StandardCharsets.UTF_8);
+    }
+
+
+    public String readString(Charset charset) {
+        try{
+            return new String(inputStream.readAllBytes(), charset);
         }catch(IOException e){
             throw new RuntimeException(e);
         }
     }
 
     public String readString() {
-        try{
-            return new String(inputStream.readAllBytes());
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
+        return this.readString(StandardCharsets.UTF_8);
     }
 
 

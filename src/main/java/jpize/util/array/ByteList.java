@@ -238,14 +238,14 @@ public class ByteList implements Iterable<Byte> {
         return this.remove(this.lastIndex());
     }
 
-    public byte removeFirst(byte value) {
+    public Byte removeFirst(byte value) {
         final int index = this.indexOf(value);
         if(index > -1)
             return this.remove(index);
         return null;
     }
 
-    public byte removeLast(byte value) {
+    public Byte removeLast(byte value) {
         final int index = this.lastIndexOf(value);
         if(index > -1)
             return this.remove(index);

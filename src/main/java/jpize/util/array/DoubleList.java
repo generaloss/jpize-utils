@@ -238,14 +238,14 @@ public class DoubleList implements Iterable<Double> {
         return this.remove(this.lastIndex());
     }
 
-    public double removeFirst(double value) {
+    public Double removeFirst(double value) {
         final int index = this.indexOf(value);
         if(index > -1)
             return this.remove(index);
         return null;
     }
 
-    public double removeLast(double value) {
+    public Double removeLast(double value) {
         final int index = this.lastIndexOf(value);
         if(index > -1)
             return this.remove(index);

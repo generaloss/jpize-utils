@@ -238,14 +238,14 @@ public class BoolList implements Iterable<Boolean> {
         return this.remove(this.lastIndex());
     }
 
-    public boolean removeFirst(boolean value) {
+    public Boolean removeFirst(boolean value) {
         final int index = this.indexOf(value);
         if(index > -1)
             return this.remove(index);
         return null;
     }
 
-    public boolean removeLast(boolean value) {
+    public Boolean removeLast(boolean value) {
         final int index = this.lastIndexOf(value);
         if(index > -1)
             return this.remove(index);

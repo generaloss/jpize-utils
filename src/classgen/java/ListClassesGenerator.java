@@ -331,13 +331,13 @@ public class ListClassesGenerator {
         w.addMethod("public " + datatypeGenerics + " removeLast()",
             "return this.remove(this.lastIndex());"
         );
-        w.addMethod("public " + datatypeGenerics + " removeFirst(" + datatype + " value)",
+        w.addMethod("public " + datatypeWrapper + " removeFirst(" + datatype + " value)",
             "final int index = this.indexOf(value);",
             "if(index > -1)",
             "    return this.remove(index);",
             "return null;"
         );
-        w.addMethod("public " + datatypeGenerics + " removeLast(" + datatype + " value)",
+        w.addMethod("public " + datatypeWrapper + " removeLast(" + datatype + " value)",
             "final int index = this.lastIndexOf(value);",
             "if(index > -1)",
             "    return this.remove(index);",

@@ -1,4 +1,4 @@
-package jpize.util.geometry;
+package jpize.util.math.geometry;
 
 import jpize.util.math.vector.Vec4f;
 

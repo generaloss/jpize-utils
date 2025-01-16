@@ -21,6 +21,7 @@ public class ObjectList<T> implements Iterable<T> {
         this.array = new Object[capacity];
     }
 
+    @SafeVarargs
     public ObjectList(T... items) {
         this.size = items.length;
         this.array = items;
@@ -60,10 +61,12 @@ public class ObjectList<T> implements Iterable<T> {
 
 
     public T[] array() {
+        // noinspection unchecked
         return (T[]) array;
     }
 
     public T[] arrayTrimmed() {
+        // noinspection unchecked
         return (T[]) Arrays.copyOf(array, size);
     }
 
@@ -104,7 +107,8 @@ public class ObjectList<T> implements Iterable<T> {
         return this;
     }
 
-    public ObjectList<T> add(T... elements) {
+    @SafeVarargs
+    public final ObjectList<T> add(T... elements) {
         if(size + elements.length >= array.length)
             this.grow(size + elements.length);
         
@@ -138,7 +142,8 @@ public class ObjectList<T> implements Iterable<T> {
         return this;
     }
 
-    public ObjectList<T> add(int i, T... elements) {
+    @SafeVarargs
+    public final ObjectList<T> add(int i, T... elements) {
         if(elements.length == 0)
             return this;
         
@@ -160,7 +165,8 @@ public class ObjectList<T> implements Iterable<T> {
         return this.add(0, element);
     }
 
-    public ObjectList<T> addFirst(T... elements) {
+    @SafeVarargs
+    public final ObjectList<T> addFirst(T... elements) {
         return this.add(0, elements);
     }
 
@@ -306,6 +312,7 @@ public class ObjectList<T> implements Iterable<T> {
 
 
     public T get(int i) {
+        // noinspection unchecked
         return (T) array[i];
     }
 
@@ -364,7 +371,7 @@ public class ObjectList<T> implements Iterable<T> {
     }
 
     public ObjectList<T> copy() {
-        return new ObjectList<T>(this);
+        return new ObjectList<>(this);
     }
 
 
@@ -399,6 +406,7 @@ public class ObjectList<T> implements Iterable<T> {
             }
             @Override
             public T next() {
+                // noinspection unchecked
                 return (T) array[index++];
             }
         };

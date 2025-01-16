@@ -238,14 +238,14 @@ public class IntList implements Iterable<Integer> {
         return this.remove(this.lastIndex());
     }
 
-    public int removeFirst(int value) {
+    public Integer removeFirst(int value) {
         final int index = this.indexOf(value);
         if(index > -1)
             return this.remove(index);
         return null;
     }
 
-    public int removeLast(int value) {
+    public Integer removeLast(int value) {
         final int index = this.lastIndexOf(value);
         if(index > -1)
             return this.remove(index);
