@@ -998,7 +998,7 @@ public class Vec2i {
 
     @Override
     public String toString() {
-        return x + ", " + y;
+        return "{" + x + ", " + y + "}";
     }
 
 }

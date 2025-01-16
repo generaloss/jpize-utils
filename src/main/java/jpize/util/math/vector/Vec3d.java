@@ -1683,7 +1683,7 @@ public class Vec3d {
 
     @Override
     public String toString() {
-        return x + ", " + y + ", " + z;
+        return "{" + x + ", " + y + ", " + z + "}";
     }
 
 }

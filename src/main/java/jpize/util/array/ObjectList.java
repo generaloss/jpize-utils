@@ -4,7 +4,7 @@ import java.util.function.Function;
 import java.util.*;
 import org.jetbrains.annotations.NotNull;
 
-public class ObjectList implements Iterable<Object> {
+public class ObjectList<T> implements Iterable<T> {
 
     public static final int DEFAULT_CAPACITY = 3;
 
@@ -21,50 +21,50 @@ public class ObjectList implements Iterable<Object> {
         this.array = new Object[capacity];
     }
 
-    public ObjectList(Object... items) {
+    public ObjectList(T... items) {
         this.size = items.length;
         this.array = items;
     }
 
-    public ObjectList(ObjectList list) {
+    public ObjectList(ObjectList<T> list) {
         this.size = list.size;
         this.array = list.copyOf();
     }
 
-    public ObjectList(Iterable<Object> iterable) {
+    public ObjectList(Iterable<T> iterable) {
         this.array = new Object[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
-    public ObjectList(Collection<Object> collection) {
+    public ObjectList(Collection<T> collection) {
         this.array = new Object[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> ObjectList(Iterable<T> iterable, Function<T, Object> func) {
+    public <O> ObjectList(Iterable<O> iterable, Function<O, T> func) {
         this.array = new Object[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> ObjectList(Collection<T> collection, Function<T, Object> func) {
+    public <O> ObjectList(Collection<O> collection, Function<O, T> func) {
         this.array = new Object[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> ObjectList(T[] array, Function<T, Object> func) {
+    public <O> ObjectList(O[] array, Function<O, T> func) {
         this.array = new Object[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
-    public Object[] array() {
-        return array;
+    public T[] array() {
+        return (T[]) array;
     }
 
-    public Object[] arrayTrimmed() {
-        return Arrays.copyOf(array, size);
+    public T[] arrayTrimmed() {
+        return (T[]) Arrays.copyOf(array, size);
     }
 
     public int size() {
@@ -75,8 +75,8 @@ public class ObjectList implements Iterable<Object> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -91,108 +91,117 @@ public class ObjectList implements Iterable<Object> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
-    public ObjectList add(Object element) {
+    public ObjectList<T> add(T element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
         return this;
     }
 
-    public ObjectList add(Object... elements) {
+    public ObjectList<T> add(T... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
         return this;
     }
 
-    public ObjectList add(ObjectList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+    public ObjectList<T> add(ObjectList<T> list) {
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
-    public ObjectList add(int i, Object element) {
+    public ObjectList<T> add(int i, T element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
     }
 
-    public ObjectList add(int i, Object... elements) {
+    public ObjectList<T> add(int i, T... elements) {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
     }
 
+    public ObjectList<T> addFirst(T element) {
+        return this.add(0, element);
+    }
 
-    public ObjectList addAll(Iterable<Object> iterable) {
-        for(Object item: iterable)
+    public ObjectList<T> addFirst(T... elements) {
+        return this.add(0, elements);
+    }
+
+
+    public ObjectList<T> addAll(Iterable<T> iterable) {
+        for(T item: iterable)
             this.add(item);
         return this;
     }
 
-    public ObjectList addAll(Collection<Object> collection) {
-        for(Object item: collection)
+    public ObjectList<T> addAll(Collection<T> collection) {
+        for(T item: collection)
             this.add(item);
         return this;
     }
 
-    public <T> ObjectList addAll(Iterable<T> iterable, Function<T, Object> func) {
-        for(T object: iterable)
+    public <O> ObjectList<T> addAll(Iterable<O> iterable, Function<O, T> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> ObjectList addAll(Collection<T> collection, Function<T, Object> func) {
-        for(T object: collection)
+    public <O> ObjectList<T> addAll(Collection<O> collection, Function<O, T> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> ObjectList addAll(T[] array, Function<T, Object> func) {
-        for(T object: array)
+    public <O> ObjectList<T> addAll(O[] array, Function<O, T> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
 
 
-    public ObjectList remove(int i, int len) {
+    public ObjectList<T> remove(int i, int len) {
         len = Math.min(len, size - i);
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final Object[] copy = new Object[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -203,109 +212,122 @@ public class ObjectList implements Iterable<Object> {
         return this;
     }
 
-    public Object remove(int i) {
-        final Object val = get(i);
-        remove(i, 1);
+    public T remove(int i) {
+        final T val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
-    public Object removeLast() {
-        return remove(lastIdx());
+    public T removeFirst() {
+        return this.remove(0);
     }
 
-    public ObjectList removeFirst(Object value) {
-        final int index = indexOf(value);
-        if(index > -1)
-            remove(index);
-        return this;
+    public T removeLast() {
+        return this.remove(this.lastIndex());
     }
 
-    public ObjectList removeLast(Object value) {
-        final int index = lastIndexOf(value);
+    public T removeFirst(Object value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
+    }
+
+    public T removeLast(Object value) {
+        final int index = this.lastIndexOf(value);
+        if(index > -1)
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(Object element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(Object element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(Object element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(Object element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i].equals(element ))
+            if(array[i].equals(element))
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(Object element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i].equals(element ))
+            if(array[i].equals(element))
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
-    public ObjectList clear() {
+    public ObjectList<T> clear() {
         Arrays.fill(array, 0, size, null);
         size = 0;
         return this;
     }
 
-    public ObjectList fill(Object value) {
+    public ObjectList<T> fill(Object value) {
         Arrays.fill(array, 0, size, value);
         return this;
     }
 
 
-    public ObjectList trim() {
+    public ObjectList<T> trim() {
         array = Arrays.copyOf(array, size);
         return this;
     }
 
-    public ObjectList capacity(int newCapacity) {
-        if(newCapacity == 0)
+    public ObjectList<T> capacity(int newCapacity) {
+        if(newCapacity == 0){
             array = new Object[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
 
 
-    public Object get(int i) {
-        return array[i];
+    public T get(int i) {
+        return (T) array[i];
     }
 
-    public Object getLast() {
-        return get(lastIdx());
+    public T getFirst() {
+        return this.get(0);
     }
 
-    public ObjectList set(int i, Object newValue) {
+    public T getLast() {
+        return this.get(this.lastIndex());
+    }
+
+    public ObjectList<T> set(int i, Object newValue) {
         array[i] = newValue;
         return this;
     }
 
-    public ObjectList setLast(Object newValue) {
-        return set(lastIdx(), newValue);
+    public ObjectList<T> setFirst(Object newValue) {
+        return this.set(0, newValue);
+    }
+
+    public ObjectList<T> setLast(Object newValue) {
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -317,34 +339,32 @@ public class ObjectList implements Iterable<Object> {
     }
 
     public Object[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public Object[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public Object[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
-    public ObjectList copyTo(Object[] dst, int offset, int length) {
+    public ObjectList<T> copyTo(Object[] dst, int offset, int length) {
         System.arraycopy(array, 0, dst, offset, length);
         return this;
     }
 
-    public ObjectList copyTo(Object[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+    public ObjectList<T> copyTo(Object[] dst, int offset) {
+        return this.copyTo(dst, offset, array.length);
     }
 
-    public ObjectList copyTo(Object[] dst) {
-        copyTo(dst, 0);
-        return this;
+    public ObjectList<T> copyTo(Object[] dst) {
+        return this.copyTo(dst, 0);
     }
 
-    public ObjectList copy() {
-        return new ObjectList(this);
+    public ObjectList<T> copy() {
+        return new ObjectList<T>(this);
     }
 
 
@@ -359,7 +379,7 @@ public class ObjectList implements Iterable<Object> {
             return true;
         if(object == null || getClass() != object.getClass())
             return false;
-        final ObjectList list = (ObjectList) object;
+        final ObjectList<?> list = (ObjectList<?>) object;
         return (size == list.size && Objects.deepEquals(array, list.array));
     }
 
@@ -370,16 +390,16 @@ public class ObjectList implements Iterable<Object> {
 
     @Override
     @NotNull
-    public Iterator<Object> iterator() {
+    public Iterator<T> iterator() {
         return new Iterator<>() {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
-            public Object next() {
-                return array[index++];
+            public T next() {
+                return (T) array[index++];
             }
         };
     }

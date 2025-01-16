@@ -31,12 +31,12 @@ public class ReflectUtils {
         final Class<?>[] types = new Class<?>[args.length];
         for(int i = 0; i < args.length; i++){
             final Class<?> c = args[i].getClass();
-            types[i] = tryToGetPrimitive(c);
+            types[i] = getPrimitiveClass(c);
         }
         return types;
     }
 
-    private static Class<?> tryToGetPrimitive(Class<?> c) {
+    private static Class<?> getPrimitiveClass(Class<?> c) {
         if(c == Byte.class) return byte.class;
         else if(c == Short.class) return short.class;
         else if(c == Integer.class) return int.class;

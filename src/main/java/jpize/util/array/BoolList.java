@@ -34,34 +34,34 @@ public class BoolList implements Iterable<Boolean> {
 
     public BoolList(ByteBuffer buffer) {
         this.array = new boolean[buffer.limit()];
-        addAll(buffer);
+        this.addAll(buffer);
     }
 
     public BoolList(Iterable<Boolean> iterable) {
         this.array = new boolean[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
     public BoolList(Collection<Boolean> collection) {
         this.array = new boolean[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> BoolList(Iterable<T> iterable, Function<T, Boolean> func) {
+    public <O> BoolList(Iterable<O> iterable, Function<O, Boolean> func) {
         this.array = new boolean[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> BoolList(Collection<T> collection, Function<T, Boolean> func) {
+    public <O> BoolList(Collection<O> collection, Function<O, Boolean> func) {
         this.array = new boolean[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> BoolList(T[] array, Function<T, Boolean> func) {
+    public <O> BoolList(O[] array, Function<O, Boolean> func) {
         this.array = new boolean[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
@@ -81,8 +81,8 @@ public class BoolList implements Iterable<Boolean> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -97,13 +97,13 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
     public BoolList add(boolean element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
@@ -112,7 +112,7 @@ public class BoolList implements Iterable<Boolean> {
 
     public BoolList add(boolean... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
@@ -120,24 +120,25 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     public BoolList add(BoolList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
     public BoolList add(int i, boolean element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
@@ -147,18 +148,26 @@ public class BoolList implements Iterable<Boolean> {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
+    }
+
+    public BoolList addFirst(boolean element) {
+        return this.add(0, element);
+    }
+
+    public BoolList addFirst(boolean... elements) {
+        return this.add(0, elements);
     }
 
 
@@ -180,20 +189,20 @@ public class BoolList implements Iterable<Boolean> {
         return this;
     }
 
-    public <T> BoolList addAll(Iterable<T> iterable, Function<T, Boolean> func) {
-        for(T object: iterable)
+    public <O> BoolList addAll(Iterable<O> iterable, Function<O, Boolean> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> BoolList addAll(Collection<T> collection, Function<T, Boolean> func) {
-        for(T object: collection)
+    public <O> BoolList addAll(Collection<O> collection, Function<O, Boolean> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> BoolList addAll(T[] array, Function<T, Boolean> func) {
-        for(T object: array)
+    public <O> BoolList addAll(O[] array, Function<O, Boolean> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
@@ -204,7 +213,7 @@ public class BoolList implements Iterable<Boolean> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final boolean[] copy = new boolean[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -216,63 +225,67 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     public boolean remove(int i) {
-        final boolean val = get(i);
-        remove(i, 1);
+        final boolean val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
+    public boolean removeFirst() {
+        return this.remove(0);
+    }
+
     public boolean removeLast() {
-        return remove(lastIdx());
+        return this.remove(this.lastIndex());
     }
 
-    public BoolList removeFirst(boolean value) {
-        final int index = indexOf(value);
+    public boolean removeFirst(boolean value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
-    public BoolList removeLast(boolean value) {
-        final int index = lastIndexOf(value);
+    public boolean removeLast(boolean value) {
+        final int index = this.lastIndexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(boolean element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(boolean element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(boolean element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(boolean element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(boolean element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
@@ -294,10 +307,11 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     public BoolList capacity(int newCapacity) {
-        if(newCapacity == 0)
+        if(newCapacity == 0){
             array = new boolean[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
@@ -307,8 +321,12 @@ public class BoolList implements Iterable<Boolean> {
         return array[i];
     }
 
+    public boolean getFirst() {
+        return this.get(0);
+    }
+
     public boolean getLast() {
-        return get(lastIdx());
+        return this.get(this.lastIndex());
     }
 
     public BoolList set(int i, boolean newValue) {
@@ -316,8 +334,12 @@ public class BoolList implements Iterable<Boolean> {
         return this;
     }
 
+    public BoolList setFirst(boolean newValue) {
+        return this.set(0, newValue);
+    }
+
     public BoolList setLast(boolean newValue) {
-        return set(lastIdx(), newValue);
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -329,15 +351,15 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     public boolean[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public boolean[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public boolean[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
     public BoolList copyTo(boolean[] dst, int offset, int length) {
@@ -346,13 +368,11 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     public BoolList copyTo(boolean[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+        return this.copyTo(dst, offset, array.length);
     }
 
     public BoolList copyTo(boolean[] dst) {
-        copyTo(dst, 0);
-        return this;
+        return this.copyTo(dst, 0);
     }
 
     public BoolList copy() {
@@ -387,7 +407,7 @@ public class BoolList implements Iterable<Boolean> {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
             public Boolean next() {

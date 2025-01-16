@@ -1,6 +1,7 @@
 package jpize.util.math;
 
 import jpize.util.math.axisaligned.AABoxBody;
+import jpize.util.geometry.Intersector;
 import jpize.util.math.vector.Vec3f;
 
 public class Ray3f {

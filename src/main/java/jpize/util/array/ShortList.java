@@ -34,34 +34,34 @@ public class ShortList implements Iterable<Short> {
 
     public ShortList(ShortBuffer buffer) {
         this.array = new short[buffer.limit()];
-        addAll(buffer);
+        this.addAll(buffer);
     }
 
     public ShortList(Iterable<Short> iterable) {
         this.array = new short[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
     public ShortList(Collection<Short> collection) {
         this.array = new short[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> ShortList(Iterable<T> iterable, Function<T, Short> func) {
+    public <O> ShortList(Iterable<O> iterable, Function<O, Short> func) {
         this.array = new short[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> ShortList(Collection<T> collection, Function<T, Short> func) {
+    public <O> ShortList(Collection<O> collection, Function<O, Short> func) {
         this.array = new short[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> ShortList(T[] array, Function<T, Short> func) {
+    public <O> ShortList(O[] array, Function<O, Short> func) {
         this.array = new short[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
@@ -81,8 +81,8 @@ public class ShortList implements Iterable<Short> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -97,13 +97,13 @@ public class ShortList implements Iterable<Short> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
     public ShortList add(short element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
@@ -112,7 +112,7 @@ public class ShortList implements Iterable<Short> {
 
     public ShortList add(short... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
@@ -120,24 +120,25 @@ public class ShortList implements Iterable<Short> {
     }
 
     public ShortList add(ShortList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
     public ShortList add(int i, short element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
@@ -147,18 +148,26 @@ public class ShortList implements Iterable<Short> {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
+    }
+
+    public ShortList addFirst(short element) {
+        return this.add(0, element);
+    }
+
+    public ShortList addFirst(short... elements) {
+        return this.add(0, elements);
     }
 
 
@@ -180,20 +189,20 @@ public class ShortList implements Iterable<Short> {
         return this;
     }
 
-    public <T> ShortList addAll(Iterable<T> iterable, Function<T, Short> func) {
-        for(T object: iterable)
+    public <O> ShortList addAll(Iterable<O> iterable, Function<O, Short> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> ShortList addAll(Collection<T> collection, Function<T, Short> func) {
-        for(T object: collection)
+    public <O> ShortList addAll(Collection<O> collection, Function<O, Short> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> ShortList addAll(T[] array, Function<T, Short> func) {
-        for(T object: array)
+    public <O> ShortList addAll(O[] array, Function<O, Short> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
@@ -204,7 +213,7 @@ public class ShortList implements Iterable<Short> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final short[] copy = new short[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -216,63 +225,67 @@ public class ShortList implements Iterable<Short> {
     }
 
     public short remove(int i) {
-        final short val = get(i);
-        remove(i, 1);
+        final short val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
+    public short removeFirst() {
+        return this.remove(0);
+    }
+
     public short removeLast() {
-        return remove(lastIdx());
+        return this.remove(this.lastIndex());
     }
 
-    public ShortList removeFirst(short value) {
-        final int index = indexOf(value);
+    public short removeFirst(short value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
-    public ShortList removeLast(short value) {
-        final int index = lastIndexOf(value);
+    public short removeLast(short value) {
+        final int index = this.lastIndexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(short element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(short element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(short element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(short element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(short element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
@@ -294,10 +307,11 @@ public class ShortList implements Iterable<Short> {
     }
 
     public ShortList capacity(int newCapacity) {
-        if(newCapacity == 0)
+        if(newCapacity == 0){
             array = new short[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
@@ -307,8 +321,12 @@ public class ShortList implements Iterable<Short> {
         return array[i];
     }
 
+    public short getFirst() {
+        return this.get(0);
+    }
+
     public short getLast() {
-        return get(lastIdx());
+        return this.get(this.lastIndex());
     }
 
     public ShortList set(int i, short newValue) {
@@ -316,8 +334,12 @@ public class ShortList implements Iterable<Short> {
         return this;
     }
 
+    public ShortList setFirst(short newValue) {
+        return this.set(0, newValue);
+    }
+
     public ShortList setLast(short newValue) {
-        return set(lastIdx(), newValue);
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -349,15 +371,15 @@ public class ShortList implements Iterable<Short> {
     }
 
     public short[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public short[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public short[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
     public ShortList copyTo(short[] dst, int offset, int length) {
@@ -366,13 +388,11 @@ public class ShortList implements Iterable<Short> {
     }
 
     public ShortList copyTo(short[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+        return this.copyTo(dst, offset, array.length);
     }
 
     public ShortList copyTo(short[] dst) {
-        copyTo(dst, 0);
-        return this;
+        return this.copyTo(dst, 0);
     }
 
     public ShortList copy() {
@@ -407,7 +427,7 @@ public class ShortList implements Iterable<Short> {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
             public Short next() {

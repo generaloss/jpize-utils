@@ -103,7 +103,7 @@ public class VectorClassesGenerator {
         VectorClassesGenerator.datatype = type.datatype;
         VectorClassesGenerator.classname = type.classname;
         VectorClassesGenerator.varname = type.varname;
-        VectorClassesGenerator.w = new ClassWriter("jpize.util.math.vector", classname, "");
+        VectorClassesGenerator.w = new ClassWriter("jpize.util.math.vector", classname, "", "");
 
         VectorClassesGenerator.xyzw_str = makeDims(dimensions, "", "%l");
         VectorClassesGenerator.XYZW_str = xyzw_str.toUpperCase();
@@ -189,7 +189,7 @@ public class VectorClassesGenerator {
 
         // toString
         w.addAnnotatedMethod("@Override", "public String toString()",
-            "return " + makeDims(dimensions, " + \", \" + ", "%l") + ";"
+            "return \"{\" + " + makeDims(dimensions, " + \", \" + ", "%l") + " + \"}\";"
         );
     }
 

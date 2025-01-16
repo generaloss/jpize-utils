@@ -1072,7 +1072,7 @@ public class Vec2d {
 
     @Override
     public String toString() {
-        return x + ", " + y;
+        return "{" + x + ", " + y + "}";
     }
 
 }

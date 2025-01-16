@@ -1367,7 +1367,7 @@ public class Vec4f {
 
     @Override
     public String toString() {
-        return x + ", " + y + ", " + z + ", " + w;
+        return "{" + x + ", " + y + ", " + z + ", " + w + "}";
     }
 
 }

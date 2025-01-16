@@ -34,34 +34,34 @@ public class ByteList implements Iterable<Byte> {
 
     public ByteList(ByteBuffer buffer) {
         this.array = new byte[buffer.limit()];
-        addAll(buffer);
+        this.addAll(buffer);
     }
 
     public ByteList(Iterable<Byte> iterable) {
         this.array = new byte[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
     public ByteList(Collection<Byte> collection) {
         this.array = new byte[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> ByteList(Iterable<T> iterable, Function<T, Byte> func) {
+    public <O> ByteList(Iterable<O> iterable, Function<O, Byte> func) {
         this.array = new byte[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> ByteList(Collection<T> collection, Function<T, Byte> func) {
+    public <O> ByteList(Collection<O> collection, Function<O, Byte> func) {
         this.array = new byte[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> ByteList(T[] array, Function<T, Byte> func) {
+    public <O> ByteList(O[] array, Function<O, Byte> func) {
         this.array = new byte[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
@@ -81,8 +81,8 @@ public class ByteList implements Iterable<Byte> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -97,13 +97,13 @@ public class ByteList implements Iterable<Byte> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
     public ByteList add(byte element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
@@ -112,7 +112,7 @@ public class ByteList implements Iterable<Byte> {
 
     public ByteList add(byte... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
@@ -120,24 +120,25 @@ public class ByteList implements Iterable<Byte> {
     }
 
     public ByteList add(ByteList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
     public ByteList add(int i, byte element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
@@ -147,18 +148,26 @@ public class ByteList implements Iterable<Byte> {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
+    }
+
+    public ByteList addFirst(byte element) {
+        return this.add(0, element);
+    }
+
+    public ByteList addFirst(byte... elements) {
+        return this.add(0, elements);
     }
 
 
@@ -180,20 +189,20 @@ public class ByteList implements Iterable<Byte> {
         return this;
     }
 
-    public <T> ByteList addAll(Iterable<T> iterable, Function<T, Byte> func) {
-        for(T object: iterable)
+    public <O> ByteList addAll(Iterable<O> iterable, Function<O, Byte> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> ByteList addAll(Collection<T> collection, Function<T, Byte> func) {
-        for(T object: collection)
+    public <O> ByteList addAll(Collection<O> collection, Function<O, Byte> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> ByteList addAll(T[] array, Function<T, Byte> func) {
-        for(T object: array)
+    public <O> ByteList addAll(O[] array, Function<O, Byte> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
@@ -204,7 +213,7 @@ public class ByteList implements Iterable<Byte> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final byte[] copy = new byte[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -216,63 +225,67 @@ public class ByteList implements Iterable<Byte> {
     }
 
     public byte remove(int i) {
-        final byte val = get(i);
-        remove(i, 1);
+        final byte val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
+    public byte removeFirst() {
+        return this.remove(0);
+    }
+
     public byte removeLast() {
-        return remove(lastIdx());
+        return this.remove(this.lastIndex());
     }
 
-    public ByteList removeFirst(byte value) {
-        final int index = indexOf(value);
+    public byte removeFirst(byte value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
-    public ByteList removeLast(byte value) {
-        final int index = lastIndexOf(value);
+    public byte removeLast(byte value) {
+        final int index = this.lastIndexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(byte element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(byte element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(byte element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(byte element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(byte element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
@@ -294,10 +307,11 @@ public class ByteList implements Iterable<Byte> {
     }
 
     public ByteList capacity(int newCapacity) {
-        if(newCapacity == 0)
+        if(newCapacity == 0){
             array = new byte[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
@@ -307,8 +321,12 @@ public class ByteList implements Iterable<Byte> {
         return array[i];
     }
 
+    public byte getFirst() {
+        return this.get(0);
+    }
+
     public byte getLast() {
-        return get(lastIdx());
+        return this.get(this.lastIndex());
     }
 
     public ByteList set(int i, byte newValue) {
@@ -316,8 +334,12 @@ public class ByteList implements Iterable<Byte> {
         return this;
     }
 
+    public ByteList setFirst(byte newValue) {
+        return this.set(0, newValue);
+    }
+
     public ByteList setLast(byte newValue) {
-        return set(lastIdx(), newValue);
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -349,15 +371,15 @@ public class ByteList implements Iterable<Byte> {
     }
 
     public byte[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public byte[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public byte[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
     public ByteList copyTo(byte[] dst, int offset, int length) {
@@ -366,13 +388,11 @@ public class ByteList implements Iterable<Byte> {
     }
 
     public ByteList copyTo(byte[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+        return this.copyTo(dst, offset, array.length);
     }
 
     public ByteList copyTo(byte[] dst) {
-        copyTo(dst, 0);
-        return this;
+        return this.copyTo(dst, 0);
     }
 
     public ByteList copy() {
@@ -407,7 +427,7 @@ public class ByteList implements Iterable<Byte> {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
             public Byte next() {

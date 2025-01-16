@@ -8,15 +8,16 @@ public class ClassWriter {
 
     private static final String TAB = "    ";
 
-    private final String Package, name, header;
+    private final String packagе, name, generics, header;
     private final List<String> imports;
     private final List<Method> constructors;
     private final List<Method> methods;
     private final List<String> fields;
 
-    public ClassWriter(String Package, String name, String header) {
-        this.Package = Package;
+    public ClassWriter(String packagе, String name, String generics, String header) {
+        this.packagе = packagе;
         this.name = name;
+        this.generics = generics;
         this.header = header;
         this.imports = new ArrayList<>();
         this.constructors = new ArrayList<>();
@@ -64,8 +65,8 @@ public class ClassWriter {
     private String makeCode() {
         final StringBuilder builder = new StringBuilder();
 
-        if(!Package.isEmpty()){
-            builder.append("package " + Package + ";\n");
+        if(!packagе.isEmpty()){
+            builder.append("package " + packagе + ";\n");
             builder.append("\n");
         }
         // imports
@@ -75,11 +76,11 @@ public class ClassWriter {
             builder.append("\n");
         }
         // class
-        if(header.isEmpty())
-            builder.append("public class " + name + " {\n");
-        else
-            builder.append("public class " + name + " " + header + " {\n");
-        builder.append("\n");
+
+        builder.append("public class " + name);
+        if(!generics.isEmpty()) builder.append(generics);
+        if(!header.isEmpty()) builder.append(" " + header);
+        builder.append(" {\n\n");
         // fields
         if(!fields.isEmpty()){
             for(String field: fields)

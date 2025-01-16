@@ -38,34 +38,34 @@ public class CharList implements Iterable<Character> {
 
     public CharList(CharBuffer buffer) {
         this.array = new char[buffer.limit()];
-        addAll(buffer);
+        this.addAll(buffer);
     }
 
     public CharList(Iterable<Character> iterable) {
         this.array = new char[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
     public CharList(Collection<Character> collection) {
         this.array = new char[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> CharList(Iterable<T> iterable, Function<T, Character> func) {
+    public <O> CharList(Iterable<O> iterable, Function<O, Character> func) {
         this.array = new char[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> CharList(Collection<T> collection, Function<T, Character> func) {
+    public <O> CharList(Collection<O> collection, Function<O, Character> func) {
         this.array = new char[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> CharList(T[] array, Function<T, Character> func) {
+    public <O> CharList(O[] array, Function<O, Character> func) {
         this.array = new char[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
@@ -85,8 +85,8 @@ public class CharList implements Iterable<Character> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -101,13 +101,13 @@ public class CharList implements Iterable<Character> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
     public CharList add(char element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
@@ -116,7 +116,7 @@ public class CharList implements Iterable<Character> {
 
     public CharList add(char... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
@@ -124,24 +124,25 @@ public class CharList implements Iterable<Character> {
     }
 
     public CharList add(CharList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
     public CharList add(int i, char element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
@@ -151,18 +152,26 @@ public class CharList implements Iterable<Character> {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
+    }
+
+    public CharList addFirst(char element) {
+        return this.add(0, element);
+    }
+
+    public CharList addFirst(char... elements) {
+        return this.add(0, elements);
     }
 
 
@@ -184,20 +193,20 @@ public class CharList implements Iterable<Character> {
         return this;
     }
 
-    public <T> CharList addAll(Iterable<T> iterable, Function<T, Character> func) {
-        for(T object: iterable)
+    public <O> CharList addAll(Iterable<O> iterable, Function<O, Character> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> CharList addAll(Collection<T> collection, Function<T, Character> func) {
-        for(T object: collection)
+    public <O> CharList addAll(Collection<O> collection, Function<O, Character> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> CharList addAll(T[] array, Function<T, Character> func) {
-        for(T object: array)
+    public <O> CharList addAll(O[] array, Function<O, Character> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
@@ -208,7 +217,7 @@ public class CharList implements Iterable<Character> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final char[] copy = new char[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -220,63 +229,67 @@ public class CharList implements Iterable<Character> {
     }
 
     public char remove(int i) {
-        final char val = get(i);
-        remove(i, 1);
+        final char val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
+    public char removeFirst() {
+        return this.remove(0);
+    }
+
     public char removeLast() {
-        return remove(lastIdx());
+        return this.remove(this.lastIndex());
     }
 
-    public CharList removeFirst(char value) {
-        final int index = indexOf(value);
+    public char removeFirst(char value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
-    public CharList removeLast(char value) {
-        final int index = lastIndexOf(value);
+    public char removeLast(char value) {
+        final int index = this.lastIndexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(char element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(char element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(char element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(char element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(char element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
@@ -298,10 +311,11 @@ public class CharList implements Iterable<Character> {
     }
 
     public CharList capacity(int newCapacity) {
-        if(newCapacity == 0)
+        if(newCapacity == 0){
             array = new char[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
@@ -311,8 +325,12 @@ public class CharList implements Iterable<Character> {
         return array[i];
     }
 
+    public char getFirst() {
+        return this.get(0);
+    }
+
     public char getLast() {
-        return get(lastIdx());
+        return this.get(this.lastIndex());
     }
 
     public CharList set(int i, char newValue) {
@@ -320,8 +338,12 @@ public class CharList implements Iterable<Character> {
         return this;
     }
 
+    public CharList setFirst(char newValue) {
+        return this.set(0, newValue);
+    }
+
     public CharList setLast(char newValue) {
-        return set(lastIdx(), newValue);
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -353,15 +375,15 @@ public class CharList implements Iterable<Character> {
     }
 
     public char[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public char[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public char[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
     public CharList copyTo(char[] dst, int offset, int length) {
@@ -370,13 +392,11 @@ public class CharList implements Iterable<Character> {
     }
 
     public CharList copyTo(char[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+        return this.copyTo(dst, offset, array.length);
     }
 
     public CharList copyTo(char[] dst) {
-        copyTo(dst, 0);
-        return this;
+        return this.copyTo(dst, 0);
     }
 
     public CharList copy() {
@@ -416,7 +436,7 @@ public class CharList implements Iterable<Character> {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
             public Character next() {

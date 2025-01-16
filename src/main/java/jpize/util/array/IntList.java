@@ -34,34 +34,34 @@ public class IntList implements Iterable<Integer> {
 
     public IntList(IntBuffer buffer) {
         this.array = new int[buffer.limit()];
-        addAll(buffer);
+        this.addAll(buffer);
     }
 
     public IntList(Iterable<Integer> iterable) {
         this.array = new int[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
     public IntList(Collection<Integer> collection) {
         this.array = new int[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> IntList(Iterable<T> iterable, Function<T, Integer> func) {
+    public <O> IntList(Iterable<O> iterable, Function<O, Integer> func) {
         this.array = new int[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> IntList(Collection<T> collection, Function<T, Integer> func) {
+    public <O> IntList(Collection<O> collection, Function<O, Integer> func) {
         this.array = new int[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> IntList(T[] array, Function<T, Integer> func) {
+    public <O> IntList(O[] array, Function<O, Integer> func) {
         this.array = new int[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
@@ -81,8 +81,8 @@ public class IntList implements Iterable<Integer> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -97,13 +97,13 @@ public class IntList implements Iterable<Integer> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
     public IntList add(int element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
@@ -112,7 +112,7 @@ public class IntList implements Iterable<Integer> {
 
     public IntList add(int... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
@@ -120,24 +120,25 @@ public class IntList implements Iterable<Integer> {
     }
 
     public IntList add(IntList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
     public IntList add(int i, int element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
@@ -147,18 +148,26 @@ public class IntList implements Iterable<Integer> {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
+    }
+
+    public IntList addFirst(int element) {
+        return this.add(0, element);
+    }
+
+    public IntList addFirst(int... elements) {
+        return this.add(0, elements);
     }
 
 
@@ -180,20 +189,20 @@ public class IntList implements Iterable<Integer> {
         return this;
     }
 
-    public <T> IntList addAll(Iterable<T> iterable, Function<T, Integer> func) {
-        for(T object: iterable)
+    public <O> IntList addAll(Iterable<O> iterable, Function<O, Integer> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> IntList addAll(Collection<T> collection, Function<T, Integer> func) {
-        for(T object: collection)
+    public <O> IntList addAll(Collection<O> collection, Function<O, Integer> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> IntList addAll(T[] array, Function<T, Integer> func) {
-        for(T object: array)
+    public <O> IntList addAll(O[] array, Function<O, Integer> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
@@ -204,7 +213,7 @@ public class IntList implements Iterable<Integer> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final int[] copy = new int[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -216,63 +225,67 @@ public class IntList implements Iterable<Integer> {
     }
 
     public int remove(int i) {
-        final int val = get(i);
-        remove(i, 1);
+        final int val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
+    public int removeFirst() {
+        return this.remove(0);
+    }
+
     public int removeLast() {
-        return remove(lastIdx());
+        return this.remove(this.lastIndex());
     }
 
-    public IntList removeFirst(int value) {
-        final int index = indexOf(value);
+    public int removeFirst(int value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
-    public IntList removeLast(int value) {
-        final int index = lastIndexOf(value);
+    public int removeLast(int value) {
+        final int index = this.lastIndexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(int element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(int element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(int element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(int element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(int element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
@@ -294,10 +307,11 @@ public class IntList implements Iterable<Integer> {
     }
 
     public IntList capacity(int newCapacity) {
-        if(newCapacity == 0)
+        if(newCapacity == 0){
             array = new int[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
@@ -307,8 +321,12 @@ public class IntList implements Iterable<Integer> {
         return array[i];
     }
 
+    public int getFirst() {
+        return this.get(0);
+    }
+
     public int getLast() {
-        return get(lastIdx());
+        return this.get(this.lastIndex());
     }
 
     public IntList set(int i, int newValue) {
@@ -316,8 +334,12 @@ public class IntList implements Iterable<Integer> {
         return this;
     }
 
+    public IntList setFirst(int newValue) {
+        return this.set(0, newValue);
+    }
+
     public IntList setLast(int newValue) {
-        return set(lastIdx(), newValue);
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -349,15 +371,15 @@ public class IntList implements Iterable<Integer> {
     }
 
     public int[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public int[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public int[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
     public IntList copyTo(int[] dst, int offset, int length) {
@@ -366,13 +388,11 @@ public class IntList implements Iterable<Integer> {
     }
 
     public IntList copyTo(int[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+        return this.copyTo(dst, offset, array.length);
     }
 
     public IntList copyTo(int[] dst) {
-        copyTo(dst, 0);
-        return this;
+        return this.copyTo(dst, 0);
     }
 
     public IntList copy() {
@@ -407,7 +427,7 @@ public class IntList implements Iterable<Integer> {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
             public Integer next() {

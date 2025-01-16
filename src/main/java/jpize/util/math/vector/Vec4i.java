@@ -1260,7 +1260,7 @@ public class Vec4i {
 
     @Override
     public String toString() {
-        return x + ", " + y + ", " + z + ", " + w;
+        return "{" + x + ", " + y + ", " + z + ", " + w + "}";
     }
 
 }

@@ -1,6 +1,7 @@
-package jpize.util.math;
+package jpize.util.geometry;
 
-import jpize.util.Rect;
+import jpize.util.math.Maths;
+import jpize.util.math.Ray3f;
 import jpize.util.math.axisaligned.AABoxBody;
 import jpize.util.math.axisaligned.AARectBody;
 import jpize.util.math.matrix.Matrix4f;

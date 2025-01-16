@@ -34,34 +34,34 @@ public class DoubleList implements Iterable<Double> {
 
     public DoubleList(DoubleBuffer buffer) {
         this.array = new double[buffer.limit()];
-        addAll(buffer);
+        this.addAll(buffer);
     }
 
     public DoubleList(Iterable<Double> iterable) {
         this.array = new double[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
     public DoubleList(Collection<Double> collection) {
         this.array = new double[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> DoubleList(Iterable<T> iterable, Function<T, Double> func) {
+    public <O> DoubleList(Iterable<O> iterable, Function<O, Double> func) {
         this.array = new double[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> DoubleList(Collection<T> collection, Function<T, Double> func) {
+    public <O> DoubleList(Collection<O> collection, Function<O, Double> func) {
         this.array = new double[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> DoubleList(T[] array, Function<T, Double> func) {
+    public <O> DoubleList(O[] array, Function<O, Double> func) {
         this.array = new double[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
@@ -81,8 +81,8 @@ public class DoubleList implements Iterable<Double> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -97,13 +97,13 @@ public class DoubleList implements Iterable<Double> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
     public DoubleList add(double element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
@@ -112,7 +112,7 @@ public class DoubleList implements Iterable<Double> {
 
     public DoubleList add(double... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
@@ -120,24 +120,25 @@ public class DoubleList implements Iterable<Double> {
     }
 
     public DoubleList add(DoubleList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
     public DoubleList add(int i, double element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
@@ -147,18 +148,26 @@ public class DoubleList implements Iterable<Double> {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
+    }
+
+    public DoubleList addFirst(double element) {
+        return this.add(0, element);
+    }
+
+    public DoubleList addFirst(double... elements) {
+        return this.add(0, elements);
     }
 
 
@@ -180,20 +189,20 @@ public class DoubleList implements Iterable<Double> {
         return this;
     }
 
-    public <T> DoubleList addAll(Iterable<T> iterable, Function<T, Double> func) {
-        for(T object: iterable)
+    public <O> DoubleList addAll(Iterable<O> iterable, Function<O, Double> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> DoubleList addAll(Collection<T> collection, Function<T, Double> func) {
-        for(T object: collection)
+    public <O> DoubleList addAll(Collection<O> collection, Function<O, Double> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> DoubleList addAll(T[] array, Function<T, Double> func) {
-        for(T object: array)
+    public <O> DoubleList addAll(O[] array, Function<O, Double> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
@@ -204,7 +213,7 @@ public class DoubleList implements Iterable<Double> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final double[] copy = new double[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -216,63 +225,67 @@ public class DoubleList implements Iterable<Double> {
     }
 
     public double remove(int i) {
-        final double val = get(i);
-        remove(i, 1);
+        final double val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
+    public double removeFirst() {
+        return this.remove(0);
+    }
+
     public double removeLast() {
-        return remove(lastIdx());
+        return this.remove(this.lastIndex());
     }
 
-    public DoubleList removeFirst(double value) {
-        final int index = indexOf(value);
+    public double removeFirst(double value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
-    public DoubleList removeLast(double value) {
-        final int index = lastIndexOf(value);
+    public double removeLast(double value) {
+        final int index = this.lastIndexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(double element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(double element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(double element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(double element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(double element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
@@ -294,10 +307,11 @@ public class DoubleList implements Iterable<Double> {
     }
 
     public DoubleList capacity(int newCapacity) {
-        if(newCapacity == 0)
+        if(newCapacity == 0){
             array = new double[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
@@ -307,8 +321,12 @@ public class DoubleList implements Iterable<Double> {
         return array[i];
     }
 
+    public double getFirst() {
+        return this.get(0);
+    }
+
     public double getLast() {
-        return get(lastIdx());
+        return this.get(this.lastIndex());
     }
 
     public DoubleList set(int i, double newValue) {
@@ -316,8 +334,12 @@ public class DoubleList implements Iterable<Double> {
         return this;
     }
 
+    public DoubleList setFirst(double newValue) {
+        return this.set(0, newValue);
+    }
+
     public DoubleList setLast(double newValue) {
-        return set(lastIdx(), newValue);
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -349,15 +371,15 @@ public class DoubleList implements Iterable<Double> {
     }
 
     public double[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public double[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public double[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
     public DoubleList copyTo(double[] dst, int offset, int length) {
@@ -366,13 +388,11 @@ public class DoubleList implements Iterable<Double> {
     }
 
     public DoubleList copyTo(double[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+        return this.copyTo(dst, offset, array.length);
     }
 
     public DoubleList copyTo(double[] dst) {
-        copyTo(dst, 0);
-        return this;
+        return this.copyTo(dst, 0);
     }
 
     public DoubleList copy() {
@@ -407,7 +427,7 @@ public class DoubleList implements Iterable<Double> {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
             public Double next() {

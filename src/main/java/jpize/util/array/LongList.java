@@ -34,34 +34,34 @@ public class LongList implements Iterable<Long> {
 
     public LongList(LongBuffer buffer) {
         this.array = new long[buffer.limit()];
-        addAll(buffer);
+        this.addAll(buffer);
     }
 
     public LongList(Iterable<Long> iterable) {
         this.array = new long[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
     public LongList(Collection<Long> collection) {
         this.array = new long[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> LongList(Iterable<T> iterable, Function<T, Long> func) {
+    public <O> LongList(Iterable<O> iterable, Function<O, Long> func) {
         this.array = new long[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> LongList(Collection<T> collection, Function<T, Long> func) {
+    public <O> LongList(Collection<O> collection, Function<O, Long> func) {
         this.array = new long[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> LongList(T[] array, Function<T, Long> func) {
+    public <O> LongList(O[] array, Function<O, Long> func) {
         this.array = new long[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
@@ -81,8 +81,8 @@ public class LongList implements Iterable<Long> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -97,13 +97,13 @@ public class LongList implements Iterable<Long> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
     public LongList add(long element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
@@ -112,7 +112,7 @@ public class LongList implements Iterable<Long> {
 
     public LongList add(long... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
@@ -120,24 +120,25 @@ public class LongList implements Iterable<Long> {
     }
 
     public LongList add(LongList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
     public LongList add(int i, long element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
@@ -147,18 +148,26 @@ public class LongList implements Iterable<Long> {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
+    }
+
+    public LongList addFirst(long element) {
+        return this.add(0, element);
+    }
+
+    public LongList addFirst(long... elements) {
+        return this.add(0, elements);
     }
 
 
@@ -180,20 +189,20 @@ public class LongList implements Iterable<Long> {
         return this;
     }
 
-    public <T> LongList addAll(Iterable<T> iterable, Function<T, Long> func) {
-        for(T object: iterable)
+    public <O> LongList addAll(Iterable<O> iterable, Function<O, Long> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> LongList addAll(Collection<T> collection, Function<T, Long> func) {
-        for(T object: collection)
+    public <O> LongList addAll(Collection<O> collection, Function<O, Long> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> LongList addAll(T[] array, Function<T, Long> func) {
-        for(T object: array)
+    public <O> LongList addAll(O[] array, Function<O, Long> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
@@ -204,7 +213,7 @@ public class LongList implements Iterable<Long> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final long[] copy = new long[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -216,63 +225,67 @@ public class LongList implements Iterable<Long> {
     }
 
     public long remove(int i) {
-        final long val = get(i);
-        remove(i, 1);
+        final long val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
+    public long removeFirst() {
+        return this.remove(0);
+    }
+
     public long removeLast() {
-        return remove(lastIdx());
+        return this.remove(this.lastIndex());
     }
 
-    public LongList removeFirst(long value) {
-        final int index = indexOf(value);
+    public long removeFirst(long value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
-    public LongList removeLast(long value) {
-        final int index = lastIndexOf(value);
+    public long removeLast(long value) {
+        final int index = this.lastIndexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(long element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(long element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(long element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(long element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(long element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
@@ -294,10 +307,11 @@ public class LongList implements Iterable<Long> {
     }
 
     public LongList capacity(int newCapacity) {
-        if(newCapacity == 0)
+        if(newCapacity == 0){
             array = new long[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
@@ -307,8 +321,12 @@ public class LongList implements Iterable<Long> {
         return array[i];
     }
 
+    public long getFirst() {
+        return this.get(0);
+    }
+
     public long getLast() {
-        return get(lastIdx());
+        return this.get(this.lastIndex());
     }
 
     public LongList set(int i, long newValue) {
@@ -316,8 +334,12 @@ public class LongList implements Iterable<Long> {
         return this;
     }
 
+    public LongList setFirst(long newValue) {
+        return this.set(0, newValue);
+    }
+
     public LongList setLast(long newValue) {
-        return set(lastIdx(), newValue);
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -349,15 +371,15 @@ public class LongList implements Iterable<Long> {
     }
 
     public long[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public long[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public long[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
     public LongList copyTo(long[] dst, int offset, int length) {
@@ -366,13 +388,11 @@ public class LongList implements Iterable<Long> {
     }
 
     public LongList copyTo(long[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+        return this.copyTo(dst, offset, array.length);
     }
 
     public LongList copyTo(long[] dst) {
-        copyTo(dst, 0);
-        return this;
+        return this.copyTo(dst, 0);
     }
 
     public LongList copy() {
@@ -407,7 +427,7 @@ public class LongList implements Iterable<Long> {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
             public Long next() {

@@ -34,34 +34,34 @@ public class FloatList implements Iterable<Float> {
 
     public FloatList(FloatBuffer buffer) {
         this.array = new float[buffer.limit()];
-        addAll(buffer);
+        this.addAll(buffer);
     }
 
     public FloatList(Iterable<Float> iterable) {
         this.array = new float[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
     public FloatList(Collection<Float> collection) {
         this.array = new float[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> FloatList(Iterable<T> iterable, Function<T, Float> func) {
+    public <O> FloatList(Iterable<O> iterable, Function<O, Float> func) {
         this.array = new float[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> FloatList(Collection<T> collection, Function<T, Float> func) {
+    public <O> FloatList(Collection<O> collection, Function<O, Float> func) {
         this.array = new float[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> FloatList(T[] array, Function<T, Float> func) {
+    public <O> FloatList(O[] array, Function<O, Float> func) {
         this.array = new float[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
@@ -81,8 +81,8 @@ public class FloatList implements Iterable<Float> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -97,13 +97,13 @@ public class FloatList implements Iterable<Float> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
     public FloatList add(float element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
@@ -112,7 +112,7 @@ public class FloatList implements Iterable<Float> {
 
     public FloatList add(float... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
@@ -120,24 +120,25 @@ public class FloatList implements Iterable<Float> {
     }
 
     public FloatList add(FloatList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
     public FloatList add(int i, float element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
@@ -147,18 +148,26 @@ public class FloatList implements Iterable<Float> {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
+    }
+
+    public FloatList addFirst(float element) {
+        return this.add(0, element);
+    }
+
+    public FloatList addFirst(float... elements) {
+        return this.add(0, elements);
     }
 
 
@@ -180,20 +189,20 @@ public class FloatList implements Iterable<Float> {
         return this;
     }
 
-    public <T> FloatList addAll(Iterable<T> iterable, Function<T, Float> func) {
-        for(T object: iterable)
+    public <O> FloatList addAll(Iterable<O> iterable, Function<O, Float> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> FloatList addAll(Collection<T> collection, Function<T, Float> func) {
-        for(T object: collection)
+    public <O> FloatList addAll(Collection<O> collection, Function<O, Float> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> FloatList addAll(T[] array, Function<T, Float> func) {
-        for(T object: array)
+    public <O> FloatList addAll(O[] array, Function<O, Float> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
@@ -204,7 +213,7 @@ public class FloatList implements Iterable<Float> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final float[] copy = new float[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -216,63 +225,67 @@ public class FloatList implements Iterable<Float> {
     }
 
     public float remove(int i) {
-        final float val = get(i);
-        remove(i, 1);
+        final float val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
+    public float removeFirst() {
+        return this.remove(0);
+    }
+
     public float removeLast() {
-        return remove(lastIdx());
+        return this.remove(this.lastIndex());
     }
 
-    public FloatList removeFirst(float value) {
-        final int index = indexOf(value);
+    public float removeFirst(float value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
-    public FloatList removeLast(float value) {
-        final int index = lastIndexOf(value);
+    public float removeLast(float value) {
+        final int index = this.lastIndexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(float element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(float element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(float element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(float element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(float element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i] == element )
+            if(array[i] == element)
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
@@ -294,10 +307,11 @@ public class FloatList implements Iterable<Float> {
     }
 
     public FloatList capacity(int newCapacity) {
-        if(newCapacity == 0)
+        if(newCapacity == 0){
             array = new float[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
@@ -307,8 +321,12 @@ public class FloatList implements Iterable<Float> {
         return array[i];
     }
 
+    public float getFirst() {
+        return this.get(0);
+    }
+
     public float getLast() {
-        return get(lastIdx());
+        return this.get(this.lastIndex());
     }
 
     public FloatList set(int i, float newValue) {
@@ -316,8 +334,12 @@ public class FloatList implements Iterable<Float> {
         return this;
     }
 
+    public FloatList setFirst(float newValue) {
+        return this.set(0, newValue);
+    }
+
     public FloatList setLast(float newValue) {
-        return set(lastIdx(), newValue);
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -349,15 +371,15 @@ public class FloatList implements Iterable<Float> {
     }
 
     public float[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public float[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public float[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
     public FloatList copyTo(float[] dst, int offset, int length) {
@@ -366,13 +388,11 @@ public class FloatList implements Iterable<Float> {
     }
 
     public FloatList copyTo(float[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+        return this.copyTo(dst, offset, array.length);
     }
 
     public FloatList copyTo(float[] dst) {
-        copyTo(dst, 0);
-        return this;
+        return this.copyTo(dst, 0);
     }
 
     public FloatList copy() {
@@ -407,7 +427,7 @@ public class FloatList implements Iterable<Float> {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
             public Float next() {

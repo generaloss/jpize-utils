@@ -33,29 +33,29 @@ public class StringList implements Iterable<String> {
 
     public StringList(Iterable<?> iterable) {
         this.array = new String[1];
-        addAll(iterable);
+        this.addAll(iterable);
         this.trim();
     }
 
     public StringList(Collection<?> collection) {
         this.array = new String[collection.size()];
-        addAll(collection);
+        this.addAll(collection);
     }
 
-    public <T> StringList(Iterable<T> iterable, Function<T, String> func) {
+    public <O> StringList(Iterable<O> iterable, Function<O, String> func) {
         this.array = new String[1];
-        addAll(iterable, func);
-        trim();
+        this.addAll(iterable, func);
+        this.trim();
     }
 
-    public <T> StringList(Collection<T> collection, Function<T, String> func) {
+    public <O> StringList(Collection<O> collection, Function<O, String> func) {
         this.array = new String[collection.size()];
-        addAll(collection, func);
+        this.addAll(collection, func);
     }
 
-    public <T> StringList(T[] array, Function<T, String> func) {
+    public <O> StringList(O[] array, Function<O, String> func) {
         this.array = new String[array.length];
-        addAll(array, func);
+        this.addAll(array, func);
     }
 
 
@@ -75,8 +75,8 @@ public class StringList implements Iterable<String> {
         return array.length;
     }
 
-    public int lastIdx() {
-        return size - 1;
+    public int lastIndex() {
+        return Math.max(0, (size - 1));
     }
 
 
@@ -91,13 +91,13 @@ public class StringList implements Iterable<String> {
     }
 
     private void grow() {
-        grow(size + 1);
+        this.grow(size + 1);
     }
 
 
     public StringList add(String element) {
         if(size == array.length)
-           grow();
+           this.grow();
         
         array[size] = element;
         size++;
@@ -106,7 +106,7 @@ public class StringList implements Iterable<String> {
 
     public StringList add(String... elements) {
         if(size + elements.length >= array.length)
-            grow(size + elements.length);
+            this.grow(size + elements.length);
         
         System.arraycopy(elements, 0, array, size, elements.length);
         size += elements.length;
@@ -114,24 +114,25 @@ public class StringList implements Iterable<String> {
     }
 
     public StringList add(StringList list) {
-        if(list.size() == list.capacity())
-            add(list.array());
-        else
-            add(list.arrayTrimmed());
+        if(list.size() == list.capacity()){
+            this.add(list.array());
+        }else{
+            this.add(list.arrayTrimmed());
+        }
         return this;
     }
 
     public StringList add(int i, String element) {
         final int minCapacity = Math.max(size, i) + 1;
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + 1, size - i);
         
         array[i] = element;
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
@@ -141,18 +142,26 @@ public class StringList implements Iterable<String> {
         if(elements.length == 0)
             return this;
         
-        final int minCapacity = Math.max(size, i) + elements.length;
+        final int minCapacity = (Math.max(size, i) + elements.length);
         if(minCapacity >= array.length)
-            grow(minCapacity);
+            this.grow(minCapacity);
         
         if(size != 0 && size >= i)
             System.arraycopy(array, i, array, i + elements.length, size - i);
         System.arraycopy(elements, 0, array, i, elements.length);
         
-        final int growth = minCapacity - size;
+        final int growth = (minCapacity - size);
         if(growth > 0)
             size += growth;
         return this;
+    }
+
+    public StringList addFirst(String element) {
+        return this.add(0, element);
+    }
+
+    public StringList addFirst(String... elements) {
+        return this.add(0, elements);
     }
 
 
@@ -168,20 +177,20 @@ public class StringList implements Iterable<String> {
         return this;
     }
 
-    public <T> StringList addAll(Iterable<T> iterable, Function<T, String> func) {
-        for(T object: iterable)
+    public <O> StringList addAll(Iterable<O> iterable, Function<O, String> func) {
+        for(O object: iterable)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> StringList addAll(Collection<T> collection, Function<T, String> func) {
-        for(T object: collection)
+    public <O> StringList addAll(Collection<O> collection, Function<O, String> func) {
+        for(O object: collection)
             this.add(func.apply(object));
         return this;
     }
 
-    public <T> StringList addAll(T[] array, Function<T, String> func) {
-        for(T object: array)
+    public <O> StringList addAll(O[] array, Function<O, String> func) {
+        for(O object: array)
             this.add(func.apply(object));
         return this;
     }
@@ -192,7 +201,7 @@ public class StringList implements Iterable<String> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = array.length - len;
+        final int newCapacity = (array.length - len);
         final String[] copy = new String[newCapacity];
         
         System.arraycopy(array, 0, copy, 0, i);
@@ -204,63 +213,67 @@ public class StringList implements Iterable<String> {
     }
 
     public String remove(int i) {
-        final String val = get(i);
-        remove(i, 1);
+        final String val = this.get(i);
+        this.remove(i, 1);
         return val;
     }
 
+    public String removeFirst() {
+        return this.remove(0);
+    }
+
     public String removeLast() {
-        return remove(lastIdx());
+        return this.remove(this.lastIndex());
     }
 
-    public StringList removeFirst(String value) {
-        final int index = indexOf(value);
+    public String removeFirst(String value) {
+        final int index = this.indexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
-    public StringList removeLast(String value) {
-        final int index = lastIndexOf(value);
+    public String removeLast(String value) {
+        final int index = this.lastIndexOf(value);
         if(index > -1)
-            remove(index);
-        return this;
+            return this.remove(index);
+        return null;
     }
 
 
     public boolean contains(String element) {
-        return indexOf(element) != -1;
+        return (this.indexOf(element) != -1);
     }
 
     public int indexOf(String element) {
-        return indexOfRange(element, 0, size);
+        return this.indexOfRange(element, 0, size);
     }
 
     public int lastIndexOf(String element) {
-        return lastIndexOfRange(element, 0, size);
+        return this.lastIndexOfRange(element, 0, size);
     }
 
     public int indexOfRange(String element, int start, int end) {
         for(int i = start; i < end; i++)
-            if(array[i].equals(element ))
+            if(array[i].equals(element))
                 return i;
         return -1;
     }
 
     public int lastIndexOfRange(String element, int start, int end) {
         for(int i = end - 1; i >= start; i--)
-            if(array[i].equals(element ))
+            if(array[i].equals(element))
                 return i;
         return -1;
     }
 
 
     public boolean isEmpty() {
-        return size == 0;
+        return (size == 0);
     }
 
     public boolean isNotEmpty() {
-        return size != 0;
+        return (size != 0);
     }
 
 
@@ -282,10 +295,11 @@ public class StringList implements Iterable<String> {
     }
 
     public StringList capacity(int newCapacity) {
-        if(newCapacity == 0)
+        if(newCapacity == 0){
             array = new String[0];
-        else
+        }else{
             array = Arrays.copyOf(array, newCapacity);
+        }
         size = Math.min(size, newCapacity);
         return this;
     }
@@ -295,8 +309,12 @@ public class StringList implements Iterable<String> {
         return array[i];
     }
 
+    public String getFirst() {
+        return this.get(0);
+    }
+
     public String getLast() {
-        return get(lastIdx());
+        return this.get(this.lastIndex());
     }
 
     public StringList set(int i, String newValue) {
@@ -304,8 +322,12 @@ public class StringList implements Iterable<String> {
         return this;
     }
 
+    public StringList setFirst(String newValue) {
+        return this.set(0, newValue);
+    }
+
     public StringList setLast(String newValue) {
-        return set(lastIdx(), newValue);
+        return this.set(this.lastIndex(), newValue);
     }
 
 
@@ -357,15 +379,15 @@ public class StringList implements Iterable<String> {
     }
 
     public String[] copyOf(int newLength) {
-        return copyOf(0, newLength);
+        return this.copyOf(0, newLength);
     }
 
     public String[] copyOf() {
-        return copyOf(array.length);
+        return this.copyOf(array.length);
     }
 
     public String[] copyOfRange(int from, int to) {
-        return copyOf(from, to - from);
+        return this.copyOf(from, to - from);
     }
 
     public StringList copyTo(String[] dst, int offset, int length) {
@@ -374,13 +396,11 @@ public class StringList implements Iterable<String> {
     }
 
     public StringList copyTo(String[] dst, int offset) {
-        copyTo(dst, offset, array.length);
-        return this;
+        return this.copyTo(dst, offset, array.length);
     }
 
     public StringList copyTo(String[] dst) {
-        copyTo(dst, 0);
-        return this;
+        return this.copyTo(dst, 0);
     }
 
     public StringList copy() {
@@ -415,7 +435,7 @@ public class StringList implements Iterable<String> {
             private int index;
             @Override
             public boolean hasNext() {
-                return index < size;
+                return (index < size);
             }
             @Override
             public String next() {
