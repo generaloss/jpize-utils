@@ -64,6 +64,8 @@ public class StringList implements Iterable<String> {
     }
 
     public String[] arrayTrimmed() {
+        if(array.length == size)
+            return array;
         return Arrays.copyOf(array, size);
     }
 
@@ -290,6 +292,8 @@ public class StringList implements Iterable<String> {
 
 
     public StringList trim() {
+        if(array.length == size)
+            return this;
         array = Arrays.copyOf(array, size);
         return this;
     }
@@ -383,7 +387,7 @@ public class StringList implements Iterable<String> {
     }
 
     public String[] copyOf() {
-        return this.copyOf(array.length);
+        return this.copyOf(size);
     }
 
     public String[] copyOfRange(int from, int to) {
@@ -396,7 +400,7 @@ public class StringList implements Iterable<String> {
     }
 
     public StringList copyTo(String[] dst, int offset) {
-        return this.copyTo(dst, offset, array.length);
+        return this.copyTo(dst, offset, size);
     }
 
     public StringList copyTo(String[] dst) {
@@ -410,7 +414,7 @@ public class StringList implements Iterable<String> {
 
     @Override
     public String toString() {
-        return Arrays.toString(arrayTrimmed());
+        return Arrays.toString(this.arrayTrimmed());
     }
 
     @Override

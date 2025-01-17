@@ -4,6 +4,7 @@ import java.util.function.Function;
 import java.util.*;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unchecked")
 public class ObjectList<T> implements Iterable<T> {
 
     public static final int DEFAULT_CAPACITY = 3;
@@ -21,7 +22,6 @@ public class ObjectList<T> implements Iterable<T> {
         this.array = new Object[capacity];
     }
 
-    @SafeVarargs
     public ObjectList(T... items) {
         this.size = items.length;
         this.array = items;
@@ -61,12 +61,12 @@ public class ObjectList<T> implements Iterable<T> {
 
 
     public T[] array() {
-        // noinspection unchecked
         return (T[]) array;
     }
 
     public T[] arrayTrimmed() {
-        // noinspection unchecked
+        if(array.length == size)
+            return (T[]) array;
         return (T[]) Arrays.copyOf(array, size);
     }
 
@@ -107,8 +107,7 @@ public class ObjectList<T> implements Iterable<T> {
         return this;
     }
 
-    @SafeVarargs
-    public final ObjectList<T> add(T... elements) {
+    public ObjectList<T> add(T... elements) {
         if(size + elements.length >= array.length)
             this.grow(size + elements.length);
         
@@ -142,8 +141,7 @@ public class ObjectList<T> implements Iterable<T> {
         return this;
     }
 
-    @SafeVarargs
-    public final ObjectList<T> add(int i, T... elements) {
+    public ObjectList<T> add(int i, T... elements) {
         if(elements.length == 0)
             return this;
         
@@ -165,8 +163,7 @@ public class ObjectList<T> implements Iterable<T> {
         return this.add(0, element);
     }
 
-    @SafeVarargs
-    public final ObjectList<T> addFirst(T... elements) {
+    public ObjectList<T> addFirst(T... elements) {
         return this.add(0, elements);
     }
 
@@ -296,6 +293,8 @@ public class ObjectList<T> implements Iterable<T> {
 
 
     public ObjectList<T> trim() {
+        if(array.length == size)
+            return this;
         array = Arrays.copyOf(array, size);
         return this;
     }
@@ -312,7 +311,6 @@ public class ObjectList<T> implements Iterable<T> {
 
 
     public T get(int i) {
-        // noinspection unchecked
         return (T) array[i];
     }
 
@@ -350,7 +348,7 @@ public class ObjectList<T> implements Iterable<T> {
     }
 
     public Object[] copyOf() {
-        return this.copyOf(array.length);
+        return this.copyOf(size);
     }
 
     public Object[] copyOfRange(int from, int to) {
@@ -363,7 +361,7 @@ public class ObjectList<T> implements Iterable<T> {
     }
 
     public ObjectList<T> copyTo(Object[] dst, int offset) {
-        return this.copyTo(dst, offset, array.length);
+        return this.copyTo(dst, offset, size);
     }
 
     public ObjectList<T> copyTo(Object[] dst) {
@@ -377,7 +375,7 @@ public class ObjectList<T> implements Iterable<T> {
 
     @Override
     public String toString() {
-        return Arrays.toString(arrayTrimmed());
+        return Arrays.toString(this.arrayTrimmed());
     }
 
     @Override
@@ -406,7 +404,6 @@ public class ObjectList<T> implements Iterable<T> {
             }
             @Override
             public T next() {
-                // noinspection unchecked
                 return (T) array[index++];
             }
         };

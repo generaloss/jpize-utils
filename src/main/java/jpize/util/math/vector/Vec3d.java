@@ -1660,11 +1660,11 @@ public class Vec3d {
     }
 
     public static boolean equals(double x1, double y1, double z1, double x2, double y2, double z2) {
-        return x1 == x2 && y1 == y2 && z1 == z2;
+        return Double.compare(x1, x2) == 0 && Double.compare(y1, y2) == 0 && Double.compare(z1, z2) == 0;
     }
 
     public static boolean notEquals(double x1, double y1, double z1, double x2, double y2, double z2) {
-        return x1 != x2 || y1 != y2 || z1 != z2;
+        return Double.compare(x1, x2) != 0 || Double.compare(y1, y2) != 0 || Double.compare(z1, z2) != 0;
     }
 
     @Override

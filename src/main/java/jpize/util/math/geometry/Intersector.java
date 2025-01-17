@@ -64,101 +64,6 @@ public class Intersector {
     }
 
 
-    public static boolean isPointOnPolygon(float pointX, float pointY, float... vertices) {
-        boolean inside = false;
-
-        for(int i = 0; i < vertices.length; i += 2) {
-            final float x1 = vertices[i];
-            final float y1 = vertices[i + 1];
-
-            final int j = (i + 2) % vertices.length;
-            final float x2 = vertices[j];
-            final float y2 = vertices[j + 1];
-
-            if(isPointOnSegment(pointX, pointY, x1, y1, x2, y2))
-                return true;
-
-            if((pointY < y1) != (pointY < y2) && (pointX < Math.max(x1, x2))) {
-                final float intersectX = (pointY - y1) * (x2 - x1) / (y2 - y1) + x1;
-                if (x1 == x2 || pointX < intersectX)
-                    inside = !inside;
-            }
-        }
-        return inside;
-    }
-
-    public static boolean isPointOnPolygon(Vec2f point, float... vertices) {
-        return isPointOnPolygon(point.x, point.y, vertices);
-    }
-
-    public static boolean isPointInPolygon(float pointX, float pointY, float... vertices) {
-        boolean inside = false;
-
-        for(int i = 0; i < vertices.length; i += 2) {
-            final float x1 = vertices[i];
-            final float y1 = vertices[i + 1];
-
-            final int j = (i + 2) % vertices.length;
-            final float x2 = vertices[j];
-            final float y2 = vertices[j + 1];
-
-            if(isPointOnSegment(pointX, pointY, x1, y1, x2, y2))
-                return false;
-
-            if(((pointY <= y1) != (pointY <= y2))) {
-                final float intersectionX = (pointY - y1) * (x2 - x1) / (y2 - y1) + x1;
-                if(pointX <= intersectionX)
-                    inside = !inside;
-            }
-        }
-        return inside;
-    }
-
-    public static boolean isPointInPolygon(Vec2f point, float... vertices) {
-        return isPointInPolygon(point.x, point.y, vertices);
-    }
-
-
-    public static boolean isPolygonsIntersect(float[] vertices1, float[] vertices2) {
-        for(int i = 0; i < vertices1.length; i += 2){
-            final float p1x1 = vertices1[i];
-            final float p1y1 = vertices1[i + 1];
-
-            final int k1 = (i + 2) % vertices1.length;
-            final float p1x2 = vertices1[k1];
-            final float p1y2 = vertices1[k1 + 1];
-
-            // check points 1
-            if(isPointOnPolygon(p1x1, p1y1, vertices2))
-                return true;
-
-            // check segments
-            for(int j = 0; j < vertices2.length; j += 2){
-                final float p2x1 = vertices2[j];
-                final float p2y1 = vertices2[j + 1];
-
-                final int k2 = (j + 2) % vertices2.length;
-                final float p2x2 = vertices2[k2];
-                final float p2y2 = vertices2[k2 + 1];
-
-                if(isSegmentIntersectSegment(p1x1, p1y1, p1x2, p1y2,  p2x1, p2y1, p2x2, p2y2))
-                    return true;
-            }
-        }
-
-        for(int j = 0; j < vertices2.length; j += 2){
-            final float p2x1 = vertices2[j];
-            final float p2y1 = vertices2[j + 1];
-
-            // check points 2
-            if(isPointOnPolygon(p2x1, p2y1, vertices1))
-                return true;
-        }
-
-        return false;
-    }
-
-
     public static boolean isGapIntersectGap(float begin1, float end1, float begin2, float end2) {
         return (begin1 <= end2 && end1 >= begin2);
     }
@@ -173,7 +78,13 @@ public class Intersector {
         final Vec2f max1 = a.getMax();
         final Vec2f min2 = b.getMin();
         final Vec2f max2 = b.getMax();
-        return isAARectIntersectAARect(min1.x, min1.y, max1.x, max1.y, min2.x, min2.y, max2.x, max2.y);
+
+        return isAARectIntersectAARect(
+            min1.x, min1.y,
+            max1.x, max1.y,
+            min2.x, min2.y,
+            max2.x, max2.y
+        );
     }
 
     public static boolean isAABoxIntersectAABox(float min1X, float min1Y, float min1Z, float max1X, float max1Y, float max1Z,
@@ -189,6 +100,7 @@ public class Intersector {
         final Vec3f max1 = a.getMax();
         final Vec3f min2 = b.getMin();
         final Vec3f max2 = b.getMax();
+
         return isAABoxIntersectAABox(
             min1.x, min1.y, min1.z,
             max1.x, max1.y, max1.z,
@@ -297,6 +209,18 @@ public class Intersector {
 
         final float squaredlengthba = (bx - ax) * (bx - ax) + (by - ay) * (by - ay);
         return !(dotproduct > squaredlengthba);
+    }
+
+    public static boolean isPointOnSegment(float pointX, float pointY, Vec2f a, Vec2f b) {
+        return isPointOnSegment(pointX, pointY, a.x, a.y, b.x, b.y);
+    }
+
+    public static boolean isPointOnSegment(Vec2f point, float ax, float ay, float bx, float by) {
+        return isPointOnSegment(point.x, point.y, ax, ay, bx, by);
+    }
+
+    public static boolean isPointOnSegment(Vec2f point, Vec2f a, Vec2f b) {
+        return isPointOnSegment(point.x, point.y, a.x, a.y, b.x, b.y);
     }
 
 
@@ -531,64 +455,6 @@ public class Intersector {
 
     public static boolean isRayIntersectQuadMesh(Ray3f ray, Matrix4f mat, float[] vertices, int[] indices) {
         return isRayIntersectQuadMesh(ray, mat, vertices, indices, 3);
-    }
-
-
-    public static float getPolygonArea(float... vertices) {
-        float area = 0F;
-
-        for(int i = 0; i < vertices.length; i += 2) {
-            final float x1 = vertices[i];
-            final float y1 = vertices[i + 1];
-
-            final int j = (i + 2) % vertices.length;
-            final float x2 = vertices[j];
-            final float y2 = vertices[j + 1];
-
-            area += (y1 + y2) * (x1 - x2);
-        }
-
-        return Math.abs(area * 0.5F);
-    }
-
-    public static Vec2f getPolygonCenterOfGravity(Vec2f dst, float... vertices) {
-        float area = 0F;
-
-        dst.zero();
-        for(int i = 0; i < vertices.length; i += 2) {
-            final float x1 = vertices[i];
-            final float y1 = vertices[i + 1];
-
-            final int j = (i + 2) % vertices.length;
-            final float x2 = vertices[j];
-            final float y2 = vertices[j + 1];
-
-            final float sumy = (y1 + y2);
-            final float mulxy = (x1 * y2 - x2 * y1);
-            area += sumy * (x1 - x2);
-            dst.add(mulxy * (x1 + x2), mulxy * sumy);
-        }
-
-        return dst.div(area * 3F);
-    }
-
-    public static Rect getPolygonBounds(Rect rect, float... vertices) {
-        rect.setPosition(Float.MAX_VALUE);
-        rect.setSize(0F);
-
-        for(int i = 0; i < vertices.length; i += 2) {
-            final float x = vertices[i];
-            final float y = vertices[i + 1];
-            rect.set(
-                    Math.min(rect.x, x),
-                    Math.min(rect.y, y),
-                    Math.max(rect.width, x),
-                    Math.max(rect.height, y)
-            );
-        }
-
-        rect.setSize(rect.width - rect.x, rect.height - rect.y);
-        return rect;
     }
 
 }

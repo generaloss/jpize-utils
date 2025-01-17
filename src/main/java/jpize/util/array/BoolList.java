@@ -70,6 +70,8 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     public boolean[] arrayTrimmed() {
+        if(array.length == size)
+            return array;
         return Arrays.copyOf(array, size);
     }
 
@@ -302,6 +304,8 @@ public class BoolList implements Iterable<Boolean> {
 
 
     public BoolList trim() {
+        if(array.length == size)
+            return this;
         array = Arrays.copyOf(array, size);
         return this;
     }
@@ -355,7 +359,7 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     public boolean[] copyOf() {
-        return this.copyOf(array.length);
+        return this.copyOf(size);
     }
 
     public boolean[] copyOfRange(int from, int to) {
@@ -368,7 +372,7 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     public BoolList copyTo(boolean[] dst, int offset) {
-        return this.copyTo(dst, offset, array.length);
+        return this.copyTo(dst, offset, size);
     }
 
     public BoolList copyTo(boolean[] dst) {
@@ -382,7 +386,7 @@ public class BoolList implements Iterable<Boolean> {
 
     @Override
     public String toString() {
-        return Arrays.toString(arrayTrimmed());
+        return Arrays.toString(this.arrayTrimmed());
     }
 
     @Override

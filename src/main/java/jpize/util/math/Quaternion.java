@@ -2,6 +2,8 @@ package jpize.util.math;
 
 import jpize.util.math.vector.Vec3f;
 
+import java.util.Objects;
+
 public class Quaternion {
 
     public float w, x, y, z;
@@ -97,7 +99,7 @@ public class Quaternion {
 
 
     public float len2() {
-        return w * w + x * x + y * y + z * z;
+        return (w * w + x * x + y * y + z * z);
     }
 
     public float len() {
@@ -153,12 +155,12 @@ public class Quaternion {
 
 
     public Quaternion setRotationRad(float axisX, float axisY, float axisZ, double angle) {
-        final double omega = 0.5D * angle;
+        final double omega = (0.5D * angle);
         final float sin = Mathc.sin(omega);
         w = Mathc.cos(omega);
-        x = axisX * sin;
-        y = axisY * sin;
-        z = axisZ * sin;
+        x = (axisX * sin);
+        y = (axisY * sin);
+        z = (axisZ * sin);
         return this;
     }
 
@@ -290,7 +292,20 @@ public class Quaternion {
 
     @Override
     public String toString() {
-        return "[w: " + w + ", x: " + x + ", y: " + y + ", z: " + z + "]";
+        return "{w: " + w + ", x: " + x + ", y: " + y + ", z: " + z + "}";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if(object == null || getClass() != object.getClass())
+            return false;
+        final Quaternion q = (Quaternion) object;
+        return (Float.compare(w, q.w) == 0 && Float.compare(x, q.x) == 0 && Float.compare(y, q.y) == 0 && Float.compare(z, q.z) == 0);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(w, x, y, z);
     }
 
 

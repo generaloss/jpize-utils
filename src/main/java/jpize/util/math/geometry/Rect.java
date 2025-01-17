@@ -1,5 +1,6 @@
 package jpize.util.math.geometry;
 
+import jpize.util.math.vector.Vec2f;
 import jpize.util.math.vector.Vec4f;
 
 import java.util.Objects;
@@ -104,8 +105,8 @@ public class Rect {
             return true;
         if(object == null || getClass() != object.getClass())
             return false;
-        final Rect insets = (Rect) object;
-        return Vec4f.equals(x, y, width, height, insets.x, insets.y, insets.width, insets.height);
+        final Rect rect = (Rect) object;
+        return Vec4f.equals(x, y, width, height, rect.x, rect.y, rect.width, rect.height);
     }
 
     @Override
@@ -115,7 +116,44 @@ public class Rect {
 
     @Override
     public String toString() {
-        return x + ", " + y + "; " + width + ", " + height;
+        return "{" + x + ", " + y + "; " + width + ", " + height + "}";
+    }
+
+
+    public static Rect boundsOf(Rect dst, Vec2f... vertices) {
+        dst.setPosition(Float.MAX_VALUE);
+        dst.setSize(0F);
+
+        for(Vec2f vertex: vertices){
+            dst.set(
+                    Math.min(dst.x, vertex.x),
+                    Math.min(dst.y, vertex.y),
+                    Math.max(dst.width, vertex.x),
+                    Math.max(dst.height, vertex.y)
+            );
+        }
+
+        dst.setSize(dst.width - dst.x, dst.height - dst.y);
+        return dst;
+    }
+
+    public static Rect boundsOf(Rect dst, float... vertices) {
+        dst.setPosition(Float.MAX_VALUE);
+        dst.setSize(0F);
+
+        for(int i = 0; i < vertices.length; i += 3){
+            final float x = vertices[i];
+            final float y = vertices[i + 1];
+            dst.set(
+                    Math.min(dst.x, x),
+                    Math.min(dst.y, y),
+                    Math.max(dst.width, x),
+                    Math.max(dst.height, y)
+            );
+        }
+
+        dst.setSize(dst.width - dst.x, dst.height - dst.y);
+        return dst;
     }
 
 }

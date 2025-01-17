@@ -165,13 +165,18 @@ public class VectorClassesGenerator {
         );
 
         // equals
+        final String equalsComparing = (
+            isDatatypeInt ? "%l1 == %l2" :
+            isDatatypeDouble ? "Double.compare(%l1, %l2) == 0" :
+            "Float.compare(%l1, %l2) == 0"
+        );
         w.addMethod("public static boolean equals(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return " + makeDims(dimensions, " && ", "%l1 == %l2") + ";"
+            "return " + makeDims(dimensions, " && ", equalsComparing) + ";"
         );
 
         // not equals
         w.addMethod("public static boolean notEquals(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return " + makeDims(dimensions, " || ", "%l1 != %l2") + ";"
+            "return " + makeDims(dimensions, " || ", equalsComparing.replace("==", "!=")) + ";"
         );
 
         w.addAnnotatedMethod("@Override", "public boolean equals(Object object)",

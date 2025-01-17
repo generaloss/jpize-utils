@@ -1344,11 +1344,11 @@ public class Vec4f {
     }
 
     public static boolean equals(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
-        return x1 == x2 && y1 == y2 && z1 == z2 && w1 == w2;
+        return Float.compare(x1, x2) == 0 && Float.compare(y1, y2) == 0 && Float.compare(z1, z2) == 0 && Float.compare(w1, w2) == 0;
     }
 
     public static boolean notEquals(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) {
-        return x1 != x2 || y1 != y2 || z1 != z2 || w1 != w2;
+        return Float.compare(x1, x2) != 0 || Float.compare(y1, y2) != 0 || Float.compare(z1, z2) != 0 || Float.compare(w1, w2) != 0;
     }
 
     @Override

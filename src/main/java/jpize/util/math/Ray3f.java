@@ -4,6 +4,8 @@ import jpize.util.math.axisaligned.AABoxBody;
 import jpize.util.math.geometry.Intersector;
 import jpize.util.math.vector.Vec3f;
 
+import java.util.Objects;
+
 public class Ray3f {
 
     private final Vec3f origin;
@@ -83,6 +85,19 @@ public class Ray3f {
 
     public Ray3f copy() {
         return new Ray3f(this);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if(object == null || getClass() != object.getClass())
+            return false;
+        final Ray3f ray = (Ray3f) object;
+        return origin.equals(ray.origin) && direction.equals(ray.direction);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(origin, direction);
     }
 
 }

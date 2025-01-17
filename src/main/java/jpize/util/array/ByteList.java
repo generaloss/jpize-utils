@@ -70,6 +70,8 @@ public class ByteList implements Iterable<Byte> {
     }
 
     public byte[] arrayTrimmed() {
+        if(array.length == size)
+            return array;
         return Arrays.copyOf(array, size);
     }
 
@@ -302,6 +304,8 @@ public class ByteList implements Iterable<Byte> {
 
 
     public ByteList trim() {
+        if(array.length == size)
+            return this;
         array = Arrays.copyOf(array, size);
         return this;
     }
@@ -375,7 +379,7 @@ public class ByteList implements Iterable<Byte> {
     }
 
     public byte[] copyOf() {
-        return this.copyOf(array.length);
+        return this.copyOf(size);
     }
 
     public byte[] copyOfRange(int from, int to) {
@@ -388,7 +392,7 @@ public class ByteList implements Iterable<Byte> {
     }
 
     public ByteList copyTo(byte[] dst, int offset) {
-        return this.copyTo(dst, offset, array.length);
+        return this.copyTo(dst, offset, size);
     }
 
     public ByteList copyTo(byte[] dst) {
@@ -402,7 +406,7 @@ public class ByteList implements Iterable<Byte> {
 
     @Override
     public String toString() {
-        return Arrays.toString(arrayTrimmed());
+        return Arrays.toString(this.arrayTrimmed());
     }
 
     @Override

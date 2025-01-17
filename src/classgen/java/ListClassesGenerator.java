@@ -151,6 +151,8 @@ public class ListClassesGenerator {
             "return " + genericsArrayCast + "array;"
         );
         w.addMethod("public " + datatypeGenerics + "[] arrayTrimmed()",
+            "if(array.length == size)",
+            "    return " + genericsArrayCast + "array;",
             "return " + genericsArrayCast + "Arrays.copyOf(array, size);"
         );
         w.addMethod("public int size()",
@@ -396,6 +398,8 @@ public class ListClassesGenerator {
         w.addMethodSplitter();
 
         w.addMethod("public " + classnameGenerics + " trim()",
+            "if(array.length == size)",
+            "    return this;",
             "array = Arrays.copyOf(array, size);",
             "return this;"
         );
@@ -500,7 +504,7 @@ public class ListClassesGenerator {
             "return this.copyOf(0, newLength);"
         );
         w.addMethod("public " + datatype + "[] copyOf()",
-            "return this.copyOf(array.length);"
+            "return this.copyOf(size);"
         );
         w.addMethod("public " + datatype + "[] copyOfRange(int from, int to)",
             "return this.copyOf(from, to - from);"
@@ -510,7 +514,7 @@ public class ListClassesGenerator {
             "return this;"
         );
         w.addMethod("public " + classnameGenerics + " copyTo(" + datatype + "[] dst, int offset)",
-            "return this.copyTo(dst, offset, array.length);"
+            "return this.copyTo(dst, offset, size);"
         );
         w.addMethod("public " + classnameGenerics + " copyTo(" + datatype + "[] dst)",
             "return this.copyTo(dst, 0);"
@@ -532,7 +536,7 @@ public class ListClassesGenerator {
 
         //
         w.addAnnotatedMethod("@Override", "public String toString()",
-            "return Arrays.toString(arrayTrimmed());"
+            "return Arrays.toString(this.arrayTrimmed());"
         );
         w.addAnnotatedMethod("@Override", "public boolean equals(Object object)",
             "if(this == object)",

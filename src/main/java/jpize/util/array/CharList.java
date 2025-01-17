@@ -74,6 +74,8 @@ public class CharList implements Iterable<Character> {
     }
 
     public char[] arrayTrimmed() {
+        if(array.length == size)
+            return array;
         return Arrays.copyOf(array, size);
     }
 
@@ -306,6 +308,8 @@ public class CharList implements Iterable<Character> {
 
 
     public CharList trim() {
+        if(array.length == size)
+            return this;
         array = Arrays.copyOf(array, size);
         return this;
     }
@@ -379,7 +383,7 @@ public class CharList implements Iterable<Character> {
     }
 
     public char[] copyOf() {
-        return this.copyOf(array.length);
+        return this.copyOf(size);
     }
 
     public char[] copyOfRange(int from, int to) {
@@ -392,7 +396,7 @@ public class CharList implements Iterable<Character> {
     }
 
     public CharList copyTo(char[] dst, int offset) {
-        return this.copyTo(dst, offset, array.length);
+        return this.copyTo(dst, offset, size);
     }
 
     public CharList copyTo(char[] dst) {
@@ -411,7 +415,7 @@ public class CharList implements Iterable<Character> {
 
     @Override
     public String toString() {
-        return Arrays.toString(arrayTrimmed());
+        return Arrays.toString(this.arrayTrimmed());
     }
 
     @Override

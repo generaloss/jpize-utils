@@ -1049,11 +1049,11 @@ public class Vec2d {
     }
 
     public static boolean equals(double x1, double y1, double x2, double y2) {
-        return x1 == x2 && y1 == y2;
+        return Double.compare(x1, x2) == 0 && Double.compare(y1, y2) == 0;
     }
 
     public static boolean notEquals(double x1, double y1, double x2, double y2) {
-        return x1 != x2 || y1 != y2;
+        return Double.compare(x1, x2) != 0 || Double.compare(y1, y2) != 0;
     }
 
     @Override
