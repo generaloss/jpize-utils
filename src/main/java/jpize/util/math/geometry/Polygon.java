@@ -13,11 +13,11 @@ public class Polygon {
         this.holes = new ObjectList<>();
     }
 
-    public LineString getVertices() {
+    public LineString vertices() {
         return vertices;
     }
 
-    public ObjectList<LineString> getHoles() {
+    public ObjectList<LineString> holes() {
         return holes;
     }
 
@@ -28,11 +28,52 @@ public class Polygon {
     }
 
     public Vec2f getCenterOfGravity(Vec2f dst) {
+        vertices.trim();
         return getCenterOfGravity(dst, vertices.array());
     }
     
     public float getArea() {
-        return getArea(vertices.array());
+        vertices.trim();
+        float area = getArea(vertices.array());
+        for(LineString hole: holes){
+            hole.trim();
+            area -= getArea(hole.array());
+        }
+        return area;
+    }
+
+    public boolean isPointOn(float x, float y) {
+        vertices.trim();
+        for(LineString hole: holes){
+            hole.trim();
+            if(isPointIn(x, y, hole.array()))
+                return false;
+        }
+        return isPointOn(x, y, vertices.array());
+    }
+
+    public boolean isPointOn(Vec2f point) {
+        return this.isPointOn(point.x, point.y);
+    }
+
+    public boolean isPointIn(float x, float y) {
+        vertices.trim();
+        for(LineString hole: holes){
+            hole.trim();
+            if(isPointOn(x, y, hole.array()))
+                return false;
+        }
+        return isPointIn(x, y, vertices.array());
+    }
+
+    public boolean isPointIn(Vec2f point) {
+        return this.isPointIn(point.x, point.y);
+    }
+
+    public boolean isIntersectPolygon(Polygon polygon) {
+        vertices.trim();
+        polygon.vertices.trim();
+        return isIntersectPolygon(vertices.array(), polygon.vertices.array());
     }
 
 

@@ -75,19 +75,14 @@ public abstract class Resource {
     }
 
     public StringList readLines() {
-        final StringList result = new StringList();
-        final FastReader reader = this.reader();
+        final StringList lines = new StringList();
 
-        while(reader.hasNext()) {
-            final String line = reader.nextLine();
-            result.add(line);
-        }
+        final FastReader reader = this.reader();
+        while(reader.hasNext())
+            lines.add(reader.nextLine());
         reader.close();
 
-        if(result.getLast().isEmpty())
-            result.removeLast();
-        result.trim();
-        return result;
+        return lines.trim();
     }
 
 

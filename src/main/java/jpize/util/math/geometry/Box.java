@@ -6,12 +6,8 @@ import java.util.Objects;
 
 public class Box {
 
-    public float x;
-    public float y;
-    public float z;
-    public float width;
-    public float height;
-    public float depth;
+    public float x, y, z;
+    public float width, height, depth;
 
     public Box(Box box) {
         this.set(box);

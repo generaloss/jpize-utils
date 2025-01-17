@@ -7,10 +7,8 @@ import java.util.Objects;
 
 public class Rect {
 
-    public float x;
-    public float y;
-    public float width;
-    public float height;
+    public float x, y;
+    public float width, height;
 
     public Rect(Rect rect) {
         this.set(rect);

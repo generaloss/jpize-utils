@@ -1,6 +1,7 @@
 package jpize.util.math;
 
 import jpize.util.math.vector.Vec3f;
+import jpize.util.math.vector.Vec4f;
 
 import java.util.Objects;
 
@@ -300,7 +301,7 @@ public class Quaternion {
         if(object == null || getClass() != object.getClass())
             return false;
         final Quaternion q = (Quaternion) object;
-        return (Float.compare(w, q.w) == 0 && Float.compare(x, q.x) == 0 && Float.compare(y, q.y) == 0 && Float.compare(z, q.z) == 0);
+        return Vec4f.equals(w, x, y, z, q.w, q.x, q.y, q.z);
     }
 
     @Override
