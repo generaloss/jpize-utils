@@ -908,6 +908,10 @@ public class Vec4f {
         return x == 0F && y == 0F && z == 0F && w == 0F;
     }
 
+    public boolean isNotZero() {
+        return x != 0F || y != 0F || z != 0F || w != 0F;
+    }
+
     public Vec4f zero() {
         return this.set(0F);
     }

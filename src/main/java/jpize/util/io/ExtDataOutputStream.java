@@ -3,6 +3,7 @@ package jpize.util.io;
 import jpize.util.array.*;
 import jpize.util.color.AbstractColor;
 import jpize.util.math.EulerAngles;
+import jpize.util.math.Quaternion;
 import jpize.util.math.vector.*;
 
 import java.io.DataOutputStream;
@@ -20,6 +21,21 @@ public class ExtDataOutputStream extends DataOutputStream {
 
     public void write(byte[] byteArray, int length) throws IOException {
         super.write(byteArray, 0, length);
+    }
+
+
+    public void writeByteString(String str) throws IOException {
+        super.writeInt(str.length());
+        super.writeBytes(str);
+    }
+
+    public void writeCharString(String str) throws IOException {
+        super.writeInt(str.length());
+        super.writeChars(str);
+    }
+
+    public void writeUTFString(String str) throws IOException {
+        super.writeUTF(str);
     }
 
 
@@ -131,6 +147,48 @@ public class ExtDataOutputStream extends DataOutputStream {
 
     public void writeChars(char[] charArray, int length) throws IOException {
         this.writeChars(charArray, 0, length);
+    }
+
+    public void writeByteStrings(String... stringArray) throws IOException {
+        for(String v: stringArray)
+            this.writeByteString(v);
+    }
+
+    public void writeByteStrings(String[] stringArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            this.writeByteString(stringArray[offset + i]);
+    }
+
+    public void writeByteStrings(String[] stringArray, int length) throws IOException {
+        this.writeByteStrings(stringArray, 0, length);
+    }
+
+    public void writeCharStrings(String... stringArray) throws IOException {
+        for(String v: stringArray)
+            this.writeCharString(v);
+    }
+
+    public void writeCharStrings(String[] stringArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            this.writeCharString(stringArray[offset + i]);
+    }
+
+    public void writeCharStrings(String[] stringArray, int length) throws IOException {
+        this.writeCharStrings(stringArray, 0, length);
+    }
+
+    public void writeUTFStrings(String... stringArray) throws IOException {
+        for(String v: stringArray)
+            this.writeUTFString(v);
+    }
+
+    public void writeUTFStrings(String[] stringArray, int offset, int length) throws IOException {
+        for(int i = 0; i < length; i++)
+            this.writeUTFString(stringArray[offset + i]);
+    }
+
+    public void writeUTFStrings(String[] stringArray, int length) throws IOException {
+        this.writeUTFStrings(stringArray, 0, length);
     }
 
 
@@ -246,6 +304,48 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeCharArray(charArray, 0, length);
     }
 
+    public void writeByteStringArray(String... stringArray) throws IOException {
+        super.writeInt(stringArray.length);
+        this.writeByteStrings(stringArray);
+    }
+
+    public void writeByteStringArray(String[] stringArray, int offset, int length) throws IOException {
+        super.writeInt(length);
+        this.writeByteStrings(stringArray, offset, length);
+    }
+
+    public void writeByteStringArray(String[] stringArray, int length) throws IOException {
+        this.writeByteStringArray(stringArray, 0, length);
+    }
+
+    public void writeCharStringArray(String... stringArray) throws IOException {
+        super.writeInt(stringArray.length);
+        this.writeCharStrings(stringArray);
+    }
+
+    public void writeCharStringArray(String[] stringArray, int offset, int length) throws IOException {
+        super.writeInt(length);
+        this.writeCharStrings(stringArray, offset, length);
+    }
+
+    public void writeCharStringArray(String[] stringArray, int length) throws IOException {
+        this.writeCharStringArray(stringArray, 0, length);
+    }
+
+    public void writeUTFStringArray(String... stringArray) throws IOException {
+        super.writeInt(stringArray.length);
+        this.writeUTFStrings(stringArray);
+    }
+
+    public void writeUTFStringArray(String[] stringArray, int offset, int length) throws IOException {
+        super.writeInt(length);
+        this.writeUTFStrings(stringArray, offset, length);
+    }
+
+    public void writeUTFStringArray(String[] stringArray, int length) throws IOException {
+        this.writeUTFStringArray(stringArray, 0, length);
+    }
+
 
     public void writeByteBuffer(ByteBuffer buffer) throws IOException {
         super.writeInt(buffer.remaining());
@@ -322,19 +422,16 @@ public class ExtDataOutputStream extends DataOutputStream {
         this.writeShortArray(list.array());
     }
 
-
-    public void writeStringBytes(String str) throws IOException {
-        super.writeInt(str.length());
-        super.writeBytes(str);
+    public void writeByteStringList(StringList list) throws IOException {
+        this.writeByteStringArray(list.array());
     }
 
-    public void writeStringChars(String str) throws IOException {
-        super.writeInt(str.length());
-        super.writeChars(str);
+    public void writeCharStringList(StringList list) throws IOException {
+        this.writeCharStringArray(list.array());
     }
 
-    public void writeStringUTF(String str) throws IOException {
-        super.writeUTF(str);
+    public void writeUTFStringList(StringList list) throws IOException {
+        this.writeUTFStringArray(list.array());
     }
 
 
@@ -371,11 +468,39 @@ public class ExtDataOutputStream extends DataOutputStream {
         super.writeDouble(vector.z);
     }
 
+    public void writeVec4i(Vec4i vector) throws IOException {
+        super.writeInt(vector.x);
+        super.writeInt(vector.y);
+        super.writeInt(vector.z);
+        super.writeInt(vector.w);
+    }
 
-    public void writeEulerAngles(EulerAngles vector) throws IOException {
-        super.writeFloat(vector.yaw);
-        super.writeFloat(vector.pitch);
-        super.writeFloat(vector.roll);
+    public void writeVec4f(Vec4f vector) throws IOException {
+        super.writeFloat(vector.x);
+        super.writeFloat(vector.y);
+        super.writeFloat(vector.z);
+        super.writeFloat(vector.w);
+    }
+
+    public void writeVec4d(Vec4d vector) throws IOException {
+        super.writeDouble(vector.x);
+        super.writeDouble(vector.y);
+        super.writeDouble(vector.z);
+        super.writeDouble(vector.w);
+    }
+
+
+    public void writeEulerAngles(EulerAngles eulerAngles) throws IOException {
+        super.writeFloat(eulerAngles.yaw);
+        super.writeFloat(eulerAngles.pitch);
+        super.writeFloat(eulerAngles.roll);
+    }
+
+    public void writeQuaternion(Quaternion quaternion) throws IOException {
+        super.writeFloat(quaternion.w);
+        super.writeFloat(quaternion.x);
+        super.writeFloat(quaternion.y);
+        super.writeFloat(quaternion.z);
     }
 
     public void writeUUID(UUID uuid) throws IOException {

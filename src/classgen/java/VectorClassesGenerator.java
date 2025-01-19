@@ -759,6 +759,9 @@ public class VectorClassesGenerator {
         w.addMethod("public boolean isZero()",
             "return " + makeDims(dimensions, " && ", "%l == 0" + numberPostfix) + ";"
         );
+        w.addMethod("public boolean isNotZero()",
+            "return " + makeDims(dimensions, " || ", "%l != 0" + numberPostfix) + ";"
+        );
         w.addMethod("public " + classname + " zero()",
             "return this.set(0" + numberPostfix + ");"
         );

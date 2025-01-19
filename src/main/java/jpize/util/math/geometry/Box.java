@@ -49,64 +49,113 @@ public class Box {
     }
 
 
-    public void setX(float x) {
+    public Box setX(float x) {
         this.x = x;
+        return this;
     }
 
-    public void setY(float y) {
+    public Box setY(float y) {
         this.y = y;
+        return this;
     }
 
-    public void setZ(float z) {
+    public Box setZ(float z) {
         this.z = z;
+        return this;
     }
 
-    public void setWidth(float width) {
+    public Box setWidth(float width) {
         this.width = width;
+        return this;
     }
 
-    public void setHeight(float height) {
+    public Box setHeight(float height) {
         this.height = height;
+        return this;
     }
 
-    public void setDepth(float depth) {
+    public Box setDepth(float depth) {
         this.depth = depth;
+        return this;
     }
 
 
-    public void setPosition(float x, float y, float z) {
+    public Box setPosition(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
+        return this;
     }
 
-    public void setPosition(float xyz) {
-        this.setPosition(xyz, xyz, xyz);
+    public Box setPosition(float xyz) {
+        return this.setPosition(xyz, xyz, xyz);
     }
 
 
-    public void setSize(float width, float height, float depth) {
+    public Box setSize(float width, float height, float depth) {
         this.width = width;
         this.height = height;
         this.depth = depth;
+        return this;
     }
 
-    public void setSize(float sizeXYZ) {
-        this.setSize(sizeXYZ, sizeXYZ, sizeXYZ);
+    public Box setSize(float sizeXYZ) {
+        return this.setSize(sizeXYZ, sizeXYZ, sizeXYZ);
     }
 
 
-    public void set(float x, float y, float z, float width, float height, float depth) {
+    public Box set(float x, float y, float z, float width, float height, float depth) {
         this.setPosition(x, y, z);
         this.setSize(width, height, depth);
+        return this;
     }
 
-    public void set(Box box) {
-        this.set(box.x, box.y, box.z, box.width, box.height, box.depth);
+    public Box set(Box box) {
+        return this.set(box.x, box.y, box.z, box.width, box.height, box.depth);
     }
 
-    public void reset() {
-        this.set(0F, 0F, 0F, 0F, 0F, 0F);
+    public Box reset() {
+        return this.set(0F, 0F, 0F, 0F, 0F, 0F);
+    }
+
+
+    public Box calculateFor(Vec3f... points) {
+        this.setPosition(Float.MAX_VALUE);
+        this.setSize(0F);
+
+        for(Vec3f vertex: points){
+            this.set(
+                Math.min(x, vertex.x),
+                Math.min(y, vertex.y),
+                Math.min(z, vertex.z),
+                Math.max(width, vertex.x),
+                Math.max(height, vertex.y),
+                Math.max(depth, vertex.z)
+            );
+        }
+
+        return this.setSize(width - x, height - y, depth - z);
+    }
+
+    public Box calculateFor(float... points) {
+        this.setPosition(Float.MAX_VALUE);
+        this.setSize(0F);
+
+        for(int i = 0; i < points.length; i += 3){
+            final float px = points[i];
+            final float py = points[i + 1];
+            final float pz = points[i + 2];
+            this.set(
+                Math.min(x, px),
+                Math.min(y, py),
+                Math.min(z, pz),
+                Math.max(width, px),
+                Math.max(height, py),
+                Math.max(depth, pz)
+            );
+        }
+
+        return this.setSize(width - x, height - y, depth - z);
     }
 
 
@@ -132,48 +181,6 @@ public class Box {
     @Override
     public String toString() {
         return "{" + x + ", " + y + ", " + z + "; " + width + ", " + height + ", " + depth + "}";
-    }
-
-
-    public static Box boundsOf(Box dst, Vec3f... vertices) {
-        dst.setPosition(Float.MAX_VALUE);
-        dst.setSize(0F);
-
-        for(Vec3f vertex: vertices){
-            dst.set(
-                    Math.min(dst.x, vertex.x),
-                    Math.min(dst.y, vertex.y),
-                    Math.min(dst.z, vertex.z),
-                    Math.max(dst.width, vertex.x),
-                    Math.max(dst.height, vertex.y),
-                    Math.max(dst.depth, vertex.z)
-            );
-        }
-
-        dst.setSize(dst.width - dst.x, dst.height - dst.y, dst.depth - dst.z);
-        return dst;
-    }
-
-    public static Box boundsOf(Box dst, float... vertices) {
-        dst.setPosition(Float.MAX_VALUE);
-        dst.setSize(0F);
-
-        for(int i = 0; i < vertices.length; i += 3){
-            final float x = vertices[i];
-            final float y = vertices[i + 1];
-            final float z = vertices[i + 2];
-            dst.set(
-                    Math.min(dst.x, x),
-                    Math.min(dst.y, y),
-                    Math.min(dst.z, z),
-                    Math.max(dst.width, x),
-                    Math.max(dst.height, y),
-                    Math.max(dst.depth, z)
-            );
-        }
-
-        dst.setSize(dst.width - dst.x, dst.height - dst.y, dst.depth - dst.z);
-        return dst;
     }
 
 }

@@ -1123,6 +1123,10 @@ public class Vec3d {
         return x == 0D && y == 0D && z == 0D;
     }
 
+    public boolean isNotZero() {
+        return x != 0D || y != 0D || z != 0D;
+    }
+
     public Vec3d zero() {
         return this.set(0D);
     }

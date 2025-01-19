@@ -1124,6 +1124,10 @@ public class Vec3f {
         return x == 0F && y == 0F && z == 0F;
     }
 
+    public boolean isNotZero() {
+        return x != 0F || y != 0F || z != 0F;
+    }
+
     public Vec3f zero() {
         return this.set(0F);
     }

@@ -565,6 +565,10 @@ public class Vec2f {
         return x == 0F && y == 0F;
     }
 
+    public boolean isNotZero() {
+        return x != 0F || y != 0F;
+    }
+
     public Vec2f zero() {
         return this.set(0F);
     }

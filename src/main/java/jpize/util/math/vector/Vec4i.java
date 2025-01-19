@@ -908,6 +908,10 @@ public class Vec4i {
         return x == 0 && y == 0 && z == 0 && w == 0;
     }
 
+    public boolean isNotZero() {
+        return x != 0 || y != 0 || z != 0 || w != 0;
+    }
+
     public Vec4i zero() {
         return this.set(0);
     }

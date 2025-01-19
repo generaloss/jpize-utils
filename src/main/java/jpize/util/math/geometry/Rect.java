@@ -42,54 +42,96 @@ public class Rect {
     }
 
 
-    public void setX(float x) {
+    public Rect setX(float x) {
         this.x = x;
+        return this;
     }
 
-    public void setY(float y) {
+    public Rect setY(float y) {
         this.y = y;
+        return this;
     }
 
-    public void setWidth(float width) {
+    public Rect setWidth(float width) {
         this.width = width;
+        return this;
     }
 
-    public void setHeight(float height) {
+    public Rect setHeight(float height) {
         this.height = height;
+        return this;
     }
     
 
-    public void setPosition(float x, float y) {
+    public Rect setPosition(float x, float y) {
         this.x = x;
         this.y = y;
+        return this;
     }
 
-    public void setPosition(float xy) {
-        this.setPosition(xy, xy);
+    public Rect setPosition(float xy) {
+        return this.setPosition(xy, xy);
     }
 
 
-    public void setSize(float width, float height) {
+    public Rect setSize(float width, float height) {
         this.width = width;
         this.height = height;
+        return this;
     }
 
-    public void setSize(float sizeXY) {
-        this.setSize(sizeXY, sizeXY);
+    public Rect setSize(float sizeXY) {
+        return this.setSize(sizeXY, sizeXY);
     }
 
 
-    public void set(float x, float y, float width, float height) {
+    public Rect set(float x, float y, float width, float height) {
         this.setPosition(x, y);
         this.setSize(width, height);
+        return this;
     }
     
-    public void set(Rect rect) {
-        this.set(rect.x, rect.y, rect.width, rect.height);
+    public Rect set(Rect rect) {
+        return this.set(rect.x, rect.y, rect.width, rect.height);
     }
 
-    public void reset() {
-        this.set(0F, 0F, 0F, 0F);
+    public Rect reset() {
+        return this.set(0F, 0F, 0F, 0F);
+    }
+
+
+    public Rect calculateFor(Vec2f... points) {
+        this.setPosition(Float.MAX_VALUE);
+        this.setSize(0F);
+
+        for(Vec2f vertex: points){
+            this.set(
+                Math.min(x, vertex.x),
+                Math.min(y, vertex.y),
+                Math.max(width, vertex.x),
+                Math.max(height, vertex.y)
+            );
+        }
+
+        return this.setSize(width - x, height - y);
+    }
+
+    public Rect calculateFor(float... points) {
+        this.setPosition(Float.MAX_VALUE);
+        this.setSize(0F);
+
+        for(int i = 0; i < points.length; i += 2){
+            final float px = points[i];
+            final float py = points[i + 1];
+            this.set(
+                Math.min(x, px),
+                Math.min(y, py),
+                Math.max(width, px),
+                Math.max(height, py)
+            );
+        }
+
+        return this.setSize(width - x, height - y);
     }
 
 
@@ -115,43 +157,6 @@ public class Rect {
     @Override
     public String toString() {
         return "{" + x + ", " + y + "; " + width + ", " + height + "}";
-    }
-
-
-    public static Rect boundsOf(Rect dst, Vec2f... vertices) {
-        dst.setPosition(Float.MAX_VALUE);
-        dst.setSize(0F);
-
-        for(Vec2f vertex: vertices){
-            dst.set(
-                    Math.min(dst.x, vertex.x),
-                    Math.min(dst.y, vertex.y),
-                    Math.max(dst.width, vertex.x),
-                    Math.max(dst.height, vertex.y)
-            );
-        }
-
-        dst.setSize(dst.width - dst.x, dst.height - dst.y);
-        return dst;
-    }
-
-    public static Rect boundsOf(Rect dst, float... vertices) {
-        dst.setPosition(Float.MAX_VALUE);
-        dst.setSize(0F);
-
-        for(int i = 0; i < vertices.length; i += 3){
-            final float x = vertices[i];
-            final float y = vertices[i + 1];
-            dst.set(
-                    Math.min(dst.x, x),
-                    Math.min(dst.y, y),
-                    Math.max(dst.width, x),
-                    Math.max(dst.height, y)
-            );
-        }
-
-        dst.setSize(dst.width - dst.x, dst.height - dst.y);
-        return dst;
     }
 
 }

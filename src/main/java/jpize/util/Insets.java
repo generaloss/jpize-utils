@@ -47,44 +47,49 @@ public class Insets implements Serializable {
     }
 
 
-    public void setTop(float top) {
+    public Insets setTop(float top) {
         this.top = top;
+        return this;
     }
 
-    public void setLeft(float left) {
+    public Insets setLeft(float left) {
         this.left = left;
+        return this;
     }
 
-    public void setBottom(float bottom) {
+    public Insets setBottom(float bottom) {
         this.bottom = bottom;
+        return this;
     }
 
-    public void setRight(float right) {
+    public Insets setRight(float right) {
         this.right = right;
+        return this;
     }
 
 
-    public void set(float top, float left, float bottom, float right) {
+    public Insets set(float top, float left, float bottom, float right) {
         this.top = top;
         this.left = left;
         this.bottom = bottom;
         this.right = right;
+        return this;
     }
 
-    public void set(float horizontal, float vertical) {
-        this.set(vertical, horizontal, vertical, horizontal);
+    public Insets set(float horizontal, float vertical) {
+        return this.set(vertical, horizontal, vertical, horizontal);
     }
 
-    public void set(float all) {
-        this.set(all, all, all, all);
+    public Insets set(float all) {
+        return this.set(all, all, all, all);
     }
 
-    public void set(Insets insets) {
-        this.set(insets.top, insets.left, insets.bottom, insets.right);
+    public Insets set(Insets insets) {
+        return this.set(insets.top, insets.left, insets.bottom, insets.right);
     }
 
-    public void reset() {
-        this.set(0F, 0F, 0F, 0F);
+    public Insets reset() {
+        return this.set(0F, 0F, 0F, 0F);
     }
 
 

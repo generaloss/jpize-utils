@@ -907,6 +907,10 @@ public class Vec4d {
         return x == 0D && y == 0D && z == 0D && w == 0D;
     }
 
+    public boolean isNotZero() {
+        return x != 0D || y != 0D || z != 0D || w != 0D;
+    }
+
     public Vec4d zero() {
         return this.set(0D);
     }

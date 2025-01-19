@@ -272,10 +272,10 @@ public class TcpTests {
         }
         public MsgPacket() { }
         public void write(ExtDataOutputStream stream) throws IOException {
-            stream.writeStringBytes(message);
+            stream.writeByteString(message);
         }
         public void read(ExtDataInputStream stream) throws IOException {
-            message = stream.readStringBytes();
+            message = stream.readByteString();
         }
         public void handle(MsgHandler handler) {
             handler.acceptMsg(message);

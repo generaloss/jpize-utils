@@ -1124,6 +1124,10 @@ public class Vec3i {
         return x == 0 && y == 0 && z == 0;
     }
 
+    public boolean isNotZero() {
+        return x != 0 || y != 0 || z != 0;
+    }
+
     public Vec3i zero() {
         return this.set(0);
     }

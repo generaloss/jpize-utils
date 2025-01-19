@@ -24,7 +24,7 @@ public class Polygon {
 
     public Rect getBounds(Rect dst) {
         vertices.trim();
-        return Rect.boundsOf(dst, vertices.array());
+        return dst.calculateFor(vertices.array());
     }
 
     public Vec2f getCenterOfGravity(Vec2f dst) {
@@ -95,7 +95,7 @@ public class Polygon {
         return dst.div(area * 3F);
     }
 
-    public static Vec2f getPolygonCenterOfGravity(Vec2f dst, float... vertices) {
+    public static Vec2f getCenterOfGravity(Vec2f dst, float... vertices) {
         float area = 0F;
 
         dst.zero();

@@ -565,6 +565,10 @@ public class Vec2i {
         return x == 0 && y == 0;
     }
 
+    public boolean isNotZero() {
+        return x != 0 || y != 0;
+    }
+
     public Vec2i zero() {
         return this.set(0);
     }

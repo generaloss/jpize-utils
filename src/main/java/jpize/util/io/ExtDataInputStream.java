@@ -4,12 +4,10 @@ import jpize.util.array.*;
 import jpize.util.color.Color;
 import jpize.util.color.ImmutableColor;
 import jpize.util.math.EulerAngles;
+import jpize.util.math.Quaternion;
 import jpize.util.math.vector.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.*;
 import java.util.UUID;
 
@@ -19,8 +17,22 @@ public class ExtDataInputStream extends DataInputStream {
         super(in);
     }
 
-    public ExtDataInputStream(byte[] inByteArray){
-        super(new ByteArrayInputStream(inByteArray));
+    public ExtDataInputStream(byte[] bytes){
+        super(new ByteArrayInputStream(bytes));
+    }
+
+
+    public String readByteString() throws IOException {
+        final int length = super.readInt();
+        return new String(super.readNBytes(length));
+    }
+
+    public String readCharString() throws IOException {
+        return new String(this.readCharArray());
+    }
+
+    public String readUTFString() throws IOException {
+        return super.readUTF();
     }
 
 
@@ -77,6 +89,27 @@ public class ExtDataInputStream extends DataInputStream {
         return array;
     }
 
+    public String[] readByteStrings(int length) throws IOException {
+        final String[] array = new String[length];
+        for(int i = 0; i < array.length; i++)
+            array[i] = this.readByteString();
+        return array;
+    }
+
+    public String[] readCharStrings(int length) throws IOException {
+        final String[] array = new String[length];
+        for(int i = 0; i < array.length; i++)
+            array[i] = this.readCharString();
+        return array;
+    }
+
+    public String[] readUTFStrings(int length) throws IOException {
+        final String[] array = new String[length];
+        for(int i = 0; i < array.length; i++)
+            array[i] = this.readUTFString();
+        return array;
+    }
+
 
     public byte[] readByteArray() throws IOException {
         return this.readBytes(super.readInt());
@@ -108,6 +141,18 @@ public class ExtDataInputStream extends DataInputStream {
 
     public char[] readCharArray() throws IOException {
         return this.readChars(super.readInt());
+    }
+
+    public String[] readByteStringArray() throws IOException {
+        return this.readByteStrings(super.readInt());
+    }
+
+    public String[] readCharStringArray() throws IOException {
+        return this.readCharStrings(super.readInt());
+    }
+
+    public String[] readUTFStringArray() throws IOException {
+        return this.readUTFStrings(super.readInt());
     }
 
 
@@ -208,113 +253,217 @@ public class ExtDataInputStream extends DataInputStream {
         return new ShortList(this.readShortArray());
     }
 
-
-    public String readStringBytes() throws IOException {
-        final int length = super.readInt();
-        return new String(super.readNBytes(length));
+    public StringList readByteStringList() throws IOException {
+        return new StringList(this.readByteStringArray());
     }
 
-    public String readStringChars() throws IOException {
-        return new String(this.readCharArray());
+    public StringList readCharStringList() throws IOException {
+        return new StringList(this.readCharStringArray());
     }
 
-    public String readStringUTF() throws IOException {
-        return super.readUTF();
+    public StringList readUTFStringList() throws IOException {
+        return new StringList(this.readUTFStringArray());
+    }
+
+
+    public BoolList readBoolList(BoolList list) throws IOException {
+        return new BoolList(this.readBoolArray());
+    }
+
+    public ByteList readByteList(ByteList list) throws IOException {
+        return new ByteList(this.readByteArray());
+    }
+
+    public CharList readCharList(CharList dst) throws IOException {
+        return dst.clear().add(this.readCharArray());
+    }
+
+    public DoubleList readDoubleList(DoubleList dst) throws IOException {
+        return dst.clear().add(this.readDoubleArray());
+    }
+
+    public FloatList readFloatList(FloatList dst) throws IOException {
+        return dst.clear().add(this.readFloatArray());
+    }
+
+    public IntList readIntList(IntList dst) throws IOException {
+        return dst.clear().add(this.readIntArray());
+    }
+
+    public LongList readLongList(LongList dst) throws IOException {
+        return dst.clear().add(this.readLongArray());
+    }
+
+    public ShortList readShortList(ShortList dst) throws IOException {
+        return dst.clear().add(this.readShortArray());
+    }
+
+    public StringList readByteStringList(StringList dst) throws IOException {
+        return dst.clear().add(this.readByteStringArray());
+    }
+
+    public StringList readCharStringList(StringList dst) throws IOException {
+        return dst.clear().add(this.readCharStringArray());
+    }
+
+    public StringList readUTFStringList(StringList dst) throws IOException {
+        return dst.clear().add(this.readUTFStringArray());
+    }
+
+
+    public Vec2i readVec2i(Vec2i dst) throws IOException {
+        return dst.set(
+            super.readInt(),
+            super.readInt()
+        );
+    }
+
+    public Vec2f readVec2f(Vec2f dst) throws IOException {
+        return dst.set(
+            super.readFloat(),
+            super.readFloat()
+        );
+    }
+
+    public Vec2d readVec2d(Vec2d dst) throws IOException {
+        return dst.set(
+            super.readDouble(),
+            super.readDouble()
+        );
+    }
+    
+    public Vec3i readVec3i(Vec3i dst) throws IOException {
+        return dst.set(
+            super.readInt(),
+            super.readInt(),
+            super.readInt()
+        );
+    }
+    
+    public Vec3f readVec3f(Vec3f dst) throws IOException {
+        return dst.set(
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat()
+        );
+    }
+
+    public Vec3d readVec3d(Vec3d dst) throws IOException {
+        return dst.set(
+            super.readDouble(),
+            super.readDouble(),
+            super.readDouble()
+        );
+    }
+
+    public Vec4i readVec4i(Vec4i dst) throws IOException {
+        return dst.set(
+            super.readInt(),
+            super.readInt(),
+            super.readInt(),
+            super.readInt()
+        );
+    }
+
+    public Vec4f readVec4f(Vec4f dst) throws IOException {
+        return dst.set(
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat()
+        );
+    }
+
+    public Vec4d readVec4d(Vec4d dst) throws IOException {
+        return dst.set(
+            super.readDouble(),
+            super.readDouble(),
+            super.readDouble(),
+            super.readDouble()
+        );
     }
 
 
     public Vec2i readVec2i() throws IOException {
-        return new Vec2i(
-            super.readInt(),
-            super.readInt()
-        );
+        return this.readVec2i(new Vec2i());
     }
 
     public Vec2f readVec2f() throws IOException {
-        return new Vec2f(
-            super.readFloat(),
-            super.readFloat()
-        );
+        return this.readVec2f(new Vec2f());
     }
 
     public Vec2d readVec2d() throws IOException {
-        return new Vec2d(
-            super.readDouble(),
-            super.readDouble()
-        );
+        return this.readVec2d(new Vec2d());
     }
-    
+
     public Vec3i readVec3i() throws IOException {
-        return new Vec3i(
-            super.readInt(),
-            super.readInt(),
-            super.readInt()
-        );
+        return this.readVec3i(new Vec3i());
     }
-    
+
     public Vec3f readVec3f() throws IOException {
-        return new Vec3f(
-            super.readFloat(),
-            super.readFloat(),
-            super.readFloat()
-        );
+        return this.readVec3f(new Vec3f());
     }
 
     public Vec3d readVec3d() throws IOException {
-        return new Vec3d(
-            super.readDouble(),
-            super.readDouble(),
-            super.readDouble()
-        );
+        return this.readVec3d(new Vec3d());
     }
 
     public Vec4i readVec4i() throws IOException {
-        return new Vec4i(
-            super.readInt(),
-            super.readInt(),
-            super.readInt(),
-            super.readInt()
-        );
+        return this.readVec4i(new Vec4i());
     }
 
     public Vec4f readVec4f() throws IOException {
-        return new Vec4f(
-            super.readFloat(),
-            super.readFloat(),
-            super.readFloat(),
-            super.readFloat()
-        );
+        return this.readVec4f(new Vec4f());
     }
 
     public Vec4d readVec4d() throws IOException {
-        return new Vec4d(
-            super.readDouble(),
-            super.readDouble(),
-            super.readDouble(),
-            super.readDouble()
-        );
+        return this.readVec4d(new Vec4d());
     }
 
 
-    public EulerAngles readEulerAngles() throws IOException {
-        return new EulerAngles(
+    public EulerAngles readEulerAngles(EulerAngles dst) throws IOException {
+        return dst.set(
             super.readFloat(),
             super.readFloat(),
             super.readFloat()
         );
     }
-    
+
+    public EulerAngles readEulerAngles() throws IOException {
+        return this.readEulerAngles(new EulerAngles());
+    }
+
+
+    public Quaternion readQuaternion(Quaternion dst) throws IOException {
+        return dst.set(
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat(),
+            super.readFloat()
+        );
+    }
+
+    public Quaternion readQuaternion() throws IOException {
+        return this.readQuaternion(new Quaternion());
+    }
+
+
     public UUID readUUID() throws IOException {
         return new UUID(super.readLong(), super.readLong());
     }
-    
-    public Color readColor() throws IOException {
-        return new Color(
+
+
+    public Color readColor(Color dst) throws IOException {
+        return dst.set(
             super.readFloat(),
             super.readFloat(),
             super.readFloat(),
             super.readFloat()
         );
+    }
+
+    public Color readColor() throws IOException {
+        return this.readColor(new Color());
     }
 
     public ImmutableColor readImmutableColor() throws IOException {
