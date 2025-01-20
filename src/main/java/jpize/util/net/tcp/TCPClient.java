@@ -24,7 +24,7 @@ public class TCPClient {
     private Selector selector;
 
     public TCPClient() {
-        this.setConnectionType(TCPConnection.DEFAULT_TYPE);
+        this.setConnectionType(TCPConnection.CONNECTION_TYPE);
     }
 
     public TCPConnection connection() {
@@ -58,7 +58,7 @@ public class TCPClient {
         return this;
     }
 
-    public TCPClient setOnReceiveStream(TCPStreamListener onReceive) {
+    public TCPClient setOnReceiveStream(TCPListenerStream onReceive) {
         this.onReceive = (sender, bytes) -> {
             try{
                 final ExtDataInputStream stream = new ExtDataInputStream(bytes);

@@ -11,9 +11,6 @@ public class RSAKey {
 
     public RSAKey(int size) {
         final KeyPair pair = generateKeyPair(size);
-        if(pair == null)
-            throw new RuntimeException("Unable to generate RSA key pair");
-
         this.publicKey = new PublicRSA(pair.getPublic());
         this.privateKey = new PrivateRSA(pair.getPrivate());
     }
@@ -42,7 +39,7 @@ public class RSAKey {
             pairGenerator.initialize(size);
             return pairGenerator.generateKeyPair();
         }catch(NoSuchAlgorithmException ignored){
-            return null;
+            throw new RuntimeException("Failed to generate RSA key pair");
         }
     }
 

@@ -8,7 +8,7 @@ public class DeltaTimeCounter {
     private float deltaTime;
 
     public DeltaTimeCounter() {
-        lastTime = System.nanoTime();
+        this.lastTime = System.nanoTime();
     }
 
     public void update() {

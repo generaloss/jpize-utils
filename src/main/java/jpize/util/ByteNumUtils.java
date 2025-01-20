@@ -1,6 +1,6 @@
 package jpize.util;
 
-public class NumUtils {
+public class ByteNumUtils {
 
     public final int makeUnsignedShort(byte b1, byte b2) {
         return (b1 << 8) + b2;

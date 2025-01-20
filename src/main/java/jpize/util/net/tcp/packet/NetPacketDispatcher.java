@@ -10,6 +10,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+@SuppressWarnings("unchecked")
 public class NetPacketDispatcher {
 
     private final Map<Short, Class<? extends NetPacket<?>>> packetClasses;
@@ -20,7 +21,6 @@ public class NetPacketDispatcher {
         this.toHandleQueue = new ConcurrentLinkedQueue<>();
     }
 
-    @SafeVarargs
     public final NetPacketDispatcher register(Class<? extends NetPacket<?>>... packetClasses) {
         for(Class<? extends NetPacket<?>> packetClass : packetClasses){
             final short ID = NetPacket.getIDByClass(packetClass);
@@ -71,7 +71,6 @@ public class NetPacketDispatcher {
         try{
             final Constructor<?> constructor = packetClass.getDeclaredConstructor();
             constructor.setAccessible(true);
-            // noinspection unchecked
             return (NetPacket<INetPacketHandler>) constructor.newInstance();
 
         }catch(Exception e){

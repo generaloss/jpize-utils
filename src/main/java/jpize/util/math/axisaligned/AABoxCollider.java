@@ -11,7 +11,7 @@ public class AABoxCollider {
         body1.position().add(movement);
 
         for(AABoxBody body2: otherBodies)
-            if(body1.isIntersectBox(body2))
+            if(body1.intersect(body2))
                 return true;
 
         return false;
@@ -22,7 +22,7 @@ public class AABoxCollider {
         body1.position().add(movement);
 
         for(AABoxBody body2: otherBodies)
-            if(body1.isIntersectBox(body2))
+            if(body1.intersect(body2))
                 return true;
 
         return false;

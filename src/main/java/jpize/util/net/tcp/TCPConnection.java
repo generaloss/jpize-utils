@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 public abstract class TCPConnection implements Closeable {
 
-    public static TCPConnectionType DEFAULT_TYPE = TCPConnectionType.PACKET;
+    public static TCPConnectionType CONNECTION_TYPE = TCPConnectionType.PACKET;
 
     protected final SocketChannel channel;
     protected final SelectionKey selectionKey;
@@ -51,8 +51,8 @@ public abstract class TCPConnection implements Closeable {
         return selectionKey;
     }
 
+    @SuppressWarnings("unchecked")
     public <O> O attachment() {
-        // noinspection unchecked
         return (O) attachment;
     }
 

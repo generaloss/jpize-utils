@@ -5,19 +5,19 @@ import jpize.util.math.vector.Vec2f;
 
 public class Polygon {
 
-    private final LineString vertices;
-    private final ObjectList<LineString> holes;
+    private final Vertices2f vertices;
+    private final ObjectList<Vertices2f> holes;
 
     public Polygon() {
-        this.vertices = new LineString();
+        this.vertices = new Vertices2f();
         this.holes = new ObjectList<>();
     }
 
-    public LineString vertices() {
+    public Vertices2f vertices() {
         return vertices;
     }
 
-    public ObjectList<LineString> holes() {
+    public ObjectList<Vertices2f> holes() {
         return holes;
     }
 
@@ -35,7 +35,7 @@ public class Polygon {
     public float getArea() {
         vertices.trim();
         float area = getArea(vertices.array());
-        for(LineString hole: holes){
+        for(Vertices2f hole: holes){
             hole.trim();
             area -= getArea(hole.array());
         }
@@ -44,7 +44,7 @@ public class Polygon {
 
     public boolean isPointOn(float x, float y) {
         vertices.trim();
-        for(LineString hole: holes){
+        for(Vertices2f hole: holes){
             hole.trim();
             if(isPointIn(x, y, hole.array()))
                 return false;
@@ -58,7 +58,7 @@ public class Polygon {
 
     public boolean isPointIn(float x, float y) {
         vertices.trim();
-        for(LineString hole: holes){
+        for(Vertices2f hole: holes){
             hole.trim();
             if(isPointOn(x, y, hole.array()))
                 return false;

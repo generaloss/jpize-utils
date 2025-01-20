@@ -34,9 +34,9 @@ public class PrivateRSA {
     }
 
 
-    public byte[] decrypt(byte[] data) {
+    public byte[] decrypt(byte[] bytes) {
         try{
-            return cipher.doFinal(data);
+            return cipher.doFinal(bytes);
         }catch(IllegalBlockSizeException | BadPaddingException e){
             throw new RuntimeException(e);
         }
@@ -57,10 +57,8 @@ public class PrivateRSA {
             return KeyFactory
                 .getInstance("RSA")
                 .generatePrivate(new PKCS8EncodedKeySpec(bytes));
-        }catch(InvalidKeySpecException e){
+        }catch(InvalidKeySpecException | NoSuchAlgorithmException e){
             throw new RuntimeException(e);
-        }catch(NoSuchAlgorithmException ignored){
-            return null;
         }
     }
 

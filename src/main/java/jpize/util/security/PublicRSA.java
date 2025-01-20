@@ -37,9 +37,9 @@ public class PublicRSA {
     }
 
 
-    public byte[] encrypt(byte[] data) {
+    public byte[] encrypt(byte[] bytes) {
         try{
-            return cipher.doFinal(data);
+            return cipher.doFinal(bytes);
         }catch(IllegalBlockSizeException | BadPaddingException e){
             throw new RuntimeException(e);
         }
@@ -60,10 +60,8 @@ public class PublicRSA {
             return KeyFactory
                 .getInstance("RSA")
                 .generatePublic(new X509EncodedKeySpec(bytes));
-        }catch(InvalidKeySpecException e){
+        }catch(InvalidKeySpecException | NoSuchAlgorithmException e){
             throw new RuntimeException(e);
-        }catch(NoSuchAlgorithmException ignored){
-            return null;
         }
     }
 

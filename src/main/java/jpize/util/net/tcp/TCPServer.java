@@ -25,7 +25,7 @@ public class TCPServer {
     private final Consumer<TCPConnection> disconnector;
 
     public TCPServer() {
-        this.setConnectionType(TCPConnection.DEFAULT_TYPE);
+        this.setConnectionType(TCPConnection.CONNECTION_TYPE);
         this.connections = new CopyOnWriteArrayList<>();
         this.disconnector = (connection) -> {
             connections.remove(connection);
@@ -61,7 +61,7 @@ public class TCPServer {
         return this;
     }
 
-    public TCPServer setOnReceiveStream(TCPStreamListener onReceive) {
+    public TCPServer setOnReceiveStream(TCPListenerStream onReceive) {
         this.onReceive = (sender, bytes) -> {
             try{
                 final ExtDataInputStream stream = new ExtDataInputStream(bytes);

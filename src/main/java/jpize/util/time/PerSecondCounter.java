@@ -6,7 +6,7 @@ public class PerSecondCounter {
     private int counter, rate;
 
     public PerSecondCounter() {
-        lastTime = System.currentTimeMillis();
+        this.lastTime = System.currentTimeMillis();
     }
 
     public void update() {

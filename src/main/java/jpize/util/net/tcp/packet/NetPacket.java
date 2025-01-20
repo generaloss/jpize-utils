@@ -10,7 +10,7 @@ public abstract class NetPacket<T extends INetPacketHandler> {
     private final short ID;
 
     public NetPacket() {
-        this.ID = NetPacket.getIDByClass(this.getClass());
+        this.ID = getIDByClass(this.getClass());
     }
 
     public short getPacketID() {

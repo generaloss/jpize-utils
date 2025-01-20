@@ -43,7 +43,7 @@ public class UDPServer {
 
     private void receiveLoop(){
         try{
-            while(!this.isClosed()){ //! !Thread.interrupted()
+            while(!Thread.interrupted() && !this.isClosed()){
                 // receive size
                 final DatagramPacket sizePacket = new DatagramPacket(new byte[4], 4);
                 socket.receive(sizePacket);
