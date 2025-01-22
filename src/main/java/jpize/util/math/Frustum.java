@@ -1,6 +1,7 @@
-package jpize.util.math.matrix;
+package jpize.util.math;
 
 import jpize.util.math.axisaligned.AABoxBody;
+import jpize.util.math.matrix.Matrix4f;
 import jpize.util.math.vector.Vec3f;
 import jpize.util.math.vector.Vec4f;
 
@@ -70,13 +71,38 @@ public class Frustum {
     }
 
 
-    public boolean isAABoxIn(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        for(int i = 0; i < 6; i++)
-            if(this.multiply(i, minX, minY, minZ) <= 0F && this.multiply(i, maxX, minY, minZ) <= 0F && this.multiply(i, minX, maxY, minZ) <= 0F &&
-               this.multiply(i, maxX, maxY, minZ) <= 0F && this.multiply(i, minX, minY, maxZ) <= 0F && this.multiply(i, maxX, minY, maxZ) <= 0F &&
-               this.multiply(i, minX, maxY, maxZ) <= 0F && this.multiply(i, maxX, maxY, maxZ) <= 0F)
-                return false;
+    public boolean isMeshIn(float... points) {
+        loop:
+        for(int i = 0; i < 6; i++){
+            for(int j = 0; j < points.length; j += 3){
+                final float x = points[j];
+                final float y = points[j + 1];
+                final float z = points[j + 2];
+
+                if(this.multiply(i, x, y, z) > 0F)
+                    continue loop;
+            }
+            return false;
+        }
         return true;
+    }
+
+
+    public boolean isAABoxIn(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        return this.isMeshIn(
+            minX, minY, minZ, maxX, minY, minZ, minX, maxY, minZ, maxX, maxY, minZ,
+            minX, minY, maxZ, maxX, minY, maxZ, minX, maxY, maxZ, maxX, maxY, maxZ
+        );
+        // for(int i = 0; i < 6; i++){
+        //     final boolean bool = (
+        //         this.multiply(i, minX, minY, minZ) <= 0F && this.multiply(i, maxX, minY, minZ) <= 0F &&
+        //         this.multiply(i, minX, maxY, minZ) <= 0F && this.multiply(i, maxX, maxY, minZ) <= 0F &&
+        //         this.multiply(i, minX, minY, maxZ) <= 0F && this.multiply(i, maxX, minY, maxZ) <= 0F &&
+        //         this.multiply(i, minX, maxY, maxZ) <= 0F && this.multiply(i, maxX, maxY, maxZ) <= 0F
+        //     );
+        //     if(bool) return false;
+        // }
+        // return true;
     }
 
     public boolean isAABoxIn(Vec3f min, Vec3f max) {
