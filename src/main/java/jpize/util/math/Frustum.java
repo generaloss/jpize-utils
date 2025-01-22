@@ -73,8 +73,8 @@ public class Frustum {
 
     public boolean isMeshIn(float... points) {
         loop:
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < points.length; j += 3){
+        for(int i = 0; i < 6; i++) {
+            for(int j = 0; j < points.length; j += 3) {
                 final float x = points[j];
                 final float y = points[j + 1];
                 final float z = points[j + 2];
@@ -82,6 +82,17 @@ public class Frustum {
                 if(this.multiply(i, x, y, z) > 0F)
                     continue loop;
             }
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isMeshIn(Vec3f... points) {
+        loop:
+        for(int i = 0; i < 6; i++) {
+            for(Vec3f point: points)
+                if(this.multiply(i, point.x, point.y, point.z) > 0F)
+                    continue loop;
             return false;
         }
         return true;
