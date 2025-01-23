@@ -207,10 +207,10 @@ public class FastNoise {
         }
 
         return switch(fractalType){
-            default -> genNoiseSingle(seed, x, y);
             case FBM -> genFractalFbm(x, y);
             case RIDGED -> genFractalRidged(x, y);
             case PING_PONG -> genFractalPingPong(x, y);
+            default -> genNoiseSingle(seed, x, y);
         };
     }
 
@@ -258,10 +258,10 @@ public class FastNoise {
         }
 
         return switch(fractalType){
-            default -> genNoiseSingle(seed, x, y, z);
             case FBM -> genFractalFbm(x, y, z);
             case RIDGED -> genFractalRidged(x, y, z);
             case PING_PONG -> genFractalPingPong(x, y, z);
+            default -> genNoiseSingle(seed, x, y, z);
         };
     }
 
@@ -281,9 +281,9 @@ public class FastNoise {
      */
     public void domainWarp(Vec2f coord) {
         switch(fractalType){
-            default -> domainWarpSingle(coord);
             case DOMAIN_WARP_PROGRESSIVE -> domainWarpFractalProgressive(coord);
             case DOMAIN_WARP_INDEPENDENT -> domainWarpFractalIndependent(coord);
+            default -> domainWarpSingle(coord);
         }
     }
 
@@ -295,9 +295,9 @@ public class FastNoise {
      */
     public void domainWarp(Vec3f coord) {
         switch(fractalType){
-            default -> domainWarpSingle(coord);
             case DOMAIN_WARP_PROGRESSIVE -> domainWarpFractalProgressive(coord);
             case DOMAIN_WARP_INDEPENDENT -> domainWarpFractalIndependent(coord);
+            default -> domainWarpSingle(coord);
         }
     }
 
@@ -938,29 +938,6 @@ public class FastNoise {
         int yPrimedBase = (yr - 1) * PRIME_Y;
 
         switch(cellularDistFunc){
-            default -> {
-                for(int xi = xr - 1; xi <= xr + 1; xi++){
-                    int yPrimed = yPrimedBase;
-
-                    for(int yi = yr - 1; yi <= yr + 1; yi++){
-                        final int hash = hash(seed, xPrimed, yPrimed);
-                        final int idx = hash & (255 << 1);
-
-                        final float vecX = (xi - x) + RAND_VECS_2D[idx] * cellularJitter;
-                        final float vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
-
-                        final float newDistance = vecX * vecX + vecY * vecY;
-
-                        distance1 = Math.max(Math.min(distance1, newDistance), distance0);
-                        if(newDistance < distance0){
-                            distance0 = newDistance;
-                            closestHash = hash;
-                        }
-                        yPrimed += PRIME_Y;
-                    }
-                    xPrimed += PRIME_X;
-                }
-            }
             case MANHATTAN -> {
                 for(int xi = xr - 1; xi <= xr + 1; xi++){
                     int yPrimed = yPrimedBase;
@@ -996,6 +973,29 @@ public class FastNoise {
                         float vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
 
                         float newDistance = (Math.abs(vecX) + Math.abs(vecY)) + (vecX * vecX + vecY * vecY);
+
+                        distance1 = Math.max(Math.min(distance1, newDistance), distance0);
+                        if(newDistance < distance0){
+                            distance0 = newDistance;
+                            closestHash = hash;
+                        }
+                        yPrimed += PRIME_Y;
+                    }
+                    xPrimed += PRIME_X;
+                }
+            }
+            default -> {
+                for(int xi = xr - 1; xi <= xr + 1; xi++){
+                    int yPrimed = yPrimedBase;
+
+                    for(int yi = yr - 1; yi <= yr + 1; yi++){
+                        final int hash = hash(seed, xPrimed, yPrimed);
+                        final int idx = hash & (255 << 1);
+
+                        final float vecX = (xi - x) + RAND_VECS_2D[idx] * cellularJitter;
+                        final float vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
+
+                        final float newDistance = vecX * vecX + vecY * vecY;
 
                         distance1 = Math.max(Math.min(distance1, newDistance), distance0);
                         if(newDistance < distance0){

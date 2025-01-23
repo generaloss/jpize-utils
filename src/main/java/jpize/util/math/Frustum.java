@@ -104,16 +104,6 @@ public class Frustum {
             minX, minY, minZ, maxX, minY, minZ, minX, maxY, minZ, maxX, maxY, minZ,
             minX, minY, maxZ, maxX, minY, maxZ, minX, maxY, maxZ, maxX, maxY, maxZ
         );
-        // for(int i = 0; i < 6; i++){
-        //     final boolean bool = (
-        //         this.multiply(i, minX, minY, minZ) <= 0F && this.multiply(i, maxX, minY, minZ) <= 0F &&
-        //         this.multiply(i, minX, maxY, minZ) <= 0F && this.multiply(i, maxX, maxY, minZ) <= 0F &&
-        //         this.multiply(i, minX, minY, maxZ) <= 0F && this.multiply(i, maxX, minY, maxZ) <= 0F &&
-        //         this.multiply(i, minX, maxY, maxZ) <= 0F && this.multiply(i, maxX, maxY, maxZ) <= 0F
-        //     );
-        //     if(bool) return false;
-        // }
-        // return true;
     }
 
     public boolean isAABoxIn(Vec3f min, Vec3f max) {
