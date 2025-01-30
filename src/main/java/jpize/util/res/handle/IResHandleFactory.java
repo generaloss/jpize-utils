@@ -1,7 +1,7 @@
 package jpize.util.res.handle;
 
 @FunctionalInterface
-public interface IResourceHandleFactory<K, H extends ResourceHandle<K, ?>> {
+public interface IResHandleFactory<K, H extends ResHandle<K, ?>> {
 
     H create(K key, String path);
 

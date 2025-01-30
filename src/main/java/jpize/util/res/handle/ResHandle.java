@@ -1,13 +1,14 @@
 package jpize.util.res.handle;
 
 import jpize.util.Disposable;
+import jpize.util.res.IResourceSource;
 
-public abstract class ResourceHandle<K, H> implements Disposable {
+public abstract class ResHandle<K, H> implements Disposable {
 
     private final K key;
     private final String path;
 
-    public ResourceHandle(K key, String path) {
+    public ResHandle(K key, String path) {
         this.key = key;
         this.path = path;
     }

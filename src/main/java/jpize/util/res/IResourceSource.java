@@ -1,6 +1,4 @@
-package jpize.util.res.handle;
-
-import jpize.util.res.Resource;
+package jpize.util.res;
 
 @FunctionalInterface
 public interface IResourceSource {

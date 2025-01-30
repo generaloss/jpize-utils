@@ -1,42 +1,43 @@
 package jpize.util.res.handle;
 
 import jpize.util.Disposable;
+import jpize.util.res.IResourceSource;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResourceHandleMap<K, H extends ResourceHandle<K, ?>> implements Disposable {
+public class ResHandleMap<K, H extends ResHandle<K, ?>> implements Disposable {
 
-    private IResourceHandleFactory<K, H> handleFactory;
+    private IResHandleFactory<K, H> handleFactory;
     private IResourceSource source;
     private final Map<K, H> map;
 
-    public ResourceHandleMap() {
+    public ResHandleMap() {
         this.map = new HashMap<>();
     }
 
-    public ResourceHandleMap(IResourceSource source) {
+    public ResHandleMap(IResourceSource source) {
         this();
         this.setSource(source);
     }
 
-    public ResourceHandleMap(IResourceHandleFactory<K, H> handleFactory) {
+    public ResHandleMap(IResHandleFactory<K, H> handleFactory) {
         this();
         this.setHandleFactory(handleFactory);
     }
 
-    public ResourceHandleMap(IResourceSource source, IResourceHandleFactory<K, H> handleFactory) {
+    public ResHandleMap(IResourceSource source, IResHandleFactory<K, H> handleFactory) {
         this();
         this.setSource(source);
         this.setHandleFactory(handleFactory);
     }
 
 
-    public IResourceHandleFactory<K, H> getHandleFactory() {
+    public IResHandleFactory<K, H> getHandleFactory() {
         return handleFactory;
     }
 
-    public void setHandleFactory(IResourceHandleFactory<K, H> handleFactory) {
+    public void setHandleFactory(IResHandleFactory<K, H> handleFactory) {
         this.handleFactory = handleFactory;
     }
 
@@ -59,7 +60,7 @@ public class ResourceHandleMap<K, H extends ResourceHandle<K, ?>> implements Dis
         return map.get(key);
     }
 
-    public void remove(H handle) {
+    public void dispose(H handle) {
         if(handle == null)
             return;
 
@@ -67,11 +68,11 @@ public class ResourceHandleMap<K, H extends ResourceHandle<K, ?>> implements Dis
         map.remove(handle.getKey());
     }
 
-    public void remove(K key) {
-        this.remove(map.get(key));
+    public void dispose(K key) {
+        this.dispose(map.get(key));
     }
 
-    public H load(K key, String path) {
+    public H create(K key, String path) {
         if(source == null)
             throw new IllegalStateException("Resource source not set");
         if(handleFactory == null)
@@ -84,7 +85,7 @@ public class ResourceHandleMap<K, H extends ResourceHandle<K, ?>> implements Dis
         return handle;
     }
 
-    public H load(H handle) {
+    public H create(H handle) {
         if(source == null)
             throw new IllegalStateException("Resource source not set");
 
