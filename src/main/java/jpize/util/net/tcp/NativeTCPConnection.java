@@ -7,11 +7,11 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.function.Consumer;
 
-public class DefaultTCPConnection extends TCPConnection {
+public class NativeTCPConnection extends TCPConnection {
 
     private final ByteBuffer dataBuffer;
 
-    protected DefaultTCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
+    protected NativeTCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
         super(channel, selectionKey, onDisconnect);
         this.dataBuffer = ByteBuffer.allocate(2048);
     }

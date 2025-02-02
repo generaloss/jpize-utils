@@ -76,7 +76,7 @@ public class TCPServer {
 
 
     public TCPServer run(SocketAddress address) {
-        if(this.isAlive())
+        if(this.isRunning())
             throw new IllegalStateException("TCP server is already running");
 
         try{
@@ -164,7 +164,7 @@ public class TCPServer {
         return connections;
     }
 
-    public boolean isAlive() {
+    public boolean isRunning() {
         return (serverSocketChannel != null && !serverSocketChannel.socket().isClosed());
     }
 

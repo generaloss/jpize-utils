@@ -76,7 +76,11 @@ public abstract class TCPConnection implements Closeable {
     }
 
     public void encode(AESKey encodeKey) {
-        this.encode(encodeKey.getEncryptCipher(), encodeKey.getDecryptCipher());
+        if(encodeKey == null) {
+            this.encode(null, null);
+        }else{
+            this.encode(encodeKey.getEncryptCipher(), encodeKey.getDecryptCipher());
+        }
     }
 
     protected byte[] tryToEncryptBytes(byte[] bytes) {
@@ -245,8 +249,8 @@ public abstract class TCPConnection implements Closeable {
     }
 
     private static final Map<Class<?>, Factory> FACTORY_BY_CLASS = new HashMap<>(){{{
-        put(PacketTCPConnection.class, PacketTCPConnection::new);
-        put(DefaultTCPConnection.class, DefaultTCPConnection::new);
+        this.put(PacketTCPConnection.class, PacketTCPConnection::new);
+        this.put(NativeTCPConnection.class, NativeTCPConnection::new);
     }}};
 
     public static void registerFactory(Class<?> connectionClass, Factory factory) {

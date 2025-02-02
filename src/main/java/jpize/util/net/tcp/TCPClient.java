@@ -136,7 +136,7 @@ public class TCPClient {
         return (connection != null && connection.isConnected());
     }
 
-    public boolean isClosed(){
+    public boolean isClosed() {
         return (connection == null || connection.isClosed());
     }
 

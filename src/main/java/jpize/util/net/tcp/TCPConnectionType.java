@@ -2,8 +2,8 @@ package jpize.util.net.tcp;
 
 public enum TCPConnectionType {
 
-    DEFAULT (DefaultTCPConnection.class),
-    PACKET  (PacketTCPConnection.class);
+    NATIVE (NativeTCPConnection.class),
+    PACKET (PacketTCPConnection.class);
 
     private final Class<?> conectionClass;
 
