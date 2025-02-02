@@ -1,37 +1,31 @@
 package jpize.util.res;
 
 import jpize.util.Utils;
+import jpize.util.array.ObjectList;
 import jpize.util.io.ExtDataOutputStream;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
-public class ExternalResource extends Resource {
+public class FileResource extends Resource {
 
     protected final File file;
 
-    protected ExternalResource(File file) {
+    protected FileResource(File file) {
         this.file = file;
     }
 
-    protected ExternalResource(String path) {
+    protected FileResource(String path) {
         this(new File(Utils.osGeneralizePath(path)));
     }
 
-    protected ExternalResource(File parent, String child) {
+    protected FileResource(File parent, String child) {
         this(new File(parent, child));
     }
 
     public File file() {
         return file;
-    }
-
-
-    public ExternalResource child(String name) {
-        if(this.path().isEmpty())
-            return new ExternalResource(name);
-        return new ExternalResource(new File(file, name));
     }
 
 
@@ -66,6 +60,10 @@ public class ExternalResource extends Resource {
         return file.delete();
     }
 
+    public void deleteOnExit() {
+        file.deleteOnExit();
+    }
+
 
     public boolean isDir() {
         return file.isDirectory();
@@ -76,18 +74,33 @@ public class ExternalResource extends Resource {
     }
 
 
-    public void appendString(String string) {
-        this.writeString(this.readString() + string);
+    public FileResource child(String name) {
+        if(this.path().isEmpty())
+            return new FileResource(name);
+        return new FileResource(new File(file, name));
     }
 
-    public void writeString(String string) {
-        try(final FileOutputStream out = this.outStream()){
-            out.write(string.getBytes());
-            out.flush();
-        }catch(IOException e){
-            throw new RuntimeException(e);
+
+    public FileOutputStream outStream() {
+        try{
+            return new FileOutputStream(file);
+        }catch(FileNotFoundException e){
+            throw new RuntimeException("Unable to open file " + e.getMessage());
         }
     }
+
+    public ExtDataOutputStream outStreamExt() {
+        return new ExtDataOutputStream(this.outStream());
+    }
+
+    public PrintWriter writer(boolean autoFlush) {
+        return new PrintWriter(this.outStream(), autoFlush);
+    }
+
+    public PrintWriter writer() {
+        return this.writer(true);
+    }
+
 
     public void writeBytes(byte[] bytes) {
         try(final FileOutputStream out = this.outStream()){
@@ -96,6 +109,22 @@ public class ExternalResource extends Resource {
         }catch(IOException e){
             throw new RuntimeException(e);
         }
+    }
+
+    public void writeString(String string, Charset charset) {
+        this.writeBytes(string.getBytes(charset));
+    }
+
+    public void writeString(String string) {
+        this.writeString(string, StandardCharsets.UTF_8);
+    }
+
+    public void appendString(String string, Charset charset) {
+        this.writeString(this.readString() + string);
+    }
+
+    public void appendString(String string) {
+        this.appendString(string, StandardCharsets.UTF_8);
     }
 
 
@@ -113,54 +142,40 @@ public class ExternalResource extends Resource {
         return list;
     }
 
-    public ExternalResource[] listResources() {
+    public FileResource[] listResources() {
         final String[] list = this.list();
 
-        final ExternalResource[] resources = new ExternalResource[list.length];
+        final FileResource[] resources = new FileResource[list.length];
         for(int i = 0; i < list.length; i++)
             resources[i] = this.child(list[i]);
 
         return resources;
     }
 
-    public ExternalResource[] listResources(FilenameFilter filter) {
-        final ExternalResource[] resources = this.listResources();
-        final List<ExternalResource> filteredResources = new ArrayList<>();
+    public FileResource[] listResources(FilenameFilter filter) {
+        final String[] list = file.list(filter);
+        if(list == null)
+            return new FileResource[0];
 
-        for(ExternalResource resource: resources)
-            if(filter.accept(file, resource.name()))
-                filteredResources.add(resource);
+        final ObjectList<FileResource> resources = new ObjectList<>(list.length);
 
-        return filteredResources.toArray(new ExternalResource[0]);
+        for(String name: list)
+            if(filter.accept(file, name))
+                resources.add(this.child(name));
+
+        return resources.arrayTrimmed();
     }
 
-
-    public PrintWriter writer() {
-        return new PrintWriter(this.outStream(), true);
-    }
-
-
-    public ExtDataOutputStream extDataOutput() {
-        return new ExtDataOutputStream(this.outStream());
-    }
-
-    public FileOutputStream outStream() {
-        try{
-            return new FileOutputStream(file);
-        }catch(FileNotFoundException e){
-            throw new RuntimeException("Unable to open file " + e.getMessage());
-        }
-    }
-
-
-    public String name() {
-        return file.getName();
-    }
 
     public String absolutePath() {
         return Utils.osGeneralizePath(file.getAbsolutePath());
     }
 
+
+    @Override
+    public String name() {
+        return file.getName();
+    }
 
     @Override
     public String path() {

@@ -1,49 +1,41 @@
 import jpize.util.array.StringList;
 import jpize.util.res.*;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
 public class ResourceTests {
 
-    private File folder;
-    private File file;
-
-    @Before
-    public void createTmpFiles() {
-        final String tmpdir = System.getProperty("java.io.tmpdir");
-        try{
-            folder = new File(tmpdir);
-            file = File.createTempFile("jpize-res-test-", ".txt");
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    @After
-    public void deleteTmpFiles() {
-        file.delete();
-    }
-
-
     @Test
-    public void externalDirTest1() {
-        final ExternalResource res = Resource.external(folder);
+    public void fileDirTest1() {
+        final FileResource res = Resource.file("./test-dir/");
+        res.mkdir();
+        res.deleteOnExit();
         Assert.assertTrue(res.exists());
         Assert.assertTrue(res.isDir());
     }
 
     @Test
-    public void externalFileTest1() {
-        final ExternalResource res = Resource.external(file);
+    public void fileFileTest1() {
+        final FileResource res = Resource.file("./test-file.txt");
+        res.create();
+        res.deleteOnExit();
         Assert.assertTrue(res.exists());
         Assert.assertTrue(res.isFile());
     }
+
+
+    @Test
+    public void fileTempFileTest1() {
+        final FileResource res = Resource.temp("jpize-temp-res-test-", ".txt");
+        res.create();
+        res.deleteOnExit();
+        Assert.assertTrue(res.exists());
+        Assert.assertTrue(res.isFile());
+    }
+
 
     @Test
     public void internalDirTest1() {
@@ -65,12 +57,14 @@ public class ResourceTests {
         Assert.assertEquals(new StringList("64", "16", "2"), res.readLines());
     }
 
+
     @Test
     public void urlTest1() {
         final URLResource res = Resource.url("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
         Assert.assertTrue(res.exists());
         Assert.assertEquals(-250076188, res.readString().hashCode());
     }
+
 
     @Test
     public void zipTest1() throws IOException {

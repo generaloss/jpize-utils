@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -19,36 +21,12 @@ public abstract class Resource {
     protected Resource() { }
 
 
-    public boolean isExternal() {
-        return this instanceof ExternalResource;
+    public ExtDataInputStream inStreamExt() {
+        return new ExtDataInputStream(this.inStream());
     }
 
-    public boolean isInternal() {
-        return this instanceof InternalResource;
-    }
-
-    public boolean isUrl() {
-        return this instanceof InternalResource;
-    }
-
-    public boolean isZipEntry() {
-        return this instanceof ZipResource;
-    }
-
-    public ExternalResource asExternal() {
-        return (ExternalResource) this;
-    }
-
-    public InternalResource asInternal() {
-        return (InternalResource) this;
-    }
-
-    public URLResource asUrl() {
-        return (URLResource) this;
-    }
-
-    public ZipResource asZipEntry() {
-        return (ZipResource) this;
+    public FastReader reader() {
+        return new FastReader(this.inStream());
     }
 
 
@@ -60,39 +38,38 @@ public abstract class Resource {
         }
     }
 
-    public String readString() {
-        return new String(this.readBytes());
-    }
-
     public ByteBuffer readByteBuffer() {
         final byte[] bytes = this.readBytes();
 
-        final ByteBuffer buffer = ByteBuffer.allocateDirect(bytes.length).order(ByteOrder.nativeOrder());
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(bytes.length);
+        buffer.order(ByteOrder.nativeOrder());
         buffer.put(bytes);
         buffer.flip();
 
         return buffer;
     }
 
-    public StringList readLines() {
+    public String readString(Charset charset) {
+        return new String(this.readBytes(), charset);
+    }
+
+    public String readString() {
+        return this.readString(StandardCharsets.UTF_8);
+    }
+
+    public StringList readLines(Charset charset) {
         final StringList lines = new StringList();
 
         final FastReader reader = this.reader();
         while(reader.hasNext())
-            lines.add(reader.nextLine());
+            lines.add(reader.nextLine(charset));
         reader.close();
 
         return lines.trim();
     }
 
-
-    public FastReader reader() {
-        return new FastReader(this.inStream());
-    }
-
-
-    public ExtDataInputStream extDataInput() {
-        return new ExtDataInputStream(this.inStream());
+    public StringList readLines() {
+        return this.readLines(StandardCharsets.UTF_8);
     }
 
 
@@ -102,16 +79,58 @@ public abstract class Resource {
         return (separatorIndex == -1) ? path : path.substring(separatorIndex + 1);
     }
 
+    public String simpleName() {
+        final String name = this.name();
+        final int dotIndex = name.lastIndexOf('.');
+        return (dotIndex == -1) ? name : name.substring(0, dotIndex);
+    }
+
     public String extension() {
         final String name = this.name();
         final int dotIndex = name.lastIndexOf(".");
         return (dotIndex == -1) ? "" : name.substring(dotIndex + 1);
     }
 
-    public String simpleName() {
-        final String name = this.name();
-        final int dotIndex = name.lastIndexOf('.');
-        return (dotIndex == -1) ? name : name.substring(0, dotIndex);
+
+    public boolean isFileRes() {
+        return (this instanceof FileResource);
+    }
+
+    public boolean isTempRes() {
+        return (this instanceof TempFileResource);
+    }
+
+    public boolean isInternalRes() {
+        return (this instanceof InternalResource);
+    }
+
+    public boolean isUrlRes() {
+        return (this instanceof InternalResource);
+    }
+
+    public boolean isZipRes() {
+        return (this instanceof ZipResource);
+    }
+
+
+    public FileResource asFileRes() {
+        return ((FileResource) this);
+    }
+
+    public FileResource asTempRes() {
+        return ((TempFileResource) this);
+    }
+
+    public InternalResource asInternalRes() {
+        return ((InternalResource) this);
+    }
+
+    public URLResource asUrlRes() {
+        return ((URLResource) this);
+    }
+
+    public ZipResource asZipRes() {
+        return ((ZipResource) this);
     }
 
 
@@ -128,17 +147,41 @@ public abstract class Resource {
     }
 
 
-    public static ExternalResource external(String path) {
-        return new ExternalResource(path);
+    public static FileResource file(String path) {
+        return new FileResource(path);
     }
 
-    public static ExternalResource external(File file) {
-        return new ExternalResource(file);
+    public static FileResource file(File file) {
+        return new FileResource(file);
     }
 
-    public static ExternalResource external(File parent, String child) {
-        return new ExternalResource(parent, child);
+    public static FileResource file(File parent, String child) {
+        return new FileResource(parent, child);
     }
+
+    public static FileResource[] file(String... filepaths) {
+        final FileResource[] arr = new FileResource[filepaths.length];
+        for(int i = 0; i < arr.length; i++)
+            arr[i] = file(filepaths[i]);
+        return arr;
+    }
+
+    public static FileResource[] file(File... files) {
+        final FileResource[] arr = new FileResource[files.length];
+        for(int i = 0; i < arr.length; i++)
+            arr[i] = file(files[i]);
+        return arr;
+    }
+
+
+    public static TempFileResource temp(String prefix, String suffix, File directory) {
+        return new TempFileResource(prefix, suffix, directory);
+    }
+
+    public static TempFileResource temp(String prefix, String suffix) {
+        return new TempFileResource(prefix, suffix);
+    }
+
 
     public static InternalResource internal(String path) {
         return new InternalResource(path);
@@ -146,35 +189,6 @@ public abstract class Resource {
 
     public static InternalResource internal(Class<?> classLoader, String path) {
         return new InternalResource(classLoader, path);
-    }
-
-
-    public static URLResource url(URL url) {
-        return new URLResource(url);
-    }
-
-    public static URLResource url(String url) {
-        return new URLResource(url);
-    }
-
-
-    public static ZipResource zip(ZipFile zipFile, ZipEntry entry) {
-        return new ZipResource(zipFile, entry);
-    }
-
-
-    public static ExternalResource[] external(String... filepaths) {
-        final ExternalResource[] arr = new ExternalResource[filepaths.length];
-        for(int i = 0; i < arr.length; i++)
-            arr[i] = external(filepaths[i]);
-        return arr;
-    }
-
-    public static ExternalResource[] external(File... files) {
-        final ExternalResource[] arr = new ExternalResource[files.length];
-        for(int i = 0; i < arr.length; i++)
-            arr[i] = external(files[i]);
-        return arr;
     }
 
     public static InternalResource[] internal(String... paths) {
@@ -191,6 +205,15 @@ public abstract class Resource {
         return arr;
     }
 
+
+    public static URLResource url(URL url) {
+        return new URLResource(url);
+    }
+
+    public static URLResource url(String url) {
+        return new URLResource(url);
+    }
+
     public static URLResource[] url(URL... urls) {
         final URLResource[] arr = new URLResource[urls.length];
         for(int i = 0; i < arr.length; i++)
@@ -203,6 +226,11 @@ public abstract class Resource {
         for(int i = 0; i < arr.length; i++)
             arr[i] = url(urls[i]);
         return arr;
+    }
+
+
+    public static ZipResource zip(ZipFile zipFile, ZipEntry entry) {
+        return new ZipResource(zipFile, entry);
     }
 
     public static ZipResource[] zip(ZipFile zipFile) {

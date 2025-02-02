@@ -17,6 +17,7 @@ public class InternalResource extends Resource {
         this(InternalResource.class, path);
     }
 
+
     @Override
     public String path() {
         return path;

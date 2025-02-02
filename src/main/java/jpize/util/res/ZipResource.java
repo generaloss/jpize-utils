@@ -1,11 +1,10 @@
 package jpize.util.res;
 
 import jpize.util.Utils;
+import jpize.util.array.ObjectList;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -37,11 +36,11 @@ public class ZipResource extends Resource {
     }
 
 
-    private List<ZipEntry> listEntries() {
+    private ZipEntry[] listEntries() {
         if(this.isFile())
             throw new IllegalStateException("File entry cannot be listed");
 
-        final List<ZipEntry> entryList = new ArrayList<>();
+        final ObjectList<ZipEntry> list = new ObjectList<>();
         final Enumeration<? extends ZipEntry> entries = file.entries();
 
         while(entries.hasMoreElements()) {
@@ -49,44 +48,45 @@ public class ZipResource extends Resource {
             if(entry.isDirectory() || entry == this.entry)
                 continue;
             if(entry.getName().startsWith(this.entry.getName()))
-                entryList.add(entry);
+                list.add(entry);
         }
 
-        return entryList;
+        return list.arrayTrimmed();
     }
 
     public String[] list() {
-        final List<ZipEntry> entries = this.listEntries();
+        final ZipEntry[] entries = this.listEntries();
 
-        final String[] array = new String[entries.size()];
+        final String[] array = new String[entries.length];
         for(int i = 0; i < array.length; i++)
-            array[i] = entries.get(i).getName();
+            array[i] = entries[i].getName();
 
         return array;
     }
 
     public ZipResource[] listResources() {
-        final List<ZipEntry> entries = this.listEntries();
+        final ZipEntry[] entries = this.listEntries();
 
-        final ZipResource[] array = new ZipResource[entries.size()];
+        final ZipResource[] array = new ZipResource[entries.length];
         for(int i = 0; i < array.length; i++)
-            array[i] = new ZipResource(file, entries.get(i));
+            array[i] = new ZipResource(file, entries[i]);
 
         return array;
     }
 
 
+    public String absolutePath() {
+        return Utils.osGeneralizePath(file.getName()) + "/" + this.path();
+    }
+
+
+    @Override
     public String name() {
         String name = entry.getName();
         if(this.isDir())
             name = name.substring(0, name.length() - 1);
         return name.substring(name.lastIndexOf('/') + 1);
     }
-
-    public String absolutePath() {
-        return Utils.osGeneralizePath(file.getName()) + "/" + this.path();
-    }
-
 
     @Override
     public String path() {

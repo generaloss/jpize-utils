@@ -1,4 +1,4 @@
-import jpize.util.res.ExternalResource;
+import jpize.util.res.FileResource;
 import jpize.util.res.Resource;
 
 import java.util.ArrayList;
@@ -121,7 +121,7 @@ public class ClassWriter {
     }
 
     public ClassWriter write(String path) {
-        final ExternalResource res = Resource.external(path + "/" + name + ".java");
+        final FileResource res = Resource.file(path + "/" + name + ".java");
         res.mkAll();
         final String code = makeCode();
         res.writeString(code);

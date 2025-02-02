@@ -21,6 +21,7 @@ public class URLResource extends Resource {
         }
     }
 
+
     public URL url() {
         return url;
     }

@@ -1,6 +1,6 @@
 package jpize.util.security;
 
-import jpize.util.res.ExternalResource;
+import jpize.util.res.FileResource;
 import jpize.util.res.Resource;
 
 import javax.crypto.BadPaddingException;
@@ -46,7 +46,7 @@ public class PublicRSA {
     }
 
 
-    public boolean save(ExternalResource res) {
+    public boolean save(FileResource res) {
         if(res.mkAll()){
             res.writeBytes(key.getEncoded());
             return true;
