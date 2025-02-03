@@ -1,55 +1,51 @@
 package jpize.util.math.geometry;
 
-import jpize.util.array.ObjectList;
 import jpize.util.math.vector.Vec2f;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Polygon {
 
     private final Vertices2f vertices;
-    private final ObjectList<Vertices2f> holes;
+    private final List<Vertices2f> holes;
 
     public Polygon() {
         this.vertices = new Vertices2f();
-        this.holes = new ObjectList<>();
+        this.holes = new ArrayList<>();
     }
 
     public Vertices2f vertices() {
         return vertices;
     }
 
-    public ObjectList<Vertices2f> holes() {
+    public List<Vertices2f> holes() {
         return holes;
     }
 
 
     public Rect getBounds(Rect dst) {
-        vertices.trim();
-        return dst.calculateFor(vertices.array());
+        return dst.calculateFor(vertices);
     }
 
     public Vec2f getCenterOfGravity(Vec2f dst) {
-        vertices.trim();
-        return getCenterOfGravity(dst, vertices.array());
+        return getCenterOfGravity(dst, vertices);
     }
     
     public float getArea() {
-        vertices.trim();
-        float area = getArea(vertices.array());
+        float area = getArea(vertices);
         for(Vertices2f hole: holes){
-            hole.trim();
-            area -= getArea(hole.array());
+            area -= getArea(hole);
         }
         return area;
     }
 
     public boolean isPointOn(float x, float y) {
-        vertices.trim();
         for(Vertices2f hole: holes){
-            hole.trim();
-            if(isPointIn(x, y, hole.array()))
+            if(isPointIn(x, y, hole))
                 return false;
         }
-        return isPointOn(x, y, vertices.array());
+        return isPointOn(x, y, vertices);
     }
 
     public boolean isPointOn(Vec2f point) {
@@ -57,13 +53,11 @@ public class Polygon {
     }
 
     public boolean isPointIn(float x, float y) {
-        vertices.trim();
         for(Vertices2f hole: holes){
-            hole.trim();
-            if(isPointOn(x, y, hole.array()))
+            if(isPointOn(x, y, hole))
                 return false;
         }
-        return isPointIn(x, y, vertices.array());
+        return isPointIn(x, y, vertices);
     }
 
     public boolean isPointIn(Vec2f point) {
@@ -71,20 +65,18 @@ public class Polygon {
     }
 
     public boolean isIntersectPolygon(Polygon polygon) {
-        vertices.trim();
-        polygon.vertices.trim();
-        return isIntersectPolygon(vertices.array(), polygon.vertices.array());
+        return isIntersectPolygon(vertices, polygon.vertices);
     }
 
 
 
-    public static Vec2f getCenterOfGravity(Vec2f dst, Vec2f... vertices) {
+    public static Vec2f getCenterOfGravity(Vec2f dst, List<Vec2f> vertices) {
         float area = 0F;
 
         dst.zero();
-        for(int i = 0; i < vertices.length; i++) {
-            final Vec2f vertex1 = vertices[i];
-            final Vec2f vertex2 = vertices[(i + 1) % vertices.length];
+        for(int i = 0; i < vertices.size(); i++) {
+            final Vec2f vertex1 = vertices.get(i);
+            final Vec2f vertex2 = vertices.get((i + 1) % vertices.size());
 
             final float sumy = (vertex1.y + vertex2.y);
             final float mulxy = (vertex1.x * vertex2.y - vertex2.x * vertex1.y);
@@ -117,12 +109,12 @@ public class Polygon {
     }
 
 
-    public static float getArea(Vec2f... vertices) {
+    public static float getArea(List<Vec2f> vertices) {
         float area = 0F;
 
-        for(int i = 0; i < vertices.length; i++) {
-            final Vec2f vertex1 = vertices[i];
-            final Vec2f vertex2 = vertices[(i + 1) % vertices.length];
+        for(int i = 0; i < vertices.size(); i++) {
+            final Vec2f vertex1 = vertices.get(i);
+            final Vec2f vertex2 = vertices.get((i + 1) % vertices.size());
             
             area += (vertex1.y + vertex2.y) * (vertex1.x - vertex2.x);
         }
@@ -148,12 +140,12 @@ public class Polygon {
     }
 
 
-    public static boolean isPointOn(float pointX, float pointY, Vec2f... vertices) {
+    public static boolean isPointOn(float pointX, float pointY, List<Vec2f> vertices) {
         boolean inside = false;
 
-        for(int i = 0; i < vertices.length; i++) {
-            final Vec2f vertex1 = vertices[i];
-            final Vec2f vertex2 = vertices[(i + 1) % vertices.length];
+        for(int i = 0; i < vertices.size(); i++) {
+            final Vec2f vertex1 = vertices.get(i);
+            final Vec2f vertex2 = vertices.get((i + 1) % vertices.size());
 
             if(Intersector.isPointOnSegment(pointX, pointY, vertex1, vertex2))
                 return true;
@@ -167,7 +159,7 @@ public class Polygon {
         return inside;
     }
 
-    public static boolean isPointOn(Vec2f point, Vec2f... vertices) {
+    public static boolean isPointOn(Vec2f point, List<Vec2f> vertices) {
         return isPointOn(point.x, point.y, vertices);
     }
 
@@ -199,12 +191,12 @@ public class Polygon {
     }
 
 
-    public static boolean isPointIn(float pointX, float pointY, Vec2f... vertices) {
+    public static boolean isPointIn(float pointX, float pointY, List<Vec2f> vertices) {
         boolean inside = false;
 
-        for(int i = 0; i < vertices.length; i++) {
-            final Vec2f vertex1 = vertices[i];
-            final Vec2f vertex2 = vertices[(i + 1) % vertices.length];
+        for(int i = 0; i < vertices.size(); i++) {
+            final Vec2f vertex1 = vertices.get(i);
+            final Vec2f vertex2 = vertices.get((i + 1) % vertices.size());
 
             if(Intersector.isPointOnSegment(pointX, pointY, vertex1, vertex2))
                 return false;
@@ -218,7 +210,7 @@ public class Polygon {
         return inside;
     }
 
-    public static boolean isPointIn(Vec2f point, Vec2f... vertices) {
+    public static boolean isPointIn(Vec2f point, List<Vec2f> vertices) {
         return isPointIn(point.x, point.y, vertices);
     }
 
@@ -250,19 +242,19 @@ public class Polygon {
     }
 
 
-    public static boolean isIntersectPolygon(Vec2f[] verticesA, Vec2f... verticesB) {
-        for(int i = 0; i < verticesA.length; i++){
-            final Vec2f a1 = verticesA[i];
-            final Vec2f a2 = verticesA[(i + 1) % verticesA.length];
+    public static boolean isIntersectPolygon(List<Vec2f> verticesA, List<Vec2f> verticesB) {
+        for(int i = 0; i < verticesA.size(); i++){
+            final Vec2f a1 = verticesA.get(i);
+            final Vec2f a2 = verticesA.get((i + 1) % verticesA.size());
 
             // check points 1
             if(isPointOn(a1, verticesB))
                 return true;
 
             // check segments
-            for(int j = 0; j < verticesB.length; j++){
-                final Vec2f b1 = verticesB[j];
-                final Vec2f b2 = verticesB[(j + 1) % verticesA.length];
+            for(int j = 0; j < verticesB.size(); j++){
+                final Vec2f b1 = verticesB.get(j);
+                final Vec2f b2 = verticesB.get((j + 1) % verticesA.size());
 
                 if(Intersector.isSegmentIntersectSegment(a1, a2, b1, b2))
                     return true;

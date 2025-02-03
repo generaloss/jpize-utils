@@ -3,6 +3,7 @@ package jpize.util.math.geometry;
 import jpize.util.math.vector.Vec2f;
 import jpize.util.math.vector.Vec4f;
 
+import java.util.Collection;
 import java.util.Objects;
 
 public class Rect {
@@ -100,7 +101,7 @@ public class Rect {
     }
 
 
-    public Rect calculateFor(Vec2f... points) {
+    public Rect calculateFor(Collection<Vec2f> points) {
         this.setPosition(Float.MAX_VALUE);
         this.setSize(0F);
 

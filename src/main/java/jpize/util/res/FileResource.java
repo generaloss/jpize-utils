@@ -1,12 +1,13 @@
 package jpize.util.res;
 
 import jpize.util.Utils;
-import jpize.util.array.ObjectList;
 import jpize.util.io.ExtDataOutputStream;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileResource extends Resource {
 
@@ -157,13 +158,13 @@ public class FileResource extends Resource {
         if(list == null)
             return new FileResource[0];
 
-        final ObjectList<FileResource> resources = new ObjectList<>(list.length);
+        final List<FileResource> resources = new ArrayList<>(list.length);
 
         for(String name: list)
             if(filter.accept(file, name))
                 resources.add(this.child(name));
 
-        return resources.arrayTrimmed();
+        return resources.toArray(new FileResource[0]);
     }
 
 

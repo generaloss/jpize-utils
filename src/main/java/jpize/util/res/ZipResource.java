@@ -1,10 +1,11 @@
 package jpize.util.res;
 
 import jpize.util.Utils;
-import jpize.util.array.ObjectList;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -40,7 +41,7 @@ public class ZipResource extends Resource {
         if(this.isFile())
             throw new IllegalStateException("File entry cannot be listed");
 
-        final ObjectList<ZipEntry> list = new ObjectList<>();
+        final List<ZipEntry> list = new ArrayList<>();
         final Enumeration<? extends ZipEntry> entries = file.entries();
 
         while(entries.hasMoreElements()) {
@@ -51,7 +52,7 @@ public class ZipResource extends Resource {
                 list.add(entry);
         }
 
-        return list.arrayTrimmed();
+        return list.toArray(new ZipEntry[0]);
     }
 
     public String[] list() {

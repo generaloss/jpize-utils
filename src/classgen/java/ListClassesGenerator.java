@@ -11,7 +11,6 @@ public class ListClassesGenerator {
         newClass("BoolList", "boolean", "10", "false");
         newClass("CharList", "char", "10", "(char) 0");
         newClass("StringList", "String", "3", "null");
-        newClass("ObjectList", "Object", "3", "null");
     }
 
     public static final boolean ADD_ARRAY_SUPPORT = false;
@@ -38,17 +37,8 @@ public class ListClassesGenerator {
         final boolean isString = datatype.equals("String");
         final boolean isBool = datatype.equals("boolean");
         final boolean isChar = datatype.equals("char");
-        final boolean isObject = datatype.equals("Object");
 
         final boolean hasBufferOps = (bufferClass != null);
-
-        final boolean hasGenerics = isObject;
-        final String datatypeGenerics = (hasGenerics ? "T" : datatype);
-        final String generics = (hasGenerics ? "<" + datatypeGenerics + ">" : "");
-        final String someGenerics = (hasGenerics ? "<?>" : "");
-        final String classnameGenerics = (hasGenerics ? (classname + generics) : classname);
-        final String genericsArrayCast = (hasGenerics ? "(" + datatypeGenerics + "[]) " : "");
-        final String genericsCast = (hasGenerics ? "(" + datatypeGenerics + ") " : "");
 
         final String datatypeWrapper = switch(datatype){
             case "int" -> "Integer";
@@ -59,14 +49,13 @@ public class ListClassesGenerator {
             case "char" -> "Character";
             case "short" -> "Short";
             case "float" -> "Float";
-            case "Object" -> "T";
             default -> datatype;
         };
 
         // create class
         final String savepath = "src/main/java/jpize/util/array/";
 
-        final ClassWriter w = new ClassWriter("jpize.util.array", classname, generics, "implements Iterable<" + datatypeWrapper + ">");
+        final ClassWriter w = new ClassWriter("jpize.util.array", classname, "", "implements Iterable<" + datatypeWrapper + ">");
 
         // imports
         w.addImport("java.util.function.Function");
@@ -89,7 +78,7 @@ public class ListClassesGenerator {
             "   throw new IllegalArgumentException();",
             "this.array = new " + datatype + "[capacity];"
         );
-        w.addConstructor("(" + datatypeGenerics + "... items)",
+        w.addConstructor("(" + datatype + "... items)",
             "this.size = items.length;",
             "this.array = items;"
         );
@@ -98,7 +87,7 @@ public class ListClassesGenerator {
                 "this(string.toCharArray());"
             );
         }
-        w.addConstructor("(" + classnameGenerics + " list)",
+        w.addConstructor("(" + classname + " list)",
             "this.size = list.size;",
             "this.array = list.copyOf();"
         );
@@ -147,13 +136,13 @@ public class ListClassesGenerator {
         w.addMethodSplitter();
 
         // methods
-        w.addMethod("public " + datatypeGenerics + "[] array()",
-            "return " + genericsArrayCast + "array;"
+        w.addMethod("public " + datatype + "[] array()",
+            "return array;"
         );
-        w.addMethod("public " + datatypeGenerics + "[] arrayTrimmed()",
+        w.addMethod("public " + datatype + "[] arrayTrimmed()",
             "if(array.length == size)",
-            "    return " + genericsArrayCast + "array;",
-            "return " + genericsArrayCast + "Arrays.copyOf(array, size);"
+            "    return array;",
+            "return Arrays.copyOf(array, size);"
         );
         w.addMethod("public int size()",
             "return size;"
@@ -184,7 +173,7 @@ public class ListClassesGenerator {
         //
         w.addMethodSplitter();
 
-        w.addMethod("public " + classnameGenerics + " add(" + datatypeGenerics + " element)",
+        w.addMethod("public " + classname + " add(" + datatype + " element)",
             "if(size == array.length)",
             "   this.grow();",
             "",
@@ -192,7 +181,7 @@ public class ListClassesGenerator {
             "size++;",
             "return this;"
         );
-        w.addMethod("public " + classnameGenerics + " add(" + datatypeGenerics + "... elements)",
+        w.addMethod("public " + classname + " add(" + datatype + "... elements)",
             "if(size + elements.length >= array.length)",
             "    this.grow(size + elements.length);",
             "",
@@ -200,7 +189,7 @@ public class ListClassesGenerator {
             "size += elements.length;",
             "return this;"
         );
-        w.addMethod("public " + classnameGenerics + " add(" + classnameGenerics + " list)",
+        w.addMethod("public " + classname + " add(" + classname + " list)",
             "if(list.size() == list.capacity()){",
             "    this.add(list.array());",
             "}else{",
@@ -208,7 +197,7 @@ public class ListClassesGenerator {
             "}",
             "return this;"
         );
-        w.addMethod("public " + classnameGenerics + " add(int i, " + datatypeGenerics + " element)",
+        w.addMethod("public " + classname + " add(int i, " + datatype + " element)",
             "final int minCapacity = Math.max(size, i) + 1;",
             "if(minCapacity >= array.length)",
             "    this.grow(minCapacity);",
@@ -223,7 +212,7 @@ public class ListClassesGenerator {
             "    size += growth;",
             "return this;"
         );
-        w.addMethod("public " + classnameGenerics + " add(int i, " + datatypeGenerics + "... elements)",
+        w.addMethod("public " + classname + " add(int i, " + datatype + "... elements)",
             "if(elements.length == 0)",
             "    return this;",
             "",
@@ -240,10 +229,10 @@ public class ListClassesGenerator {
             "    size += growth;",
             "return this;"
         );
-        w.addMethod("public " + classnameGenerics + " addFirst(" + datatypeGenerics + " element)",
+        w.addMethod("public " + classname + " addFirst(" + datatype + " element)",
             "return this.add(0, element);"
         );
-        w.addMethod("public " + classnameGenerics + " addFirst(" + datatypeGenerics + "... elements)",
+        w.addMethod("public " + classname + " addFirst(" + datatype + "... elements)",
             "return this.add(0, elements);"
         );
 
@@ -277,28 +266,28 @@ public class ListClassesGenerator {
                 "return this;"
             );
         }else{
-            w.addMethod("public " + classnameGenerics + " addAll(Iterable<" + datatypeWrapper + "> iterable)",
+            w.addMethod("public " + classname + " addAll(Iterable<" + datatypeWrapper + "> iterable)",
                 "for(" + datatypeWrapper + " item: iterable)",
                 "    this.add(item);",
                 "return this;"
             );
-            w.addMethod("public " + classnameGenerics + " addAll(Collection<" + datatypeWrapper + "> collection)",
+            w.addMethod("public " + classname + " addAll(Collection<" + datatypeWrapper + "> collection)",
                 "for(" + datatypeWrapper + " item: collection)",
                 "    this.add(item);",
                 "return this;"
             );
         }
-        w.addMethod("public <O> " + classnameGenerics + " addAll(Iterable<O> iterable, Function<O, " + datatypeWrapper + "> func)",
+        w.addMethod("public <O> " + classname + " addAll(Iterable<O> iterable, Function<O, " + datatypeWrapper + "> func)",
             "for(O object: iterable)",
             "    this.add(func.apply(object));",
             "return this;"
         );
-        w.addMethod("public <O> " + classnameGenerics + " addAll(Collection<O> collection, Function<O, " + datatypeWrapper + "> func)",
+        w.addMethod("public <O> " + classname + " addAll(Collection<O> collection, Function<O, " + datatypeWrapper + "> func)",
             "for(O object: collection)",
             "    this.add(func.apply(object));",
             "return this;"
         );
-        w.addMethod("public <O> " + classnameGenerics + " addAll(O[] array, Function<O, " + datatypeWrapper + "> func)",
+        w.addMethod("public <O> " + classname + " addAll(O[] array, Function<O, " + datatypeWrapper + "> func)",
             "for(O object: array)",
             "    this.add(func.apply(object));",
             "return this;"
@@ -307,7 +296,7 @@ public class ListClassesGenerator {
         //
         w.addMethodSplitter();
 
-        w.addMethod("public " + classnameGenerics + " remove(int i, int len)",
+        w.addMethod("public " + classname + " remove(int i, int len)",
             "len = Math.min(len, size - i);",
             "if(len <= 0)",
             "    return this;",
@@ -322,15 +311,15 @@ public class ListClassesGenerator {
             "size -= len;",
             "return this;"
         );
-        w.addMethod("public " + datatypeGenerics + " remove(int i)",
-            "final " + datatypeGenerics + " val = this.get(i);",
+        w.addMethod("public " + datatype + " remove(int i)",
+            "final " + datatype + " val = this.get(i);",
             "this.remove(i, 1);",
             "return val;"
         );
-        w.addMethod("public " + datatypeGenerics + " removeFirst()",
+        w.addMethod("public " + datatype + " removeFirst()",
             "return this.remove(0);"
         );
-        w.addMethod("public " + datatypeGenerics + " removeLast()",
+        w.addMethod("public " + datatype + " removeLast()",
             "return this.remove(this.lastIndex());"
         );
         w.addMethod("public " + datatypeWrapper + " removeFirst(" + datatype + " value)",
@@ -384,12 +373,12 @@ public class ListClassesGenerator {
         //
         w.addMethodSplitter();
 
-        w.addMethod("public " + classnameGenerics + " clear()",
+        w.addMethod("public " + classname + " clear()",
             "Arrays.fill(array, 0, size, " + clearValue + ");",
             "size = 0;",
             "return this;"
         );
-        w.addMethod("public " + classnameGenerics + " fill(" + datatype + " value)",
+        w.addMethod("public " + classname + " fill(" + datatype + " value)",
             "Arrays.fill(array, 0, size, value);",
             "return this;"
         );
@@ -397,13 +386,13 @@ public class ListClassesGenerator {
         //
         w.addMethodSplitter();
 
-        w.addMethod("public " + classnameGenerics + " trim()",
+        w.addMethod("public " + classname + " trim()",
             "if(array.length == size)",
             "    return this;",
             "array = Arrays.copyOf(array, size);",
             "return this;"
         );
-        w.addMethod("public " + classnameGenerics + " capacity(int newCapacity)",
+        w.addMethod("public " + classname + " capacity(int newCapacity)",
             "if(newCapacity == 0){",
             "    array = new " + datatype + "[0];",
             "}else{",
@@ -416,23 +405,23 @@ public class ListClassesGenerator {
         //
         w.addMethodSplitter();
 
-        w.addMethod("public " + datatypeGenerics + " get(int i)",
-            "return " + genericsCast + "array[i];"
+        w.addMethod("public " + datatype + " get(int i)",
+            "return array[i];"
         );
-        w.addMethod("public " + datatypeGenerics + " getFirst()",
+        w.addMethod("public " + datatype + " getFirst()",
             "return this.get(0);"
         );
-        w.addMethod("public " + datatypeGenerics + " getLast()",
+        w.addMethod("public " + datatype + " getLast()",
             "return this.get(this.lastIndex());"
         );
-        w.addMethod("public " + classnameGenerics + " set(int i, " + datatype + " newValue)",
+        w.addMethod("public " + classname + " set(int i, " + datatype + " newValue)",
             "array[i] = newValue;",
             "return this;"
         );
-        w.addMethod("public " + classnameGenerics + " setFirst(" + datatype + " newValue)",
+        w.addMethod("public " + classname + " setFirst(" + datatype + " newValue)",
             "return this.set(0, newValue);"
         );
-        w.addMethod("public " + classnameGenerics + " setLast(" + datatype + " newValue)",
+        w.addMethod("public " + classname + " setLast(" + datatype + " newValue)",
             "return this.set(this.lastIndex(), newValue);"
         );
 
@@ -509,18 +498,18 @@ public class ListClassesGenerator {
         w.addMethod("public " + datatype + "[] copyOfRange(int from, int to)",
             "return this.copyOf(from, to - from);"
         );
-        w.addMethod("public " + classnameGenerics + " copyTo(" + datatype + "[] dst, int offset, int length)",
+        w.addMethod("public " + classname + " copyTo(" + datatype + "[] dst, int offset, int length)",
             "System.arraycopy(array, 0, dst, offset, length);",
             "return this;"
         );
-        w.addMethod("public " + classnameGenerics + " copyTo(" + datatype + "[] dst, int offset)",
+        w.addMethod("public " + classname + " copyTo(" + datatype + "[] dst, int offset)",
             "return this.copyTo(dst, offset, size);"
         );
-        w.addMethod("public " + classnameGenerics + " copyTo(" + datatype + "[] dst)",
+        w.addMethod("public " + classname + " copyTo(" + datatype + "[] dst)",
             "return this.copyTo(dst, 0);"
         );
-        w.addMethod("public " + classnameGenerics + " copy()",
-            "return new " + classnameGenerics + "(this);"
+        w.addMethod("public " + classname + " copy()",
+            "return new " + classname + "(this);"
         );
 
         //
@@ -543,7 +532,7 @@ public class ListClassesGenerator {
             "    return true;",
             "if(object == null || getClass() != object.getClass())",
             "    return false;",
-            "final " + classname + someGenerics + " list = (" + classname + someGenerics + ") object;",
+            "final " + classname + " list = (" + classname + ") object;",
             "return (size == list.size && Objects.deepEquals(array, list.array));"
         );
         w.addAnnotatedMethod("@Override", "public int hashCode()",
@@ -558,7 +547,7 @@ public class ListClassesGenerator {
             "    }",
             "    @Override",
             "    public " + datatypeWrapper + " next() {",
-            "        return " + genericsCast + "array[index++];",
+            "        return array[index++];",
             "    }",
             "};"
         );
