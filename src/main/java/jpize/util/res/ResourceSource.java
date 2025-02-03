@@ -1,7 +1,7 @@
 package jpize.util.res;
 
 @FunctionalInterface
-public interface IResourceSource {
+public interface ResourceSource {
 
     Resource getResource(String path);
 

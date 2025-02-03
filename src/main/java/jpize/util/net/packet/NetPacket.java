@@ -1,11 +1,11 @@
-package jpize.util.net.tcp.packet;
+package jpize.util.net.packet;
 
 import jpize.util.io.ExtDataInputStream;
 import jpize.util.io.ExtDataOutputStream;
 
 import java.io.IOException;
 
-public abstract class NetPacket<T extends INetPacketHandler> {
+public abstract class NetPacket<H> {
 
     private final short ID;
 
@@ -21,7 +21,7 @@ public abstract class NetPacket<T extends INetPacketHandler> {
 
     abstract public void read(ExtDataInputStream stream) throws IOException;
 
-    abstract public void handle(T handler);
+    abstract public void handle(H handler);
 
 
     public static short getIDByClass(Class<?> c) {

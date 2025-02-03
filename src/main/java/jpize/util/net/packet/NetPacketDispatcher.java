@@ -1,4 +1,4 @@
-package jpize.util.net.tcp.packet;
+package jpize.util.net.packet;
 
 import jpize.util.io.ExtDataInputStream;
 
@@ -10,7 +10,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-@SuppressWarnings("unchecked")
 public class NetPacketDispatcher {
 
     private final Map<Short, Class<? extends NetPacket<?>>> packetClasses;
@@ -21,6 +20,7 @@ public class NetPacketDispatcher {
         this.toHandleQueue = new ConcurrentLinkedQueue<>();
     }
 
+    @SafeVarargs
     public final NetPacketDispatcher register(Class<? extends NetPacket<?>>... packetClasses) {
         for(Class<? extends NetPacket<?>> packetClass : packetClasses){
             final short ID = NetPacket.getIDByClass(packetClass);
@@ -29,7 +29,7 @@ public class NetPacketDispatcher {
         return this;
     }
 
-    public boolean readPacket(byte[] bytes, INetPacketHandler handler) {
+    public boolean readPacket(byte[] bytes, Object handler) {
         try{
             // check
             if(bytes.length < 2) // 'short' (ID) size = 2
@@ -45,7 +45,7 @@ public class NetPacketDispatcher {
                 return false;
 
             // create packet class instance and read remaining data
-            final NetPacket<INetPacketHandler> packetInstance = instancePacket(packetClass);
+            final NetPacket<Object> packetInstance = instancePacket(packetClass);
             packetInstance.read(dataStream);
 
             // handle and return
@@ -67,11 +67,12 @@ public class NetPacketDispatcher {
         return count;
     }
 
-    private NetPacket<INetPacketHandler> instancePacket(Class<?> packetClass) {
+    @SuppressWarnings("unchecked")
+    private NetPacket<Object> instancePacket(Class<?> packetClass) {
         try{
             final Constructor<?> constructor = packetClass.getDeclaredConstructor();
             constructor.setAccessible(true);
-            return (NetPacket<INetPacketHandler>) constructor.newInstance();
+            return (NetPacket<Object>) constructor.newInstance();
 
         }catch(Exception e){
             throw new RuntimeException("Unable to instance packet: " + packetClass.getName(), e);

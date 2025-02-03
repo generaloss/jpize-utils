@@ -1,7 +1,7 @@
 package jpize.util.res.handle;
 
 import jpize.util.Disposable;
-import jpize.util.res.IResourceSource;
+import jpize.util.res.ResourceSource;
 
 public abstract class ResHandle<K, H> implements Disposable {
 
@@ -22,7 +22,7 @@ public abstract class ResHandle<K, H> implements Disposable {
     }
 
 
-    abstract public void load(IResourceSource source, String path);
+    abstract public void load(ResourceSource source, String path);
 
     abstract public H resource();
 

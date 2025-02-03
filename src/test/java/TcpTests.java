@@ -3,9 +3,8 @@ import jpize.util.io.ExtDataOutputStream;
 import jpize.util.net.tcp.TCPClient;
 import jpize.util.net.tcp.TCPConnection;
 import jpize.util.net.tcp.TCPServer;
-import jpize.util.net.tcp.packet.NetPacket;
-import jpize.util.net.tcp.packet.NetPacketDispatcher;
-import jpize.util.net.tcp.packet.INetPacketHandler;
+import jpize.util.net.packet.NetPacket;
+import jpize.util.net.packet.NetPacketDispatcher;
 import jpize.util.security.AESKey;
 import jpize.util.time.TimeUtils;
 import org.junit.Assert;
@@ -261,7 +260,7 @@ public class TcpTests {
         server.close();
     }
 
-    interface MsgHandler extends INetPacketHandler {
+    interface MsgHandler {
         void acceptMsg(String message);
     }
 

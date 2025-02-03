@@ -1,52 +1,52 @@
 package jpize.util.res.handle;
 
 import jpize.util.Disposable;
-import jpize.util.res.IResourceSource;
+import jpize.util.res.ResourceSource;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ResHandleMap<K, H extends ResHandle<K, ?>> implements Disposable {
 
-    private IResHandleFactory<K, H> handleFactory;
-    private IResourceSource source;
+    private ResHandleFactory<K, H> handleFactory;
+    private ResourceSource source;
     private final Map<K, H> map;
 
     public ResHandleMap() {
         this.map = new HashMap<>();
     }
 
-    public ResHandleMap(IResourceSource source) {
+    public ResHandleMap(ResourceSource source) {
         this();
         this.setSource(source);
     }
 
-    public ResHandleMap(IResHandleFactory<K, H> handleFactory) {
+    public ResHandleMap(ResHandleFactory<K, H> handleFactory) {
         this();
         this.setHandleFactory(handleFactory);
     }
 
-    public ResHandleMap(IResourceSource source, IResHandleFactory<K, H> handleFactory) {
+    public ResHandleMap(ResourceSource source, ResHandleFactory<K, H> handleFactory) {
         this();
         this.setSource(source);
         this.setHandleFactory(handleFactory);
     }
 
 
-    public IResHandleFactory<K, H> getHandleFactory() {
+    public ResHandleFactory<K, H> getHandleFactory() {
         return handleFactory;
     }
 
-    public void setHandleFactory(IResHandleFactory<K, H> handleFactory) {
+    public void setHandleFactory(ResHandleFactory<K, H> handleFactory) {
         this.handleFactory = handleFactory;
     }
 
 
-    public IResourceSource getSource() {
+    public ResourceSource getSource() {
         return source;
     }
 
-    public void setSource(IResourceSource source) {
+    public void setSource(ResourceSource source) {
         this.source = source;
     }
 

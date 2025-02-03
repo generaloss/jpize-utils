@@ -2,7 +2,7 @@ package jpize.util.net.tcp;
 
 import jpize.util.Utils;
 import jpize.util.io.DataStreamWriter;
-import jpize.util.net.tcp.packet.NetPacket;
+import jpize.util.net.packet.NetPacket;
 import jpize.util.security.AESKey;
 
 import javax.crypto.BadPaddingException;

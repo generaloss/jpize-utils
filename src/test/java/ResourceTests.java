@@ -30,7 +30,6 @@ public class ResourceTests {
     @Test
     public void fileTempFileTest1() {
         final FileResource res = Resource.temp("jpize-temp-res-test-", ".txt");
-        res.create();
         res.deleteOnExit();
         Assert.assertTrue(res.exists());
         Assert.assertTrue(res.isFile());

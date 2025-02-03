@@ -2,9 +2,10 @@ package jpize.util.array;
 
 import java.lang.reflect.Array;
 
-@SuppressWarnings("unchecked")
+
 public class ArrayUtils {
 
+    @SuppressWarnings("unchecked")
     public static <T extends Array> T[] concatenate(T[] a, T[] b) {
         final T[] c = (T[]) Array.newInstance(a
             .getClass()
@@ -16,6 +17,7 @@ public class ArrayUtils {
         return c;
     }
 
+    @SafeVarargs
     public static <T extends Array> T[] concatenate(T[] a, T[]... other) {
         for(T[] b: other)
             a = concatenate(a, b);
