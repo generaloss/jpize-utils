@@ -7,7 +7,7 @@
     <version>25.2.3</version>
     <name>jpize-utils</name>
 
-    <description>utils library</description>
+    <description>Utils Library</description>
     <url>https://github.com/generaloss/jpize-utils</url>
 
     <dependencies>
