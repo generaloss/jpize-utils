@@ -10,8 +10,6 @@ public class Matrix3f implements Matrix3 {
 
     public final float[] val;
 
-    /* Constructor */
-
     public Matrix3f() {
         this.val = new float[16];
         this.val[m00] = 1F;
@@ -28,8 +26,6 @@ public class Matrix3f implements Matrix3 {
         this(matrix.val);
     }
 
-
-    /* Set */
 
     public Matrix3f set(float... values) {
         System.arraycopy(values, 0, val, 0, values.length);
@@ -145,6 +141,7 @@ public class Matrix3f implements Matrix3 {
         return this.setScale(vec2.x, vec2.y);
     }
 
+
     /* Scale */
 
     public Matrix3f scale(float x, float y) {
@@ -182,6 +179,7 @@ public class Matrix3f implements Matrix3 {
         return this.scale(vec2.x, vec2.y);
     }
 
+
     /* Set Rotation */
 
     public Matrix3f setRotationRad(double radians) {
@@ -197,7 +195,7 @@ public class Matrix3f implements Matrix3 {
     }
 
     public Matrix3f setRotation(double degrees) {
-        return this.setRotationRad(degrees * Maths.toRad);
+        return this.setRotationRad(degrees * Maths.TO_RAD);
     }
 
 

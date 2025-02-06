@@ -2,21 +2,24 @@ package jpize.util.math;
 
 public class Maths {
 
-    public static final float e = 2.718281828459045F;
-    public static final float pi = 3.141592653589793F;
-    public static final float twoPI = pi * 2;
-    public static final float halfPI = pi * 0.5F;
-    public static final float toDeg = 57.29577951308232F;
-    public static final float toRad = 0.017453292519943295F;
-    public static final float sqrt2 = Mathc.sqrt(2);
-    public static final float sqrt3 = Mathc.sqrt(3);
-    public static final float sqrt4 = Mathc.sqrt(4);
-    public static final float nanosInSecf = 1_000_000_000;
-    public static final float nanosInMsf = 1_000_000;
-    public static final float msInSecf = 1_000;
-    public static final int nanosInSeci = 1_000_000_000;
-    public static final int nanosInMsi = 1_000_000;
-    public static final int msInSeci = 1_000;
+    public static final float E = 2.718281828459045F;
+    public static final float PI = 3.141592653589793F;
+    public static final float TWO_PI = PI * 2;
+    public static final float HALF_PI = PI * 0.5F;
+
+    public static final float TO_DEG = 57.29577951308232F;
+    public static final float TO_RAD = 0.017453292519943295F;
+
+    public static final float SQRT2 = Mathc.sqrt(2);
+    public static final float SQRT3 = Mathc.sqrt(3);
+    public static final float SQRT4 = Mathc.sqrt(4);
+
+    public static final float NANOSf = 1_000_000_000;
+    public static final float NANOS_IN_MSf = 1_000_000;
+    public static final float MSf = 1_000;
+    public static final int NANOSi = 1_000_000_000;
+    public static final int NANOS_IN_MSi = 1_000_000;
+    public static final int MSi = 1_000;
 
 
     public static float sinFromCos(float cos) {
@@ -175,7 +178,7 @@ public class Maths {
     }
 
     public static float cosine(float t) {
-        return (1 - Mathc.cos(t / pi)) / 2;
+        return (1 - Mathc.cos(t / PI)) / 2;
     }
 
     public static float quintic(float t) {
@@ -199,6 +202,21 @@ public class Maths {
         return Math.max(0.1F * x, x);
     }
 
+    public static float gelu(float x) {
+        return x * 0.5F * (1F + Mathc.tanh(
+            0.7978845608028654F * (0.044715F * x * x * x + x)
+        ));
+    }
+
+    public static float selu(float x) {
+        return 1.0507009873554804934193349852946F * (
+            Math.max(0, x) + Math.min(0,
+                1.6732632423543772848170429916717F *
+                (Mathc.exp(x) - 1F)
+            )
+        );
+    }
+
 
     public static float map(float value, float fromLow, float fromHigh, float toLow, float toHigh) {
         return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
@@ -210,15 +228,15 @@ public class Maths {
 
 
     public static float sinDeg(double a) {
-        return Mathc.sin(a * toRad);
+        return Mathc.sin(a * TO_RAD);
     }
 
     public static float cosDeg(double a) {
-        return Mathc.cos(a * toRad);
+        return Mathc.cos(a * TO_RAD);
     }
 
     public static float tanDeg(double a) {
-        return Mathc.tan(a * toRad);
+        return Mathc.tan(a * TO_RAD);
     }
 
 

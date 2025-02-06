@@ -4,19 +4,13 @@
 
     <groupId>io.github.generaloss</groupId>
     <artifactId>jpize-utils</artifactId>
-    <version>25.2.3</version>
+    <version>25.2.4-SNAPSHOT-1</version>
     <name>jpize-utils</name>
 
     <description>Utils Library</description>
     <url>https://github.com/generaloss/jpize-utils</url>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- junit -->
         <dependency>
             <groupId>junit</groupId>

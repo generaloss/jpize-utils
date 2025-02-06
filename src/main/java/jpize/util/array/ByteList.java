@@ -3,7 +3,6 @@ package jpize.util.array;
 import java.util.function.Function;
 import java.util.*;
 import java.nio.*;
-import org.jetbrains.annotations.NotNull;
 
 public class ByteList implements Iterable<Byte> {
 
@@ -425,7 +424,6 @@ public class ByteList implements Iterable<Byte> {
     }
 
     @Override
-    @NotNull
     public Iterator<Byte> iterator() {
         return new Iterator<>() {
             private int index;

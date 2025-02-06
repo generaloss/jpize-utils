@@ -3,7 +3,6 @@ package jpize.util.array;
 import java.util.function.Function;
 import java.util.*;
 import java.nio.*;
-import org.jetbrains.annotations.NotNull;
 
 public class BoolList implements Iterable<Boolean> {
 
@@ -405,7 +404,6 @@ public class BoolList implements Iterable<Boolean> {
     }
 
     @Override
-    @NotNull
     public Iterator<Boolean> iterator() {
         return new Iterator<>() {
             private int index;

@@ -61,7 +61,6 @@ public class ListClassesGenerator {
         w.addImport("java.util.function.Function");
         w.addImport("java.util.*");
         if(hasBufferOps) w.addImport("java.nio.*");
-        w.addImport("org.jetbrains.annotations.NotNull");
         if(ADD_ARRAY_SUPPORT) w.addImport("jpize.util.array.ArraysSupport");
 
         // fields
@@ -538,7 +537,7 @@ public class ListClassesGenerator {
         w.addAnnotatedMethod("@Override", "public int hashCode()",
             "return Objects.hash(Arrays.hashCode(array), size);"
         );
-        w.addAnnotatedMethod("@Override\n    @NotNull", "public Iterator<" + datatypeWrapper + "> iterator()",
+        w.addAnnotatedMethod("@Override", "public Iterator<" + datatypeWrapper + "> iterator()",
             "return new Iterator<>() {",
             "    private int index;",
             "    @Override",

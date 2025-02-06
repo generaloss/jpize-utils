@@ -1452,7 +1452,7 @@ public class Vec3f {
     }
 
     public static float angleBetween(float x1, float y1, float z1, float x2, float y2, float z2) {
-        return angleBetweenRad(x1, y1, z1, x2, y2, z2) * Maths.toDeg;
+        return angleBetweenRad(x1, y1, z1, x2, y2, z2) * Maths.TO_DEG;
     }
 
     public static float angleBetween(Vec3f vector1, float x2, float y2, float z2) {
@@ -1495,15 +1495,15 @@ public class Vec3f {
     }
 
     public Vec3f rotateX(double degrees) {
-        return this.rotateRadX(degrees * Maths.toRad);
+        return this.rotateRadX(degrees * Maths.TO_RAD);
     }
 
     public Vec3f rotateY(double degrees) {
-        return this.rotateRadY(degrees * Maths.toRad);
+        return this.rotateRadY(degrees * Maths.TO_RAD);
     }
 
     public Vec3f rotateZ(double degrees) {
-        return this.rotateRadZ(degrees * Maths.toRad);
+        return this.rotateRadZ(degrees * Maths.TO_RAD);
     }
 
 

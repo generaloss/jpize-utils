@@ -1187,7 +1187,7 @@ public class Vec4d {
     }
 
     public static double angleBetween(double x1, double y1, double z1, double w1, double x2, double y2, double z2, double w2) {
-        return angleBetweenRad(x1, y1, z1, w1, x2, y2, z2, w2) * Maths.toDeg;
+        return angleBetweenRad(x1, y1, z1, w1, x2, y2, z2, w2) * Maths.TO_DEG;
     }
 
     public static double angleBetween(Vec4d vector1, double x2, double y2, double z2, double w2) {

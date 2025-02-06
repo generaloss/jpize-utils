@@ -26,7 +26,7 @@ public class TimeUtils {
 
     public static void sleepSeconds(float seconds) {
         final double ms = seconds * 1000;
-        final double ns = Maths.frac(ms) * Maths.nanosInMsf;
+        final double ns = Maths.frac(ms) * Maths.NANOS_IN_MSf;
         sleep((long) ms, (int) ns);
     }
 

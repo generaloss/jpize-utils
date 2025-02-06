@@ -49,11 +49,11 @@ public class Stopwatch {
     }
 
     public Stopwatch setMillis(double millis) {
-        return this.setNanos(Maths.round(millis * Maths.nanosInMsf));
+        return this.setNanos(Maths.round(millis * Maths.NANOS_IN_MSf));
     }
 
     public Stopwatch setSeconds(double seconds) {
-        return this.setMillis(seconds * Maths.msInSecf);
+        return this.setMillis(seconds * Maths.MSf);
     }
 
     public Stopwatch setMinutes(double minutes) {
@@ -73,11 +73,11 @@ public class Stopwatch {
     }
 
     public float getMillis() {
-        return this.getNanos() / Maths.nanosInMsf;
+        return this.getNanos() / Maths.NANOS_IN_MSf;
     }
 
     public float getSeconds() {
-        return this.getMillis() / Maths.msInSecf;
+        return this.getMillis() / Maths.MSf;
     }
 
     public float getMinutes() {

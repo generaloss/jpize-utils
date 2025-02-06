@@ -811,14 +811,14 @@ public class Vec2i {
     }
 
     public Vec2i setAngle(double degrees) {
-        return this.setAngleRad(degrees * Maths.toRad);
+        return this.setAngleRad(degrees * Maths.TO_RAD);
     }
 
 
     public static float angleRad(int x, int y) {
         float angle = Mathc.atan2(y, x);
         if(angle < 0)
-            angle += Maths.twoPI;
+            angle += Maths.TWO_PI;
         return angle;
     }
 
@@ -827,7 +827,7 @@ public class Vec2i {
     }
 
     public static float angle(int x, int y) {
-        return angleRad(x, y) * Maths.toDeg;
+        return angleRad(x, y) * Maths.TO_DEG;
     }
 
     public static float angle(Vec2i vector) {
@@ -872,7 +872,7 @@ public class Vec2i {
     }
 
     public static float angleBetween(int x1, int y1, int x2, int y2) {
-        return angleBetweenRad(x1, y1, x2, y2) * Maths.toDeg;
+        return angleBetweenRad(x1, y1, x2, y2) * Maths.TO_DEG;
     }
 
     public static float angleBetween(Vec2i vector1, int x2, int y2) {
@@ -903,7 +903,7 @@ public class Vec2i {
     }
 
     public Vec2i rotate(double degrees) {
-        return this.rotateRad(degrees * Maths.toRad);
+        return this.rotateRad(degrees * Maths.TO_RAD);
     }
 
 

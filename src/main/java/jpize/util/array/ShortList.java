@@ -3,7 +3,6 @@ package jpize.util.array;
 import java.util.function.Function;
 import java.util.*;
 import java.nio.*;
-import org.jetbrains.annotations.NotNull;
 
 public class ShortList implements Iterable<Short> {
 
@@ -425,7 +424,6 @@ public class ShortList implements Iterable<Short> {
     }
 
     @Override
-    @NotNull
     public Iterator<Short> iterator() {
         return new Iterator<>() {
             private int index;

@@ -3,7 +3,6 @@ package jpize.util.array;
 import java.util.function.Function;
 import java.util.*;
 import java.nio.*;
-import org.jetbrains.annotations.NotNull;
 
 public class LongList implements Iterable<Long> {
 
@@ -425,7 +424,6 @@ public class LongList implements Iterable<Long> {
     }
 
     @Override
-    @NotNull
     public Iterator<Long> iterator() {
         return new Iterator<>() {
             private int index;

@@ -1169,7 +1169,7 @@ public class Vec4i {
     }
 
     public static float angleBetween(int x1, int y1, int z1, int w1, int x2, int y2, int z2, int w2) {
-        return angleBetweenRad(x1, y1, z1, w1, x2, y2, z2, w2) * Maths.toDeg;
+        return angleBetweenRad(x1, y1, z1, w1, x2, y2, z2, w2) * Maths.TO_DEG;
     }
 
     public static float angleBetween(Vec4i vector1, int x2, int y2, int z2, int w2) {

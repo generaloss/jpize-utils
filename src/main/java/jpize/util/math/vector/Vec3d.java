@@ -1451,7 +1451,7 @@ public class Vec3d {
     }
 
     public static double angleBetween(double x1, double y1, double z1, double x2, double y2, double z2) {
-        return angleBetweenRad(x1, y1, z1, x2, y2, z2) * Maths.toDeg;
+        return angleBetweenRad(x1, y1, z1, x2, y2, z2) * Maths.TO_DEG;
     }
 
     public static double angleBetween(Vec3d vector1, double x2, double y2, double z2) {
@@ -1494,15 +1494,15 @@ public class Vec3d {
     }
 
     public Vec3d rotateX(double degrees) {
-        return this.rotateRadX(degrees * Maths.toRad);
+        return this.rotateRadX(degrees * Maths.TO_RAD);
     }
 
     public Vec3d rotateY(double degrees) {
-        return this.rotateRadY(degrees * Maths.toRad);
+        return this.rotateRadY(degrees * Maths.TO_RAD);
     }
 
     public Vec3d rotateZ(double degrees) {
-        return this.rotateRadZ(degrees * Maths.toRad);
+        return this.rotateRadZ(degrees * Maths.TO_RAD);
     }
 
 

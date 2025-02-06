@@ -549,7 +549,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f rotateXYZ(double degreesX, double degreesY, double degreesZ) {
-        return this.rotateRadXYZ(degreesX * Maths.toRad, degreesY * Maths.toRad, degreesZ * Maths.toRad);
+        return this.rotateRadXYZ(degreesX * Maths.TO_RAD, degreesY * Maths.TO_RAD, degreesZ * Maths.TO_RAD);
     }
 
     public Matrix4f rotateRadZYX(double radiansZ, double radiansY, double radiansX) {
@@ -584,7 +584,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f rotateZYX(double degreesZ, double degreesY, double degreesX) {
-        return this.rotateRadZYX(degreesZ * Maths.toRad, degreesY * Maths.toRad, degreesX * Maths.toRad);
+        return this.rotateRadZYX(degreesZ * Maths.TO_RAD, degreesY * Maths.TO_RAD, degreesX * Maths.TO_RAD);
     }
 
     public Matrix4f rotateRadYXZ(double radiansY, double radiansX, double radiansZ) {
@@ -620,7 +620,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f rotateYXZ(double degreesY, double degreesX, double degreesZ) {
-        return this.rotateRadYXZ(degreesY * Maths.toRad, degreesX * Maths.toRad, degreesZ * Maths.toRad);
+        return this.rotateRadYXZ(degreesY * Maths.TO_RAD, degreesX * Maths.TO_RAD, degreesZ * Maths.TO_RAD);
     }
 
 
@@ -647,7 +647,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f rotateX(double degrees) {
-        return this.rotateRadX(degrees * Maths.toRad);
+        return this.rotateRadX(degrees * Maths.TO_RAD);
     }
 
     public Matrix4f rotateRadY(double radians) {
@@ -673,7 +673,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f rotateY(double degrees) {
-        return this.rotateRadY(degrees * Maths.toRad);
+        return this.rotateRadY(degrees * Maths.TO_RAD);
     }
 
     public Matrix4f rotateRadZ(double radians) {
@@ -699,7 +699,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f rotateZ(double degrees) {
-        return this.rotateRadZ(degrees * Maths.toRad);
+        return this.rotateRadZ(degrees * Maths.TO_RAD);
     }
 
     public Matrix4f rotateQuaternion(float x, float y, float z, float w) {
@@ -788,7 +788,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotation(double degrees, float x, float y, float z) {
-        return this.setRotationRad(degrees * Maths.toRad, x, y, z);
+        return this.setRotationRad(degrees * Maths.TO_RAD, x, y, z);
     }
 
     public Matrix4f setRotationRadX(double radians) {
@@ -803,7 +803,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotationX(double degrees) {
-        return this.setRotationRadX(degrees * Maths.toRad);
+        return this.setRotationRadX(degrees * Maths.TO_RAD);
     }
 
     public Matrix4f setRotationRadY(double radians) {
@@ -818,7 +818,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotationY(double degrees) {
-        return this.setRotationRadY(degrees * Maths.toRad);
+        return this.setRotationRadY(degrees * Maths.TO_RAD);
     }
 
     public Matrix4f setRotationRadZ(double radians) {
@@ -833,7 +833,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotationZ(double degrees) {
-        return this.setRotationRadZ(degrees * Maths.toRad);
+        return this.setRotationRadZ(degrees * Maths.TO_RAD);
     }
 
     public Matrix4f setRotationRadXYZ(double radiansX, double radiansY, double radiansZ) {
@@ -869,7 +869,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotationXYZ(double degreesX, double degreesY, double degreesZ) {
-        return this.setRotationRadXYZ(degreesX * Maths.toRad, degreesY * Maths.toRad, degreesZ * Maths.toRad);
+        return this.setRotationRadXYZ(degreesX * Maths.TO_RAD, degreesY * Maths.TO_RAD, degreesZ * Maths.TO_RAD);
     }
 
     public Matrix4f setRotationRadZYX(double radiansZ, double radiansY, double radiansX) {
@@ -905,7 +905,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotationZYX(double degreesZ, double degreesY, double degreesX) {
-        return this.setRotationRadZYX(degreesZ * Maths.toRad, degreesY * Maths.toRad, degreesX * Maths.toRad);
+        return this.setRotationRadZYX(degreesZ * Maths.TO_RAD, degreesY * Maths.TO_RAD, degreesX * Maths.TO_RAD);
     }
 
     public Matrix4f setRotationRadYXZ(double radiansY, double radiansX, double radiansZ) {
@@ -941,7 +941,7 @@ public class Matrix4f implements Matrix4 {
     }
 
     public Matrix4f setRotationYXZ(double degreesY, double degreesX, double degreesZ) {
-        return this.setRotationRadYXZ(degreesY * Maths.toRad, degreesX * Maths.toRad, degreesZ * Maths.toRad);
+        return this.setRotationRadYXZ(degreesY * Maths.TO_RAD, degreesX * Maths.TO_RAD, degreesZ * Maths.TO_RAD);
     }
 
     public Matrix4f setRotation(EulerAngles angles) {

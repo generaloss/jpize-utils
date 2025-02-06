@@ -417,7 +417,7 @@ public class VectorClassesGenerator {
             );
 
             w.addMethod("public " + classname + " rotate(double degrees)",
-                "return this.rotateRad(degrees * Maths.toRad);"
+                "return this.rotateRad(degrees * Maths.TO_RAD);"
             );
 
         }else if(dimensions == 3){
@@ -438,13 +438,13 @@ public class VectorClassesGenerator {
             );
 
             w.addMethod("public " + classname + " rotateX(double degrees)",
-                "return this.rotateRadX(degrees * Maths.toRad);"
+                "return this.rotateRadX(degrees * Maths.TO_RAD);"
             );
             w.addMethod("public " + classname + " rotateY(double degrees)",
-                "return this.rotateRadY(degrees * Maths.toRad);"
+                "return this.rotateRadY(degrees * Maths.TO_RAD);"
             );
             w.addMethod("public " + classname + " rotateZ(double degrees)",
-                "return this.rotateRadZ(degrees * Maths.toRad);"
+                "return this.rotateRadZ(degrees * Maths.TO_RAD);"
             );
         }else
             return;
@@ -461,7 +461,7 @@ public class VectorClassesGenerator {
             );
 
             w.addMethod("public " + classname + " setAngle(double degrees)",
-                "return this.setAngleRad(degrees * Maths.toRad);"
+                "return this.setAngleRad(degrees * Maths.TO_RAD);"
             );
 
             w.addMethodSplitter();
@@ -479,7 +479,7 @@ public class VectorClassesGenerator {
                 "return " + radiansFuncName + "(vector.x, vector.y);"
             );
             w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + datatype + " x, " + datatype + " y)",
-                "return " + radiansFuncName + "(x, y) * Maths.toDeg;"
+                "return " + radiansFuncName + "(x, y) * Maths.TO_DEG;"
             );
             w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + classname + " vector)",
                 "return " + degreesFuncName + "(vector.x, vector.y);"
@@ -523,7 +523,7 @@ public class VectorClassesGenerator {
         );
 
         w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + makeDims(dimensions, ", ", datatype + " %l1") + ", " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
-            "return " + radiansFuncName + "(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + ") * Maths.toDeg;"
+            "return " + radiansFuncName + "(" + makeDims(dimensions, ", ", "%l1") + ", " + makeDims(dimensions, ", ", "%l2") + ") * Maths.TO_DEG;"
         );
         w.addMethod("public static " + datatype_l + " " + degreesFuncName + "(" + classname + " " + varname + "1, " + makeDims(dimensions, ", ", datatype + " %l2") + ")",
             "return " + degreesFuncName + "(" + makeDims(dimensions, ", ", varname + "1.%l") + ", " + makeDims(dimensions, ", ", "%l2") + ");"

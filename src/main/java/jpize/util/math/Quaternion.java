@@ -166,7 +166,7 @@ public class Quaternion {
     }
 
     public Quaternion setRotation(float axisX, float axisY, float axisZ, double angle) {
-        return this.setRotationRad(axisX, axisY, axisZ, angle * Maths.toRad);
+        return this.setRotationRad(axisX, axisY, axisZ, angle * Maths.TO_RAD);
     }
 
     public Quaternion setRotationRad(Vec3f axis, double angle) {
@@ -174,7 +174,7 @@ public class Quaternion {
     }
 
     public Quaternion setRotation(Vec3f axis, double angle) {
-        return this.setRotationRad(axis, angle * Maths.toRad);
+        return this.setRotationRad(axis, angle * Maths.TO_RAD);
     }
 
 
@@ -203,7 +203,7 @@ public class Quaternion {
     }
 
     public Quaternion setRotation(double yaw, double pitch, double roll){
-        return this.setRotationRad(yaw * Maths.toRad, pitch * Maths.toRad, roll * Maths.toRad);
+        return this.setRotationRad(yaw * Maths.TO_RAD, pitch * Maths.TO_RAD, roll * Maths.TO_RAD);
     }
 
     public Quaternion setRotation(EulerAngles angles) {
@@ -238,7 +238,7 @@ public class Quaternion {
     private float getPitchRad(int gimbalPole) {
         if(gimbalPole == 0)
             return Mathc.asin(Maths.clamp(((x * w - y * z) * 2F),  -1F, 1F));
-        return gimbalPole * Maths.halfPI;
+        return gimbalPole * Maths.HALF_PI;
     }
 
     public float getPitchRad() {
@@ -257,7 +257,7 @@ public class Quaternion {
 
 
     private float getYaw(int gimbalPole) {
-        return this.getYawRad(gimbalPole) * Maths.toDeg;
+        return this.getYawRad(gimbalPole) * Maths.TO_DEG;
     }
 
     public float getYaw() {
@@ -265,7 +265,7 @@ public class Quaternion {
     }
 
     private float getPitch(int gimbalPole) {
-        return this.getPitchRad(gimbalPole) * Maths.toDeg;
+        return this.getPitchRad(gimbalPole) * Maths.TO_DEG;
     }
 
     public float getPitch() {
@@ -273,7 +273,7 @@ public class Quaternion {
     }
 
     private float getRoll(int gimbalPole) {
-        return this.getRollRad(gimbalPole) * Maths.toDeg;
+        return this.getRollRad(gimbalPole) * Maths.TO_DEG;
     }
 
     public float getRoll() {

@@ -67,8 +67,8 @@ public class EulerAngles {
     }
 
     public EulerAngles setDirection(double x, double y, double z) {
-        yaw = yawOfDirection(x, z) * Maths.toDeg;
-        pitch = pitchOfDirection(x, y, z) * Maths.toDeg;
+        yaw = yawOfDirection(x, z) * Maths.TO_DEG;
+        pitch = pitchOfDirection(x, y, z) * Maths.TO_DEG;
         return this;
     }
 
@@ -169,8 +169,8 @@ public class EulerAngles {
 
 
     public static EulerAngles ofDirection(double x, double y, double z) {
-        final float yaw = yawOfDirection(x, z) * Maths.toDeg;
-        final float pitch = pitchOfDirection(x, y, z) * Maths.toDeg;
+        final float yaw = yawOfDirection(x, z) * Maths.TO_DEG;
+        final float pitch = pitchOfDirection(x, y, z) * Maths.TO_DEG;
         return new EulerAngles(yaw, pitch);
     }
 

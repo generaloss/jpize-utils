@@ -3,7 +3,6 @@ package jpize.util.array;
 import java.util.function.Function;
 import java.util.*;
 import java.nio.*;
-import org.jetbrains.annotations.NotNull;
 
 public class DoubleList implements Iterable<Double> {
 
@@ -425,7 +424,6 @@ public class DoubleList implements Iterable<Double> {
     }
 
     @Override
-    @NotNull
     public Iterator<Double> iterator() {
         return new Iterator<>() {
             private int index;

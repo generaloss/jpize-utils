@@ -2,7 +2,6 @@ package jpize.util.array;
 
 import java.util.function.Function;
 import java.util.*;
-import org.jetbrains.annotations.NotNull;
 
 public class StringList implements Iterable<String> {
 
@@ -433,7 +432,6 @@ public class StringList implements Iterable<String> {
     }
 
     @Override
-    @NotNull
     public Iterator<String> iterator() {
         return new Iterator<>() {
             private int index;

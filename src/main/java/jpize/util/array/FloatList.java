@@ -3,7 +3,6 @@ package jpize.util.array;
 import java.util.function.Function;
 import java.util.*;
 import java.nio.*;
-import org.jetbrains.annotations.NotNull;
 
 public class FloatList implements Iterable<Float> {
 
@@ -425,7 +424,6 @@ public class FloatList implements Iterable<Float> {
     }
 
     @Override
-    @NotNull
     public Iterator<Float> iterator() {
         return new Iterator<>() {
             private int index;

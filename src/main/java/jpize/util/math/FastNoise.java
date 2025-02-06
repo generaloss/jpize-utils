@@ -199,7 +199,7 @@ public class FastNoise {
 
         switch(noiseType){
             case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2S -> {
-                final float F2 = 0.5F * (Maths.sqrt3 - 1);
+                final float F2 = 0.5F * (Maths.SQRT3 - 1);
                 final float t = (x + y) * F2;
                 x += t;
                 y += t;
@@ -540,7 +540,7 @@ public class FastNoise {
     private float singleSimplex(int seed, float x, float y) {
         // 2D OpenSimplex2 case uses the same algorithm as ordinary Simplex.
 
-        final float G2 = (3 - Maths.sqrt3) / 6;
+        final float G2 = (3 - Maths.SQRT3) / 6;
 
         // Skew moved to switch statements before fractal evaluation
 
@@ -681,7 +681,7 @@ public class FastNoise {
     private float singleOpenSimplex2S(int seed, float x, float y) {
         // 2D OpenSimplex2S case is a modified 2D simplex noise.
 
-        final float G2 = (3 - Maths.sqrt3) / 6;
+        final float G2 = (3 - Maths.SQRT3) / 6;
 
         // Skew moved to TransformNoiseCoordinate method
 
@@ -1369,7 +1369,7 @@ public class FastNoise {
         float ys = coord.y;
         switch(domainWarpType){
             case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2_REDUCED -> {
-                final float F2 = 0.5F * (Maths.sqrt3 - 1);
+                final float F2 = 0.5F * (Maths.SQRT3 - 1);
                 final float t = (xs + ys) * F2;
                 xs += t;
                 ys += t;
@@ -1427,7 +1427,7 @@ public class FastNoise {
             float ys = coord.y;
             switch(domainWarpType){
                 case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2_REDUCED -> {
-                    final float F2 = 0.5F * (Maths.sqrt3 - 1);
+                    final float F2 = 0.5F * (Maths.SQRT3 - 1);
                     final float t = (xs + ys) * F2;
                     xs += t;
                     ys += t;
@@ -1493,7 +1493,7 @@ public class FastNoise {
         float ys = coord.y;
         switch(domainWarpType){
             case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2_REDUCED -> {
-                final float F2 = 0.5F * (Maths.sqrt3 - 1);
+                final float F2 = 0.5F * (Maths.SQRT3 - 1);
                 final float t = (xs + ys) * F2;
                 xs += t;
                 ys += t;
@@ -1650,7 +1650,7 @@ public class FastNoise {
     // Domain Warp Simplex/OpenSimplex2
 
     private void singleDomainWarpSimplexGradient(int seed, float warpAmp, float frequency, float x, float y, Vec2f coord, boolean outGradOnly) {
-        final float G2 = (3 - Maths.sqrt3) / 6;
+        final float G2 = (3 - Maths.SQRT3) / 6;
 
         x *= frequency;
         y *= frequency;
