@@ -217,17 +217,9 @@ public class VectorClassesGenerator {
             "\n        );"
         );
 
-        // w.addMethod("public " + classname + " clamp(" + makeDims(dimensions, ", ", datatype + " min%L") + ", " + datatype + " max" + XYZW_str + ")",
-        //     "return this.clamp(" + makeDims(dimensions, ", ", "min%L") + ", " + makeDims(dimensions, ", ", "max" + XYZW_str) + ");"
-        // );
-
         w.addMethod("public " + classname + " clamp(" + makeDims(dimensions, ", ", datatype + " min%L") + ", " + classname + " max)",
             "return this.clamp(" + makeDims(dimensions, ", ", "min%L") + ", " + makeDims(dimensions, ", ", "max.%l") + ");"
         );
-
-        // w.addMethod("public " + classname + " clamp(" + datatype + " min" + XYZW_str + ", " + makeDims(dimensions, ", ", datatype + " max%L") + ")",
-        //     "return this.clamp(" + makeDims(dimensions, ", ", "min" + XYZW_str) + ", " + makeDims(dimensions, ", ", "max%L") + ");"
-        // );
 
         w.addMethod("public " + classname + " clamp(" + datatype + " min" + XYZW_str + ", " + datatype + " max" + XYZW_str + ")",
             "return this.clamp(" + makeDims(dimensions, ", ", "min" + XYZW_str) + ", " + makeDims(dimensions, ", ", "max" + XYZW_str) + ");"
