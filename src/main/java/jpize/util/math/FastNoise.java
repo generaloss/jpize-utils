@@ -728,8 +728,10 @@ public class FastNoise {
                 float x3 = x0 + (3 * G2 - 1);
                 float y3 = y0 + (3 * G2 - 2);
                 float a3 = TWO_THIRDS - x3 * x3 - y3 * y3;
-                if(a3 > 0)
-                    value += (a3 * a3) * (a3 * a3) * gradCoord(seed, i + PRIME_X, j + (PRIME_Y << 1), x3, y3);
+                if(a3 > 0){
+                    final float grad = gradCoord(seed, i + PRIME_X, j + (PRIME_Y << 1), x3, y3);
+                    value += a3 * a3 * a3 * a3 * grad;
+                }
             }else{
                 float x3 = x0 + (G2 - 1);
                 float y3 = y0 + G2;
@@ -857,7 +859,9 @@ public class FastNoise {
                 float x8 = x1;
                 float y8 = (yNMask | 1) + y1;
                 float z8 = z1;
-                value += (a8 * a8) * (a8 * a8) * gradCoord(seed2, i + PRIME_X, j + (yNMask & (PRIME_Y << 1)), k + PRIME_Z, x8, y8, z8);
+                final int yPrimed = j + (yNMask & (PRIME_Y << 1));
+                final float grad = gradCoord(seed2, i + PRIME_X, yPrimed, k + PRIME_Z, x8, y8, z8);
+                value += (a8 * a8) * (a8 * a8) * grad;
                 skip9 = true;
             }
         }
@@ -883,7 +887,9 @@ public class FastNoise {
                 float xC = x1;
                 float yC = y1;
                 float zC = (zNMask | 1) + z1;
-                value += (aC * aC) * (aC * aC) * gradCoord(seed2, i + PRIME_X, j + PRIME_Y, k + (zNMask & (PRIME_Z << 1)), xC, yC, zC);
+                final int zPrimed = k + (zNMask & (PRIME_Z << 1));
+                final float grad = gradCoord(seed2, i + PRIME_X, j + PRIME_Y, zPrimed, xC, yC, zC);
+                value += (aC * aC) * (aC * aC) * grad;
                 skipD = true;
             }
         }
@@ -894,7 +900,10 @@ public class FastNoise {
                 float x5 = x1;
                 float y5 = (yNMask | 1) + y1;
                 float z5 = (zNMask | 1) + z1;
-                value += (a5 * a5) * (a5 * a5) * gradCoord(seed2, i + PRIME_X, j + (yNMask & (PRIME_Y << 1)), k + (zNMask & (PRIME_Z << 1)), x5, y5, z5);
+                final int yPrimed = j + (yNMask & (PRIME_Y << 1));
+                final int zPrimed = k + (zNMask & (PRIME_Z << 1));
+                final float grad = gradCoord(seed2, i + PRIME_X, yPrimed, zPrimed, x5, y5, z5);
+                value += (a5 * a5) * (a5 * a5) * grad;
             }
         }
 
@@ -904,7 +913,9 @@ public class FastNoise {
                 float x9 = (xNMask | 1) + x1;
                 float y9 = y1;
                 float z9 = (zNMask | 1) + z1;
-                value += (a9 * a9) * (a9 * a9) * gradCoord(seed2, i + (xNMask & (PRIME_X * 2)), j + PRIME_Y, k + (zNMask & (PRIME_Z << 1)), x9, y9, z9);
+                final int zPrimed = k + (zNMask & (PRIME_Z << 1));
+                final float grad = gradCoord(seed2, i + (xNMask & (PRIME_X * 2)), j + PRIME_Y, zPrimed, x9, y9, z9);
+                value += (a9 * a9) * (a9 * a9) * grad;
             }
         }
 
@@ -914,7 +925,9 @@ public class FastNoise {
                 float xD = (xNMask | 1) + x1;
                 float yD = (yNMask | 1) + y1;
                 float zD = z1;
-                value += (aD * aD) * (aD * aD) * gradCoord(seed2, i + (xNMask & (PRIME_X << 1)), j + (yNMask & (PRIME_Y << 1)), k + PRIME_Z, xD, yD, zD);
+                final int yPrimed = j + (yNMask & (PRIME_Y << 1));
+                final float grad = gradCoord(seed2, i + (xNMask & (PRIME_X << 1)), yPrimed, k + PRIME_Z, xD, yD, zD);
+                value += (aD * aD) * (aD * aD) * grad;
             }
         }
 
