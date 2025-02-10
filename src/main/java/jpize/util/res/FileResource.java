@@ -6,6 +6,9 @@ import jpize.util.io.ExtDataOutputStream;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +60,35 @@ public class FileResource extends Resource {
     }
 
 
+    public boolean renameTo(File dst) {
+        return file.renameTo(dst);
+    }
+
+    public boolean renameTo(FileResource dst) {
+        return file.renameTo(dst.file);
+    }
+
+    public boolean rename(String name, boolean overwrite) {
+        final File dst = this.parent().childFile(name);
+        if(!overwrite && dst.exists())
+            return false;
+        return this.renameTo(dst);
+    }
+
+    public boolean rename(String name) {
+        return this.rename(name, false);
+    }
+
+
+    public void copy(Path target, CopyOption... options) {
+        try{
+            Files.copy(file.toPath(), target, options);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public boolean delete() {
         return file.delete();
     }
@@ -75,10 +107,34 @@ public class FileResource extends Resource {
     }
 
 
-    public FileResource child(String name) {
+    public String parentPath() {
+        return file.getParent();
+    }
+
+    public File parentFile() {
+        return file.getParentFile();
+    }
+
+    public FileResource parent() {
+        return new FileResource(this.parentFile());
+    }
+
+
+    public File childFile(String name) {
         if(this.path().isEmpty())
-            return new FileResource(name);
-        return new FileResource(new File(file, name));
+            return new File(name);
+        return new File(file, name);
+    }
+
+    public FileResource child(String name) {
+        return new FileResource(this.childFile(name));
+    }
+
+    public FileResource createChild(String name) {
+        final FileResource child = this.child(name);
+        if(!child.mkAll())
+            return null;
+        return child;
     }
 
 
@@ -94,8 +150,13 @@ public class FileResource extends Resource {
         return new ExtDataOutputStream(this.outStream());
     }
 
+
+    public PrintWriter writer(boolean autoFlush, Charset charset) {
+        return new PrintWriter(this.outStream(), autoFlush, charset);
+    }
+
     public PrintWriter writer(boolean autoFlush) {
-        return new PrintWriter(this.outStream(), autoFlush);
+        return this.writer(autoFlush, Charset.defaultCharset());
     }
 
     public PrintWriter writer() {
@@ -170,6 +231,10 @@ public class FileResource extends Resource {
 
     public String absolutePath() {
         return Utils.osGeneralizePath(file.getAbsolutePath());
+    }
+
+    public Path toPath() {
+        return file.toPath();
     }
 
 
