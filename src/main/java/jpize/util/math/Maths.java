@@ -14,12 +14,12 @@ public class Maths {
     public static final float SQRT3 = Mathc.sqrt(3);
     public static final float SQRT4 = Mathc.sqrt(4);
 
-    public static final float NANOSf = 1_000_000_000;
+    public static final float NANOS_IN_SECf = 1_000_000_000;
     public static final float NANOS_IN_MSf = 1_000_000;
-    public static final float MSf = 1_000;
-    public static final int NANOSi = 1_000_000_000;
+    public static final float MILLIS_IN_SECf = 1_000;
+    public static final int NANOS_IN_SECi = 1_000_000_000;
     public static final int NANOS_IN_MSi = 1_000_000;
-    public static final int MSi = 1_000;
+    public static final int MILLIS_IN_SECi = 1_000;
 
 
     public static float sinFromCos(float cos) {

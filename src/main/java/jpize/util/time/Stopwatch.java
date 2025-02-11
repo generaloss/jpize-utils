@@ -53,7 +53,7 @@ public class Stopwatch {
     }
 
     public Stopwatch setSeconds(double seconds) {
-        return this.setMillis(seconds * Maths.MSf);
+        return this.setMillis(seconds * Maths.MILLIS_IN_SECf);
     }
 
     public Stopwatch setMinutes(double minutes) {
@@ -77,7 +77,7 @@ public class Stopwatch {
     }
 
     public float getSeconds() {
-        return this.getMillis() / Maths.MSf;
+        return this.getMillis() / Maths.MILLIS_IN_SECf;
     }
 
     public float getMinutes() {

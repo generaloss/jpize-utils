@@ -23,14 +23,14 @@ public class Sync {
 
 
     public double getRate() {
-        return (targetDeltaTime == 0 ? 0D : Maths.NANOSf / targetDeltaTime);
+        return (targetDeltaTime == 0 ? 0D : Maths.NANOS_IN_SECf / targetDeltaTime);
     }
 
     public void setRate(double rate) {
         if(rate == 0)
             return;
 
-        targetDeltaTime = (int) (Maths.MSf / rate); // time between frames with a given number of ticks per second
+        targetDeltaTime = (int) (Maths.MILLIS_IN_SECf / rate); // time between frames with a given number of ticks per second
         lastTime = System.currentTimeMillis();           // to calculate the time between frames
     }
 

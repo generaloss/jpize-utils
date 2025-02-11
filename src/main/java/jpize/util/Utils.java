@@ -47,4 +47,23 @@ public class Utils {
         }catch(Exception ignored){ }
     }
 
+
+    public static void wait(Object object) {
+        try{
+            object.wait();
+        }catch(InterruptedException ignored) { }
+    }
+
+    public static void wait(Object object, long millis) {
+        try{
+            object.wait(millis);
+        }catch(InterruptedException ignored) { }
+    }
+
+    public static void wait(Object object, long timeoutMillis, int nanos) {
+        try{
+            object.wait(timeoutMillis, nanos);
+        }catch(InterruptedException ignored) { }
+    }
+
 }

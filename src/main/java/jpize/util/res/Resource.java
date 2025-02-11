@@ -12,6 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -155,14 +156,18 @@ public abstract class Resource {
         return new FileResource(file);
     }
 
+    public static FileResource file(Path path) {
+        return new FileResource(path);
+    }
+
     public static FileResource file(File parent, String child) {
         return new FileResource(parent, child);
     }
 
-    public static FileResource[] file(String... filepaths) {
-        final FileResource[] arr = new FileResource[filepaths.length];
+    public static FileResource[] file(String... paths) {
+        final FileResource[] arr = new FileResource[paths.length];
         for(int i = 0; i < arr.length; i++)
-            arr[i] = file(filepaths[i]);
+            arr[i] = file(paths[i]);
         return arr;
     }
 
@@ -170,6 +175,13 @@ public abstract class Resource {
         final FileResource[] arr = new FileResource[files.length];
         for(int i = 0; i < arr.length; i++)
             arr[i] = file(files[i]);
+        return arr;
+    }
+
+    public static FileResource[] file(Path... paths) {
+        final FileResource[] arr = new FileResource[paths.length];
+        for(int i = 0; i < arr.length; i++)
+            arr[i] = file(paths[i]);
         return arr;
     }
 

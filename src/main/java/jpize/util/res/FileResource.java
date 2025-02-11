@@ -20,8 +20,12 @@ public class FileResource extends Resource {
         this.file = file;
     }
 
+    protected FileResource(Path path) {
+        this(path.toFile());
+    }
+
     protected FileResource(String path) {
-        this(new File(Utils.osGeneralizePath(path)));
+        this(Path.of(Utils.osGeneralizePath(path)).normalize());
     }
 
     protected FileResource(File parent, String child) {
@@ -65,27 +69,48 @@ public class FileResource extends Resource {
     }
 
     public boolean renameTo(FileResource dst) {
-        return file.renameTo(dst.file);
+        return this.renameTo(dst.file);
     }
 
-    public boolean rename(String name, boolean overwrite) {
-        final File dst = this.parent().childFile(name);
-        if(!overwrite && dst.exists())
-            return false;
-        return this.renameTo(dst);
+    public FileResource rename(String name, boolean overwrite) {
+        final File dst = new File(file.getParentFile(), name);
+        if(!overwrite && dst.exists() || !this.renameTo(dst))
+            return null;
+        return new FileResource(dst);
     }
 
-    public boolean rename(String name) {
+    public FileResource rename(String name) {
         return this.rename(name, false);
     }
 
 
-    public void copy(Path target, CopyOption... options) {
+    public FileResource move(Path target, CopyOption... options) {
         try{
-            Files.copy(file.toPath(), target, options);
+            target = target.normalize();
+            Files.move(file.toPath(), target, options);
+            return new FileResource(target);
         }catch(IOException e){
-            throw new RuntimeException(e);
+            throw new RuntimeException("Cannot move file '" + file + "' to '" + target + "'");
         }
+    }
+
+    public FileResource move(String targetPath, CopyOption... options) {
+        return this.move(Path.of(targetPath), options);
+    }
+
+
+    public FileResource copy(Path target, CopyOption... options) {
+        try{
+            target = target.normalize();
+            Files.copy(file.toPath(), target, options);
+            return new FileResource(target);
+        }catch(IOException e){
+            throw new RuntimeException("Cannot copy file '" + file + "' to '" + target + "'");
+        }
+    }
+
+    public FileResource copy(String targetPath, CopyOption... options) {
+        return this.copy(Path.of(targetPath), options);
     }
 
 
@@ -130,9 +155,16 @@ public class FileResource extends Resource {
         return new FileResource(this.childFile(name));
     }
 
-    public FileResource createChild(String name) {
+    public FileResource createChildFile(String name) {
         final FileResource child = this.child(name);
         if(!child.mkAll())
+            return null;
+        return child;
+    }
+
+    public FileResource createChildDir(String name) {
+        final FileResource child = this.child(name);
+        if(!child.mkdirs())
             return null;
         return child;
     }
@@ -142,7 +174,7 @@ public class FileResource extends Resource {
         try{
             return new FileOutputStream(file);
         }catch(FileNotFoundException e){
-            throw new RuntimeException("Unable to open file " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -253,7 +285,7 @@ public class FileResource extends Resource {
         try{
             return new FileInputStream(file);
         }catch(FileNotFoundException e){
-            throw new RuntimeException("Unable to open file " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
