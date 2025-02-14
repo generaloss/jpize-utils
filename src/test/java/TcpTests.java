@@ -142,7 +142,7 @@ public class TcpTests {
                 .run(5408);
 
         final TCPClient client = new TCPClient();
-        client.connect("localhost", 5408, options -> options.setTcpNoDelay(true));
+        client.connect("localhost", 5408);
         client.encode(key);
 
         final int iterations = 10000;

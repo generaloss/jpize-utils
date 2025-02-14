@@ -1,5 +1,6 @@
 package jpize.util.net.tcp;
 
+import jpize.util.Utils;
 import jpize.util.io.DataStreamWriter;
 import jpize.util.io.ExtDataInputStream;
 import jpize.util.net.packet.NetPacket;
@@ -7,12 +8,15 @@ import jpize.util.security.AESKey;
 
 import javax.crypto.Cipher;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
 public class TCPClient {
@@ -72,28 +76,47 @@ public class TCPClient {
     }
 
 
-    public TCPClient connect(SocketAddress socketAddress, Consumer<TCPOptions> socketTuner) {
+    public TCPClient connect(SocketAddress socketAddress, long timeoutMillis) {
         if(this.isConnected())
             throw new IllegalStateException("TCP client is already connected");
 
         try{
+            // channel
             final SocketChannel channel = SocketChannel.open();
-            // options
-            final TCPOptions options = new TCPOptions(channel.socket());
-            if(socketTuner != null)
-                socketTuner.accept(options);
-
-            channel.connect(socketAddress);
             channel.configureBlocking(false);
+            channel.connect(socketAddress);
 
+            // selector
+            if(selector != null)
+                Utils.close(selector);
             selector = Selector.open();
-            final SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
 
-            connection = connectionFactory.create(channel, key, options, onDisconnect);
-            if(onConnect != null)
-                onConnect.accept(connection);
+            final SelectionKey key = channel.register(selector, SelectionKey.OP_CONNECT);
 
-            this.startReceiveThread();
+            // wait for connection
+            if(selector.select(timeoutMillis) == 0) {
+                channel.close();
+                selector.close();
+                throw new TimeoutException("Connection timed out");
+            }
+
+            // connect key
+            final Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
+            final SelectionKey connectKey = keyIterator.next();
+            keyIterator.remove();
+
+            // validate
+            if(connectKey.isConnectable() && channel.finishConnect()) {
+                key.interestOps(SelectionKey.OP_READ);
+
+                connection = connectionFactory.create(channel, key, onDisconnect);
+                if(onConnect != null)
+                    onConnect.accept(connection);
+
+                this.startReceiveThread();
+            }else{
+                throw new ConnectException("Connection failed");
+            }
         }catch(Exception e){
             throw new RuntimeException("Failed to connect TCP client: " + e.getMessage());
         }
@@ -101,15 +124,15 @@ public class TCPClient {
     }
 
     public TCPClient connect(SocketAddress socketAddress) {
-        return this.connect(socketAddress, null);
+        return this.connect(socketAddress, 0L);
     }
 
-    public TCPClient connect(String host, int port, Consumer<TCPOptions> socketTuner) {
-        return this.connect(new InetSocketAddress(host, port), socketTuner);
+    public TCPClient connect(String host, int port, long timeoutMillis) {
+        return this.connect(new InetSocketAddress(host, port), timeoutMillis);
     }
 
     public TCPClient connect(String host, int port) {
-        return this.connect(host, port, null);
+        return this.connect(host, port, 0L);
     }
 
 

@@ -11,8 +11,8 @@ public class NativeTCPConnection extends TCPConnection {
 
     private final ByteBuffer dataBuffer;
 
-    protected NativeTCPConnection(SocketChannel channel, SelectionKey selectionKey, TCPOptions options, Consumer<TCPConnection> onDisconnect) {
-        super(channel, selectionKey, options, onDisconnect);
+    protected NativeTCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
+        super(channel, selectionKey, onDisconnect);
         this.dataBuffer = ByteBuffer.allocate(2048);
     }
 

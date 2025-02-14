@@ -3,7 +3,7 @@ package jpize.util.net.tcp;
 import java.net.Socket;
 import java.net.SocketException;
 
-public record TCPOptions(Socket socket) {
+public record TCPSocketOptions(Socket socket) {
 
     public boolean getTcpNoDelay() {
         try{
@@ -13,7 +13,7 @@ public record TCPOptions(Socket socket) {
         }
     }
 
-    public TCPOptions setTcpNoDelay(boolean on) {
+    public TCPSocketOptions setTcpNoDelay(boolean on) {
         try{
             socket.setTcpNoDelay(on);
         }catch(SocketException e){
@@ -31,7 +31,7 @@ public record TCPOptions(Socket socket) {
         }
     }
 
-    public TCPOptions setSoLinger(boolean on, int linger) {
+    public TCPSocketOptions setSoLinger(boolean on, int linger) {
         try{
             socket.setSoLinger(on, linger);
         }catch(SocketException e){
@@ -49,7 +49,7 @@ public record TCPOptions(Socket socket) {
         }
     }
 
-    public TCPOptions setKeepAlive(boolean on) {
+    public TCPSocketOptions setKeepAlive(boolean on) {
         try{
             socket.setKeepAlive(on);
         }catch(SocketException e){
@@ -67,7 +67,7 @@ public record TCPOptions(Socket socket) {
         }
     }
 
-    public TCPOptions setSendBufferSize(int size) {
+    public TCPSocketOptions setSendBufferSize(int size) {
         try{
             socket.setSendBufferSize(size);
         }catch(SocketException e){
@@ -85,7 +85,7 @@ public record TCPOptions(Socket socket) {
         }
     }
 
-    public TCPOptions setReceiveBufferSize(int size) {
+    public TCPSocketOptions setReceiveBufferSize(int size) {
         try{
             socket.setReceiveBufferSize(size);
         }catch(SocketException e){
@@ -103,7 +103,7 @@ public record TCPOptions(Socket socket) {
         }
     }
 
-    public TCPOptions setTrafficClass(int typeOfService) {
+    public TCPSocketOptions setTrafficClass(int typeOfService) {
         try{
             socket.setTrafficClass(typeOfService);
         }catch(SocketException e){
@@ -121,7 +121,7 @@ public record TCPOptions(Socket socket) {
         }
     }
 
-    public TCPOptions setReuseAddress(boolean on) {
+    public TCPSocketOptions setReuseAddress(boolean on) {
         try{
             socket.setReuseAddress(on);
         }catch(SocketException e){
@@ -139,7 +139,7 @@ public record TCPOptions(Socket socket) {
         }
     }
 
-    public TCPOptions setOOBInline(boolean on) {
+    public TCPSocketOptions setOOBInline(boolean on) {
         try{
             socket.setOOBInline(on);
         }catch(SocketException e){

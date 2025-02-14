@@ -26,18 +26,18 @@ public abstract class TCPConnection implements Closeable {
 
     protected final SocketChannel channel;
     protected final SelectionKey selectionKey;
-    protected final TCPOptions options;
     protected final Consumer<TCPConnection> onDisconnect;
     protected final Queue<ByteBuffer> writeQueue;
+    protected final TCPSocketOptions options;
     private Cipher encryptCipher, decryptCipher;
     private Object attachment;
 
-    public TCPConnection(SocketChannel channel, SelectionKey selectionKey, TCPOptions options, Consumer<TCPConnection> onDisconnect) {
+    public TCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
         this.channel = channel;
         this.selectionKey = selectionKey;
-        this.options = options;
         this.onDisconnect = onDisconnect;
         this.writeQueue = new ConcurrentLinkedQueue<>();
+        this.options = new TCPSocketOptions(channel.socket());
     }
 
     public SocketChannel channel() {
@@ -52,7 +52,7 @@ public abstract class TCPConnection implements Closeable {
         return selectionKey;
     }
 
-    public TCPOptions options() {
+    public TCPSocketOptions options() {
         return options;
     }
 
@@ -176,7 +176,7 @@ public abstract class TCPConnection implements Closeable {
 
 
     public interface Factory {
-        TCPConnection create(SocketChannel channel, SelectionKey selectionKey, TCPOptions options, Consumer<TCPConnection> onDisconnect);
+        TCPConnection create(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect);
     }
 
     private static final Map<Class<?>, Factory> FACTORY_BY_CLASS = new HashMap<>(){{{
@@ -198,9 +198,9 @@ public abstract class TCPConnection implements Closeable {
         return getFactory(type.getConnectionClass());
     }
 
-    public static TCPConnection create(Class<?> connectionClass, SocketChannel channel, SelectionKey selectionKey, TCPOptions options, Consumer<TCPConnection> onDisconnect) {
+    public static TCPConnection create(Class<?> connectionClass, SocketChannel channel, SelectionKey selectionKey, TCPSocketOptions options, Consumer<TCPConnection> onDisconnect) {
         final Factory factory = getFactory(connectionClass);
-        return factory.create(channel, selectionKey, options, onDisconnect);
+        return factory.create(channel, selectionKey, onDisconnect);
     }
 
 }
