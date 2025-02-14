@@ -11,8 +11,8 @@ public class PacketTCPConnection extends TCPConnection {
     private final ByteBuffer lengthBuffer;
     private ByteBuffer dataBuffer;
 
-    protected PacketTCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
-        super(channel, selectionKey, onDisconnect);
+    protected PacketTCPConnection(SocketChannel channel, SelectionKey selectionKey, TCPOptions options, Consumer<TCPConnection> onDisconnect) {
+        super(channel, selectionKey, options, onDisconnect);
         this.lengthBuffer = ByteBuffer.allocate(4);
     }
 

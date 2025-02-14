@@ -150,7 +150,8 @@ public class TCPServer {
             channel.configureBlocking(false);
             final SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
 
-            final TCPConnection connection = connectionFactory.create(channel, key, disconnector);
+            final TCPOptions options = new TCPOptions(channel.socket());
+            final TCPConnection connection = connectionFactory.create(channel, key, options, disconnector);
             connections.add(connection);
             key.attach(connection);
 

@@ -72,19 +72,24 @@ public class TCPClient {
     }
 
 
-    public TCPClient connect(SocketAddress socketAddress) {
+    public TCPClient connect(SocketAddress socketAddress, Consumer<TCPOptions> socketTuner) {
         if(this.isConnected())
             throw new IllegalStateException("TCP client is already connected");
 
         try{
             final SocketChannel channel = SocketChannel.open();
+            // options
+            final TCPOptions options = new TCPOptions(channel.socket());
+            if(socketTuner != null)
+                socketTuner.accept(options);
+
             channel.connect(socketAddress);
             channel.configureBlocking(false);
 
             selector = Selector.open();
             final SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
 
-            connection = connectionFactory.create(channel, key, onDisconnect);
+            connection = connectionFactory.create(channel, key, options, onDisconnect);
             if(onConnect != null)
                 onConnect.accept(connection);
 
@@ -95,8 +100,16 @@ public class TCPClient {
         return this;
     }
 
+    public TCPClient connect(SocketAddress socketAddress) {
+        return this.connect(socketAddress, null);
+    }
+
+    public TCPClient connect(String host, int port, Consumer<TCPOptions> socketTuner) {
+        return this.connect(new InetSocketAddress(host, port), socketTuner);
+    }
+
     public TCPClient connect(String host, int port) {
-        return this.connect(new InetSocketAddress(host, port));
+        return this.connect(host, port, null);
     }
 
 

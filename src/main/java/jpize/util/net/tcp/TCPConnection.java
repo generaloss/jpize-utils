@@ -11,7 +11,6 @@ import javax.crypto.IllegalBlockSizeException;
 import java.io.Closeable;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
@@ -27,14 +26,16 @@ public abstract class TCPConnection implements Closeable {
 
     protected final SocketChannel channel;
     protected final SelectionKey selectionKey;
+    protected final TCPOptions options;
     protected final Consumer<TCPConnection> onDisconnect;
     protected final Queue<ByteBuffer> writeQueue;
     private Cipher encryptCipher, decryptCipher;
     private Object attachment;
 
-    public TCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
+    public TCPConnection(SocketChannel channel, SelectionKey selectionKey, TCPOptions options, Consumer<TCPConnection> onDisconnect) {
         this.channel = channel;
         this.selectionKey = selectionKey;
+        this.options = options;
         this.onDisconnect = onDisconnect;
         this.writeQueue = new ConcurrentLinkedQueue<>();
     }
@@ -49,6 +50,10 @@ public abstract class TCPConnection implements Closeable {
 
     public SelectionKey selectionKey() {
         return selectionKey;
+    }
+
+    public TCPOptions options() {
+        return options;
     }
 
     @SuppressWarnings("unchecked")
@@ -170,82 +175,8 @@ public abstract class TCPConnection implements Closeable {
     }
 
 
-    public boolean getTcpNoDelay() {
-        try{ return this.socket().getTcpNoDelay(); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public int getSoTimeout() {
-        try{ return this.socket().getSoTimeout(); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public boolean getKeepAlive() {
-        try{ return this.socket().getKeepAlive(); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public int getSendBufferSize() {
-        try{ return this.socket().getSendBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public int getReceiveBufferSize() {
-        try{ return this.socket().getReceiveBufferSize(); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public int getTrafficClass() {
-        try{ return this.socket().getTrafficClass(); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public boolean getReuseAddress() {
-        try{ return this.socket().getReuseAddress(); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public boolean getOOBInline() {
-        try{ return this.socket().getOOBInline(); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public int getSoLinger() {
-        try{ return this.socket().getSoLinger(); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-
-    public void setTcpNoDelay(boolean on) {
-        try{ this.socket().setTcpNoDelay(on); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public void setSoTimeout(int timeout) {
-        try{ this.socket().setSoTimeout(timeout); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public void setKeepAlive(boolean on) {
-        try{ this.socket().setKeepAlive(on); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public void setSendBufferSize(int size) {
-        try{ this.socket().setSendBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public void setReceiveBufferSize(int size) {
-        try{ this.socket().setReceiveBufferSize(size); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public void setTrafficClass(int trafficClass) {
-        try{ this.socket().setTrafficClass(trafficClass); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public void setReuseAddress(boolean on) {
-        try{ this.socket().setReuseAddress(on); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public void setOOBInline(boolean on) {
-        try{ this.socket().setOOBInline(on); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-    public void setSoLinger(boolean on, int linger) {
-        try{ this.socket().setSoLinger(on, linger); }catch(SocketException e){ throw new RuntimeException(e); }
-    }
-
-
     public interface Factory {
-        TCPConnection create(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect);
+        TCPConnection create(SocketChannel channel, SelectionKey selectionKey, TCPOptions options, Consumer<TCPConnection> onDisconnect);
     }
 
     private static final Map<Class<?>, Factory> FACTORY_BY_CLASS = new HashMap<>(){{{
@@ -267,9 +198,9 @@ public abstract class TCPConnection implements Closeable {
         return getFactory(type.getConnectionClass());
     }
 
-    public static TCPConnection create(Class<?> connectionClass, SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
+    public static TCPConnection create(Class<?> connectionClass, SocketChannel channel, SelectionKey selectionKey, TCPOptions options, Consumer<TCPConnection> onDisconnect) {
         final Factory factory = getFactory(connectionClass);
-        return factory.create(channel, selectionKey, onDisconnect);
+        return factory.create(channel, selectionKey, options, onDisconnect);
     }
 
 }
