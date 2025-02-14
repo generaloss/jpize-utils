@@ -76,6 +76,16 @@ public class TCPClient {
     }
 
 
+    private void createConnection(SocketChannel channel) throws IOException {
+        final SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
+
+        connection = connectionFactory.create(channel, key, onDisconnect);
+        if(onConnect != null)
+            onConnect.accept(connection);
+
+        this.startReceiveThread();
+    }
+
     public TCPClient connect(SocketAddress socketAddress, long timeoutMillis) {
         if(this.isConnected())
             throw new IllegalStateException("TCP client is already connected");
@@ -84,40 +94,37 @@ public class TCPClient {
             // channel
             final SocketChannel channel = SocketChannel.open();
             channel.configureBlocking(false);
-            channel.connect(socketAddress);
+            final boolean connectedInstantly = channel.connect(socketAddress);
 
-            // selector
+            // create selector
             if(selector != null)
                 Utils.close(selector);
             selector = Selector.open();
 
-            final SelectionKey key = channel.register(selector, SelectionKey.OP_CONNECT);
+            if(connectedInstantly) {
+                this.createConnection(channel);
+                return this;
+            }
 
             // wait for connection
+            channel.register(selector, SelectionKey.OP_CONNECT);
             if(selector.select(timeoutMillis) == 0) {
                 channel.close();
-                selector.close();
                 throw new TimeoutException("Connection timed out");
             }
 
-            // connect key
+            // get key and connect
             final Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
             final SelectionKey connectKey = keyIterator.next();
             keyIterator.remove();
 
-            // validate
             if(connectKey.isConnectable() && channel.finishConnect()) {
-                key.interestOps(SelectionKey.OP_READ);
-
-                connection = connectionFactory.create(channel, key, onDisconnect);
-                if(onConnect != null)
-                    onConnect.accept(connection);
-
-                this.startReceiveThread();
+                this.createConnection(channel);
             }else{
                 throw new ConnectException("Connection failed");
             }
         }catch(Exception e){
+            Utils.close(selector);
             throw new RuntimeException("Failed to connect TCP client: " + e.getMessage());
         }
         return this;
