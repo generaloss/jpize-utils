@@ -34,16 +34,29 @@ public class EulerAngles {
         this.set(eulerAngles);
     }
 
+
     public float getYaw() {
         return yaw;
+    }
+
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
     }
 
     public float getPitch() {
         return pitch;
     }
 
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
+
     public float getRoll() {
         return roll;
+    }
+
+    public void setRoll(float roll) {
+        this.roll = roll;
     }
 
 
@@ -59,16 +72,16 @@ public class EulerAngles {
     }
 
     public Vec3f getDirection(Vec3f dst) {
-        return directionOf(dst, yaw, pitch);
+        return EulerAngles.directionOf(dst, yaw, pitch);
     }
 
     public Vec3f getDirectionHorizontal(Vec3f dst) {
-        return dst.set(Maths.cosDeg(yaw), 0F, Maths.sinDeg(yaw));
+        return EulerAngles.directionOf(dst, yaw);
     }
 
     public EulerAngles setDirection(double x, double y, double z) {
-        yaw = yawOfDirection(x, z) * Maths.TO_DEG;
-        pitch = pitchOfDirection(x, y, z) * Maths.TO_DEG;
+        yaw = EulerAngles.yawOfDirection(x, z) * Maths.TO_DEG;
+        pitch = EulerAngles.pitchOfDirection(x, y, z) * Maths.TO_DEG;
         return this;
     }
 
@@ -169,13 +182,13 @@ public class EulerAngles {
 
 
     public static EulerAngles ofDirection(double x, double y, double z) {
-        final float yaw = yawOfDirection(x, z) * Maths.TO_DEG;
-        final float pitch = pitchOfDirection(x, y, z) * Maths.TO_DEG;
+        final float yaw = EulerAngles.yawOfDirection(x, z) * Maths.TO_DEG;
+        final float pitch = EulerAngles.pitchOfDirection(x, y, z) * Maths.TO_DEG;
         return new EulerAngles(yaw, pitch);
     }
 
     public static float yawOfDirection(double x, double z) {
-        return Mathc.atan2(-x, z);
+        return Mathc.atan2(z, x);
     }
 
     public static float pitchOfDirection(double x, double y, double z) {
@@ -186,14 +199,16 @@ public class EulerAngles {
     public static Vec3f directionOf(Vec3f dst, double yaw, double pitch) {
         final float pitchCos = Maths.cosDeg(pitch);
         return dst.set(
-            -Maths.sinDeg(yaw) * pitchCos,
-             Maths.sinDeg(pitch),
-             Maths.cosDeg(yaw) * pitchCos
+            Maths.cosDeg(yaw) * pitchCos,
+            Maths.sinDeg(pitch),
+            Maths.sinDeg(yaw) * pitchCos
         );
     }
 
     public static Vec3f directionOf(Vec3f dst, double yaw) {
         return dst.set(Maths.cosDeg(yaw), 0F, Maths.sinDeg(yaw));
     }
+
+
 
 }
