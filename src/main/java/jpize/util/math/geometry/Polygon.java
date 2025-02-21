@@ -64,8 +64,8 @@ public class Polygon {
         return this.isPointIn(point.x, point.y);
     }
 
-    public boolean isIntersectPolygon(Polygon polygon) {
-        return isIntersectPolygon(vertices, polygon.vertices);
+    public boolean overlaps(Polygon polygon) {
+        return overlaps(vertices, polygon.vertices);
     }
 
 
@@ -242,7 +242,7 @@ public class Polygon {
     }
 
 
-    public static boolean isIntersectPolygon(List<Vec2f> verticesA, List<Vec2f> verticesB) {
+    public static boolean overlaps(List<Vec2f> verticesA, List<Vec2f> verticesB) {
         for(int i = 0; i < verticesA.size(); i++){
             final Vec2f a1 = verticesA.get(i);
             final Vec2f a2 = verticesA.get((i + 1) % verticesA.size());
@@ -270,7 +270,7 @@ public class Polygon {
         return false;
     }
 
-    public static boolean isIntersectPolygon(float[] verticesA, float... verticesB) {
+    public static boolean overlaps(float[] verticesA, float... verticesB) {
         for(int i = 0; i < verticesA.length; i += 2){
             final float ax1 = verticesA[i];
             final float ay1 = verticesA[i + 1];

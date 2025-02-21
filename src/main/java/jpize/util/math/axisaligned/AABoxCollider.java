@@ -1,35 +1,36 @@
 package jpize.util.math.axisaligned;
 
+import jpize.util.math.geometry.Intersector;
 import jpize.util.math.vector.Vec3f;
 
 import java.util.Collection;
 
 public class AABoxCollider {
 
-    public static boolean isIntersects(Vec3f movement, AABoxBody body1, AABoxBody... otherBodies) {
+    public static boolean intersects(Vec3f movement, AABoxBody body1, AABoxBody... otherBodies) {
         body1 = body1.copy();
         body1.position().add(movement);
 
         for(AABoxBody body2: otherBodies)
-            if(body1.intersect(body2))
+            if(body1.overlaps(body2))
                 return true;
 
         return false;
     }
 
-    public static boolean isIntersects(Vec3f movement, AABoxBody body1, Collection<AABoxBody> otherBodies) {
+    public static boolean intersects(Vec3f movement, AABoxBody body1, Collection<AABoxBody> otherBodies) {
         body1 = body1.copy();
         body1.position().add(movement);
 
         for(AABoxBody body2: otherBodies)
-            if(body1.intersect(body2))
+            if(body1.overlaps(body2))
                 return true;
 
         return false;
     }
 
 
-    public static Vec3f getClippedMovement(Vec3f movement, AABoxBody body1, AABoxBody... otherBodies) {
+    public static Vec3f clipMovement(Vec3f movement, AABoxBody body1, AABoxBody... otherBodies) {
         // If movement == 0, return 0
         if(movement.isZero() || otherBodies == null)
             return movement;
@@ -83,7 +84,7 @@ public class AABoxCollider {
     }
 
 
-    public static Vec3f getClippedMovement(Vec3f movement, AABoxBody body1, Collection<AABoxBody> otherBodies) {
+    public static Vec3f clipMovement(Vec3f movement, AABoxBody body1, Collection<AABoxBody> otherBodies) {
         // If movement == 0, return 0
         if(movement.isZero() || otherBodies == null)
             return movement;
@@ -138,15 +139,15 @@ public class AABoxCollider {
 
     private static float clipX(float movementX, AABoxBody body1, AABoxBody body2) {
         // Ensure that the bodies intersect on the other axes and that collision is possible
-        if(body2.getMax().y > body1.getMin().y && body2.getMin().y < body1.getMax().y
-            && body2.getMax().z > body1.getMin().z && body2.getMin().z < body1.getMax().z){
+        if(Intersector.isRangesOverlapping(body1.min().y, body1.max().y, body2.min().y, body2.max().y) &&
+           Intersector.isRangesOverlapping(body1.min().z, body1.max().z, body2.min().z, body2.max().z)){
 
             // When moving positively:
             if(movementX > 0){
                 // Find body1 and body2 sides between which the distance to the collision is calculated
-                final float body1Side = Math.max(body1.getMin().x, body1.getMax().x);
-                final float body2Side = Math.min(body2.getMin().x, body2.getMax().x);
-                final float distance = body2Side - body1Side;
+                final float body1Side = Math.max(body1.min().x, body1.max().x);
+                final float body2Side = Math.min(body2.min().x, body2.max().x);
+                final float distance = (body2Side - body1Side);
 
                 // If the collision distance is less than planned to move them
                 if(distance >= 0 && distance < movementX)
@@ -156,9 +157,9 @@ public class AABoxCollider {
                 // When moving negatively:
             }else{
                 // Find body1 and body2 sides between which the distance to the collision is calculated
-                final float body1Side = Math.min(body1.getMin().x, body1.getMax().x);
-                final float body2Side = Math.max(body2.getMin().x, body2.getMax().x);
-                final float distance = body2Side - body1Side;
+                final float body1Side = Math.min(body1.min().x, body1.max().x);
+                final float body2Side = Math.max(body2.min().x, body2.max().x);
+                final float distance = (body2Side - body1Side);
 
                 // If the collision distance is less than planned to move them (-distance < -movementX  =  distance > movementX)
                 if(distance <= 0 && distance > movementX)
@@ -172,21 +173,21 @@ public class AABoxCollider {
     }
 
     private static float clipY(float movementY, AABoxBody body1, AABoxBody body2) {
-        if(body2.getMax().x > body1.getMin().x && body2.getMin().x < body1.getMax().x &&
-            body2.getMax().z > body1.getMin().z && body2.getMin().z < body1.getMax().z){
+        if(Intersector.isRangesOverlapping(body1.min().x, body1.max().x, body2.min().x, body2.max().x) &&
+           Intersector.isRangesOverlapping(body1.min().z, body1.max().z, body2.min().z, body2.max().z)){
 
             if(movementY > 0){
-                final float body1Side = Math.max(body1.getMin().y, body1.getMax().y);
-                final float body2Side = Math.min(body2.getMin().y, body2.getMax().y);
-                final float distance = body2Side - body1Side;
+                final float body1Side = Math.max(body1.min().y, body1.max().y);
+                final float body2Side = Math.min(body2.min().y, body2.max().y);
+                final float distance = (body2Side - body1Side);
 
                 if(distance >= 0 && distance < movementY)
                     return distance;
 
             }else{
-                final float body1Side = Math.min(body1.getMin().y, body1.getMax().y);
-                final float body2Side = Math.max(body2.getMin().y, body2.getMax().y);
-                final float distance = body2Side - body1Side;
+                final float body1Side = Math.min(body1.min().y, body1.max().y);
+                final float body2Side = Math.max(body2.min().y, body2.max().y);
+                final float distance = (body2Side - body1Side);
 
                 if(distance <= 0 && distance > movementY)
                     return distance;
@@ -197,21 +198,21 @@ public class AABoxCollider {
     }
 
     private static float clipZ(float movementZ, AABoxBody body1, AABoxBody body2) {
-        if(body2.getMax().x > body1.getMin().x && body2.getMin().x < body1.getMax().x &&
-            body2.getMax().y > body1.getMin().y && body2.getMin().y < body1.getMax().y){
+        if(Intersector.isRangesOverlapping(body1.min().x, body1.max().x, body2.min().x, body2.max().x) &&
+           Intersector.isRangesOverlapping(body1.min().y, body1.max().y, body2.min().y, body2.max().y)){
 
             if(movementZ > 0){
-                final float body1Side = Math.max(body1.getMin().z, body1.getMax().z);
-                final float body2Side = Math.min(body2.getMin().z, body2.getMax().z);
-                final float distance = body2Side - body1Side;
+                final float body1Side = Math.max(body1.min().z, body1.max().z);
+                final float body2Side = Math.min(body2.min().z, body2.max().z);
+                final float distance = (body2Side - body1Side);
 
                 if(distance >= 0 && distance < movementZ)
                     return distance;
 
             }else{
-                final float body1Side = Math.min(body1.getMin().z, body1.getMax().z);
-                final float body2Side = Math.max(body2.getMin().z, body2.getMax().z);
-                final float distance = body2Side - body1Side;
+                final float body1Side = Math.min(body1.min().z, body1.max().z);
+                final float body2Side = Math.max(body2.min().z, body2.max().z);
+                final float distance = (body2Side - body1Side);
 
                 if(distance <= 0 && distance > movementZ)
                     return distance;

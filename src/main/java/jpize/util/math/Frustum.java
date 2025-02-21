@@ -111,7 +111,7 @@ public class Frustum {
     }
 
     public boolean isAABoxIn(AABoxBody box) {
-        return this.isAABoxIn(box.getMin(), box.getMax());
+        return this.isAABoxIn(box.min(), box.max());
     }
 
 }

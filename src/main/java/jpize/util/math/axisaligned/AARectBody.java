@@ -32,11 +32,11 @@ public class AARectBody {
     }
 
 
-    public Vec2f getMin() {
+    public Vec2f min() {
         return min.set(rect.min()).add(position);
     }
 
-    public Vec2f getMax() {
+    public Vec2f max() {
         return max.set(rect.max()).add(position);
     }
 
@@ -55,23 +55,23 @@ public class AARectBody {
     }
 
 
-    public static boolean intersects(double min1X, double min1Y,
-                                     double max1X, double max1Y,
-                                     double min2X, double min2Y,
-                                     double max2X, double max2Y) {
+    public static boolean overlaps(double min1X, double min1Y,
+                                   double max1X, double max1Y,
+                                   double min2X, double min2Y,
+                                   double max2X, double max2Y) {
         return (
-                Intersector.isGapIntersectGap(min1X, max1X, min2X, max2X) &&
-                Intersector.isGapIntersectGap(min1Y, max1Y, min2Y, max2Y)
+                Intersector.isRangesOverlapping(min1X, max1X, min2X, max2X) &&
+                Intersector.isRangesOverlapping(min1Y, max1Y, min2Y, max2Y)
         );
     }
 
-    public static boolean intersects(AARectBody a, AARectBody b) {
-        final Vec2f min1 = a.getMin();
-        final Vec2f max1 = a.getMax();
-        final Vec2f min2 = b.getMin();
-        final Vec2f max2 = b.getMax();
+    public static boolean overlaps(AARectBody a, AARectBody b) {
+        final Vec2f min1 = a.min();
+        final Vec2f max1 = a.max();
+        final Vec2f min2 = b.min();
+        final Vec2f max2 = b.max();
 
-        return intersects(
+        return overlaps(
                 min1.x, min1.y,
                 max1.x, max1.y,
                 min2.x, min2.y,
@@ -79,8 +79,8 @@ public class AARectBody {
         );
     }
 
-    public boolean intersect(AARectBody other) {
-        return intersects(this, other);
+    public boolean overlaps(AARectBody other) {
+        return AARectBody.overlaps(this, other);
     }
 
 
@@ -89,8 +89,8 @@ public class AARectBody {
     }
 
     public static boolean isPointIn(double pointX, double pointY, AARectBody body) {
-        final Vec2f min = body.getMin();
-        final Vec2f max = body.getMax();
+        final Vec2f min = body.min();
+        final Vec2f max = body.max();
         return isPointIn(pointX, pointY, min.x, min.y, max.x, max.y);
     }
 
@@ -116,8 +116,8 @@ public class AARectBody {
     }
 
     public static boolean isPointOn(double pointX, double pointY, AARectBody body) {
-        final Vec2f min = body.getMin();
-        final Vec2f max = body.getMax();
+        final Vec2f min = body.min();
+        final Vec2f max = body.max();
         return isPointOn(pointX, pointY, min.x, min.y, max.x, max.y);
     }
 

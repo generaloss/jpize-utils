@@ -36,11 +36,11 @@ public class AABoxBody {
     }
 
 
-    public Vec3f getMin() {
+    public Vec3f min() {
         return min.set(boundingBox.min()).add(position);
     }
 
-    public Vec3f getMax() {
+    public Vec3f max() {
         return max.set(boundingBox.max()).add(position);
     }
 
@@ -59,24 +59,24 @@ public class AABoxBody {
     }
 
 
-    public static boolean intersects(float min1X, float min1Y, float min1Z,
-                                     float max1X, float max1Y, float max1Z,
-                                     float min2X, float min2Y, float min2Z,
-                                     float max2X, float max2Y, float max2Z) {
+    public static boolean overlaps(float min1X, float min1Y, float min1Z,
+                                   float max1X, float max1Y, float max1Z,
+                                   float min2X, float min2Y, float min2Z,
+                                   float max2X, float max2Y, float max2Z) {
         return (
-                Intersector.isGapIntersectGap(min1X, max1X, min2X, max2X) &&
-                Intersector.isGapIntersectGap(min1Y, max1Y, min2Y, max2Y) &&
-                Intersector.isGapIntersectGap(min1Z, max1Z, min2Z, max2Z)
+                Intersector.isRangesOverlapping(min1X, max1X, min2X, max2X) &&
+                Intersector.isRangesOverlapping(min1Y, max1Y, min2Y, max2Y) &&
+                Intersector.isRangesOverlapping(min1Z, max1Z, min2Z, max2Z)
         );
     }
 
-    public static boolean intersects(AABoxBody a, AABoxBody b) {
-        final Vec3f min1 = a.getMin();
-        final Vec3f max1 = a.getMax();
-        final Vec3f min2 = b.getMin();
-        final Vec3f max2 = b.getMax();
+    public static boolean overlaps(AABoxBody a, AABoxBody b) {
+        final Vec3f min1 = a.min();
+        final Vec3f max1 = a.max();
+        final Vec3f min2 = b.min();
+        final Vec3f max2 = b.max();
 
-        return intersects(
+        return overlaps(
                 min1.x, min1.y, min1.z,
                 max1.x, max1.y, max1.z,
                 min2.x, min2.y, min2.z,
@@ -84,21 +84,16 @@ public class AABoxBody {
         );
     }
 
-    public boolean intersect(AABoxBody box) {
-        return intersects(this, box);
+    public boolean overlaps(AABoxBody box) {
+        return AABoxBody.overlaps(this, box);
     }
 
     public boolean intersect(Ray3f ray) {
         return ray.intersect(this);
     }
 
-    public float getIntersection(Ray3f ray) {
-        return ray.getIntersection(this);
+    public float intersection(Ray3f ray) {
+        return ray.intersection(this);
     }
-
-
-
-
-
 
 }
