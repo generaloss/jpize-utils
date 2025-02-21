@@ -52,7 +52,7 @@ public class Intersector {
 
 
     public static boolean isRangesOverlapping(double begin1, double end1, double begin2, double end2) {
-        return (begin1 <= end2 && end1 >= begin2);
+        return (begin1 < end2 && end1 > begin2);
     }
 
 

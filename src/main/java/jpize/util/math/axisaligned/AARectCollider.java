@@ -30,7 +30,7 @@ public class AARectCollider {
     }
 
 
-    public static Vec2f clipMovement(Vec2f movement, AARectBody body1, AARectBody... otherBodies) {
+    public static Vec2f clipMovement(Vec2f clipDst, Vec2f movement, AARectBody body1, AARectBody... otherBodies) {
         // If movement == 0, return 0
         if(movement.isZero() || otherBodies == null)
             return movement;
@@ -44,7 +44,11 @@ public class AARectCollider {
         final float movementY = minClipY(movement.y, body1, otherBodies);
 
         // Return calculated movement
-        return new Vec2f(movementX, movementY);
+        return clipDst.set(movementX, movementY);
+    }
+
+    public static Vec2f clipMovement(Vec2f movement, AARectBody body1, AARectBody... otherBodies) {
+        return clipMovement(new Vec2f(), movement, body1, otherBodies);
     }
 
 
@@ -71,7 +75,7 @@ public class AARectCollider {
     }
 
 
-    public static Vec2f clipMovement(Vec2f movement, AARectBody body1, Collection<AARectBody> otherBodies) {
+    public static Vec2f clipMovement(Vec2f clipDst, Vec2f movement, AARectBody body1, Collection<AARectBody> otherBodies) {
         // If movement == 0, return 0
         if(movement.isZero() || otherBodies == null)
             return movement;
@@ -85,7 +89,11 @@ public class AARectCollider {
         final float movementY = minClipY(movement.y, body1, otherBodies);
 
         // Return calculated movement
-        return new Vec2f(movementX, movementY);
+        return clipDst.set(movementX, movementY);
+    }
+
+    public static Vec2f clipMovement(Vec2f movement, AARectBody body1, Collection<AARectBody> otherBodies) {
+        return clipMovement(new Vec2f(), movement, body1, otherBodies);
     }
 
 

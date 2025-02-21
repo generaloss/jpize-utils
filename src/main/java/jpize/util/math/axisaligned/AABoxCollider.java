@@ -30,7 +30,7 @@ public class AABoxCollider {
     }
 
 
-    public static Vec3f clipMovement(Vec3f movement, AABoxBody body1, AABoxBody... otherBodies) {
+    public static Vec3f clipMovement(Vec3f clipDst, Vec3f movement, AABoxBody body1, AABoxBody... otherBodies) {
         // If movement == 0, return 0
         if(movement.isZero() || otherBodies == null)
             return movement;
@@ -46,7 +46,11 @@ public class AABoxCollider {
         final float movementZ = minClipZ(movement.z, body1, otherBodies);
 
         // Return calculated movement
-        return new Vec3f(movementX, movementY, movementZ);
+        return clipDst.set(movementX, movementY, movementZ);
+    }
+
+    public static Vec3f clipMovement(Vec3f movement, AABoxBody body1, AABoxBody... otherBodies) {
+        return clipMovement(new Vec3f(), movement, body1, otherBodies);
     }
 
 
@@ -84,7 +88,7 @@ public class AABoxCollider {
     }
 
 
-    public static Vec3f clipMovement(Vec3f movement, AABoxBody body1, Collection<AABoxBody> otherBodies) {
+    public static Vec3f clipMovement(Vec3f clipDst, Vec3f movement, AABoxBody body1, Collection<AABoxBody> otherBodies) {
         // If movement == 0, return 0
         if(movement.isZero() || otherBodies == null)
             return movement;
@@ -100,7 +104,11 @@ public class AABoxCollider {
         final float movementZ = minClipZ(movement.z, body1, otherBodies);
 
         // Return calculated movement
-        return new Vec3f(movementX, movementY, movementZ);
+        return clipDst.set(movementX, movementY, movementZ);
+    }
+
+    public static Vec3f clipMovement(Vec3f movement, AABoxBody body1, Collection<AABoxBody> otherBodies) {
+        return clipMovement(new Vec3f(), movement, body1, otherBodies);
     }
 
 
