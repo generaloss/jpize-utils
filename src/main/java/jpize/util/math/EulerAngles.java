@@ -1,6 +1,7 @@
 package jpize.util.math;
 
 import jpize.util.math.vector.Vec2d;
+import jpize.util.math.vector.Vec2f;
 import jpize.util.math.vector.Vec3d;
 import jpize.util.math.vector.Vec3f;
 
@@ -75,8 +76,20 @@ public class EulerAngles {
         return EulerAngles.directionOf(dst, yaw, pitch);
     }
 
+    public Vec3f getDirection() {
+        return EulerAngles.directionOf(yaw, pitch);
+    }
+
     public Vec3f getDirectionHorizontal(Vec3f dst) {
         return EulerAngles.directionOf(dst, yaw);
+    }
+
+    public Vec2f getDirectionHorizontal(Vec2f dst) {
+        return EulerAngles.directionOf(dst, yaw);
+    }
+
+    public Vec3f getDirectionHorizontal() {
+        return EulerAngles.directionOf(yaw);
     }
 
     public EulerAngles setDirection(double x, double y, double z) {
@@ -205,10 +218,20 @@ public class EulerAngles {
         );
     }
 
+    public static Vec3f directionOf(double yaw, double pitch) {
+        return EulerAngles.directionOf(new Vec3f(), yaw, pitch);
+    }
+
     public static Vec3f directionOf(Vec3f dst, double yaw) {
         return dst.set(Maths.cosDeg(yaw), 0F, Maths.sinDeg(yaw));
     }
 
+    public static Vec2f directionOf(Vec2f dst, double yaw) {
+        return dst.set(Maths.cosDeg(yaw), Maths.sinDeg(yaw));
+    }
 
+    public static Vec3f directionOf(double yaw) {
+        return EulerAngles.directionOf(new Vec3f(), yaw);
+    }
 
 }
