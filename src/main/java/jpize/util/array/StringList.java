@@ -339,6 +339,11 @@ public class StringList implements Iterable<String> {
         return this;
     }
 
+    public StringList elementAdd(int i, char value) {
+        array[i] += value;
+        return this;
+    }
+
     public StringList elementTrim(int i) {
         array[i] = array[i].trim();
         return this;

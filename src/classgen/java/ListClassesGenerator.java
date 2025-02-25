@@ -2,14 +2,14 @@
 public class ListClassesGenerator {
 
     public static void main(String[] args) {
-        newClass("ByteList", "byte", "10", "(byte) 0");
-        newClass("ShortList", "short", "10", "(short) 0");
-        newClass("IntList", "int", "10", "0");
-        newClass("LongList", "long", "10", "0L");
-        newClass("FloatList", "float", "10", "0F");
-        newClass("DoubleList", "double", "10", "0D");
-        newClass("BoolList", "boolean", "10", "false");
-        newClass("CharList", "char", "10", "(char) 0");
+        //newClass("ByteList", "byte", "10", "(byte) 0");
+        //newClass("ShortList", "short", "10", "(short) 0");
+        //newClass("IntList", "int", "10", "0");
+        //newClass("LongList", "long", "10", "0L");
+        //newClass("FloatList", "float", "10", "0F");
+        //newClass("DoubleList", "double", "10", "0D");
+        //newClass("BoolList", "boolean", "10", "false");
+        //newClass("CharList", "char", "10", "(char) 0");
         newClass("StringList", "String", "3", "null");
     }
 
@@ -449,6 +449,10 @@ public class ListClassesGenerator {
             w.addMethod("public " + classname + " elementAdd(int i, String value)",
                 "array[i] += value;",
                 "return this;"
+            );
+            w.addMethod("public " + classname + " elementAdd(int i, char value)",
+                    "array[i] += value;",
+                    "return this;"
             );
             w.addMethod("public " + classname + " elementTrim(int i)",
                 "array[i] = array[i].trim();",
