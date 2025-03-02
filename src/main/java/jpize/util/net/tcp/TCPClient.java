@@ -104,6 +104,8 @@ public class TCPClient {
             if(connectedInstantly) {
                 this.createConnection(channel);
                 return this;
+            }else{
+                System.out.println("pupupu");
             }
 
             // wait for connection
