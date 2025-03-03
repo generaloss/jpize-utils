@@ -54,7 +54,7 @@ public class FileResource extends Resource {
     }
 
     /** Creates all directories and file */
-    public boolean mkAll() {
+    public boolean mkAll() { // TODO: better name for method
         final File parent = file.getParentFile();
         if(parent != null){
             parent.mkdirs();

@@ -157,7 +157,7 @@ public class FastReader implements Closeable {
     }
 
 
-    public String readString(Charset charset) {
+    public String nextString(Charset charset) {
         try{
             return new String(inputStream.readAllBytes(), charset);
         }catch(IOException e){
@@ -165,8 +165,8 @@ public class FastReader implements Closeable {
         }
     }
 
-    public String readString() {
-        return this.readString(StandardCharsets.UTF_8);
+    public String nextString() {
+        return this.nextString(StandardCharsets.UTF_8);
     }
 
 

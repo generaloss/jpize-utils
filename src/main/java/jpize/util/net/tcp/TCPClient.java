@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.nio.channels.AlreadyConnectedException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -88,7 +89,10 @@ public class TCPClient {
 
     public TCPClient connect(SocketAddress socketAddress, long timeoutMillis) {
         if(this.isConnected())
-            throw new IllegalStateException("TCP client is already connected");
+            throw new AlreadyConnectedException();
+
+        if(selector != null)
+            Utils.close(selector);
 
         try{
             // channel
@@ -96,16 +100,11 @@ public class TCPClient {
             channel.configureBlocking(false);
             final boolean connectedInstantly = channel.connect(socketAddress);
 
-            // create selector
-            if(selector != null)
-                Utils.close(selector);
             selector = Selector.open();
 
             if(connectedInstantly) {
                 this.createConnection(channel);
                 return this;
-            }else{
-                System.out.println("pupupu");
             }
 
             // wait for connection
