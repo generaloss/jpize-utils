@@ -3,7 +3,18 @@ package jpize.util.net.tcp;
 import java.net.Socket;
 import java.net.SocketException;
 
-public record TCPSocketOptions(Socket socket) {
+public class TCPSocketOptions {
+
+    private final Socket socket;
+
+    public TCPSocketOptions(Socket socket) {
+        this.socket = socket;
+    }
+
+    public Socket socket() {
+        return socket;
+    }
+
 
     public boolean getTcpNoDelay() {
         try{

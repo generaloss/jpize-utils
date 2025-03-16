@@ -24,7 +24,7 @@ public class Polygon {
     }
 
 
-    public Rect getBounds(Rect dst) {
+    public Rectf getBounds(Rectf dst) {
         return dst.calculateFor(vertices);
     }
 

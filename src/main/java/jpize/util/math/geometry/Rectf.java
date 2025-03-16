@@ -6,24 +6,24 @@ import jpize.util.math.vector.Vec4f;
 import java.util.Collection;
 import java.util.Objects;
 
-public class Rect {
+public class Rectf {
 
     public float x, y;
     public float width, height;
 
-    public Rect(Rect rect) {
+    public Rectf(Rectf rect) {
         this.set(rect);
     }
 
-    public Rect(float x, float y, float width, float height) {
+    public Rectf(float x, float y, float width, float height) {
         this.set(x, y, width, height);
     }
 
-    public Rect(float width, float height) {
+    public Rectf(float width, float height) {
         this.setSize(width, height);
     }
 
-    public Rect() { }
+    public Rectf() { }
 
 
     public float getX() {
@@ -43,65 +43,65 @@ public class Rect {
     }
 
 
-    public Rect setX(float x) {
+    public Rectf setX(float x) {
         this.x = x;
         return this;
     }
 
-    public Rect setY(float y) {
+    public Rectf setY(float y) {
         this.y = y;
         return this;
     }
 
-    public Rect setWidth(float width) {
+    public Rectf setWidth(float width) {
         this.width = width;
         return this;
     }
 
-    public Rect setHeight(float height) {
+    public Rectf setHeight(float height) {
         this.height = height;
         return this;
     }
     
 
-    public Rect setPosition(float x, float y) {
+    public Rectf setPosition(float x, float y) {
         this.x = x;
         this.y = y;
         return this;
     }
 
-    public Rect setPosition(float xy) {
+    public Rectf setPosition(float xy) {
         return this.setPosition(xy, xy);
     }
 
 
-    public Rect setSize(float width, float height) {
+    public Rectf setSize(float width, float height) {
         this.width = width;
         this.height = height;
         return this;
     }
 
-    public Rect setSize(float sizeXY) {
+    public Rectf setSize(float sizeXY) {
         return this.setSize(sizeXY, sizeXY);
     }
 
 
-    public Rect set(float x, float y, float width, float height) {
+    public Rectf set(float x, float y, float width, float height) {
         this.setPosition(x, y);
         this.setSize(width, height);
         return this;
     }
     
-    public Rect set(Rect rect) {
+    public Rectf set(Rectf rect) {
         return this.set(rect.x, rect.y, rect.width, rect.height);
     }
 
-    public Rect reset() {
+    public Rectf reset() {
         return this.set(0F, 0F, 0F, 0F);
     }
 
 
-    public Rect calculateFor(Collection<Vec2f> points) {
+    public Rectf calculateFor(Collection<Vec2f> points) {
         this.setPosition(Float.MAX_VALUE);
         this.setSize(0F);
 
@@ -117,7 +117,7 @@ public class Rect {
         return this.setSize(width - x, height - y);
     }
 
-    public Rect calculateFor(float... points) {
+    public Rectf calculateFor(float... points) {
         this.setPosition(Float.MAX_VALUE);
         this.setSize(0F);
 
@@ -136,8 +136,8 @@ public class Rect {
     }
 
 
-    public Rect copy() {
-        return new Rect(this);
+    public Rectf copy() {
+        return new Rectf(this);
     }
     
     @Override
@@ -146,7 +146,7 @@ public class Rect {
             return true;
         if(object == null || getClass() != object.getClass())
             return false;
-        final Rect rect = (Rect) object;
+        final Rectf rect = (Rectf) object;
         return Vec4f.equals(x, y, width, height, rect.x, rect.y, rect.width, rect.height);
     }
 

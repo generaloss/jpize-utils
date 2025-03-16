@@ -1,74 +1,75 @@
 package jpize.util;
 
-import jpize.util.math.vector.Vec4f;
+import jpize.util.math.vector.Vec4i;
+
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Insets implements Serializable {
+public class Insetsi implements Serializable {
 
-    public float top;
-    public float left;
-    public float bottom;
-    public float right;
+    public int top;
+    public int left;
+    public int bottom;
+    public int right;
 
-    public Insets(Insets insets) {
+    public Insetsi(Insetsi insets) {
         this.set(insets);
     }
 
-    public Insets(int top, int left, int bottom, int right) {
+    public Insetsi(int top, int left, int bottom, int right) {
         this.set(top, left, bottom, right);
     }
 
-    public Insets(float horizontal, float vertical) {
+    public Insetsi(int horizontal, int vertical) {
         this.set(horizontal, vertical);
     }
 
-    public Insets(float all) {
+    public Insetsi(int all) {
         this.set(all);
     }
 
-    public Insets() { }
+    public Insetsi() { }
 
 
-    public float getTop() {
+    public int getTop() {
         return top;
     }
 
-    public float getLeft() {
+    public int getLeft() {
         return left;
     }
 
-    public float getBottom() {
+    public int getBottom() {
         return bottom;
     }
 
-    public float getRight() {
+    public int getRight() {
         return right;
     }
 
 
-    public Insets setTop(float top) {
+    public Insetsi setTop(int top) {
         this.top = top;
         return this;
     }
 
-    public Insets setLeft(float left) {
+    public Insetsi setLeft(int left) {
         this.left = left;
         return this;
     }
 
-    public Insets setBottom(float bottom) {
+    public Insetsi setBottom(int bottom) {
         this.bottom = bottom;
         return this;
     }
 
-    public Insets setRight(float right) {
+    public Insetsi setRight(int right) {
         this.right = right;
         return this;
     }
 
 
-    public Insets set(float top, float left, float bottom, float right) {
+    public Insetsi set(int top, int left, int bottom, int right) {
         this.top = top;
         this.left = left;
         this.bottom = bottom;
@@ -76,25 +77,25 @@ public class Insets implements Serializable {
         return this;
     }
 
-    public Insets set(float horizontal, float vertical) {
+    public Insetsi set(int horizontal, int vertical) {
         return this.set(vertical, horizontal, vertical, horizontal);
     }
 
-    public Insets set(float all) {
+    public Insetsi set(int all) {
         return this.set(all, all, all, all);
     }
 
-    public Insets set(Insets insets) {
+    public Insetsi set(Insetsi insets) {
         return this.set(insets.top, insets.left, insets.bottom, insets.right);
     }
 
-    public Insets reset() {
-        return this.set(0F, 0F, 0F, 0F);
+    public Insetsi reset() {
+        return this.set(0, 0, 0, 0);
     }
 
 
-    public Insets copy() {
-        return new Insets(this);
+    public Insetsi copy() {
+        return new Insetsi(this);
     }
 
     @Override
@@ -103,8 +104,8 @@ public class Insets implements Serializable {
             return true;
         if(object == null || getClass() != object.getClass())
             return false;
-        final Insets insets = (Insets) object;
-        return Vec4f.equals(top, left, bottom, right, insets.top, insets.left, insets.bottom, insets.right);
+        final Insetsi insets = (Insetsi) object;
+        return Vec4i.equals(top, left, bottom, right, insets.top, insets.left, insets.bottom, insets.right);
     }
 
     @Override
