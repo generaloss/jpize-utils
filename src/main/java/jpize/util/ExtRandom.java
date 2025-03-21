@@ -1,4 +1,4 @@
-package jpize.util.math;
+package jpize.util;
 
 import java.util.Random;
 
