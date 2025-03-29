@@ -21,6 +21,7 @@ public class FastReader implements Closeable {
         this.inputStream = inputStream;
         this.buffer = new byte[65536];
         this.charBuffer = new byte[256];
+        this.fillBuffer();
     }
 
     public FastReader(byte[] bytes) {
@@ -35,14 +36,12 @@ public class FastReader implements Closeable {
         this(System.in);
     }
 
-
-    private byte read() throws IOException {
-        if(bytesRead == EOF)
-            throw new IOException();
-
-        if(pointer == bytesRead)
+    private byte read() {
+        if(pointer == bytesRead) {
             this.fillBuffer();
-
+            if(bytesRead == EOF)
+                return EOF;
+        }
         return buffer[pointer++];
     }
 
@@ -50,48 +49,9 @@ public class FastReader implements Closeable {
         try{
             pointer = 0;
             bytesRead = inputStream.read(buffer);
-            if(!this.hasNext())
-                buffer[0] = EOF;
-
         }catch(IOException e){
             throw new RuntimeException(e);
         }
-    }
-
-
-    public String next(Charset charset) {
-        if(!this.hasNext())
-            return null;
-
-        try{
-            int i = 0;
-            while(true){
-                while(pointer < bytesRead){
-                    final byte b = buffer[pointer];
-                    if(b != SPACE && b != NEW_LINE){
-                        if(i == charBuffer.length)
-                            this.doubleCharBufferSize();
-                        charBuffer[i++] = buffer[pointer++];
-                    }else{
-                        pointer++;
-                        return new String(charBuffer, 0, i, charset);
-                    }
-                }
-
-                bytesRead = inputStream.read(buffer);
-                if(bytesRead == EOF)
-                    return new String(charBuffer, 0, i, charset);
-
-                pointer = 0;
-            }
-
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public String next() {
-        return this.next(StandardCharsets.UTF_8);
     }
 
     private void doubleCharBufferSize() {
@@ -100,55 +60,51 @@ public class FastReader implements Closeable {
         charBuffer = newBuffer;
     }
 
+    public String next(Charset charset) {
+        if(!this.hasNext())
+            return null;
 
-    private int readJunkSpace() throws IOException {
-        if(bytesRead == EOF)
-            return EOF;
+        while(pointer < bytesRead && buffer[pointer] == SPACE)
+            pointer++;
 
-        do{
-            while(pointer < bytesRead){
-                if(buffer[pointer] != SPACE){
-                    return 0;
+        int i = 0;
+        while(true) {
+            while(pointer < bytesRead) {
+                final byte b = buffer[pointer];
+                if(b != SPACE && b != NEW_LINE) {
+                    if(i == charBuffer.length)
+                        this.doubleCharBufferSize();
+                    charBuffer[i++] = buffer[pointer++];
+                }else{
+                    pointer++;
+                    return new String(charBuffer, 0, i, charset);
                 }
-                pointer++;
             }
+            this.fillBuffer();
+            if(bytesRead == EOF)
+                return new String(charBuffer, 0, i, charset);
+        }
+    }
 
-            bytesRead = inputStream.read(buffer);
-            if(bytesRead == EOF){
-                return EOF;
-            }
-
-            pointer = 0;
-
-        }while(true);
+    public String next() {
+        return this.next(StandardCharsets.UTF_8);
     }
 
     public String nextLine(Charset charset) {
-        try{
-            int charPointer = 0;
-            do{
-                while(pointer < bytesRead){
-                    if(buffer[pointer] != NEW_LINE){
-                        if(charPointer == charBuffer.length)
-                            this.doubleCharBufferSize();
-                        charBuffer[charPointer++] = buffer[pointer++];
-                    }else{
-                        pointer++;
-                        return new String(charBuffer, 0, charPointer, charset);
-                    }
-                }
-
-                bytesRead = inputStream.read(buffer);
-                if(bytesRead == EOF){
+        int charPointer = 0;
+        while(true) {
+            while(pointer < bytesRead) {
+                final byte b = buffer[pointer++];
+                if(b == NEW_LINE)
                     return new String(charBuffer, 0, charPointer, charset);
-                }
 
-                pointer = 0;
-
-            }while(true);
-
-        }catch(IOException e){
-            throw new RuntimeException(e);
+                if(charPointer == charBuffer.length)
+                    this.doubleCharBufferSize();
+                charBuffer[charPointer++] = b;
+            }
+            this.fillBuffer();
+            if(bytesRead == EOF)
+                return new String(charBuffer, 0, charPointer, charset);
         }
     }
 
@@ -156,11 +112,25 @@ public class FastReader implements Closeable {
         return this.nextLine(StandardCharsets.UTF_8);
     }
 
+    public boolean hasNext() {
+        while(pointer < bytesRead) {
+            if(buffer[pointer] != SPACE && buffer[pointer] != NEW_LINE)
+                return true;
+            pointer++;
+        }
+        this.fillBuffer();
+        return (bytesRead != EOF);
+    }
+
+    public void waitNext() {
+        while(!this.hasNext())
+            Thread.yield();
+    }
 
     public String nextString(Charset charset) {
-        try{
+        try {
             return new String(inputStream.readAllBytes(), charset);
-        }catch(IOException e){
+        }catch(IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -168,7 +138,6 @@ public class FastReader implements Closeable {
     public String nextString() {
         return this.nextString(StandardCharsets.UTF_8);
     }
-
 
     public int nextInt() {
         return Integer.parseInt(this.next());
@@ -188,20 +157,6 @@ public class FastReader implements Closeable {
 
     public boolean nextBool() {
         return Boolean.parseBoolean(this.next());
-    }
-
-
-    public boolean hasNext() {
-        try{
-            return (this.readJunkSpace() != EOF);
-        }catch(IOException ignored){
-            return false;
-        }
-    }
-
-    public void waitNext() {
-        while(!this.hasNext())
-            Thread.yield();
     }
 
     @Override
