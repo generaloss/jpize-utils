@@ -58,16 +58,29 @@ public class Maths {
     }
 
 
-    public static boolean isPow2(int a) {
-        return (a != 0 && (a & -a) == a);
-    }
-
     public static boolean isEven(int a) {
         return (a % 2 == 0);
     }
 
     public static boolean isOdd(int a) {
         return (a % 2 != 0);
+    }
+
+    public static boolean isPow2(int a) {
+        return (a != 0 && (a & -a) == a);
+    }
+
+
+    public static int nextPow2(int value) {
+        if(value == 0)
+            return 1;
+        value--;
+        value |= (value >> 1);
+        value |= (value >> 2);
+        value |= (value >> 4);
+        value |= (value >> 8);
+        value |= (value >> 16);
+        return (value + 1);
     }
 
 
