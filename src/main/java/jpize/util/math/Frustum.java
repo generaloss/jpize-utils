@@ -5,7 +5,7 @@ import jpize.util.math.matrix.Matrix4f;
 import jpize.util.math.vector.Vec3f;
 import jpize.util.math.vector.Vec4f;
 
-import static jpize.util.math.matrix.Matrix4.*;
+import static jpize.util.math.matrix.Matrix4f.*;
 
 public class Frustum {
 
@@ -30,25 +30,25 @@ public class Frustum {
 
 
     public void setFrustum(float[] combined) {
-        final float v0 = combined[m03];
-        final float v1 = combined[m13];
-        final float v2 = combined[m23];
-        final float v3 = combined[m33];
+        final float v0 = combined[M03];
+        final float v1 = combined[M13];
+        final float v2 = combined[M23];
+        final float v3 = combined[M33];
 
-        vectors[0].set((v0 - combined[m00]), (v1 - combined[m10]), (v2 - combined[m20]), (v3 - combined[m30])).nor();
-        vectors[1].set((v0 + combined[m00]), (v1 + combined[m10]), (v2 + combined[m20]), (v3 + combined[m30])).nor();
-        vectors[2].set((v0 + combined[m01]), (v1 + combined[m11]), (v2 + combined[m21]), (v3 + combined[m31])).nor();
-        vectors[3].set((v0 - combined[m01]), (v1 - combined[m11]), (v2 - combined[m21]), (v3 - combined[m31])).nor();
-        vectors[4].set((v0 - combined[m02]), (v1 - combined[m12]), (v2 - combined[m22]), (v3 - combined[m32])).nor();
-        vectors[5].set((v0 + combined[m02]), (v1 + combined[m12]), (v2 + combined[m22]), (v3 + combined[m32])).nor();
+        vectors[0].set((v0 - combined[M00]), (v1 - combined[M10]), (v2 - combined[M20]), (v3 - combined[M30])).nor();
+        vectors[1].set((v0 + combined[M00]), (v1 + combined[M10]), (v2 + combined[M20]), (v3 + combined[M30])).nor();
+        vectors[2].set((v0 + combined[M01]), (v1 + combined[M11]), (v2 + combined[M21]), (v3 + combined[M31])).nor();
+        vectors[3].set((v0 - combined[M01]), (v1 - combined[M11]), (v2 - combined[M21]), (v3 - combined[M31])).nor();
+        vectors[4].set((v0 - combined[M02]), (v1 - combined[M12]), (v2 - combined[M22]), (v3 - combined[M32])).nor();
+        vectors[5].set((v0 + combined[M02]), (v1 + combined[M12]), (v2 + combined[M22]), (v3 + combined[M32])).nor();
     }
 
     public void setFrustum(Matrix4f combined) {
-        this.setFrustum(combined.val);
+        this.setFrustum(combined.values);
     }
 
     public void setFrustum(Matrix4f view, Matrix4f projection) {
-        final float[] combined = Matrix4f.mul(projection.val, view.val);
+        final float[] combined = Matrix4f.mulToNew(projection.values, view.values);
         this.setFrustum(combined);
     }
 

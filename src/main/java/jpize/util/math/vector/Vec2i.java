@@ -2,7 +2,6 @@ package jpize.util.math.vector;
 
 import jpize.util.math.Maths;
 import jpize.util.math.Mathc;
-import jpize.util.math.matrix.Matrix3;
 import jpize.util.math.matrix.Matrix3f;
 import java.util.Objects;
 
@@ -909,13 +908,13 @@ public class Vec2i {
 
     public Vec2i mulMat3(float[] matrix) {
         return this.set(
-            x * matrix[Matrix3.m00] + y * matrix[Matrix3.m10] + matrix[Matrix3.m20],
-            x * matrix[Matrix3.m01] + y * matrix[Matrix3.m11] + matrix[Matrix3.m21]
+            x * matrix[Matrix3f.M00] + y * matrix[Matrix3f.M10] + matrix[Matrix3f.M20],
+            x * matrix[Matrix3f.M01] + y * matrix[Matrix3f.M11] + matrix[Matrix3f.M21]
         );
     }
 
     public Vec2i mulMat3(Matrix3f matrix) {
-        return this.mulMat3(matrix.val);
+        return this.mulMat3(matrix.values);
     }
 
 

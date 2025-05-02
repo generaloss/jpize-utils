@@ -29,22 +29,6 @@ public class Color extends AbstractColor {
         this.set(red, green, blue);
     }
 
-    public Color(float grayscale, float alpha) {
-        this.set(grayscale, alpha);
-    }
-
-    public Color(double grayscale, double alpha) {
-        this.set(grayscale, alpha);
-    }
-
-    public Color(float grayscale) {
-        this.set(grayscale);
-    }
-
-    public Color(double grayscale) {
-        this.set(grayscale);
-    }
-
     public Color(AbstractColor color) {
         this.set(color);
     }
@@ -59,6 +43,18 @@ public class Color extends AbstractColor {
 
     public Color(int[] array) {
         this.seti(array);
+    }
+
+    public Color(int color, boolean alpha) {
+        if(alpha) {
+            this.setRGBA(color);
+        }else{
+            this.setRGB(color);
+        }
+    }
+
+    public Color(int color) {
+        this(color, false);
     }
 
 
@@ -252,37 +248,25 @@ public class Color extends AbstractColor {
                 final String alphaStr = hexString.substring(3 * mul, 4 * mul).repeat(repeat);
                 this.setAlphai(Integer.parseInt(alphaStr, 16));
             }
-        }catch(Exception e){
-            throw new IllegalArgumentException("Invalid hexadecimal color: '" + hexString + "'");
-        }
+        }catch(Exception ignored){ }
         return this;
     }
 
 
     public Color setRGB(int color) {
-        return this.seti(
-                (color >> 16 & 0xFF),
-                (color >> 8  & 0xFF),
-                (color       & 0xFF)
-        );
+        return this.set(rgbaRed(color), rgbaGreen(color), rgbaBlue(color));
     }
 
     public Color setRGBA(int color) {
-        return this.seti(
-            (color >> 24 & 0xFF),
-            (color >> 16 & 0xFF),
-            (color >> 8  & 0xFF),
-            (color       & 0xFF)
-        );
+        return this.set(rgbaRed(color), rgbaGreen(color), rgbaBlue(color), rgbaAlpha(color));
     }
 
     public Color setARGB(int color) {
-        return this.seti(
-                (color >> 16 & 0xFF),
-                (color >> 8  & 0xFF),
-                (color       & 0xFF),
-                (color >> 24 & 0xFF)
-        );
+        return this.set(argbRed(color), argbGreen(color), argbBlue(color), argbAlpha(color));
+    }
+
+    public Color setABGR(int color) {
+        return this.set(abgrRed(color), abgrGreen(color), abgrBlue(color), abgrAlpha(color));
     }
 
 

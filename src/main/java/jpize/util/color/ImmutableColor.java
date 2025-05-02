@@ -30,22 +30,6 @@ public class ImmutableColor extends AbstractColor {
         this((float) red, (float) green, (float) blue, 1F);
     }
 
-    public ImmutableColor(float grayscale, float alpha) {
-        this(grayscale, grayscale, grayscale, alpha);
-    }
-
-    public ImmutableColor(double grayscale, double alpha) {
-        this((float) grayscale, (float) alpha);
-    }
-
-    public ImmutableColor(float grayscale) {
-        this(grayscale, 1F);
-    }
-
-    public ImmutableColor(double grayscale) {
-        this((float) grayscale, 1F);
-    }
-
     public ImmutableColor(AbstractColor color) {
         this(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
     }
@@ -65,6 +49,17 @@ public class ImmutableColor extends AbstractColor {
             color[2] / 255F,
             color[3] / 255F
         );
+    }
+
+    public ImmutableColor(int color, boolean alpha) {
+        this.red = rgbaRed(color);
+        this.green = rgbaGreen(color);
+        this.blue = rgbaBlue(color);
+        this.alpha = (alpha ? rgbaAlpha(color) : 1F);
+    }
+
+    public ImmutableColor(int color) {
+        this(color, false);
     }
 
 

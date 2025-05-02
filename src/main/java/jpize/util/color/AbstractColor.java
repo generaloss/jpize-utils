@@ -1,5 +1,6 @@
 package jpize.util.color;
 
+import jpize.util.ByteUtils;
 import jpize.util.math.Maths;
 
 public abstract class AbstractColor {
@@ -20,19 +21,32 @@ public abstract class AbstractColor {
 
 
     public int getRedi() {
-        return (int) (this.getRed() * 255);
+        return (int) (this.getRed() * 255F);
     }
 
-    public float getGreeni() {
-        return (int) (this.getGreen() * 255);
+    public int getGreeni() {
+        return (int) (this.getGreen() * 255F);
     }
 
-    public float getBluei() {
-        return (int) (this.getBlue() * 255);
+    public int getBluei() {
+        return (int) (this.getBlue() * 255F);
     }
 
-    public float getAlphai() {
-        return (int) (this.getAlpha() * 255);
+    public int getAlphai() {
+        return (int) (this.getAlpha() * 255F);
+    }
+
+
+    public int getRGB() {
+        return ByteUtils.makeInt(this.getRedi(), this.getGreeni(), this.getBluei(), 0xFF);
+    }
+
+    public int getARGB() {
+        return ByteUtils.makeInt(this.getAlphai(), this.getRedi(), this.getGreeni(), this.getBluei());
+    }
+
+    public int getABGR() {
+        return ByteUtils.makeInt(this.getAlphai(), this.getBluei(), this.getGreeni(), this.getRedi());
     }
 
 
@@ -157,6 +171,57 @@ public abstract class AbstractColor {
             color1.getRed(), color1.getGreen(), color1.getBlue(), color1.getAlpha(),
             color2.getRed(), color2.getGreen(), color2.getBlue(), color2.getAlpha()
         );
+    }
+
+
+    public static float rgbaRed(int color) {
+        return ByteUtils.ubyte4(color) / 255F;
+    }
+
+    public static float rgbaGreen(int color) {
+        return ByteUtils.ubyte3(color) / 255F;
+    }
+
+    public static float rgbaBlue(int color) {
+        return ByteUtils.ubyte2(color) / 255F;
+    }
+
+    public static float rgbaAlpha(int color) {
+        return ByteUtils.ubyte1(color) / 255F;
+    }
+
+
+    public static float argbAlpha(int color) {
+        return ByteUtils.ubyte4(color) / 255F;
+    }
+
+    public static float argbRed(int color) {
+        return ByteUtils.ubyte3(color) / 255F;
+    }
+
+    public static float argbGreen(int color) {
+        return ByteUtils.ubyte2(color) / 255F;
+    }
+
+    public static float argbBlue(int color) {
+        return ByteUtils.ubyte1(color) / 255F;
+    }
+
+
+    public static float abgrAlpha(int color) {
+        return ByteUtils.ubyte4(color) / 255F;
+    }
+
+    public static float abgrBlue(int color) {
+        return ByteUtils.ubyte3(color) / 255F;
+    }
+
+    public static float abgrGreen(int color) {
+        return ByteUtils.ubyte2(color) / 255F;
+    }
+
+    public static float abgrRed(int color) {
+        return ByteUtils.ubyte1(color) / 255F;
     }
 
 }

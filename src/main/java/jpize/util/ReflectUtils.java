@@ -6,7 +6,7 @@ public class ReflectUtils {
 
     public static void invokeMethod(Object instance, String name, Object... args) {
         try{
-            final Class<?>[] argsTypes = getObjTypesArray(args);
+            final Class<?>[] argsTypes = getObjectTypesArray(args);
             final Method method = instance.getClass().getMethod(name, argsTypes);
             method.setAccessible(true);
             method.invoke(instance, args);
@@ -17,7 +17,7 @@ public class ReflectUtils {
 
     public static void invokeStaticMethod(Class<?> c, String name, Object... args) {
         try{
-            final Class<?>[] argsTypes = getObjTypesArray(args);
+            final Class<?>[] argsTypes = getObjectTypesArray(args);
             final Method method = c.getDeclaredMethod(name, argsTypes);
             method.setAccessible(true);
             method.invoke(null, args);
@@ -27,16 +27,16 @@ public class ReflectUtils {
     }
 
 
-    private static Class<?>[] getObjTypesArray(Object... args) {
+    private static Class<?>[] getObjectTypesArray(Object... args) {
         final Class<?>[] types = new Class<?>[args.length];
         for(int i = 0; i < args.length; i++){
             final Class<?> c = args[i].getClass();
-            types[i] = getPrimitiveClass(c);
+            types[i] = removeTypeWrapper(c);
         }
         return types;
     }
 
-    private static Class<?> getPrimitiveClass(Class<?> c) {
+    private static Class<?> removeTypeWrapper(Class<?> c) {
         if(c == Byte.class) return byte.class;
         else if(c == Short.class) return short.class;
         else if(c == Integer.class) return int.class;

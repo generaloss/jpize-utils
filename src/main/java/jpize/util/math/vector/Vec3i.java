@@ -1491,26 +1491,26 @@ public class Vec3i {
 
     public Vec3i mulMat4(float[] matrix) {
         return this.set(
-            x * matrix[Matrix4.m00] + y * matrix[Matrix4.m10] + z * matrix[Matrix4.m20] + matrix[Matrix4.m30],
-            x * matrix[Matrix4.m01] + y * matrix[Matrix4.m11] + z * matrix[Matrix4.m21] + matrix[Matrix4.m31],
-            x * matrix[Matrix4.m02] + y * matrix[Matrix4.m12] + z * matrix[Matrix4.m22] + matrix[Matrix4.m32]
+            x * matrix[Matrix4f.M00] + y * matrix[Matrix4f.M10] + z * matrix[Matrix4f.M20] + matrix[Matrix4f.M30],
+            x * matrix[Matrix4f.M01] + y * matrix[Matrix4f.M11] + z * matrix[Matrix4f.M21] + matrix[Matrix4f.M31],
+            x * matrix[Matrix4f.M02] + y * matrix[Matrix4f.M12] + z * matrix[Matrix4f.M22] + matrix[Matrix4f.M32]
         );
     }
 
     public Vec3i mulMat3(float[] matrix) {
         return this.set(
-            x * matrix[Matrix3.m00] + y * matrix[Matrix3.m10] + z * matrix[Matrix3.m20],
-            x * matrix[Matrix3.m01] + y * matrix[Matrix3.m11] + z * matrix[Matrix3.m21],
-            x * matrix[Matrix3.m02] + y * matrix[Matrix3.m12] + z * matrix[Matrix3.m22]
+            x * matrix[Matrix3f.M00] + y * matrix[Matrix3f.M10] + z * matrix[Matrix3f.M20],
+            x * matrix[Matrix3f.M01] + y * matrix[Matrix3f.M11] + z * matrix[Matrix3f.M21],
+            x * matrix[Matrix3f.M02] + y * matrix[Matrix3f.M12] + z * matrix[Matrix3f.M22]
         );
     }
 
     public Vec3i mulMat4(Matrix4f matrix) {
-        return this.mulMat4(matrix.val);
+        return this.mulMat4(matrix.values);
     }
 
     public Vec3i mulMat3(Matrix3f matrix) {
-        return this.mulMat3(matrix.val);
+        return this.mulMat3(matrix.values);
     }
 
 

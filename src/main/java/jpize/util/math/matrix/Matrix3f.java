@@ -6,62 +6,99 @@ import jpize.util.math.vector.*;
 
 import java.util.Arrays;
 
-public class Matrix3f implements Matrix3 {
+public class Matrix3f {
 
-    public final float[] val;
+    private static final int SIZE = (3 * 3);
+
+    public static final int M00 = 0, M10 = 3, M20 = 6;
+    public static final int M01 = 1, M11 = 4, M21 = 7;
+    public static final int M02 = 2, M12 = 5, M22 = 8;
+
+
+    public final float[] values;
 
     public Matrix3f() {
-        this.val = new float[16];
-        this.val[m00] = 1F;
-        this.val[m11] = 1F;
-        this.val[m22] = 1F;
+        this.values = new float[SIZE];
+        this.values[M00] = 1F;
+        this.values[M11] = 1F;
+        this.values[M22] = 1F;
     }
 
     public Matrix3f(float... values) {
-        this.val = new float[16];
+        this.values = new float[SIZE];
         this.set(values);
     }
 
     public Matrix3f(Matrix3f matrix) {
-        this(matrix.val);
+        this(matrix.values);
     }
 
 
     public Matrix3f set(float... values) {
-        System.arraycopy(values, 0, val, 0, values.length);
+        System.arraycopy(values, 0, this.values, 0, SIZE);
         return this;
     }
 
     public Matrix3f set(Matrix3f matrix) {
-        this.set(matrix.val);
+        this.set(matrix.values);
         return this;
     }
 
     public Matrix3f zero() {
-        Arrays.fill(val, 0F);
+        Arrays.fill(values, 0F);
         return this;
     }
 
     public Matrix3f identity() {
-        val[m00] = 1F;
-        val[m10] = 0F;
-        val[m20] = 0F;
-        val[m01] = 0F;
-        val[m11] = 1F;
-        val[m21] = 0F;
-        val[m02] = 0F;
-        val[m12] = 0F;
-        val[m22] = 1F;
+        values[M00] = 1F;
+        values[M10] = 0F;
+        values[M20] = 0F;
+        values[M01] = 0F;
+        values[M11] = 1F;
+        values[M21] = 0F;
+        values[M02] = 0F;
+        values[M12] = 0F;
+        values[M22] = 1F;
         return this;
+    }
+
+
+    /* Set Translate */
+
+    public Matrix3f setTranslatePart(float x, float y) {
+        values[M20] = x;
+        values[M21] = y;
+        return this;
+    }
+
+    public Matrix3f setTranslate(float x, float y) {
+        this.identity();
+        return this.setTranslatePart(x, y);
+    }
+
+    public Matrix3f setTranslate(double x, double y) {
+        return this.setTranslate((float) x, (float) y);
+    }
+
+    public Matrix3f setTranslate(Vec2f vec2) {
+        return this.setTranslate(vec2.x, vec2.y);
+    }
+
+    public Matrix3f setTranslate(Vec2d vec2) {
+        return this.setTranslate(vec2.x, vec2.y);
+    }
+
+    public Matrix3f setTranslate(Vec2i vec2) {
+        return this.setTranslate(vec2.x, vec2.y);
     }
 
 
     /* Translate */
 
     public Matrix3f translate(float x, float y) {
-        val[m20] += val[m00] * x + val[m10] * y;
-        val[m21] += val[m01] * x + val[m11] * y;
-        val[m22] += val[m02] * x + val[m12] * y;
+        values[M20] += (values[M00] * x + values[M10] * y);
+        values[M21] += (values[M01] * x + values[M11] * y);
+        values[M22] += (values[M02] * x + values[M12] * y);
         return this;
     }
 
@@ -82,39 +119,17 @@ public class Matrix3f implements Matrix3 {
     }
 
 
-    /* Set Translate */
+    /* Set Scale */
 
-    public Matrix3f setTranslate(float x, float y) {
-        this.identity();
-        val[m20] = x;
-        val[m21] = y;
+    public Matrix3f setScalePart(float x, float y) {
+        values[M00] = x;
+        values[M11] = y;
         return this;
     }
-
-    public Matrix3f setTranslate(double x, double y) {
-        return this.setTranslate((float) x, (float) y);
-    }
-
-    public Matrix3f setTranslate(Vec2f vec2) {
-        return this.setTranslate(vec2.x, vec2.y);
-    }
-
-    public Matrix3f setTranslate(Vec2d vec2) {
-        return this.setTranslate(vec2.x, vec2.y);
-    }
-
-    public Matrix3f setTranslate(Vec2i vec2) {
-        return this.setTranslate(vec2.x, vec2.y);
-    }
-
-
-    /* Set Scale */
 
     public Matrix3f setScale(float x, float y) {
         this.identity();
-        val[m00] = x;
-        val[m11] = y;
-        return this;
+        return this.setScalePart(x, y);
     }
 
     public Matrix3f setScale(double x, double y) {
@@ -145,13 +160,13 @@ public class Matrix3f implements Matrix3 {
     /* Scale */
 
     public Matrix3f scale(float x, float y) {
-        val[m00] *= x;
-        val[m01] *= x;
-        val[m02] *= x;
+        values[M00] *= x;
+        values[M01] *= x;
+        values[M02] *= x;
 
-        val[m10] *= y;
-        val[m11] *= y;
-        val[m12] *= y;
+        values[M10] *= y;
+        values[M11] *= y;
+        values[M12] *= y;
         return this;
     }
 
@@ -180,6 +195,14 @@ public class Matrix3f implements Matrix3 {
     }
 
 
+    public Vec2f getScale(Vec2f dst) {
+        return dst.set(
+            Mathc.sqrt(values[M00] * values[M00] + values[M10] * values[M10]),
+            Mathc.sqrt(values[M01] * values[M01] + values[M11] * values[M11])
+        );
+    }
+
+
     /* Set Rotation */
 
     public Matrix3f setRotationRad(double radians) {
@@ -187,10 +210,10 @@ public class Matrix3f implements Matrix3 {
         final float cos = Mathc.cos(radians);
         final float sin = Mathc.sin(radians);
 
-        val[m00] = cos;
-        val[m10] = -sin;
-        val[m01] = sin;
-        val[m11] = cos;
+        values[M00] = cos;
+        values[M10] = -sin;
+        values[M01] = sin;
+        values[M11] = cos;
         return this;
     }
 
@@ -205,16 +228,16 @@ public class Matrix3f implements Matrix3 {
         final float M10 = Maths.tanDeg(degreesX);
         final float M01 = Maths.tanDeg(degreesY);
 
-        final float oldM10 = val[m10];
-        final float oldM11 = val[m11];
-        final float oldM12 = val[m12];
+        final float oldM10 = values[Matrix3f.M10];
+        final float oldM11 = values[M11];
+        final float oldM12 = values[M12];
 
-        val[m10] += val[m00] * M10;
-        val[m11] += val[m01] * M10;
-        val[m12] += val[m02] * M10;
-        val[m00] += oldM10 * M01;
-        val[m01] += oldM11 * M01;
-        val[m02] += oldM12 * M01;
+        values[Matrix3f.M10] += values[M00] * M10;
+        values[M11] += values[Matrix3f.M01] * M10;
+        values[M12] += values[M02] * M10;
+        values[M00] += oldM10 * M01;
+        values[Matrix3f.M01] += oldM11 * M01;
+        values[M02] += oldM12 * M01;
         return this;
     }
 
@@ -227,8 +250,8 @@ public class Matrix3f implements Matrix3 {
 
     public Matrix3f setShear(double degreesX, double degreesY) {
         this.identity();
-        val[m10] = Maths.tanDeg(degreesX);
-        val[m01] = Maths.tanDeg(degreesY);
+        values[M10] = Maths.tanDeg(degreesX);
+        values[M01] = Maths.tanDeg(degreesY);
         return this;
     }
 
@@ -240,16 +263,16 @@ public class Matrix3f implements Matrix3 {
     /* Culling */
 
     public Matrix3f cullPosition() {
-        val[m20] = 0F; // X
-        val[m21] = 0F; // Y
+        values[M20] = 0F; // X
+        values[M21] = 0F; // Y
         return this;
     }
 
     public Matrix3f cullRotation() {
-        val[m00] = 1F;
-        val[m10] = 0F;
-        val[m01] = 0F;
-        val[m11] = 1F;
+        values[M00] = 1F;
+        values[M10] = 0F;
+        values[M01] = 0F;
+        values[M11] = 1F;
         return this;
     }
 
@@ -258,8 +281,8 @@ public class Matrix3f implements Matrix3 {
 
     public Matrix3f lerp(Matrix3f matrix, float t) {
         final float inv_t = (1F - t);
-        for(int i = 0; i < 9; i++)
-            val[i] = (val[i] * inv_t + matrix.val[i] * t);
+        for(int i = 0; i < SIZE; i++)
+            values[i] = (values[i] * inv_t + matrix.values[i] * t);
         return this;
     }
 
@@ -273,39 +296,67 @@ public class Matrix3f implements Matrix3 {
 
     /* Multiply */
 
-    public float[] getMul(float[] values) {
-        return mul(this.val, values);
+    public static void mulBuf(float[] dst, float[] a, float[] b) {
+        dst[M00]  =  a[M00] * b[M00]  +  a[M10] * b[M01]  +  a[M20] * b[M02];
+        dst[M01]  =  a[M01] * b[M00]  +  a[M11] * b[M01]  +  a[M21] * b[M02];
+        dst[M02]  =  a[M02] * b[M00]  +  a[M12] * b[M01]  +  a[M22] * b[M02];
+
+        dst[M10]  =  a[M00] * b[M10]  +  a[M10] * b[M11]  +  a[M20] * b[M12];
+        dst[M11]  =  a[M01] * b[M10]  +  a[M11] * b[M11]  +  a[M21] * b[M12];
+        dst[M12]  =  a[M02] * b[M10]  +  a[M12] * b[M11]  +  a[M22] * b[M12];
+
+        dst[M20]  =  a[M00] * b[M20]  +  a[M10] * b[M21]  +  a[M20] * b[M22];
+        dst[M21]  =  a[M01] * b[M20]  +  a[M11] * b[M21]  +  a[M21] * b[M22];
+        dst[M22]  =  a[M02] * b[M20]  +  a[M12] * b[M21]  +  a[M22] * b[M22];
     }
 
-    public float[] getMul(Matrix3f matrix) {
-        return mul(this, matrix);
+    public static void mulBuf(Matrix3f dst, Matrix3f a, Matrix3f b) {
+        mulBuf(dst.values, a.values, b.values);
     }
 
-    public Matrix3f mul(Matrix3f matrix) {
-        return this.set(mul(this, matrix));
+    public static float[] mulToNew(float[] a, float[] b) {
+        final float[] dst = new float[SIZE];
+        mulBuf(dst, a, b);
+        return dst;
     }
 
-    public Matrix3f mul(float[] values) {
-        return this.set(mul(this.val, values));
+    public static Matrix3f mulToNew(Matrix3f a, Matrix3f b) {
+        final Matrix3f dst = new Matrix3f();
+        mulBuf(dst, a, b);
+        return dst;
+    }
+
+    public static void mulToA(float[] a, float[] b) {
+        final float[] aCopy = new float[SIZE];
+        System.arraycopy(a, 0, aCopy, 0, SIZE);
+        mulBuf(a, aCopy, b);
+    }
+
+    public static void mulToA(Matrix3f a, Matrix3f b) {
+        final float[] aCopy = new float[SIZE];
+        System.arraycopy(a.values, 0, aCopy, 0, SIZE);
+        mulBuf(a.values, aCopy, b.values);
     }
 
 
-    public static float[] mul(float[] a, float[] b) {
-        return new float[] {
-            a[m00] * b[m00] + a[m10] * b[m01] + a[m20] * b[m02],
-            a[m01] * b[m00] + a[m11] * b[m01] + a[m21] * b[m02],
-            a[m02] * b[m00] + a[m12] * b[m01] + a[m22] * b[m02],
-            a[m00] * b[m10] + a[m10] * b[m11] + a[m20] * b[m12],
-            a[m01] * b[m10] + a[m11] * b[m11] + a[m21] * b[m12],
-            a[m02] * b[m10] + a[m12] * b[m11] + a[m22] * b[m12],
-            a[m00] * b[m20] + a[m10] * b[m21] + a[m20] * b[m22],
-            a[m01] * b[m20] + a[m11] * b[m21] + a[m21] * b[m22],
-            a[m02] * b[m20] + a[m12] * b[m21] + a[m22] * b[m22],
-        };
+    public Matrix3f mul(Matrix3f dst, Matrix3f b) {
+        mulBuf(dst, this, b);
+        return this;
     }
 
-    public static float[] mul(Matrix3f a, Matrix3f b) {
-        return mul(a.val, b.val);
+    public Matrix3f mul(float[] dst, float[] b) {
+        mulBuf(dst, this.values, b);
+        return this;
+    }
+
+    public Matrix3f mul(Matrix3f b) {
+        mulToA(this, b);
+        return this;
+    }
+
+    public Matrix3f mul(float[] b) {
+        mulToA(this.values, b);
+        return this;
     }
 
 
@@ -313,7 +364,7 @@ public class Matrix3f implements Matrix3 {
 
     @Override
     public String toString() {
-        return Arrays.toString(val);
+        return Arrays.toString(values);
     }
 
     @Override
@@ -322,12 +373,12 @@ public class Matrix3f implements Matrix3 {
             return false;
 
         final Matrix3f matrix = (Matrix3f) object;
-        return Arrays.compare(val, matrix.val) == 0;
+        return (Arrays.compare(values, matrix.values) == 0);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(val);
+        return Arrays.hashCode(values);
     }
 
 }
