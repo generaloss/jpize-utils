@@ -174,6 +174,19 @@ public abstract class AbstractColor {
     }
 
 
+    public static float rgbRed(int color) {
+        return ByteUtils.ubyte3(color) / 255F;
+    }
+
+    public static float rgbGreen(int color) {
+        return ByteUtils.ubyte2(color) / 255F;
+    }
+
+    public static float rgbBlue(int color) {
+        return ByteUtils.ubyte1(color) / 255F;
+    }
+
+
     public static float rgbaRed(int color) {
         return ByteUtils.ubyte4(color) / 255F;
     }

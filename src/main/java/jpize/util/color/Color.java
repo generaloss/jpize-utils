@@ -254,7 +254,7 @@ public class Color extends AbstractColor {
 
 
     public Color setRGB(int color) {
-        return this.set(rgbaRed(color), rgbaGreen(color), rgbaBlue(color));
+        return this.set(rgbRed(color), rgbGreen(color), rgbBlue(color));
     }
 
     public Color setRGBA(int color) {

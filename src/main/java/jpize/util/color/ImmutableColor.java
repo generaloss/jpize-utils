@@ -52,9 +52,9 @@ public class ImmutableColor extends AbstractColor {
     }
 
     public ImmutableColor(int color, boolean alpha) {
-        this.red = rgbaRed(color);
-        this.green = rgbaGreen(color);
-        this.blue = rgbaBlue(color);
+        this.red = (alpha ? rgbaRed(color) : rgbRed(color));
+        this.green = (alpha ? rgbaGreen(color) : rgbGreen(color));
+        this.blue = (alpha ? rgbaBlue(color) : rgbBlue(color));
         this.alpha = (alpha ? rgbaAlpha(color) : 1F);
     }
 
