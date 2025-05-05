@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ResourceTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
     <module name="jpize-utils" />
-    <option name="PACKAGE_NAME" value="" />
-    <option name="MAIN_CLASS_NAME" value="ResourceTests" />
+    <option name="PACKAGE_NAME" value="unit" />
+    <option name="MAIN_CLASS_NAME" value="unit.ResourceTests" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
     <method v="2">

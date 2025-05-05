@@ -36,13 +36,11 @@ public class FastReader implements Closeable {
         this(System.in);
     }
 
-    private byte read() {
-        if(pointer == bytesRead) {
-            this.fillBuffer();
-            if(bytesRead == EOF)
-                return EOF;
-        }
-        return buffer[pointer++];
+
+    private void doubleCharBufferSize() {
+        final byte[] newBuffer = new byte[charBuffer.length << 1];
+        System.arraycopy(charBuffer, 0, newBuffer, 0, charBuffer.length);
+        charBuffer = newBuffer;
     }
 
     private void fillBuffer() {
@@ -54,10 +52,13 @@ public class FastReader implements Closeable {
         }
     }
 
-    private void doubleCharBufferSize() {
-        final byte[] newBuffer = new byte[charBuffer.length << 1];
-        System.arraycopy(charBuffer, 0, newBuffer, 0, charBuffer.length);
-        charBuffer = newBuffer;
+    private byte read() {
+        if(pointer == bytesRead) {
+            this.fillBuffer();
+            if(bytesRead == EOF)
+                return EOF;
+        }
+        return buffer[pointer++];
     }
 
     public String next(Charset charset) {
@@ -113,10 +114,11 @@ public class FastReader implements Closeable {
     }
 
     public boolean hasNext() {
-        while(pointer < bytesRead) {
-            if(buffer[pointer] != SPACE && buffer[pointer] != NEW_LINE)
+        int tempPointer = pointer;
+        while(tempPointer < bytesRead) {
+            if(buffer[tempPointer] != SPACE && buffer[tempPointer] != NEW_LINE)
                 return true;
-            pointer++;
+            tempPointer++;
         }
         this.fillBuffer();
         return (bytesRead != EOF);
@@ -126,6 +128,13 @@ public class FastReader implements Closeable {
         while(!this.hasNext())
             Thread.yield();
     }
+
+
+    @Override
+    public void close() {
+        Utils.close(inputStream);
+    }
+
 
     public String nextString(Charset charset) {
         try {
@@ -139,29 +148,204 @@ public class FastReader implements Closeable {
         return this.nextString(StandardCharsets.UTF_8);
     }
 
-    public int nextInt() {
-        return Integer.parseInt(this.next());
+
+    public String nextWord() {
+        byte b;
+        do {
+            b = this.read();
+        }while(b == SPACE || b == NEW_LINE);
+
+        int i = 0;
+        while((b >= 'A' && b <= 'Z') || (b >= 'a' && b <= 'z')) {
+            if(i == charBuffer.length)
+                this.doubleCharBufferSize();
+            charBuffer[i++] = b;
+            b = this.read();
+        }
+
+        return new String(charBuffer, 0, i, StandardCharsets.UTF_8);
     }
 
-    public float nextFloat() {
-        return Float.parseFloat(this.next());
+    public String nextIdentifier() {
+        byte b;
+        do {
+            b = this.read();
+        }while(b == SPACE || b == NEW_LINE);
+
+        int i = 0;
+
+        if((b >= 'A' && b <= 'Z') || (b >= 'a' && b <= 'z') || b == '_') {
+            charBuffer[i++] = b;
+            b = this.read();
+        }else{
+            return "";
+        }
+
+        while((b >= 'A' && b <= 'Z') || (b >= 'a' && b <= 'z') || (b >= '0' && b <= '9') || b == '_') {
+            if(i == charBuffer.length)
+                this.doubleCharBufferSize();
+            charBuffer[i++] = b;
+            b = this.read();
+        }
+
+        return new String(charBuffer, 0, i, StandardCharsets.UTF_8);
+    }
+
+    public String nextQuotedString() {
+        byte b;
+        do {
+            b = this.read();
+        }while(b == SPACE || b == NEW_LINE);
+
+        if(b != '"')
+            return "";
+
+        int i = 0;
+        boolean escaped = false;
+
+        while(true) {
+            b = this.read();
+            if(b == EOF || (!escaped && b == '"'))
+                break;
+
+            if(i == charBuffer.length)
+                this.doubleCharBufferSize();
+
+            if(!escaped && b == '\\') {
+                escaped = true;
+                continue;
+            }
+
+            if(escaped) {
+                switch(b) {
+                    case 'n': charBuffer[i++] = '\n'; break;
+                    case 't': charBuffer[i++] = '\t'; break;
+                    case 'r': charBuffer[i++] = '\r'; break;
+                    case '"': charBuffer[i++] = '"';  break;
+                    case '\\': charBuffer[i++] = '\\'; break;
+                    default: charBuffer[i++] = b; break;
+                }
+                escaped = false;
+            }else{
+                charBuffer[i++] = b;
+            }
+        }
+
+        return new String(charBuffer, 0, i, StandardCharsets.UTF_8);
+    }
+
+
+
+
+    public int nextInt() {
+        int result = 0;
+        boolean negative = false;
+
+        byte b;
+        do {
+            b = this.read();
+        }while(b == SPACE || b == NEW_LINE);
+
+        if(b == '-') {
+            negative = true;
+            b = this.read();
+        }
+
+        while(b >= '0' && b <= '9') {
+            result = result * 10 + (b - '0');
+            b = this.read();
+        }
+
+        return (negative ? -result : result);
     }
 
     public long nextLong() {
-        return Long.parseLong(this.next());
+        long result = 0;
+        boolean negative = false;
+
+        byte b;
+        do {
+            b = this.read();
+        }while(b == SPACE || b == NEW_LINE);
+
+        if(b == '-') {
+            negative = true;
+            b = this.read();
+        }
+
+        while(b >= '0' && b <= '9') {
+            result = (result * 10 + (b - '0'));
+            b = this.read();
+        }
+
+        return (negative ? -result : result);
+    }
+
+    public float nextFloat() {
+        return (float) this.nextDouble();
     }
 
     public double nextDouble() {
-        return Double.parseDouble(this.next());
+        double result = 0;
+        boolean negative = false;
+        boolean fraction = false;
+        double divisor = 1;
+
+        byte b;
+        do {
+            b = this.read();
+        }while(b == SPACE || b == NEW_LINE);
+
+        if(b == '-') {
+            negative = true;
+            b = this.read();
+        }
+
+        while((b >= '0' && b <= '9') || b == '.') {
+            if(b == '.') {
+                fraction = true;
+            }else{
+                int digit = (b - '0');
+                if(fraction) {
+                    divisor *= 10;
+                    result += (digit / divisor);
+                }else{
+                    result = (result * 10 + digit);
+                }
+            }
+            b = this.read();
+        }
+
+        return (negative ? -result : result);
     }
 
     public boolean nextBool() {
-        return Boolean.parseBoolean(this.next());
+        byte b;
+        do {
+            b = this.read();
+        }while(b == SPACE || b == NEW_LINE);
+
+        int i = 0;
+        while((b >= 'A' && b <= 'Z') || (b >= 'a' && b <= 'z')) {
+            if(i == charBuffer.length)
+                this.doubleCharBufferSize();
+            charBuffer[i++] = b;
+            b = this.read();
+        }
+
+        if(i != 4)
+            return false;
+
+        return (
+            this.charEqualsIgnoreCase(charBuffer[0], 't') &&
+            this.charEqualsIgnoreCase(charBuffer[1], 'r') &&
+            this.charEqualsIgnoreCase(charBuffer[2], 'u') &&
+            this.charEqualsIgnoreCase(charBuffer[3], 'e')
+        );
     }
 
-    @Override
-    public void close() {
-        Utils.close(inputStream);
+    private boolean charEqualsIgnoreCase(byte a, char b) {
+        return a == (byte) b || a == (byte) (b - 32);
     }
 
 }
