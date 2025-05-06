@@ -4,15 +4,14 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.util.function.Consumer;
 
 public class PacketTCPConnection extends TCPConnection {
 
     private final ByteBuffer lengthBuffer;
     private ByteBuffer dataBuffer;
 
-    protected PacketTCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
-        super(channel, selectionKey, onDisconnect);
+    protected PacketTCPConnection(SocketChannel channel, SelectionKey selectionKey, TCPCloseable onClose) {
+        super(channel, selectionKey, onClose);
         this.lengthBuffer = ByteBuffer.allocate(4);
     }
 
@@ -23,7 +22,7 @@ public class PacketTCPConnection extends TCPConnection {
                 final int bytesRead = super.channel.read(lengthBuffer);
                 if(bytesRead == -1){
                     // connection closed
-                    this.close();
+                    this.close(TCPCloseable.CONNECTION_CLOSED);
                     return null;
                 }
                 if(lengthBuffer.hasRemaining())
@@ -39,7 +38,7 @@ public class PacketTCPConnection extends TCPConnection {
             final int bytesRead = super.channel.read(dataBuffer);
             if(bytesRead == -1){
                 // connection closed
-                this.close();
+                this.close(TCPCloseable.CONNECTION_CLOSED);
                 return null;
             }
 
@@ -51,10 +50,13 @@ public class PacketTCPConnection extends TCPConnection {
                 lengthBuffer.clear();
                 // process the message
                 dataBuffer.flip();
-                return super.tryToDecryptBytes(dataBuffer.array());
+                // decrypt
+                final byte[] data = new byte[dataBuffer.remaining()];
+                dataBuffer.get(data);
+                return super.tryToDecryptBytes(data);
             }
-        }catch(IOException ignore){
-            this.close();
+        }catch(IOException e){
+            this.close(e.getMessage());
             return null;
         }
     }
@@ -71,21 +73,7 @@ public class PacketTCPConnection extends TCPConnection {
         buffer.putInt(bytes.length);
         buffer.put(bytes);
         buffer.flip();
-
-        try{
-            if(writeQueue.isEmpty())
-                super.channel.write(buffer);
-            if(buffer.hasRemaining()){
-                writeQueue.add(buffer);
-                selectionKey.interestOps(SelectionKey.OP_WRITE);
-                selectionKey.selector().wakeup();
-            }
-            return true;
-        }catch(IOException e){
-
-            super.close();
-            return false;
-        }
+        return super.toWriteQueue(buffer);
     }
 
 }

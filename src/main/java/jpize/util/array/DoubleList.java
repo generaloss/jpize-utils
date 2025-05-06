@@ -214,12 +214,8 @@ public class DoubleList implements Iterable<Double> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = (array.length - len);
-        final double[] copy = new double[newCapacity];
-        
-        System.arraycopy(array, 0, copy, 0, i);
-        System.arraycopy(array, i + len, copy, i, newCapacity - i);
-        array = copy;
+        final int j = (i + len);
+        System.arraycopy(array, j, array, i, (size - j));
         
         size -= len;
         return this;
@@ -415,7 +411,7 @@ public class DoubleList implements Iterable<Double> {
         if(object == null || getClass() != object.getClass())
             return false;
         final DoubleList list = (DoubleList) object;
-        return (size == list.size && Objects.deepEquals(array, list.array));
+        return (size == list.size && Arrays.equals(array, list.array));
     }
 
     @Override

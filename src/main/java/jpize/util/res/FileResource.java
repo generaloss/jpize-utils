@@ -9,8 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FileResource extends Resource {
 
@@ -54,7 +52,7 @@ public class FileResource extends Resource {
     }
 
     /** Creates all directories and file */
-    public boolean mkAll() { // TODO: better name for method
+    public boolean createWithParents() {
         final File parent = file.getParentFile();
         if(parent != null){
             parent.mkdirs();
@@ -141,7 +139,10 @@ public class FileResource extends Resource {
     }
 
     public FileResource parent() {
-        return new FileResource(this.parentFile());
+        final File parent = this.parentFile();
+        if(parent == null)
+            return null;
+        return new FileResource(parent);
     }
 
 
@@ -157,7 +158,7 @@ public class FileResource extends Resource {
 
     public FileResource createChildFile(String name) {
         final FileResource child = this.child(name);
-        if(!child.mkAll())
+        if(!child.createWithParents())
             return null;
         return child;
     }
@@ -214,7 +215,7 @@ public class FileResource extends Resource {
     }
 
     public void appendString(String string, Charset charset) {
-        this.writeString(this.readString() + string);
+        this.writeString(this.readString() + string, charset);
     }
 
     public void appendString(String string) {
@@ -251,13 +252,11 @@ public class FileResource extends Resource {
         if(list == null)
             return new FileResource[0];
 
-        final List<FileResource> resources = new ArrayList<>(list.length);
+        final FileResource[] resources = new FileResource[list.length];
+        for(int i = 0; i < list.length; i++)
+            resources[i] = this.child(list[i]);
 
-        for(String name: list)
-            if(filter.accept(file, name))
-                resources.add(this.child(name));
-
-        return resources.toArray(new FileResource[0]);
+        return resources;
     }
 
 

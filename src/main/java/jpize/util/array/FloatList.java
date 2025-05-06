@@ -214,12 +214,8 @@ public class FloatList implements Iterable<Float> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = (array.length - len);
-        final float[] copy = new float[newCapacity];
-        
-        System.arraycopy(array, 0, copy, 0, i);
-        System.arraycopy(array, i + len, copy, i, newCapacity - i);
-        array = copy;
+        final int j = (i + len);
+        System.arraycopy(array, j, array, i, (size - j));
         
         size -= len;
         return this;
@@ -415,7 +411,7 @@ public class FloatList implements Iterable<Float> {
         if(object == null || getClass() != object.getClass())
             return false;
         final FloatList list = (FloatList) object;
-        return (size == list.size && Objects.deepEquals(array, list.array));
+        return (size == list.size && Arrays.equals(array, list.array));
     }
 
     @Override

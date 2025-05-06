@@ -47,7 +47,7 @@ public class PublicRSA {
 
 
     public boolean save(FileResource res) {
-        if(res.mkAll()){
+        if(res.createWithParents()){
             res.writeBytes(key.getEncoded());
             return true;
         }

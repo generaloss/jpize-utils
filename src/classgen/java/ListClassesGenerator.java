@@ -2,14 +2,14 @@
 public class ListClassesGenerator {
 
     public static void main(String[] args) {
-        //newClass("ByteList", "byte", "10", "(byte) 0");
-        //newClass("ShortList", "short", "10", "(short) 0");
-        //newClass("IntList", "int", "10", "0");
-        //newClass("LongList", "long", "10", "0L");
-        //newClass("FloatList", "float", "10", "0F");
-        //newClass("DoubleList", "double", "10", "0D");
-        //newClass("BoolList", "boolean", "10", "false");
-        //newClass("CharList", "char", "10", "(char) 0");
+        newClass("ByteList", "byte", "10", "(byte) 0");
+        newClass("ShortList", "short", "10", "(short) 0");
+        newClass("IntList", "int", "10", "0");
+        newClass("LongList", "long", "10", "0L");
+        newClass("FloatList", "float", "10", "0F");
+        newClass("DoubleList", "double", "10", "0D");
+        newClass("BoolList", "boolean", "10", "false");
+        newClass("CharList", "char", "10", "(char) 0");
         newClass("StringList", "String", "3", "null");
     }
 
@@ -300,12 +300,8 @@ public class ListClassesGenerator {
             "if(len <= 0)",
             "    return this;",
             "",
-            "final int newCapacity = (array.length - len);",
-            "final " + datatype + "[] copy = new " + datatype + "[newCapacity];",
-            "",
-            "System.arraycopy(array, 0, copy, 0, i);",
-            "System.arraycopy(array, i + len, copy, i, newCapacity - i);",
-            "array = copy;",
+            "final int j = (i + len);",
+            "System.arraycopy(array, j, array, i, (size - j));",
             "",
             "size -= len;",
             "return this;"
@@ -536,7 +532,7 @@ public class ListClassesGenerator {
             "if(object == null || getClass() != object.getClass())",
             "    return false;",
             "final " + classname + " list = (" + classname + ") object;",
-            "return (size == list.size && Objects.deepEquals(array, list.array));"
+            "return (size == list.size && " + (isPrimitive ? "Arrays.equals" : "Objects.deepEquals") + "(array, list.array));"
         );
         w.addAnnotatedMethod("@Override", "public int hashCode()",
             "return Objects.hash(Arrays.hashCode(array), size);"

@@ -22,10 +22,12 @@ import java.util.function.Consumer;
 
 public class TCPClient {
 
-    private Consumer<TCPConnection> onConnect, onDisconnect;
+    private Consumer<TCPConnection> onConnect;
+    private TCPCloseable onDisconnect;
     private TCPListener onReceive;
     private TCPConnection.Factory connectionFactory;
     private TCPConnection connection;
+    private Thread selectorThread;
     private Selector selector;
 
     public TCPClient() {
@@ -53,7 +55,7 @@ public class TCPClient {
         return this;
     }
 
-    public TCPClient setOnDisconnect(Consumer<TCPConnection> onDisconnect) {
+    public TCPClient setOnDisconnect(TCPCloseable onDisconnect) {
         this.onDisconnect = onDisconnect;
         return this;
     }
@@ -84,7 +86,7 @@ public class TCPClient {
         if(onConnect != null)
             onConnect.accept(connection);
 
-        this.startReceiveThread();
+        this.startSelectorThread();
     }
 
     public TCPClient connect(SocketAddress socketAddress, long timeoutMillis) {
@@ -144,11 +146,11 @@ public class TCPClient {
     }
 
 
-    private void startReceiveThread() {
-        final Thread selectorThread = new Thread(() -> {
+    private void startSelectorThread() {
+        selectorThread = new Thread(() -> {
             while(!Thread.interrupted() && !this.isClosed())
                 this.selectKeys();
-        }, "TCP client thread #" + this.hashCode());
+        }, "TCP client selector thread #" + this.hashCode());
         selectorThread.setDaemon(true);
         selectorThread.start();
     }
@@ -185,8 +187,10 @@ public class TCPClient {
     }
 
     public TCPClient disconnect() {
+        if(selectorThread != null)
+            selectorThread.interrupt();
         if(this.isConnected())
-            connection.close();
+            connection.close(TCPCloseable.CLIENT_CLOSED);
         return this;
     }
 

@@ -122,7 +122,7 @@ public class ClassWriter {
 
     public ClassWriter write(String path) {
         final FileResource res = Resource.file(path + "/" + name + ".java");
-        res.mkAll();
+        res.createWithParents();
         final String code = makeCode();
         res.writeString(code);
         System.out.println("Generated class '" + name + "' (" + code.split("\n").length + " lines)");
@@ -130,6 +130,30 @@ public class ClassWriter {
     }
 
 
-    private record Method(String annotation, String header, String... lines) { }
+    private static class Method {
+
+        private final String annotation;
+        private final String header;
+        private final String[] lines;
+
+        public Method(String annotation, String header, String... lines) {
+            this.annotation = annotation;
+            this.header = header;
+            this.lines = lines;
+        }
+
+        public String annotation() {
+            return annotation;
+        }
+
+        public String header() {
+            return header;
+        }
+
+        public String[] lines() {
+            return lines;
+        }
+
+    }
 
 }

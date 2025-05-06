@@ -214,12 +214,8 @@ public class ByteList implements Iterable<Byte> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = (array.length - len);
-        final byte[] copy = new byte[newCapacity];
-        
-        System.arraycopy(array, 0, copy, 0, i);
-        System.arraycopy(array, i + len, copy, i, newCapacity - i);
-        array = copy;
+        final int j = (i + len);
+        System.arraycopy(array, j, array, i, (size - j));
         
         size -= len;
         return this;
@@ -415,7 +411,7 @@ public class ByteList implements Iterable<Byte> {
         if(object == null || getClass() != object.getClass())
             return false;
         final ByteList list = (ByteList) object;
-        return (size == list.size && Objects.deepEquals(array, list.array));
+        return (size == list.size && Arrays.equals(array, list.array));
     }
 
     @Override

@@ -202,12 +202,8 @@ public class StringList implements Iterable<String> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = (array.length - len);
-        final String[] copy = new String[newCapacity];
-        
-        System.arraycopy(array, 0, copy, 0, i);
-        System.arraycopy(array, i + len, copy, i, newCapacity - i);
-        array = copy;
+        final int j = (i + len);
+        System.arraycopy(array, j, array, i, (size - j));
         
         size -= len;
         return this;

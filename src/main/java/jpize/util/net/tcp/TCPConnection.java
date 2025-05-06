@@ -9,6 +9,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import java.io.Closeable;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -18,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Consumer;
 
 public abstract class TCPConnection implements Closeable {
 
@@ -26,18 +26,18 @@ public abstract class TCPConnection implements Closeable {
 
     protected final SocketChannel channel;
     protected final SelectionKey selectionKey;
-    protected final Consumer<TCPConnection> onDisconnect;
-    protected final Queue<ByteBuffer> writeQueue;
+    protected final TCPCloseable onClose;
     protected final TCPSocketOptions options;
+    private final Queue<ByteBuffer> writeQueue;
     private Cipher encryptCipher, decryptCipher;
     private Object attachment;
 
-    public TCPConnection(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect) {
+    public TCPConnection(SocketChannel channel, SelectionKey selectionKey, TCPCloseable onClose) {
         this.channel = channel;
         this.selectionKey = selectionKey;
-        this.onDisconnect = onDisconnect;
-        this.writeQueue = new ConcurrentLinkedQueue<>();
+        this.onClose = onClose;
         this.options = new TCPSocketOptions(channel.socket());
+        this.writeQueue = new ConcurrentLinkedQueue<>();
     }
 
     public SocketChannel channel() {
@@ -89,16 +89,20 @@ public abstract class TCPConnection implements Closeable {
     }
 
     protected byte[] tryToEncryptBytes(byte[] bytes) {
+        if(encryptCipher == null)
+            return bytes;
         try{
-            return (encryptCipher == null) ? bytes : encryptCipher.doFinal(bytes);
+            return encryptCipher.doFinal(bytes);
         }catch(IllegalBlockSizeException | BadPaddingException e){
             throw new IllegalStateException("Encryption error: " + e.getMessage());
         }
     }
 
     protected byte[] tryToDecryptBytes(byte[] bytes) {
+        if(decryptCipher == null)
+            return bytes;
         try{
-            return (decryptCipher == null) ? bytes : decryptCipher.doFinal(bytes);
+            return decryptCipher.doFinal(bytes);
         }catch(IllegalBlockSizeException | BadPaddingException e){
             throw new IllegalStateException("Decryption error: " + e.getMessage());
         }
@@ -120,20 +124,41 @@ public abstract class TCPConnection implements Closeable {
         });
     }
 
-    protected void processWriteQueue(SelectionKey key) {
+
+    protected boolean toWriteQueue(ByteBuffer buffer) {
         try{
-            while(!writeQueue.isEmpty()){
-                final ByteBuffer buffer = writeQueue.peek();
-                channel.write(buffer);
-                if(buffer.hasRemaining()){
-                    return;
-                }else{
-                    writeQueue.poll();
+            synchronized(writeQueue) {
+                if(writeQueue.isEmpty())
+                    channel.write(buffer);
+
+                if(buffer.hasRemaining()) {
+                    writeQueue.add(buffer);
+                    selectionKey.interestOpsOr(SelectionKey.OP_WRITE);
+                    selectionKey.selector().wakeup();
                 }
             }
-            key.interestOps(SelectionKey.OP_READ);
-        }catch(Exception ignored){
-            this.close();
+            return true;
+        }catch(IOException e){
+            this.close(e.getMessage());
+            return false;
+        }
+    }
+
+    protected void processWriteQueue(SelectionKey key) {
+        try{
+            synchronized(writeQueue) {
+                while(!writeQueue.isEmpty()) {
+                    final ByteBuffer buffer = writeQueue.peek();
+                    channel.write(buffer);
+
+                    if(buffer.hasRemaining())
+                        return;
+                    writeQueue.poll();
+                }
+                key.interestOps(SelectionKey.OP_READ);
+            }
+        }catch(Exception e){
+            this.close(e.getMessage());
         }
     }
 
@@ -142,11 +167,19 @@ public abstract class TCPConnection implements Closeable {
     }
 
 
+    protected void close(String message) {
+        if(this.isClosed())
+            return;
+
+        if(onClose != null)
+            onClose.close(this, message);
+
+        Utils.close(channel);
+    }
+
     @Override
     public void close() {
-        if(this.isClosed()) return;
-        if(onDisconnect != null) onDisconnect.accept(this);
-        Utils.close(channel);
+        this.close(TCPCloseable.CONNECTION_CLOSED);
     }
 
 
@@ -176,16 +209,18 @@ public abstract class TCPConnection implements Closeable {
 
 
     public interface Factory {
-        TCPConnection create(SocketChannel channel, SelectionKey selectionKey, Consumer<TCPConnection> onDisconnect);
+        TCPConnection create(SocketChannel channel, SelectionKey selectionKey, TCPCloseable onClose);
     }
 
-    private static final Map<Class<?>, Factory> FACTORY_BY_CLASS = new HashMap<>(){{{
-        this.put(PacketTCPConnection.class, PacketTCPConnection::new);
-        this.put(NativeTCPConnection.class, NativeTCPConnection::new);
-    }}};
+    private static final Map<Class<?>, Factory> FACTORY_BY_CLASS = new HashMap<>();
 
     public static void registerFactory(Class<?> connectionClass, Factory factory) {
         FACTORY_BY_CLASS.put(connectionClass, factory);
+    }
+
+    static {
+        registerFactory(PacketTCPConnection.class, PacketTCPConnection::new);
+        registerFactory(NativeTCPConnection.class, NativeTCPConnection::new);
     }
 
     public static Factory getFactory(Class<?> connectionClass) {
@@ -198,9 +233,9 @@ public abstract class TCPConnection implements Closeable {
         return getFactory(type.getConnectionClass());
     }
 
-    public static TCPConnection create(Class<?> connectionClass, SocketChannel channel, SelectionKey selectionKey, TCPSocketOptions options, Consumer<TCPConnection> onDisconnect) {
+    public static TCPConnection create(Class<?> connectionClass, SocketChannel channel, SelectionKey selectionKey, TCPSocketOptions options, TCPCloseable onClose) {
         final Factory factory = getFactory(connectionClass);
-        return factory.create(channel, selectionKey, onDisconnect);
+        return factory.create(channel, selectionKey, onClose);
     }
 
 }

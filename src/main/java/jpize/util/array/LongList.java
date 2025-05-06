@@ -214,12 +214,8 @@ public class LongList implements Iterable<Long> {
         if(len <= 0)
             return this;
         
-        final int newCapacity = (array.length - len);
-        final long[] copy = new long[newCapacity];
-        
-        System.arraycopy(array, 0, copy, 0, i);
-        System.arraycopy(array, i + len, copy, i, newCapacity - i);
-        array = copy;
+        final int j = (i + len);
+        System.arraycopy(array, j, array, i, (size - j));
         
         size -= len;
         return this;
@@ -415,7 +411,7 @@ public class LongList implements Iterable<Long> {
         if(object == null || getClass() != object.getClass())
             return false;
         final LongList list = (LongList) object;
-        return (size == list.size && Objects.deepEquals(array, list.array));
+        return (size == list.size && Arrays.equals(array, list.array));
     }
 
     @Override

@@ -44,7 +44,7 @@ public class TcpTests {
         final AtomicInteger counter = new AtomicInteger();
         final TCPServer server = new TCPServer()
                 .setOnConnect((connection) -> counter.incrementAndGet())
-                .setOnDisconnect((connection) -> counter.incrementAndGet())
+                .setOnDisconnect((connection, message) -> counter.incrementAndGet())
                 .run(65000);
 
         final TCPClient client = new TCPClient();
@@ -63,7 +63,7 @@ public class TcpTests {
                 .setOnConnect(TCPConnection::close)
                 .run(5406);
         new TCPClient()
-                .setOnDisconnect((connection) -> closed.set(true))
+                .setOnDisconnect((connection, message) -> closed.set(true))
                 .connect("localhost", 5406);
         TimeUtils.waitFor(closed::get, 500, Assert::fail);
         server.close();
@@ -73,7 +73,7 @@ public class TcpTests {
     public void close_server_connection() {
         final AtomicBoolean closed = new AtomicBoolean();
         final TCPServer server = new TCPServer()
-                .setOnDisconnect((connection) -> closed.set(true))
+                .setOnDisconnect((connection, message) -> closed.set(true))
                 .run(5407);
         final TCPClient client = new TCPClient();
         client.connect("localhost", 5407);

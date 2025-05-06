@@ -8,6 +8,8 @@ public class TCPSocketOptions {
     private final Socket socket;
 
     public TCPSocketOptions(Socket socket) {
+        if(socket == null)
+            throw new NullPointerException("socket is null");
         this.socket = socket;
     }
 
@@ -157,6 +159,21 @@ public class TCPSocketOptions {
             throw new RuntimeException(e);
         }
         return this;
+    }
+
+
+    @Override
+    public String toString() {
+        return "TCPSocketOptions{" +
+            "tcpNoDelay=" + this.getTcpNoDelay() +
+            ", soLinger=" + this.getSoLinger() +
+            ", keepAlive=" + this.getKeepAlive() +
+            ", sendBufferSize=" + this.getSendBufferSize() +
+            ", receiveBufferSize=" + this.getReceiveBufferSize() +
+            ", trafficClass=" + this.getTrafficClass() +
+            ", reuseAddress=" + this.getReuseAddress() +
+            ", oobInline=" + this.getOOBInline() +
+            '}';
     }
 
 }

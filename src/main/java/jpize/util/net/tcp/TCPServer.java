@@ -16,21 +16,23 @@ import java.util.function.Consumer;
 
 public class TCPServer {
 
-    private Consumer<TCPConnection> onConnect, onDisconnect;
+    private Consumer<TCPConnection> onConnect;
+    private TCPCloseable onDisconnect;
     private TCPListener onReceive;
     private TCPConnection.Factory connectionFactory;
     private final CopyOnWriteArrayList<TCPConnection> connections;
     private ServerSocketChannel serverSocketChannel;
+    private Thread selectorThread;
     private Selector selector;
-    private final Consumer<TCPConnection> disconnector;
+    private final TCPCloseable disconnector;
 
     public TCPServer() {
         this.setConnectionType(TCPConnection.CONNECTION_TYPE);
         this.connections = new CopyOnWriteArrayList<>();
-        this.disconnector = (connection) -> {
+        this.disconnector = (connection, message) -> {
             connections.remove(connection);
             if(onDisconnect != null)
-                onDisconnect.accept(connection);
+                onDisconnect.close(connection, message);
         };
     }
 
@@ -51,7 +53,7 @@ public class TCPServer {
         return this;
     }
 
-    public TCPServer setOnDisconnect(Consumer<TCPConnection> onDisconnect) {
+    public TCPServer setOnDisconnect(TCPCloseable onDisconnect) {
         this.onDisconnect = onDisconnect;
         return this;
     }
@@ -88,7 +90,7 @@ public class TCPServer {
 
             selector = Selector.open();
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            this.startThread();
+            this.startSelectorThread();
 
         }catch(Exception e){
             throw new IllegalStateException("Failed to start TCP server: " + e.getMessage());
@@ -105,11 +107,11 @@ public class TCPServer {
         return this.run(new InetSocketAddress(port));
     }
 
-    private void startThread() {
-        final Thread selectorThread = new Thread(() -> {
+    private void startSelectorThread() {
+        selectorThread = new Thread(() -> {
             while(!Thread.interrupted() && !this.isClosed())
                 this.selectKeys();
-        }, "TCP server thread #" + this.hashCode());
+        }, "TCP server selector thread #" + this.hashCode());
         selectorThread.setDaemon(true);
         selectorThread.start();
     }
@@ -176,8 +178,11 @@ public class TCPServer {
         if(this.isClosed())
             return this;
 
+        if(selectorThread != null)
+            selectorThread.interrupt();
+
         for(TCPConnection connection: connections)
-            connection.close();
+            connection.close(TCPCloseable.SERVER_CLOSED);
         connections.clear();
 
         Utils.close(serverSocketChannel);

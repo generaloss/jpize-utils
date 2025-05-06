@@ -106,7 +106,7 @@ public abstract class Resource {
     }
 
     public boolean isUrlRes() {
-        return (this instanceof InternalResource);
+        return (this instanceof URLResource);
     }
 
     public boolean isZipRes() {
@@ -118,7 +118,7 @@ public abstract class Resource {
         return ((FileResource) this);
     }
 
-    public FileResource asTempRes() {
+    public TempFileResource asTempRes() {
         return ((TempFileResource) this);
     }
 
