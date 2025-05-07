@@ -22,20 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TcpTests {
 
     public static void main(String[] args) {
-        final TCPServer server = new TCPServer()
-            .setOnConnect((connection) -> System.out.println("SC: Connected"))
-            .setOnDisconnect((connection, message) -> System.out.println("SC: Disconnected: " + message))
-            .run(65000);
-
-        final TCPClient client = new TCPClient()
-            .setOnConnect((connection) -> System.out.println("CC: Connected"))
-            .setOnDisconnect((connection, message) -> System.out.println("CC: Disconnected: " + message));
-        for(int i = 0; i < 3; i++){
-            client.connect("localhost", 65000);
-            client.disconnect();
-        }
-        TimeUtils.delayMillis(2000);
-        server.close();
+        reliabilityTest();
     }
 
     private static void reliabilityTest() {
@@ -54,6 +41,23 @@ public class TcpTests {
                 }
             }
         }
+    }
+
+    private static void closeOnOtherSideTest() {
+        final TCPServer server = new TCPServer()
+            .setOnConnect((connection) -> System.out.println("[Server] Connected"))
+            .setOnDisconnect((connection, message) -> System.out.println("[Server] Disconnected: " + message))
+            .run(65000);
+
+        final TCPClient client = new TCPClient()
+            .setOnConnect((connection) -> System.out.println("[Client] Connected"))
+            .setOnDisconnect((connection, message) -> System.out.println("[Client] Disconnected: " + message));
+        for(int i = 0; i < 3; i++){
+            client.connect("localhost", 65000);
+            client.disconnect();
+        }
+        TimeUtils.delayMillis(2000);
+        server.close();
     }
 
     @Test
