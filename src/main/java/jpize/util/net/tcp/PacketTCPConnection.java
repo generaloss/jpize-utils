@@ -22,7 +22,7 @@ public class PacketTCPConnection extends TCPConnection {
                 final int bytesRead = super.channel.read(lengthBuffer);
                 if(bytesRead == -1){
                     // connection closed
-                    this.close(TCPCloseable.CONNECTION_CLOSED);
+                    this.close("Connection closed on other side");
                     return null;
                 }
                 if(lengthBuffer.hasRemaining())
@@ -38,7 +38,7 @@ public class PacketTCPConnection extends TCPConnection {
             final int bytesRead = super.channel.read(dataBuffer);
             if(bytesRead == -1){
                 // connection closed
-                this.close(TCPCloseable.CONNECTION_CLOSED);
+                this.close("Connection closed on other side");
                 return null;
             }
 
@@ -56,7 +56,7 @@ public class PacketTCPConnection extends TCPConnection {
                 return super.tryToDecryptBytes(data);
             }
         }catch(IOException e){
-            this.close(e.getMessage());
+            this.close(e);
             return null;
         }
     }

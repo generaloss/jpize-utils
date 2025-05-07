@@ -182,7 +182,7 @@ public class TCPServer {
             selectorThread.interrupt();
 
         for(TCPConnection connection: connections)
-            connection.close(TCPCloseable.SERVER_CLOSED);
+            connection.close("Server closed");
         connections.clear();
 
         Utils.close(serverSocketChannel);

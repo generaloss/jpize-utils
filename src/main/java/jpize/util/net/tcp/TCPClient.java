@@ -190,7 +190,7 @@ public class TCPClient {
         if(selectorThread != null)
             selectorThread.interrupt();
         if(this.isConnected())
-            connection.close(TCPCloseable.CLIENT_CLOSED);
+            connection.close("Client closed");
         return this;
     }
 

@@ -28,14 +28,19 @@ public class NativeTCPConnection extends TCPConnection {
                 dataBuffer.clear();
                 length = super.channel.read(dataBuffer);
             }
-            if(length == -1) // connection was closed by the other side
-                super.close(TCPCloseable.CLOSED_BY_OTHER_SIDE);
+
+            if(length == -1) {
+                // connection closed
+                super.close("Connection closed on other side");
+                return null;
+            }
             if(bytes.size() == 0) // nothing to return
                 return null;
+
             return super.tryToDecryptBytes(bytes.toByteArray());
 
         }catch(IOException e) {
-            super.close(e.getMessage());
+            super.close(e);
             return null;
         }
     }

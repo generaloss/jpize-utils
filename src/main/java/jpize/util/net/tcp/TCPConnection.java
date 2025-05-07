@@ -139,7 +139,7 @@ public abstract class TCPConnection implements Closeable {
             }
             return true;
         }catch(IOException e){
-            this.close(e.getMessage());
+            this.close(e);
             return false;
         }
     }
@@ -158,7 +158,7 @@ public abstract class TCPConnection implements Closeable {
                 key.interestOps(SelectionKey.OP_READ);
             }
         }catch(Exception e){
-            this.close(e.getMessage());
+            this.close(e);
         }
     }
 
@@ -177,9 +177,13 @@ public abstract class TCPConnection implements Closeable {
         Utils.close(channel);
     }
 
+    protected void close(Exception e) {
+        this.close("Error occured. Close connection: " + e.getMessage());
+    }
+
     @Override
     public void close() {
-        this.close(TCPCloseable.CONNECTION_CLOSED);
+        this.close("Connection closed");
     }
 
 

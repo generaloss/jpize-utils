@@ -22,10 +22,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TcpTests {
 
     public static void main(String[] args) {
+        final TCPServer server = new TCPServer()
+            .setOnConnect((connection) -> System.out.println("SC: Connected"))
+            .setOnDisconnect((connection, message) -> System.out.println("SC: Disconnected: " + message))
+            .run(65000);
+
+        final TCPClient client = new TCPClient()
+            .setOnConnect((connection) -> System.out.println("CC: Connected"))
+            .setOnDisconnect((connection, message) -> System.out.println("CC: Disconnected: " + message));
+        for(int i = 0; i < 3; i++){
+            client.connect("localhost", 65000);
+            client.disconnect();
+        }
+        TimeUtils.delayMillis(2000);
+        server.close();
+    }
+
+    private static void reliabilityTest() {
+        // iterate all tests 1000 times
         final TcpTests tests = new TcpTests();
         for(int i = 0; i < 1000; i++){
             System.out.println(i + 1);
-            for(Method method : TcpTests.class.getMethods()){
+            for(Method method: TcpTests.class.getMethods()){
                 if(method.isAnnotationPresent(Test.class)){
                     method.setAccessible(true);
                     try{
