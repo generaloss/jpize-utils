@@ -6,6 +6,11 @@ public class StringUtils {
         return (string == null || string.length() == 0);
     }
 
+    public static boolean isNotEmpty(CharSequence string) {
+        return (string != null && string.length() != 0);
+    }
+
+
     public static boolean isBlank(CharSequence string) {
         if(isEmpty(string))
             return true;
