@@ -1,3 +1,7 @@
+import jpize.util.array.ArrayUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ListClassesGenerator {
 
@@ -15,42 +19,44 @@ public class ListClassesGenerator {
 
     public static final boolean ADD_ARRAY_SUPPORT = false;
 
+    public static final String[] NUMBER_PRIMITIVES = {"int", "long", "double", "byte", "char", "short", "float"};
+
+    public static final Map<String, String> PRIMITIVE_BUFFER_MAP = new HashMap<>() {{
+        this.put("byte", "ByteBuffer");
+        this.put("boolean", "ByteBuffer");
+        this.put("short", "ShortBuffer");
+        this.put("int", "IntBuffer");
+        this.put("long", "LongBuffer");
+        this.put("float", "FloatBuffer");
+        this.put("double", "DoubleBuffer");
+        this.put("char", "CharBuffer");
+    }};
+
+    public static final Map<String, String> PRIMITIVE_WRAPPER_MAP = new HashMap<>() {{
+        this.put("int", "Integer");
+        this.put("long", "Long");
+        this.put("double", "Double");
+        this.put("boolean", "Boolean");
+        this.put("byte", "Byte");
+        this.put("char", "Character");
+        this.put("short", "Short");
+        this.put("float", "Float");
+    }};
+
     public static void newClass(String classname, String datatype, String defaultCapacity, String clearValue) {
         final boolean isPrimitive = Character.isLowerCase(datatype.charAt(0));
 
-        final boolean isNumber = switch(datatype){
-            case "int", "long", "double", "byte", "char", "short", "float" -> true;
-            default -> false;
-        };
+        final boolean isNumber = ArrayUtils.contains(NUMBER_PRIMITIVES, datatype);
 
-        final String bufferClass = switch(datatype){
-            case "byte", "boolean" -> "ByteBuffer";
-            case "short" -> "ShortBuffer";
-            case "int" -> "IntBuffer";
-            case "long" -> "LongBuffer";
-            case "float" -> "FloatBuffer";
-            case "double" -> "DoubleBuffer";
-            case "char" -> "CharBuffer";
-            default -> null;
-        };
+        final String bufferClass = PRIMITIVE_BUFFER_MAP.get(datatype);
 
         final boolean isString = datatype.equals("String");
         final boolean isBool = datatype.equals("boolean");
         final boolean isChar = datatype.equals("char");
 
         final boolean hasBufferOps = (bufferClass != null);
-
-        final String datatypeWrapper = switch(datatype){
-            case "int" -> "Integer";
-            case "long" -> "Long";
-            case "double" -> "Double";
-            case "boolean" -> "Boolean";
-            case "byte" -> "Byte";
-            case "char" -> "Character";
-            case "short" -> "Short";
-            case "float" -> "Float";
-            default -> datatype;
-        };
+        
+        final String datatypeWrapper = PRIMITIVE_WRAPPER_MAP.get(datatype);
 
         // create class
         final String savepath = "src/main/java/jpize/util/array/";

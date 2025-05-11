@@ -197,8 +197,9 @@ public class FastNoise {
         x *= frequency;
         y *= frequency;
 
-        switch(noiseType){
-            case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2S -> {
+        switch(noiseType) {
+            case OPEN_SIMPLEX_2:
+            case OPEN_SIMPLEX_2S: {
                 final float F2 = 0.5F * (Maths.SQRT3 - 1);
                 final float t = (x + y) * F2;
                 x += t;
@@ -206,12 +207,12 @@ public class FastNoise {
             }
         }
 
-        return switch(fractalType){
-            case FBM -> genFractalFbm(x, y);
-            case RIDGED -> genFractalRidged(x, y);
-            case PING_PONG -> genFractalPingPong(x, y);
-            default -> genNoiseSingle(seed, x, y);
-        };
+        switch(fractalType) {
+            case FBM: return genFractalFbm(x, y);
+            case RIDGED: return genFractalRidged(x, y);
+            case PING_PONG: return genFractalPingPong(x, y);
+            default: return genNoiseSingle(seed, x, y);
+        }
     }
 
     /**
@@ -232,37 +233,40 @@ public class FastNoise {
         z *= frequency;
 
         switch(transformType3D){
-            case IMPROVE_XY_PLANES -> {
+            case IMPROVE_XY_PLANES: {
                 final float xy = x + y;
                 final float s2 = xy * -0.211324865405187F;
                 z *= 0.577350269189626F;
                 x += s2 - z;
                 y = y + s2 - z;
                 z += xy * 0.577350269189626F;
+                break;
             }
-            case IMPROVE_XZ_PLANES -> {
+            case IMPROVE_XZ_PLANES: {
                 final float xz = x + z;
                 final float s2 = xz * -0.211324865405187F;
                 y *= 0.577350269189626F;
                 x += s2 - y;
                 z += s2 - y;
                 y += xz * 0.577350269189626F;
+                break;
             }
-            case DEFAULT_OPEN_SIMPLEX_2 -> {
+            case DEFAULT_OPEN_SIMPLEX_2: {
                 final float R3 = TWO_THIRDS;
                 final float r = (x + y + z) * R3; // Rotation, not skew
                 x = r - x;
                 y = r - y;
                 z = r - z;
+                break;
             }
         }
 
-        return switch(fractalType){
-            case FBM -> genFractalFbm(x, y, z);
-            case RIDGED -> genFractalRidged(x, y, z);
-            case PING_PONG -> genFractalPingPong(x, y, z);
-            default -> genNoiseSingle(seed, x, y, z);
-        };
+        switch(fractalType){
+            case FBM: return genFractalFbm(x, y, z);
+            case RIDGED: return genFractalRidged(x, y, z);
+            case PING_PONG: return genFractalPingPong(x, y, z);
+            default: return genNoiseSingle(seed, x, y, z);
+        }
     }
 
     /**
@@ -281,9 +285,15 @@ public class FastNoise {
      */
     public void domainWarp(Vec2f coord) {
         switch(fractalType){
-            case DOMAIN_WARP_PROGRESSIVE -> domainWarpFractalProgressive(coord);
-            case DOMAIN_WARP_INDEPENDENT -> domainWarpFractalIndependent(coord);
-            default -> domainWarpSingle(coord);
+            case DOMAIN_WARP_PROGRESSIVE: {
+                domainWarpFractalProgressive(coord);
+                break;
+            }
+            case DOMAIN_WARP_INDEPENDENT: {
+                domainWarpFractalIndependent(coord);
+                break;
+            }
+            default: domainWarpSingle(coord);
         }
     }
 
@@ -295,9 +305,15 @@ public class FastNoise {
      */
     public void domainWarp(Vec3f coord) {
         switch(fractalType){
-            case DOMAIN_WARP_PROGRESSIVE -> domainWarpFractalProgressive(coord);
-            case DOMAIN_WARP_INDEPENDENT -> domainWarpFractalIndependent(coord);
-            default -> domainWarpSingle(coord);
+            case DOMAIN_WARP_PROGRESSIVE: {
+                domainWarpFractalProgressive(coord);
+                break;
+            }
+            case DOMAIN_WARP_INDEPENDENT: {
+                domainWarpFractalIndependent(coord);
+                break;
+            }
+            default: domainWarpSingle(coord);
         }
     }
 
@@ -364,25 +380,27 @@ public class FastNoise {
     // Generic Noise Gen
 
     private float genNoiseSingle(int seed, float x, float y) {
-        return switch(noiseType){
-            case OPEN_SIMPLEX_2 -> singleSimplex(seed, x, y);
-            case OPEN_SIMPLEX_2S -> singleOpenSimplex2S(seed, x, y);
-            case CELLULAR -> singleCellular(seed, x, y);
-            case PERLIN -> singlePerlin(seed, x, y);
-            case VALUE_CUBIC -> singleValueCubic(seed, x, y);
-            case VALUE -> singleValue(seed, x, y);
-        };
+        switch(noiseType){
+            case OPEN_SIMPLEX_2: return singleSimplex(seed, x, y);
+            case OPEN_SIMPLEX_2S: return singleOpenSimplex2S(seed, x, y);
+            case CELLULAR: return singleCellular(seed, x, y);
+            case PERLIN: return singlePerlin(seed, x, y);
+            case VALUE_CUBIC: return singleValueCubic(seed, x, y);
+            case VALUE: return singleValue(seed, x, y);
+        }
+        return 0F; // old switch syntax issue
     }
 
     private float genNoiseSingle(int seed, float x, float y, float z) {
-        return switch(noiseType){
-            case OPEN_SIMPLEX_2 -> singleOpenSimplex2(seed, x, y, z);
-            case OPEN_SIMPLEX_2S -> singleOpenSimplex2S(seed, x, y, z);
-            case CELLULAR -> singleCellular(seed, x, y, z);
-            case PERLIN -> singlePerlin(seed, x, y, z);
-            case VALUE_CUBIC -> singleValueCubic(seed, x, y, z);
-            case VALUE -> singleValue(seed, x, y, z);
-        };
+        switch(noiseType){
+            case OPEN_SIMPLEX_2: return singleOpenSimplex2(seed, x, y, z);
+            case OPEN_SIMPLEX_2S: return singleOpenSimplex2S(seed, x, y, z);
+            case CELLULAR: return singleCellular(seed, x, y, z);
+            case PERLIN: return singlePerlin(seed, x, y, z);
+            case VALUE_CUBIC: return singleValueCubic(seed, x, y, z);
+            case VALUE: return singleValue(seed, x, y, z);
+        }
+        return 0F; // old switch syntax issue
     }
 
 
@@ -390,12 +408,22 @@ public class FastNoise {
 
     private void updateTransformType3D() {
         switch(rotationType3D){
-            case IMPROVE_XY_PLANES -> transformType3D = TransformType3D.IMPROVE_XY_PLANES;
-            case IMPROVE_XZ_PLANES -> transformType3D = TransformType3D.IMPROVE_XZ_PLANES;
-            default -> {
+            case IMPROVE_XY_PLANES: {
+                transformType3D = TransformType3D.IMPROVE_XY_PLANES;
+                break;
+            }
+            case IMPROVE_XZ_PLANES: {
+                transformType3D = TransformType3D.IMPROVE_XZ_PLANES;
+                break;
+            }
+            default: {
                 switch(noiseType){
-                    case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2S -> transformType3D = TransformType3D.DEFAULT_OPEN_SIMPLEX_2;
-                    default -> transformType3D = TransformType3D.NONE;
+                    case OPEN_SIMPLEX_2:
+                    case OPEN_SIMPLEX_2S: {
+                        transformType3D = TransformType3D.DEFAULT_OPEN_SIMPLEX_2;
+                        break;
+                    }
+                    default: transformType3D = TransformType3D.NONE;
                 }
             }
         }
@@ -403,12 +431,22 @@ public class FastNoise {
 
     private void updateWarpTransformType3D() {
         switch(rotationType3D){
-            case IMPROVE_XY_PLANES -> warpTransformType3D = TransformType3D.IMPROVE_XY_PLANES;
-            case IMPROVE_XZ_PLANES -> warpTransformType3D = TransformType3D.IMPROVE_XZ_PLANES;
-            default -> {
+            case IMPROVE_XY_PLANES: {
+                warpTransformType3D = TransformType3D.IMPROVE_XY_PLANES;
+                break;
+            }
+            case IMPROVE_XZ_PLANES: {
+                warpTransformType3D = TransformType3D.IMPROVE_XZ_PLANES;
+                break;
+            }
+            default: {
                 switch(domainWarpType){
-                    case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2_REDUCED -> warpTransformType3D = TransformType3D.DEFAULT_OPEN_SIMPLEX_2;
-                    default -> warpTransformType3D = TransformType3D.NONE;
+                    case OPEN_SIMPLEX_2:
+                    case OPEN_SIMPLEX_2_REDUCED: {
+                        warpTransformType3D = TransformType3D.DEFAULT_OPEN_SIMPLEX_2;
+                        break;
+                    }
+                    default: warpTransformType3D = TransformType3D.NONE;
                 }
             }
         }
@@ -951,7 +989,7 @@ public class FastNoise {
         int yPrimedBase = (yr - 1) * PRIME_Y;
 
         switch(cellularDistFunc){
-            case MANHATTAN -> {
+            case MANHATTAN: {
                 for(int xi = xr - 1; xi <= xr + 1; xi++){
                     int yPrimed = yPrimedBase;
 
@@ -973,8 +1011,9 @@ public class FastNoise {
                     }
                     xPrimed += PRIME_X;
                 }
+                break;
             }
-            case HYBRID -> {
+            case HYBRID: {
                 for(int xi = xr - 1; xi <= xr + 1; xi++){
                     int yPrimed = yPrimedBase;
 
@@ -996,8 +1035,9 @@ public class FastNoise {
                     }
                     xPrimed += PRIME_X;
                 }
+                break;
             }
-            default -> {
+            default: {
                 for(int xi = xr - 1; xi <= xr + 1; xi++){
                     int yPrimed = yPrimedBase;
 
@@ -1028,15 +1068,16 @@ public class FastNoise {
                 distance1 = Mathc.sqrt(distance1);
         }
 
-        return switch(cellularReturnType){
-            case CELL_VALUE -> closestHash * (1 / 2147483648F);
-            case DIST -> distance0 - 1;
-            case DIST_2 -> distance1 - 1;
-            case DIST_2_ADD -> (distance1 + distance0) * 0.5F - 1;
-            case DIST_2_SUB -> distance1 - distance0 - 1;
-            case DIST_2_MUL -> distance1 * distance0 * 0.5F - 1;
-            case DIST_2_DIV -> distance0 / distance1 - 1;
-        };
+        switch(cellularReturnType){
+            case CELL_VALUE: return (closestHash * (1 / 2147483648F));
+            case DIST: return (distance0 - 1);
+            case DIST_2: return (distance1 - 1);
+            case DIST_2_ADD: return ((distance1 + distance0) * 0.5F - 1);
+            case DIST_2_SUB: return (distance1 - distance0 - 1);
+            case DIST_2_MUL: return (distance1 * distance0 * 0.5F - 1);
+            case DIST_2_DIV: return (distance0 / distance1 - 1);
+        }
+        return 0F; // old switch syntax issue
     }
 
     private float singleCellular(int seed, float x, float y, float z) {
@@ -1055,7 +1096,8 @@ public class FastNoise {
         int zPrimedBase = (zr - 1) * PRIME_Z;
 
         switch(cellularDistFunc){
-            case EUCLIDEAN, EUCLIDEAN_SQ -> {
+            case EUCLIDEAN:
+            case EUCLIDEAN_SQ: {
                 for(int xi = xr - 1; xi <= xr + 1; xi++){
                     int yPrimed = yPrimedBase;
 
@@ -1083,8 +1125,9 @@ public class FastNoise {
                     }
                     xPrimed += PRIME_X;
                 }
+                break;
             }
-            case MANHATTAN -> {
+            case MANHATTAN: {
                 for(int xi = xr - 1; xi <= xr + 1; xi++){
                     int yPrimed = yPrimedBase;
 
@@ -1112,8 +1155,9 @@ public class FastNoise {
                     }
                     xPrimed += PRIME_X;
                 }
+                break;
             }
-            case HYBRID -> {
+            case HYBRID: {
                 for(int xi = xr - 1; xi <= xr + 1; xi++){
                     int yPrimed = yPrimedBase;
 
@@ -1150,15 +1194,16 @@ public class FastNoise {
                 distance1 = Mathc.sqrt(distance1);
         }
 
-        return switch(cellularReturnType){
-            case CELL_VALUE -> closestHash * (1 / 2147483648F);
-            case DIST -> distance0 - 1;
-            case DIST_2 -> distance1 - 1;
-            case DIST_2_ADD -> (distance1 + distance0) * 0.5F - 1;
-            case DIST_2_SUB -> distance1 - distance0 - 1;
-            case DIST_2_MUL -> distance1 * distance0 * 0.5F - 1;
-            case DIST_2_DIV -> distance0 / distance1 - 1;
-        };
+        switch(cellularReturnType){
+            case CELL_VALUE: return (closestHash * (1 / 2147483648F));
+            case DIST: return (distance0 - 1);
+            case DIST_2: return (distance1 - 1);
+            case DIST_2_ADD: return ((distance1 + distance0) * 0.5F - 1);
+            case DIST_2_SUB: return (distance1 - distance0 - 1);
+            case DIST_2_MUL: return (distance1 * distance0 * 0.5F - 1);
+            case DIST_2_DIV: return (distance0 / distance1 - 1);
+        }
+        return 0F; // old switch syntax issue
     }
 
 
@@ -1358,17 +1403,35 @@ public class FastNoise {
 
     private void doSingleDomainWarp(int seed, float amp, float freq, float x, float y, Vec2f coord) {
         switch(domainWarpType){
-            case OPEN_SIMPLEX_2 -> singleDomainWarpSimplexGradient(seed, amp * 38.283687591552734375F, freq, x, y, coord, false);
-            case OPEN_SIMPLEX_2_REDUCED -> singleDomainWarpSimplexGradient(seed, amp * 16F, freq, x, y, coord, true);
-            case BASIC_GRID -> singleDomainWarpBasicGrid(seed, amp, freq, x, y, coord);
+            case OPEN_SIMPLEX_2: {
+                singleDomainWarpSimplexGradient(seed, amp * 38.283687591552734375F, freq, x, y, coord, false);
+                break;
+            }
+            case OPEN_SIMPLEX_2_REDUCED: {
+                singleDomainWarpSimplexGradient(seed, amp * 16F, freq, x, y, coord, true);
+                break;
+            }
+            case BASIC_GRID: {
+                singleDomainWarpBasicGrid(seed, amp, freq, x, y, coord);
+                break;
+            }
         }
     }
 
     private void doSingleDomainWarp(int seed, float amp, float freq, float x, float y, float z, Vec3f coord) {
         switch(domainWarpType){
-            case OPEN_SIMPLEX_2 -> singleDomainWarpOpenSimplex2Gradient(seed, amp * 32.69428253173828125F, freq, x, y, z, coord, false);
-            case OPEN_SIMPLEX_2_REDUCED -> singleDomainWarpOpenSimplex2Gradient(seed, amp * 7.71604938271605F, freq, x, y, z, coord, true);
-            case BASIC_GRID -> singleDomainWarpBasicGrid(seed, amp, freq, x, y, z, coord);
+            case OPEN_SIMPLEX_2: {
+                singleDomainWarpOpenSimplex2Gradient(seed, amp * 32.69428253173828125F, freq, x, y, z, coord, false);
+                break;
+            }
+            case OPEN_SIMPLEX_2_REDUCED: {
+                singleDomainWarpOpenSimplex2Gradient(seed, amp * 7.71604938271605F, freq, x, y, z, coord, true);
+                break;
+            }
+            case BASIC_GRID: {
+                singleDomainWarpBasicGrid(seed, amp, freq, x, y, z, coord);
+                break;
+            }
         }
     }
 
@@ -1381,7 +1444,8 @@ public class FastNoise {
         float xs = coord.x;
         float ys = coord.y;
         switch(domainWarpType){
-            case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2_REDUCED -> {
+            case OPEN_SIMPLEX_2:
+            case OPEN_SIMPLEX_2_REDUCED: {
                 final float F2 = 0.5F * (Maths.SQRT3 - 1);
                 final float t = (xs + ys) * F2;
                 xs += t;
@@ -1399,28 +1463,31 @@ public class FastNoise {
         float ys = coord.y;
         float zs = coord.z;
         switch(warpTransformType3D){
-            case IMPROVE_XY_PLANES -> {
+            case IMPROVE_XY_PLANES: {
                 final float xy = xs + ys;
                 final float s2 = xy * -0.211324865405187F;
                 zs *=  0.577350269189626F;
                 xs += s2 - zs;
                 ys = ys + s2 - zs;
                 zs += xy * 0.577350269189626F;
+                break;
             }
-            case IMPROVE_XZ_PLANES -> {
+            case IMPROVE_XZ_PLANES: {
                 final float xz = xs + zs;
                 final float s2 = xz * - 0.211324865405187F;
                 ys *= 0.577350269189626F;
                 xs += s2 - ys;
                 zs += s2 - ys;
                 ys += xz * 0.577350269189626F;
+                break;
             }
-            case DEFAULT_OPEN_SIMPLEX_2 -> {
+            case DEFAULT_OPEN_SIMPLEX_2: {
                 final float R3 = TWO_THIRDS;
                 final float r = (xs + ys + zs) * R3; // Rotation, not skew
                 xs = r - xs;
                 ys = r - ys;
                 zs = r - zs;
+                break;
             }
         }
 
@@ -1439,7 +1506,8 @@ public class FastNoise {
             float xs = coord.x;
             float ys = coord.y;
             switch(domainWarpType){
-                case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2_REDUCED -> {
+                case OPEN_SIMPLEX_2:
+                case OPEN_SIMPLEX_2_REDUCED: {
                     final float F2 = 0.5F * (Maths.SQRT3 - 1);
                     final float t = (xs + ys) * F2;
                     xs += t;
@@ -1465,28 +1533,31 @@ public class FastNoise {
             float ys = coord.y;
             float zs = coord.z;
             switch(warpTransformType3D){
-                case IMPROVE_XY_PLANES -> {
+                case IMPROVE_XY_PLANES: {
                     final float xy = xs + ys;
                     final float s2 = xy * -0.211324865405187F;
                     zs *=  0.577350269189626F;
                     xs += s2 - zs;
                     ys = ys + s2 - zs;
                     zs += xy * 0.577350269189626F;
+                    break;
                 }
-                case IMPROVE_XZ_PLANES -> {
+                case IMPROVE_XZ_PLANES: {
                     final float xz = xs + zs;
                     final float s2 = xz * -0.211324865405187F;
                     ys *=  0.577350269189626F;
                     xs += s2 - ys;
                     zs += s2 - ys;
                     ys += xz * 0.577350269189626F;
+                    break;
                 }
-                case DEFAULT_OPEN_SIMPLEX_2 -> {
+                case DEFAULT_OPEN_SIMPLEX_2: {
                     final float R3 = TWO_THIRDS;
                     final float r = (xs + ys + zs) * R3; // Rotation, not skew
                     xs = r - xs;
                     ys = r - ys;
                     zs = r - zs;
+                    break;
                 }
             }
 
@@ -1505,7 +1576,8 @@ public class FastNoise {
         float xs = coord.x;
         float ys = coord.y;
         switch(domainWarpType){
-            case OPEN_SIMPLEX_2, OPEN_SIMPLEX_2_REDUCED -> {
+            case OPEN_SIMPLEX_2:
+            case OPEN_SIMPLEX_2_REDUCED: {
                 final float F2 = 0.5F * (Maths.SQRT3 - 1);
                 final float t = (xs + ys) * F2;
                 xs += t;
@@ -1531,28 +1603,31 @@ public class FastNoise {
         float ys = coord.y;
         float zs = coord.z;
         switch(warpTransformType3D){
-            case IMPROVE_XY_PLANES -> {
+            case IMPROVE_XY_PLANES: {
                 final float xy = xs + ys;
                 final float s2 = xy * -0.211324865405187F;
                 zs *= 0.577350269189626F;
                 xs += s2 - zs;
                 ys = ys + s2 - zs;
                 zs += xy * 0.577350269189626F;
+                break;
             }
-            case IMPROVE_XZ_PLANES -> {
+            case IMPROVE_XZ_PLANES: {
                 final float xz = xs + zs;
                 final float s2 = xz * -0.211324865405187F;
                 ys *= 0.577350269189626F;
                 xs += s2 - ys;
                 zs += s2 - ys;
                 ys += xz * 0.577350269189626F;
+                break;
             }
-            case DEFAULT_OPEN_SIMPLEX_2 -> {
+            case DEFAULT_OPEN_SIMPLEX_2: {
                 final float R3 = TWO_THIRDS;
                 final float r = (xs + ys + zs) * R3; // Rotation, not skew
                 xs = r - xs;
                 ys = r - ys;
                 zs = r - zs;
+                break;
             }
         }
 
