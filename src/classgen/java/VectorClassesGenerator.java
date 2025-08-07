@@ -733,14 +733,16 @@ public class VectorClassesGenerator {
     }
 
     private static void addAreaVolume() {
-        switch(dimensions){
-            case 2 -> w.addMethod("public " + datatype + " area()",
+        if(dimensions == 2) {
+            w.addMethod("public " + datatype + " area()",
                 "return x * y;"
             );
-            case 3 -> w.addMethod("public " + datatype + " volume()",
+        }else if(dimensions == 3) {
+            w.addMethod("public " + datatype + " volume()",
                 "return x * y * z;"
             );
-            case 4 -> w.addMethod("public " + datatype + " hypervolume()",
+        }else if(dimensions == 4) {
+            w.addMethod("public " + datatype + " hypervolume()",
                 "return x * y * z * w;"
             );
         }
