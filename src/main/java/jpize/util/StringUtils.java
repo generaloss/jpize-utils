@@ -3,11 +3,11 @@ package jpize.util;
 public class StringUtils {
 
     public static boolean isEmpty(CharSequence string) {
-        return (string == null || string.isEmpty());
+        return (string == null || string.length() == 0);
     }
 
     public static boolean isNotEmpty(CharSequence string) {
-        return (string != null && !string.isEmpty());
+        return (string != null && string.length() != 0);
     }
 
 
