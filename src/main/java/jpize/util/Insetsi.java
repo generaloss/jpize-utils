@@ -1,7 +1,5 @@
 package jpize.util;
 
-import jpize.util.math.vector.Vec4i;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -105,7 +103,7 @@ public class Insetsi implements Serializable {
         if(object == null || getClass() != object.getClass())
             return false;
         final Insetsi insets = (Insetsi) object;
-        return Vec4i.equals(top, left, bottom, right, insets.top, insets.left, insets.bottom, insets.right);
+        return !(top != insets.top || left != insets.left || bottom != insets.bottom || right != insets.right);
     }
 
     @Override

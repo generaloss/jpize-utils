@@ -4,13 +4,19 @@
 
     <groupId>io.github.generaloss</groupId>
     <artifactId>jpize-utils</artifactId>
-    <version>25.5.1-SNAPSHOT-4</version>
+    <version>25.8.1-SNAPSHOT-1</version>
     <name>jpize-utils</name>
 
     <description>Utils Library</description>
     <url>https://github.com/generaloss/jpize-utils</url>
 
     <dependencies>
+        <dependency>
+            <groupId>io.github.generaloss</groupId>
+            <artifactId>resource-flow</artifactId>
+            <version>25.8.1</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- junit -->
         <dependency>
             <groupId>junit</groupId>

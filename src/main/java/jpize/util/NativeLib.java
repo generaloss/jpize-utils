@@ -1,7 +1,7 @@
 package jpize.util;
 
-import jpize.util.res.Resource;
-import jpize.util.res.TempFileResource;
+import resourceflow.resource.Resource;
+import resourceflow.resource.TempFileResource;
 
 import java.io.IOException;
 import java.io.InputStream;

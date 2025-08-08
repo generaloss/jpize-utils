@@ -1,7 +1,7 @@
 package jpize.util.security;
 
-import jpize.util.res.FileResource;
-import jpize.util.res.Resource;
+import resourceflow.resource.FileResource;
+import resourceflow.resource.Resource;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

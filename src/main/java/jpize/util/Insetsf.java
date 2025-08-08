@@ -1,6 +1,5 @@
 package jpize.util;
 
-import jpize.util.math.vector.Vec4f;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -104,7 +103,7 @@ public class Insetsf implements Serializable {
         if(object == null || getClass() != object.getClass())
             return false;
         final Insetsf insets = (Insetsf) object;
-        return Vec4f.equals(top, left, bottom, right, insets.top, insets.left, insets.bottom, insets.right);
+        return !(top != insets.top || left != insets.left || bottom != insets.bottom || right != insets.right);
     }
 
     @Override

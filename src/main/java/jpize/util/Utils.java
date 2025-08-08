@@ -1,8 +1,6 @@
 package jpize.util;
 
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.function.*;
 
 public class Utils {
@@ -19,32 +17,12 @@ public class Utils {
     }
 
 
-    public static String osGeneralizePath(String path) {
-        return path.replace("\\", "/");
-    }
-
-
     public static StackTraceElement[] getStackTrace(){
         return Thread.currentThread().getStackTrace();
     }
 
     public static StackTraceElement getStackTrace(int element){
         return getStackTrace()[element];
-    }
-
-
-    public static void close(Closeable closeable) {
-        try{
-            if(closeable != null)
-                closeable.close();
-        }catch(IOException ignored){ }
-    }
-
-    public static void close(AutoCloseable closeable) {
-        try{
-            if(closeable != null)
-                closeable.close();
-        }catch(Exception ignored){ }
     }
 
 

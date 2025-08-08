@@ -1,7 +1,7 @@
 package dev;
 
-import jpize.util.io.FastReader;
-import jpize.util.res.Resource;
+import resourceflow.stream.FastReader;
+import resourceflow.resource.Resource;
 
 public class Main {
 
