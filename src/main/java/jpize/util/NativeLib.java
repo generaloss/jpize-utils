@@ -1,7 +1,7 @@
 package jpize.util;
 
-import resourceflow.resource.Resource;
-import resourceflow.resource.TempFileResource;
+import generaloss.resourceflow.resource.Resource;
+import generaloss.resourceflow.resource.TempFileResource;
 
 import java.io.IOException;
 import java.io.InputStream;

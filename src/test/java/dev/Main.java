@@ -1,7 +1,7 @@
 package dev;
 
-import resourceflow.stream.FastReader;
-import resourceflow.resource.Resource;
+import generaloss.resourceflow.stream.FastReader;
+import generaloss.resourceflow.resource.Resource;
 
 public class Main {
 

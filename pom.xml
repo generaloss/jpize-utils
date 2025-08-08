@@ -15,7 +15,7 @@
         <dependency>
             <groupId>io.github.generaloss</groupId>
             <artifactId>resource-flow</artifactId>
-            <version>25.8.1</version>
+            <version>25.8.1-SNAPSHOT-1</version>
             <scope>provided</scope>
         </dependency>
         <!-- test -->
