@@ -3,6 +3,8 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.generaloss/jpize-utils.svg)](https://mvnrepository.com/artifact/io.github.generaloss/jpize-utils)
 
+## (Deprecated)
+
 ---
 
 Java version: 11 +
